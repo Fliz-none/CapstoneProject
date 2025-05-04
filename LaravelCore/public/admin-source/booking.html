@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý dịch vụ - Trương Dung Pet</title>
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/logo/logo-main.svg">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/bootstrap.css">
+    <link rel="stylesheet" href="assets/vendors/iconly/bold.css">
+    <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="shortcut icon" href="assets/images/logo/logo-main.svg" type="image/x-icon">
+    <link rel="stylesheet" href="assets/vendors/simple-datatables/style.css">
+</head>
+
+<body>
+    <div id="app">
+        <div id="sidebar" class="active">
+            <div class="sidebar-wrapper active">
+                <div class="sidebar-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="logo">
+                            <a href="index.html"><img src="assets/images/logo/logo-footer.svg" alt="Logo" srcset=""
+                                    style="width: 100%; height: auto;"></a>
+                        </div>
+                        <div class="toggler">
+                            <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="sidebar-menu">
+                    <ul class="menu">
+                        <li class="sidebar-item key-bg-primary">
+                            <a href="selling.html" class='sidebar-btn'>
+                                <i class="bi bi-display"></i>
+                                <span>POS Bán Hàng</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item key-bg-secondary">
+                            <a href="info-new.html" class='sidebar-btn'>
+                                <i class="bi bi-calendar2-range"></i>
+                                <span>Tạo Phiếu Khám</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item key-bg-success">
+                            <a href="booking-new.html" class='sidebar-btn'>
+                                <i class="bi bi-clipboard-heart"></i>
+                                <span>Đặt Dịch Vụ</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-title">Quản lý</li>
+                        <li class="sidebar-item">
+                            <a href="index.html" class='sidebar-link'>
+                                <i class="bi bi-grid-fill"></i>
+                                <span>Tổng Quan</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-receipt-cutoff"></i>
+                                <span>Đơn hàng</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item ">
+                                    <a href="order.html">Các đơn hàng</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="order-new.html">Thêm mới</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="transaction.html">Thanh toán</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="customer.html" class='sidebar-link'>
+                                <i class="bi bi-people-fill"></i>
+                                <span>Khách hàng</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="pets.html" class='sidebar-link'>
+                                <i class="bi bi-github"></i>
+                                <span>Thú cưng</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="suppliers.html" class='sidebar-link'>
+                                <i class="bi bi-shield-check"></i>
+                                <span>Nhà cung cấp</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-stack"></i>
+                                <span>Sản phẩm</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item">
+                                    <a href="product.html">Các sản phẩm</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="product-new.html">Thêm mới</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="catalog.html">Danh mục</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="attribute.html">Thuộc tính</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-grid-1x2"></i>
+                                <span>Quản lý kho</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item">
+                                    <a href="inventory.html">Tồn kho</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="import.html">Nhập kho</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="export.html">Xuất kho</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-heart-pulse"></i>
+                                <span>Khám chữa</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item">
+                                    <a href="infos.html">Phiếu khám</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="indications.html">Phiếu Chỉ Định</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="quick-test.html">Kit Test Nhanh</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="ultrasounds.html">Phiếu Siêu Âm</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="bloodcell-tests.html">Phiếu XNTB Máu</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="biochemical-tests.html">Phiếu XNSH Máu</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="microscopes.html">Phiếu Soi KHV</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="xrays.html">Phiếu X-Quang</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="surgeries.html">Phiếu phẫu thuật</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="treatments.html">Điều Trị Nội Trú</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="prescriptions.html">Đơn Thuốc</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item has-sub active">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-circle-square"></i>
+                                <span>Dịch vụ</span>
+                            </a>
+                            <ul class="submenu active">
+                                <li class="submenu-item ">
+                                    <a href="service.html">Danh sách</a>
+                                </li>
+                                <li class="submenu-item active">
+                                    <a href="booking.html">Đặt dịch vụ</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="spa-grooming.html" class='sidebar-link'>
+                                <i class="bi bi-snow2"></i>
+                                <span>Spa & Grooming</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="hotels.html" class='sidebar-link'>
+                                <i class="bi bi-door-closed"></i>
+                                <span>Khách Sạn</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-calendar3"></i>
+                                <span>Lịch làm việc</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item ">
+                                    <a href="timekeeping.html">Chấm công</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="timesheets.html">Danh sách</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="create-timesheets.html">Sắp lịch</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-title">Website</li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-pencil-square"></i>
+                                <span>Bài viết</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item">
+                                    <a href="posts.html">Tất cả bài viết</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="post-new.html">Thêm mới</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="category.html">Chuyên mục</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-globe2"></i>
+                                <span>Cài đặt web</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item">
+                                    <a href="popup.html">Popup</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="banner.html">Banner</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-title">Cài đặt</li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-sliders"></i>
+                                <span>Cài đặt hệ thống</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item ">
+                                    <a href="users.html">Tài khoản</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="role.html">Phân quyền</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="logs.html">Nhật ký hệ thống</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+            </div>
+        </div>
+        <div id="main" class="layout-navbar">
+            <header class='mb-3'>
+                <nav class="navbar navbar-expand navbar-light ">
+                    <div class="container-fluid">
+                        <a href="#" class="burger-btn d-block">
+                            <i class="bi bi-justify fs-3"></i>
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            </ul>
+                            <div class="dropdown">
+                                <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="user-menu d-flex align-items-center">
+                                        <div class="user-name text-end me-3">
+                                            <h6 class="mb-0 text-gray-600">Admin</h6>
+                                        </div>
+                                        <div class="user-img d-flex align-items-center">
+                                            <div class="avatar avatar-md">
+                                                <img src="assets/images/logo/logo-main.svg">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <h6 class="dropdown-header">Hello, Admin!</h6>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-person me-2"></i> My
+                                            Profile</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-gear me-2"></i>
+                                            Settings</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-wallet me-2"></i>
+                                            Wallet</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"><i
+                                                class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <div id="main-content">
+                <div class="page-heading">
+                    <div class="page-title">
+                        <div class="row">
+                            <div class="col-12 col-md-6 order-md-1 order-last">
+                                <h5 class="text-uppercase">Danh sách đặt dịch vụ</h5>
+                            </div>
+                            <div class="col-12 col-md-6 order-md-2 order-first">
+                                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="index.html">Tổng quan</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Danh sách đặt dịch vụ</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <section class="section">
+                        <div class="row">
+                            <div class="col">
+                                <a href="booking-new.html" class="btn k-btn-info mb-3">
+                                    <i class="bi bi-plus-circle"></i>
+                                    Đặt dịch vụ
+                                </a>
+                            </div>
+                            <div class="col-3 text-end">
+                                <div class="input-group mb-3">
+                                    <select class="form-select" id="inputGroupSelect01">
+                                        <option value="1">Tất cả </option>
+                                        <option value="2">Cơ sở 1</option>
+                                        <option value="3">Cơ sở 2</option>
+                                    </select>
+                                    <button class="btn btn-warning" type="button">Lọc</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <table class="table table-striped table-bordered key-table table-sm" id="table-booking">
+                                    <thead>
+                                        <tr>
+                                            <th>Mã DDV</th>
+                                            <th>Nội dung đặt lịch</th>
+                                            <th>Khách hàng</th>
+                                            <th>Thú cưng</th>
+                                            <th>Địa điểm</th>
+                                            <th>Cơ sở</th>
+                                            <th>Trạng thái</th>
+                                            <th>Yêu cầu BSTY</th>
+                                            <th>Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="text-center">
+                                            <td class="text-center">
+                                                <a href="booking-new.html" class="text-start fw-bold">
+                                                    DDV000019
+                                                </a>
+                                                <br>
+                                                06/04/2022<br>
+                                                09:00 - 10:00
+                                            </td>
+                                            <td class="text-start">
+                                                <br>
+                                                <br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="fw-bold">
+                                                    CTHI
+                                                </a><br>
+                                                0939350959<br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="fw-bold">
+                                                    Bơ
+                                                </a>
+                                                <span class="d-block">Chó</span>
+                                                <span class="d-block"> </span>
+                                                <span class="d-block">Trạng thái: Còn sống</span>
+                                            </td>
+                                            <td>
+                                                Tại Cơ Sở
+                                            </td>
+                                            <td>
+                                                TRUONGDUNG PET
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-primary">Xác nhận</span>
+                                            </td>
+                                            <td class="text-start"></td>
+                                            <td class="text-end">
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+                                                        <a class="dropdown-item" href="info-new.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="booking-new.html">Cập nhật</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="text-center">
+                                                <a href="booking-new.html" class="text-start fw-bold">
+                                                    DDV000020
+                                                </a>
+                                                <br>
+                                                06/04/2022<br>
+                                                09:00 - 10:00
+                                            </td>
+                                            <td class="text-start">
+                                                <br>
+                                                <br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="fw-bold">
+                                                    C THANH
+                                                </a><br>
+                                                0706596166<br>
+                                                phú thành, tân phú
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="fw-bold">
+                                                    Lu
+                                                </a>
+                                                <span class="d-block">Chó</span>
+                                                <span class="d-block">5kg </span>
+                                                <span class="d-block">Trạng thái: Còn sống</span>
+                                            </td>
+                                            <td>
+                                                Tại Cơ Sở
+                                            </td>
+                                            <td>
+                                                TRUONGDUNG PET
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-primary">Xác nhận</span>
+                                            </td>
+                                            <td class="text-start"></td>
+                                            <td class="text-end">
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+                                                        <a class="dropdown-item" href="info-new.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="booking-new.html">Cập nhật</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="text-center">
+                                                <a href="booking-new.html" class="text-start fw-bold">
+                                                    DDV000045
+                                                </a>
+                                                <a href="https://clinic.fvet.vn/quan-ly-phong-kham/kham-chua/phieu-chi-dinh/cap-nhat/13115"
+                                                    class="text-info">
+                                                    PCD000025
+                                                </a>
+                                                <br>
+                                                07/04/2022<br>
+                                                09:00 - 10:00
+                                            </td>
+                                            <td class="text-start">
+                                                Tái khám
+                                                <br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="fw-bold">
+                                                    Như Ý-Cái Cui
+                                                </a><br>
+                                                <br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="fw-bold">
+                                                    cún
+                                                </a>
+                                                <span class="d-block">Chó</span>
+                                                <span class="d-block">12kg </span>
+                                                <span class="d-block">Trạng thái: Còn sống</span>
+                                            </td>
+                                            <td>
+                                                Tại Cơ Sở
+                                            </td>
+                                            <td>
+                                                TRUONGDUNG PET
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-danger">Đã hủy</span>
+                                            </td>
+                                            <td class="text-start"></td>
+                                            <td class="text-end">
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+                                                        <a class="dropdown-item" href="info-new.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="booking-new.html">Cập nhật</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        <tr class="text-center">
+                                            <td class="text-center">
+                                                <a href="booking-new.html" class="text-start fw-bold">
+                                                    DDV000021
+                                                </a>
+                                                <br>
+                                                07/04/2022<br>
+                                                09:00 - 10:00
+                                            </td>
+                                            <td class="text-start">
+                                                <br>
+                                                <br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="fw-bold">
+                                                    HUỲNH
+                                                </a><br>
+                                                0768886964<br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="fw-bold">
+                                                    THÚI
+                                                </a>
+                                                <span class="d-block">Chó</span>
+                                                <span class="d-block"> </span>
+                                                <span class="d-block">Trạng thái: Còn sống</span>
+                                            </td>
+                                            <td>
+                                                Tại Cơ Sở
+                                            </td>
+                                            <td>
+                                                TRUONGDUNG PET
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-primary">Xác nhận</span>
+                                            </td>
+                                            <td class="text-start"></td>
+                                            <td class="text-end">
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+                                                        <a class="dropdown-item" href="info-new.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="booking-new.html">Cập nhật</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="text-center">
+                                                <a href="booking-new.html" class="text-start fw-bold">
+                                                    DDV000027
+                                                </a>
+                                                <a href="https://clinic.fvet.vn/quan-ly-phong-kham/kham-chua/phieu-chi-dinh/cap-nhat/13032"
+                                                    class="text-info">
+                                                    PCD000014
+                                                </a>
+                                                <br>
+                                                07/04/2022<br>
+                                                09:00 - 10:00
+                                            </td>
+                                            <td class="text-start">
+                                                Tái khám
+                                                <br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="fw-bold">
+                                                    Minh Phương
+                                                </a><br>
+                                                0944766018<br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="fw-bold">
+                                                    meomeo
+                                                </a>
+                                                <span class="d-block">Mèo</span>
+                                                <span class="d-block">2.4kg </span>
+                                                <span class="d-block">Trạng thái: Còn sống</span>
+                                            </td>
+                                            <td>
+                                                Tại Cơ Sở
+                                            </td>
+                                            <td>
+                                                TRUONGDUNG PET
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-danger">Đã hủy</span>
+                                            </td>
+                                            <td class="text-start"></td>
+                                            <td class="text-end">
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+                                                        <a class="dropdown-item" href="info-new.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="booking-new.html">Cập nhật</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        <tr class="text-center">
+                                            <td class="text-center">
+                                                <a href="booking-new.html" class="text-start fw-bold">
+                                                    DDV000064
+                                                </a>
+                                                <br>
+                                                08/04/2022<br>
+                                                09:00 - 10:00
+                                            </td>
+                                            <td class="text-start">
+
+                                                <br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="fw-bold">
+                                                    Chị Dung
+                                                </a><br>
+                                                0911677154<br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="fw-bold">
+                                                    Bơ
+                                                </a>
+                                                <span class="d-block">Chó</span>
+                                                <span class="d-block">2.1kg </span>
+                                                <span class="d-block">Trạng thái: Còn sống</span>
+                                            </td>
+                                            <td>
+                                                Tại Cơ Sở
+                                            </td>
+                                            <td>
+                                                TRUONGDUNG PET
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-danger">Đã hủy</span>
+                                            </td>
+                                            <td class="text-start"></td>
+                                            <td class="text-end">
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+                                                        <a class="dropdown-item" href="info-new.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="booking-new.html">Cập nhật</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        <tr class="text-center">
+                                            <td class="text-center">
+                                                <a href="booking-new.html" class="text-start fw-bold">
+                                                    DDV000046
+                                                </a>
+                                                <br>
+                                                08/04/2022<br>
+                                                09:00 - 10:00
+                                            </td>
+                                            <td class="text-start">
+
+                                                <br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="fw-bold">
+                                                    Lan Anh
+                                                </a><br>
+                                                0969591074<br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="fw-bold">
+                                                    Kha
+                                                </a>
+                                                <span class="d-block">Chó</span>
+                                                <span class="d-block"> </span>
+                                                <span class="d-block">Trạng thái: Còn sống</span>
+                                            </td>
+                                            <td>
+                                                Tại Cơ Sở
+                                            </td>
+                                            <td>
+                                                TRUONGDUNG PET
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-primary">Xác nhận</span>
+                                            </td>
+                                            <td class="text-start"></td>
+                                            <td class="text-end">
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+                                                        <a class="dropdown-item" href="info-new.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="booking-new.html">Cập nhật</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="text-center">
+                                                <a href="booking-new.html" class="text-start fw-bold">
+                                                    DDV000044
+                                                </a>
+                                                <br>
+                                                08/04/2022<br>
+                                                09:00 - 10:00
+                                            </td>
+                                            <td class="text-start">
+                                                Cắt tỉa
+                                                <br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="fw-bold">
+                                                    Anh Nhân-Đồ
+                                                </a><br>
+                                                0949720630<br>
+                                                KDC DIệu Hiền
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="fw-bold">
+                                                    Đồ
+                                                </a>
+                                                <span class="d-block">Chó</span>
+                                                <span class="d-block">6kg </span>
+                                                <span class="d-block">Trạng thái: Còn sống</span>
+                                            </td>
+                                            <td>
+                                                Tại Cơ Sở
+                                            </td>
+                                            <td>
+                                                TRUONGDUNG PET
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-primary">Xác nhận</span>
+                                            </td>
+                                            <td class="text-start"></td>
+                                            <td class="text-end">
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+                                                        <a class="dropdown-item" href="info-new.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="booking-new.html">Cập nhật</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="text-center">
+                                                <a href="booking-new.html" class="text-start fw-bold">
+                                                    DDV000024
+                                                </a>
+                                                <a href="https://clinic.fvet.vn/quan-ly-phong-kham/kham-chua/phieu-chi-dinh/cap-nhat/12982"
+                                                    class="text-info">
+                                                    PCD000009
+                                                </a>
+                                                <br>
+                                                09/04/2022<br>
+                                                09:00 - 10:00
+                                            </td>
+                                            <td class="text-start">
+                                                Tái khám
+                                                <br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="fw-bold">
+                                                    Nguyễn Thị Lan Hương
+                                                </a><br>
+                                                0907993437<br>
+                                                N8_3 Tây Nguyên Plaza, Phú Thứ
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="fw-bold">
+                                                    Mimi
+                                                </a>
+                                                <span class="d-block">Mèo</span>
+                                                <span class="d-block">3.4kg </span>
+                                                <span class="d-block">Trạng thái: Còn sống</span>
+                                            </td>
+                                            <td>
+                                                Tại Cơ Sở
+                                            </td>
+                                            <td>
+                                                TRUONGDUNG PET
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-danger">Đã hủy</span>
+                                            </td>
+                                            <td class="text-start"></td>
+                                            <td class="text-end">
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+                                                        <a class="dropdown-item" href="info-new.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="booking-new.html">Cập nhật</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        <tr class="text-center">
+                                            <td class="text-center">
+                                                <a href="booking-new.html" class="text-start fw-bold">
+                                                    DDV000026
+                                                </a>
+                                                <br>
+                                                09/04/2022<br>
+                                                09:00 - 10:00
+                                            </td>
+                                            <td class="text-start">
+                                                Tắm vệ sinh lông ngắn 4-6kg
+                                                <br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="fw-bold">
+                                                    chị Thư
+                                                </a><br>
+                                                0938059999<br>
+                                                Long Thịnh
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="fw-bold">
+                                                    Ngô
+                                                </a>
+                                                <span class="d-block">Chó</span>
+                                                <span class="d-block">5kg </span>
+                                                <span class="d-block">Trạng thái: Còn sống</span>
+                                            </td>
+                                            <td>
+                                                Tại Cơ Sở
+                                            </td>
+                                            <td>
+                                                TRUONGDUNG PET
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-danger">Đã hủy</span>
+                                            </td>
+                                            <td class="text-start"></td>
+                                            <td class="text-end">
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+                                                        <a class="dropdown-item" href="info-new.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="booking-new.html">Cập nhật</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        <tr class="text-center">
+                                            <td class="text-center">
+                                                <a href="booking-new.html" class="text-start fw-bold">
+                                                    DDV000063
+                                                </a>
+                                                <a href="https://clinic.fvet.vn/quan-ly-phong-kham/kham-chua/phieu-chi-dinh/cap-nhat/13438"
+                                                    class="text-info">
+                                                    PCD000052
+                                                </a>
+                                                <br>
+                                                09/04/2022<br>
+                                                09:00 - 10:00
+                                            </td>
+                                            <td class="text-start">
+                                                Tái khám
+                                                <br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="fw-bold">
+                                                    Anh Phương
+                                                </a><br>
+                                                0939336860<br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="fw-bold">
+                                                    Tiger
+                                                </a>
+                                                <span class="d-block">Chó</span>
+                                                <span class="d-block">9kg </span>
+                                                <span class="d-block">Trạng thái: Còn sống</span>
+                                            </td>
+                                            <td>
+                                                Tại Cơ Sở
+                                            </td>
+                                            <td>
+                                                TRUONGDUNG PET
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-danger">Đã hủy</span>
+                                            </td>
+                                            <td class="text-start"></td>
+                                            <td class="text-end">
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+                                                        <a class="dropdown-item" href="info-new.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="booking-new.html">Cập nhật</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        <tr class="text-center">
+                                            <td class="text-center">
+                                                <a href="booking-new.html" class="text-start fw-bold">
+                                                    DDV000084
+                                                </a>
+                                                <br>
+                                                10/04/2022<br>
+                                                09:00 - 10:00
+                                            </td>
+                                            <td class="text-start">
+
+                                                <br>
+                                                Ghi chú: tiêm 7b, dại
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="fw-bold">
+                                                    Ngọc Minh
+                                                </a><br>
+                                                0906100166<br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="fw-bold">
+                                                    Lu
+                                                </a>
+                                                <span class="d-block">Chó</span>
+                                                <span class="d-block"> </span>
+                                                <span class="d-block">Trạng thái: Còn sống</span>
+                                            </td>
+                                            <td>
+                                                Tại Cơ Sở
+                                            </td>
+                                            <td>
+                                                TRUONGDUNG PET
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            </td>
+                                            <td class="text-start"></td>
+                                            <td class="text-end">
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+                                                        <a class="dropdown-item" href="info-new.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="booking-new.html">Cập nhật</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        <tr class="text-center">
+                                            <td class="text-center">
+                                                <a href="booking-new.html" class="text-start fw-bold">
+                                                    DDV000083
+                                                </a>
+                                                <br>
+                                                10/04/2022<br>
+                                                09:00 - 10:00
+                                            </td>
+                                            <td class="text-start">
+
+                                                <br>
+                                                Ghi chú: tiêm mũi 7b, dại
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="fw-bold">
+                                                    Ngọc An
+                                                </a><br>
+                                                0794287975<br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="fw-bold">
+                                                    Pun
+                                                </a>
+                                                <span class="d-block">Chó</span>
+                                                <span class="d-block"> </span>
+                                                <span class="d-block">Trạng thái: Còn sống</span>
+                                            </td>
+                                            <td>
+                                                Tại Cơ Sở
+                                            </td>
+                                            <td>
+                                                TRUONGDUNG PET
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            </td>
+                                            <td class="text-start"></td>
+                                            <td class="text-end">
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+                                                        <a class="dropdown-item" href="info-new.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="booking-new.html">Cập nhật</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        <tr class="text-center">
+                                            <td class="text-center">
+                                                <a href="booking-new.html" class="text-start fw-bold">
+                                                    DDV000001
+                                                </a>
+                                                <br>
+                                                10/04/2022<br>
+                                                09:00 - 10:00
+                                            </td>
+                                            <td class="text-start">
+                                                Tiêm phòng lần 6
+                                                <br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="fw-bold">
+                                                    Cô Tám-Tin, Nam Long
+                                                </a><br>
+                                                090 2526668<br>
+                                                kdc&nbsp;Nam&nbsp;Long, A908, Quận Cái Răng, Cần Thơ
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="fw-bold">
+                                                    Tin
+                                                </a>
+                                                <span class="d-block">Chó</span>
+                                                <span class="d-block">5kg </span>
+                                                <span class="d-block">Trạng thái: Còn sống</span>
+                                            </td>
+                                            <td>
+                                                Tại Cơ Sở
+                                            </td>
+                                            <td>
+                                                TRUONGDUNG PET
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            </td>
+                                            <td class="text-start"></td>
+                                            <td class="text-end">
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+                                                        <a class="dropdown-item" href="info-new.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="booking-new.html">Cập nhật</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        <tr class="text-center">
+                                            <td class="text-center">
+                                                <a href="booking-new.html" class="text-start fw-bold">
+                                                    DDV000025
+                                                </a>
+                                                <br>
+                                                11/04/2022<br>
+                                                09:00 - 10:00
+                                            </td>
+                                            <td class="text-start">
+                                                Tái khám
+                                                <br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="fw-bold">
+                                                    chị Thúy
+                                                </a><br>
+                                                0835229747<br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="fw-bold">
+                                                    Bi
+                                                </a>
+                                                <span class="d-block">Chó</span>
+                                                <span class="d-block">10kg </span>
+                                                <span class="d-block">Trạng thái: Còn sống</span>
+                                            </td>
+                                            <td>
+                                                Tại Cơ Sở
+                                            </td>
+                                            <td>
+                                                TRUONGDUNG PET
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-danger">Đã hủy</span>
+                                            </td>
+                                            <td class="text-start"></td>
+                                            <td class="text-end">
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+                                                        <a class="dropdown-item" href="info-new.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="booking-new.html">Cập nhật</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <footer>
+                    <div class="footer clearfix mb-0 text-muted">
+                        <div class="float-start">
+                            <p>2024 &copy; Trương Dung Pet</p>
+                        </div>
+                        <div class="float-end">
+                            <p>Thiết kế và xây dựng với <span class="text-danger"><i class="bi bi-heart"></i></span>
+                                từ <a href="https://keydigital.vn">Key Digital</a></p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendors/apexcharts/apexcharts.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/vendors/simple-datatables/simple-datatables.js"></script>
+    <script>
+        // Simple Datatable
+        let table1 = document.querySelector('#table-booking');
+        let dataTable = new simpleDatatables.DataTable(table1);
+    </script>
+</body>
+
+</html>

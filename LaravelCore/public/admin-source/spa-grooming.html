@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý dịch vụ - Trương Dung Pet</title>
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/logo/logo-main.svg">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/bootstrap.css">
+    <link rel="stylesheet" href="assets/vendors/iconly/bold.css">
+    <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="shortcut icon" href="assets/images/logo/logo-main.svg" type="image/x-icon">
+    <link rel="stylesheet" href="assets/vendors/simple-datatables/style.css">
+</head>
+
+<body>
+    <div id="app">
+        <div id="sidebar" class="active">
+            <div class="sidebar-wrapper active">
+                <div class="sidebar-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="logo">
+                            <a href="index.html"><img src="assets/images/logo/logo-footer.svg" alt="Logo" srcset=""
+                                    style="width: 100%; height: auto;"></a>
+                        </div>
+                        <div class="toggler">
+                            <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="sidebar-menu">
+                    <ul class="menu">
+                        <li class="sidebar-item key-bg-primary">
+                            <a href="selling.html" class='sidebar-btn'>
+                                <i class="bi bi-display"></i>
+                                <span>POS Bán Hàng</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item key-bg-secondary">
+                            <a href="info-new.html" class='sidebar-btn'>
+                                <i class="bi bi-calendar2-range"></i>
+                                <span>Tạo Phiếu Khám</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item key-bg-success">
+                            <a href="booking-new.html" class='sidebar-btn'>
+                                <i class="bi bi-clipboard-heart"></i>
+                                <span>Đặt Dịch Vụ</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-title">Quản lý</li>
+                        <li class="sidebar-item">
+                            <a href="index.html" class='sidebar-link'>
+                                <i class="bi bi-grid-fill"></i>
+                                <span>Tổng Quan</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-receipt-cutoff"></i>
+                                <span>Đơn hàng</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item ">
+                                    <a href="order.html">Các đơn hàng</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="order-new.html">Thêm mới</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="transaction.html">Thanh toán</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="customer.html" class='sidebar-link'>
+                                <i class="bi bi-people-fill"></i>
+                                <span>Khách hàng</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="pets.html" class='sidebar-link'>
+                                <i class="bi bi-github"></i>
+                                <span>Thú cưng</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="suppliers.html" class='sidebar-link'>
+                                <i class="bi bi-shield-check"></i>
+                                <span>Nhà cung cấp</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-stack"></i>
+                                <span>Sản phẩm</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item">
+                                    <a href="product.html">Các sản phẩm</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="product-new.html">Thêm mới</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="catalog.html">Danh mục</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="attribute.html">Thuộc tính</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-grid-1x2"></i>
+                                <span>Quản lý kho</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item">
+                                    <a href="inventory.html">Tồn kho</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="import.html">Nhập kho</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="export.html">Xuất kho</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-heart-pulse"></i>
+                                <span>Khám chữa</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item">
+                                    <a href="infos.html">Phiếu khám</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="indications.html">Phiếu Chỉ Định</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="quick-test.html">Kit Test Nhanh</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="ultrasounds.html">Phiếu Siêu Âm</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="bloodcell-tests.html">Phiếu XNTB Máu</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="biochemical-tests.html">Phiếu XNSH Máu</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="microscopes.html">Phiếu Soi KHV</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="xrays.html">Phiếu X-Quang</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="surgeries.html">Phiếu phẫu thuật</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="treatments.html">Điều Trị Nội Trú</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="prescriptions.html">Đơn Thuốc</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-circle-square"></i>
+                                <span>Dịch vụ</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item ">
+                                    <a href="service.html">Danh sách</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="booking.html">Đặt dịch vụ</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item active">
+                            <a href="spa-grooming.html" class='sidebar-link'>
+                                <i class="bi bi-snow2"></i>
+                                <span>Spa & Grooming</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="hotels.html" class='sidebar-link'>
+                                <i class="bi bi-door-closed"></i>
+                                <span>Khách Sạn</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-calendar3"></i>
+                                <span>Lịch làm việc</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item ">
+                                    <a href="timekeeping.html">Chấm công</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="timesheets.html">Danh sách</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="create-timesheets.html">Sắp lịch</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-title">Website</li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-pencil-square"></i>
+                                <span>Bài viết</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item">
+                                    <a href="posts.html">Tất cả bài viết</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="post-new.html">Thêm mới</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="category.html">Chuyên mục</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-globe2"></i>
+                                <span>Cài đặt web</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item">
+                                    <a href="popup.html">Popup</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="banner.html">Banner</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-title">Cài đặt</li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-sliders"></i>
+                                <span>Cài đặt hệ thống</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item ">
+                                    <a href="users.html">Tài khoản</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="role.html">Phân quyền</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="logs.html">Nhật ký hệ thống</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+            </div>
+        </div>
+        <div id="main" class="layout-navbar">
+            <header class='mb-3'>
+                <nav class="navbar navbar-expand navbar-light ">
+                    <div class="container-fluid">
+                        <a href="#" class="burger-btn d-block">
+                            <i class="bi bi-justify fs-3"></i>
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            </ul>
+                            <div class="dropdown">
+                                <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="user-menu d-flex align-items-center">
+                                        <div class="user-name text-end me-3">
+                                            <h6 class="mb-0 text-gray-600">Admin</h6>
+                                        </div>
+                                        <div class="user-img d-flex align-items-center">
+                                            <div class="avatar avatar-md">
+                                                <img src="assets/images/logo/logo-main.svg">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <h6 class="dropdown-header">Hello, Admin!</h6>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-person me-2"></i> My
+                                            Profile</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-gear me-2"></i>
+                                            Settings</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-wallet me-2"></i>
+                                            Wallet</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"><i
+                                                class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <div id="main-content">
+                <div class="page-heading">
+                    <div class="page-title">
+                        <div class="row">
+                            <div class="col-12 col-md-6 order-md-1 order-last">
+                                <h5 class="text-uppercase">Spa & Grooming</h5>
+                            </div>
+                            <div class="col-12 col-md-6 order-md-2 order-first">
+                                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="index.html">Tổng quan</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Spa & Grooming</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <section class="section">
+                        <div class="card">
+                            <div class="card-body">
+                                <table class="table table-striped table-bordered key-table table-sm" id="table-spa">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Thời gian</th>
+                                            <th>Mã phiếu</th>
+                                            <th>Thú cưng</th>
+                                            <th>Khách hàng</th>
+                                            <th>Bác sĩ</th>
+                                            <th>Trạng thái</th>
+                                            <th>Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="text-center">
+                                            <td class="fw-bold"><a href="spa-grooming-detail.html"
+                                                    class="link">SG006061</a></td>
+                                            <td>31/03/2024 20:25</td>
+                                            <td>
+                                                <a href="info-new.html" class="link">
+                                                    PK018843
+                                                </a><br>
+                                                <a href="indication-new.html" class="link">
+                                                    PCD019463
+                                                </a>
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="pet-detail.html" class="link">
+                                                    Daisy
+                                                </a><br>
+                                                Chó<br>
+                                                2kg
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="customer-detail.html" class="link">
+                                                    Quỳnh Anh
+                                                </a><br>
+                                                0939020112<br>
+
+                                            </td>
+                                            <td>BSTY. Khánh Băng</td>
+                                            <td>
+                                                <span class="badge bg-info">Đang làm</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="btn btn-sm text-danger"><i class="bi bi-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold"><a href="spa-grooming-detail.html"
+                                                    class="link">SG006060</a></td>
+                                            <td>31/03/2024 20:13</td>
+                                            <td>
+                                                <a href="info-new.html" class="link">
+                                                    PK018842
+                                                </a><br>
+                                                <a href="indication-new.html" class="link">
+                                                    PCD019462
+                                                </a>
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="pet-detail.html" class="link">
+                                                    Annie
+                                                </a><br>
+                                                Chó<br>
+                                                1.8kg
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="customer-detail.html" class="link">
+                                                    Quỳnh Anh
+                                                </a><br>
+                                                0939020112<br>
+
+                                            </td>
+                                            <td>BSTY. Khánh Băng</td>
+                                            <td>
+                                                <span class="badge bg-info">Đang làm</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="btn btn-sm text-danger"><i class="bi bi-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold"><a href="spa-grooming-detail.html"
+                                                    class="link">SG006059</a></td>
+                                            <td>31/03/2024 20:13</td>
+                                            <td>
+                                                <a href="info-new.html" class="link">
+                                                    PK018841
+                                                </a><br>
+                                                <a href="indication-new.html" class="link">
+                                                    PCD019461
+                                                </a>
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="pet-detail.html" class="link">
+                                                    Pu
+                                                </a><br>
+                                                Chó<br>
+                                                1.8kg
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="customer-detail.html" class="link">
+                                                    Chị Liên
+                                                </a><br>
+                                                0939445759<br>
+
+                                            </td>
+                                            <td>DV NGỌC TUYỀN</td>
+                                            <td>
+                                                <span class="badge bg-info">Đang làm</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="btn btn-sm text-danger"><i class="bi bi-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold"><a href="spa-grooming-detail.html"
+                                                    class="link">SG006058</a></td>
+                                            <td>31/03/2024 20:11</td>
+                                            <td>
+                                                <a href="info-new.html" class="link">
+                                                    PK018840
+                                                </a><br>
+                                                <a href="indication-new.html" class="link">
+                                                    PCD019459
+                                                </a>
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="pet-detail.html" class="link">
+                                                    Sam Trắng
+                                                </a><br>
+                                                Chó<br>
+
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="customer-detail.html" class="link">
+                                                    Quỳnh Anh
+                                                </a><br>
+                                                0939020112<br>
+
+                                            </td>
+                                            <td>BSTY. Khánh Băng</td>
+                                            <td>
+                                                <span class="badge bg-info">Đang làm</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="btn btn-sm text-danger"><i class="bi bi-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold"><a href="spa-grooming-detail.html"
+                                                    class="link">SG006057</a></td>
+                                            <td>31/03/2024 20:11</td>
+                                            <td>
+                                                <a href="info-new.html" class="link">
+                                                    PK018840
+                                                </a><br>
+                                                <a href="indication-new.html" class="link">
+                                                    PCD019458
+                                                </a>
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="pet-detail.html" class="link">
+                                                    Sam Trắng
+                                                </a><br>
+                                                Chó<br>
+
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="customer-detail.html" class="link">
+                                                    Quỳnh Anh
+                                                </a><br>
+                                                0939020112<br>
+
+                                            </td>
+                                            <td>BSTY. Khánh Băng</td>
+                                            <td>
+                                                <span class="badge bg-info">Đang làm</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="btn btn-sm text-danger"><i class="bi bi-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold"><a href="spa-grooming-detail.html"
+                                                    class="link">SG006056</a></td>
+                                            <td>31/03/2024 20:09</td>
+                                            <td>
+                                                <a href="info-new.html" class="link">
+                                                    PK018839
+                                                </a><br>
+                                                <a href="indication-new.html" class="link">
+                                                    PCD019457
+                                                </a>
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="pet-detail.html" class="link">
+                                                    Annie
+                                                </a><br>
+                                                Chó<br>
+                                                1.8kg
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="customer-detail.html" class="link">
+                                                    Quỳnh Anh
+                                                </a><br>
+                                                0939020112<br>
+
+                                            </td>
+                                            <td>BSTY. Khánh Băng</td>
+                                            <td>
+                                                <span class="badge bg-info">Đang làm</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="btn btn-sm text-danger"><i class="bi bi-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold"><a href="spa-grooming-detail.html"
+                                                    class="link">SG006055</a></td>
+                                            <td>31/03/2024 20:08</td>
+                                            <td>
+                                                <a href="info-new.html" class="link">
+                                                    PK018838
+                                                </a><br>
+                                                <a href="indication-new.html" class="link">
+                                                    PCD019456
+                                                </a>
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="pet-detail.html" class="link">
+                                                    Annie
+                                                </a><br>
+                                                Chó<br>
+                                                1.8kg
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="customer-detail.html" class="link">
+                                                    Quỳnh Anh
+                                                </a><br>
+                                                0939020112<br>
+
+                                            </td>
+                                            <td>BSTY. Khánh Băng</td>
+                                            <td>
+                                                <span class="badge bg-info">Đang làm</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="btn btn-sm text-danger"><i class="bi bi-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold"><a href="spa-grooming-detail.html"
+                                                    class="link">SG006054</a></td>
+                                            <td>31/03/2024 20:07</td>
+                                            <td>
+                                                <a href="info-new.html" class="link">
+                                                    PK018837
+                                                </a><br>
+                                                <a href="indication-new.html" class="link">
+                                                    PCD019455
+                                                </a>
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="pet-detail.html" class="link">
+                                                    Bún
+                                                </a><br>
+                                                Chó<br>
+                                                31kg
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="customer-detail.html" class="link">
+                                                    Chú Khải
+                                                </a><br>
+                                                0939591297<br>
+                                                Trà Ôn
+                                            </td>
+                                            <td>DV NGỌC TUYỀN</td>
+                                            <td>
+                                                <span class="badge bg-info">Đang làm</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="btn btn-sm text-danger"><i class="bi bi-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold"><a href="spa-grooming-detail.html"
+                                                    class="link">SG006053</a></td>
+                                            <td>31/03/2024 19:35</td>
+                                            <td>
+                                                <a href="info-new.html" class="link">
+                                                    PK018825
+                                                </a><br>
+                                                <a href="indication-new.html" class="link">
+                                                    PCD019443
+                                                </a>
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="pet-detail.html" class="link">
+                                                    BÁNH BAO
+                                                </a><br>
+                                                Mèo<br>
+                                                4.3kg
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="customer-detail.html" class="link">
+                                                    chị Kha
+                                                </a><br>
+                                                0393325399<br>
+                                                11,B5, KDC 91B
+                                            </td>
+                                            <td>BSTY. Khánh Băng</td>
+                                            <td>
+                                                <span class="badge bg-info">Đang làm</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="btn btn-sm text-danger"><i class="bi bi-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold"><a href="spa-grooming-detail.html"
+                                                    class="link">SG006052</a></td>
+                                            <td>31/03/2024 19:34</td>
+                                            <td>
+                                                <a href="info-new.html" class="link">
+                                                    PK018824
+                                                </a><br>
+                                                <a href="indication-new.html" class="link">
+                                                    PCD019442
+                                                </a>
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="pet-detail.html" class="link">
+                                                    Mon
+                                                </a><br>
+                                                Mèo<br>
+
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="customer-detail.html" class="link">
+                                                    anh Trí
+                                                </a><br>
+                                                0325614939<br>
+
+                                            </td>
+                                            <td>BSTY. Khánh Băng</td>
+                                            <td>
+                                                <span class="badge bg-info">Đang làm</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="btn btn-sm text-danger"><i class="bi bi-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold"><a href="spa-grooming-detail.html"
+                                                    class="link">SG006051</a></td>
+                                            <td>31/03/2024 19:27</td>
+                                            <td>
+                                                <a href="info-new.html" class="link">
+                                                    PK018822
+                                                </a><br>
+                                                <a href="indication-new.html" class="link">
+                                                    PCD019440
+                                                </a>
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="pet-detail.html" class="link">
+                                                    MON
+                                                </a><br>
+                                                Chó<br>
+                                                4kg
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="customer-detail.html" class="link">
+                                                    CHỊ DUNG
+                                                </a><br>
+                                                0939234556<br>
+
+                                            </td>
+                                            <td>BSTY. Khánh Băng</td>
+                                            <td>
+                                                <span class="badge bg-info">Đang làm</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="btn btn-sm text-danger"><i class="bi bi-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold"><a href="spa-grooming-detail.html"
+                                                    class="link">SG006050</a></td>
+                                            <td>31/03/2024 19:09</td>
+                                            <td>
+                                                <a href="info-new.html" class="link">
+                                                    PK018820
+                                                </a><br>
+                                                <a href="indication-new.html" class="link">
+                                                    PCD019439
+                                                </a>
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="pet-detail.html" class="link">
+                                                    MINA
+                                                </a><br>
+                                                Chó<br>
+                                                1.7kg
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="customer-detail.html" class="link">
+                                                    ANH TIẾN
+                                                </a><br>
+                                                0796831248<br>
+                                                TRẦN VĨNH KIẾT
+                                            </td>
+                                            <td>BSTY. Khánh Băng</td>
+                                            <td>
+                                                <span class="badge bg-info">Đang làm</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="btn btn-sm text-danger"><i class="bi bi-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold"><a href="spa-grooming-detail.html"
+                                                    class="link">SG006049</a></td>
+                                            <td>31/03/2024 17:48</td>
+                                            <td>
+                                                <a href="info-new.html" class="link">
+                                                    PK018819
+                                                </a><br>
+                                                <a href="indication-new.html" class="link">
+                                                    PCD019436
+                                                </a>
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="pet-detail.html" class="link">
+                                                    Mâu
+                                                </a><br>
+                                                Chó<br>
+                                                4.5kg
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="customer-detail.html" class="link">
+                                                    Chị Hạnh
+                                                </a><br>
+                                                0939419923<br>
+                                                Phú Thứ
+                                            </td>
+                                            <td>Nguyễn Võ Kim Ngà</td>
+                                            <td>
+                                                <span class="badge bg-info">Đang làm</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="btn btn-sm text-danger"><i class="bi bi-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold"><a href="spa-grooming-detail.html"
+                                                    class="link">SG006048</a></td>
+                                            <td>31/03/2024 16:25</td>
+                                            <td>
+                                                <a href="info-new.html" class="link">
+                                                    PK018814
+                                                </a><br>
+                                                <a href="indication-new.html" class="link">
+                                                    PCD019431
+                                                </a>
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="pet-detail.html" class="link">
+                                                    Poo
+                                                </a><br>
+                                                Chó<br>
+                                                3.4kg
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="customer-detail.html" class="link">
+                                                    anh Lân - Poo
+                                                </a><br>
+                                                0907968984<br>
+
+                                            </td>
+                                            <td>Nguyễn Võ Kim Ngà</td>
+                                            <td>
+                                                <span class="badge bg-info">Đang làm</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="btn btn-sm text-danger"><i class="bi bi-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold"><a href="spa-grooming-detail.html"
+                                                    class="link">SG006047</a></td>
+                                            <td>31/03/2024 16:24</td>
+                                            <td>
+                                                <a href="info-new.html" class="link">
+                                                    PK018813
+                                                </a><br>
+                                                <a href="indication-new.html" class="link">
+                                                    PCD019430
+                                                </a>
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="pet-detail.html" class="link">
+                                                    Tilo
+                                                </a><br>
+                                                Chó<br>
+                                                4.3kg
+                                            </td>
+                                            <td class="text-left">
+                                                <a href="customer-detail.html" class="link">
+                                                    Chị Trinh-Kitty
+                                                </a><br>
+                                                0919844586<br>
+                                                586
+                                            </td>
+                                            <td>Nguyễn Võ Kim Ngà</td>
+                                            <td>
+                                                <span class="badge bg-info">Đang làm</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <a class="btn btn-sm text-danger"><i class="bi bi-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <footer>
+                    <div class="footer clearfix mb-0 text-muted">
+                        <div class="float-start">
+                            <p>2024 &copy; Trương Dung Pet</p>
+                        </div>
+                        <div class="float-end">
+                            <p>Thiết kế và xây dựng với <span class="text-danger"><i class="bi bi-heart"></i></span>
+                                từ <a href="https://keydigital.vn">Key Digital</a></p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendors/apexcharts/apexcharts.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/vendors/simple-datatables/simple-datatables.js"></script>
+    <script>
+        // Simple Datatable
+        let table1 = document.querySelector('#table-spa');
+        let dataTable = new simpleDatatables.DataTable(table1);
+    </script>
+</body>
+
+</html>

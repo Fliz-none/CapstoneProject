@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý thú cưng - Trương Dung Pet</title>
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/logo/logo-main.svg">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/bootstrap.css">
+    <link rel="stylesheet" href="assets/vendors/iconly/bold.css">
+    <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="shortcut icon" href="assets/images/logo/logo-main.svg" type="image/x-icon">
+    <link rel="stylesheet" href="assets/vendors/simple-datatables/style.css">
+</head>
+
+<body>
+    <div id="app">
+        <div id="sidebar" class="active">
+            <div class="sidebar-wrapper active">
+                <div class="sidebar-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="logo">
+                            <a href="index.html"><img src="assets/images/logo/logo-footer.svg" alt="Logo" srcset=""
+                                    style="width: 100%; height: auto;"></a>
+                        </div>
+                        <div class="toggler">
+                            <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="sidebar-menu">
+                    <ul class="menu">
+                        <li class="sidebar-item key-bg-primary">
+                            <a href="selling.html" class='sidebar-btn'>
+                                <i class="bi bi-display"></i>
+                                <span>POS Bán Hàng</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item key-bg-secondary">
+                            <a href="infos.html" class='sidebar-btn'>
+                                <i class="bi bi-calendar2-range"></i>
+                                <span>Tạo Phiếu Khám</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item key-bg-success">
+                            <a href="booking.html" class='sidebar-btn'>
+                                <i class="bi bi-clipboard-heart"></i>
+                                <span>Đặt Dịch Vụ</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-title">Quản lý</li>
+                        <li class="sidebar-item">
+                            <a href="index.html" class='sidebar-link'>
+                                <i class="bi bi-grid-fill"></i>
+                                <span>Tổng Quan</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-receipt-cutoff"></i>
+                                <span>Đơn hàng</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item ">
+                                    <a href="order.html">Các đơn hàng</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="order-new.html">Thêm mới</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="transaction.html">Thanh toán</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="customer.html" class='sidebar-link'>
+                                <i class="bi bi-people-fill"></i>
+                                <span>Khách hàng</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item active">
+                            <a href="pets.html" class='sidebar-link'>
+                                <i class="bi bi-github"></i>
+                                <span>Thú cưng</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="suppliers.html" class='sidebar-link'>
+                                <i class="bi bi-shield-check"></i>
+                                <span>Nhà cung cấp</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-stack"></i>
+                                <span>Sản phẩm</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item">
+                                    <a href="product.html">Các sản phẩm</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="product-new.html">Thêm mới</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="catalog.html">Danh mục</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="attribute.html">Thuộc tính</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-grid-1x2"></i>
+                                <span>Quản lý kho</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item">
+                                    <a href="inventory.html">Tồn kho</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="import.html">Nhập kho</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="export.html">Xuất kho</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-heart-pulse"></i>
+                                <span>Khám chữa</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item">
+                                    <a href="infos.html">Phiếu khám</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="indications.html">Phiếu Chỉ Định</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="quick-test.html">Kit Test Nhanh</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="ultrasounds.html">Phiếu Siêu Âm</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="bloodcell-tests.html">Phiếu XNTB Máu</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="biochemical-tests.html">Phiếu XNSH Máu</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="microscopes.html">Phiếu Soi KHV</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="xrays.html">Phiếu X-Quang</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="surgeries.html">Phiếu phẫu thuật</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="treatments.html">Điều Trị Nội Trú</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="prescriptions.html">Đơn Thuốc</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-circle-square"></i>
+                                <span>Dịch vụ</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item ">
+                                    <a href="service.html">Danh sách</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="booking.html">Đặt dịch vụ</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="spa-grooming.html" class='sidebar-link'>
+                                <i class="bi bi-snow2"></i>
+                                <span>Spa & Grooming</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="hotels.html" class='sidebar-link'>
+                                <i class="bi bi-door-closed"></i>
+                                <span>Khách Sạn</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-calendar3"></i>
+                                <span>Lịch làm việc</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item ">
+                                    <a href="timekeeping.html">Chấm công</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="timesheets.html">Danh sách</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="create-timesheets.html">Sắp lịch</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-title">Website</li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-pencil-square"></i>
+                                <span>Bài viết</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item">
+                                    <a href="posts.html">Tất cả bài viết</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="post-new.html">Thêm mới</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="category.html">Chuyên mục</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-globe2"></i>
+                                <span>Cài đặt web</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item">
+                                    <a href="popup.html">Popup</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="banner.html">Banner</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-title">Cài đặt</li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-sliders"></i>
+                                <span>Cài đặt hệ thống</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item ">
+                                    <a href="users.html">Tài khoản</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="role.html">Phân quyền</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="logs.html">Nhật ký hệ thống</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+            </div>
+        </div>
+        <div id="main" class="layout-navbar">
+            <header class='mb-3'>
+                <nav class="navbar navbar-expand navbar-light ">
+                    <div class="container-fluid">
+                        <a href="#" class="burger-btn d-block">
+                            <i class="bi bi-justify fs-3"></i>
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            </ul>
+                            <div class="dropdown">
+                                <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="user-menu d-flex align-items-center">
+                                        <div class="user-name text-end me-3">
+                                            <h6 class="mb-0 text-gray-600">Admin</h6>
+                                        </div>
+                                        <div class="user-img d-flex align-items-center">
+                                            <div class="avatar avatar-md">
+                                                <img src="assets/images/logo/logo-main.svg">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <h6 class="dropdown-header">Hello, Admin!</h6>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-person me-2"></i> My
+                                            Profile</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-gear me-2"></i>
+                                            Settings</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-wallet me-2"></i>
+                                            Wallet</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"><i
+                                                class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <div id="main-content">
+                <div class="page-heading">
+                    <div class="page-title">
+                        <div class="row">
+                            <div class="col-12 col-md-6 order-md-1 order-last">
+                                <h5 class="text-uppercase">Thêm thú cưng mới</h5>
+                            </div>
+                            <div class="col-12 col-md-6 order-md-2 order-first">
+                                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="index.html">Tổng quan</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Thêm mới thú cưng</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <section class="section">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-12 col-md-4">
+                                        <div class="form-group row align-items-center">
+                                            <div class="col-12">
+                                                <label class="col-form-label">Khách hàng</label>
+                                            </div>
+                                            <div class="col-12">
+                                                <input type="text" name="code" id="" class="form-control" placeholder=""
+                                                    autocomplete="off">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <div class="form-group row align-items-center">
+                                            <div class="col-12">
+                                                <label class="col-form-label">
+                                                    Mã Số Microchip</label>
+                                            </div>
+                                            <div class="col-12">
+                                                <input type="text" name="code" id="" class="form-control" placeholder=""
+                                                    autocomplete="off">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <div class="form-group row align-items-center">
+                                            <div class="col-12 text-center">
+                                                <div class="avatar avatar-xxl mb-3">
+                                                    <img src="assets/images/faces/pet-default.png" alt="" srcset="">
+                                                </div>
+                                                <label class="col-form-label">Ảnh đại diện</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center">
+                                    <div class="col-12 col-md-4">
+                                        <div class="form-group row align-items-center">
+                                            <div class="col-12">
+                                                <label class="col-form-label">Tên thú cưng</label>
+                                            </div>
+                                            <div class="col-12">
+                                                <input type="text" name="code" id="" class="form-control" placeholder=""
+                                                    autocomplete="off">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <div class="form-group row align-items-center">
+                                            <div class="col-12">
+                                                <label class="col-form-label">
+                                                    Ngày sinh</label>
+                                            </div>
+                                            <div class="col-12">
+                                                <input type="text" name="code" id="" class="form-control" placeholder=""
+                                                    autocomplete="off">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <div class="form-group row align-items-center">
+                                            <div class="col-12">
+                                                <label class="col-form-label">
+                                                </label>
+                                            </div>
+                                            <div class="col-12">
+                                                <input type="file" name="image" id="product-image" class="form-control"
+                                                    accept="image/*">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <div class="form-group row align-items-center">
+                                            <div class="col-12">
+                                                <label class="col-form-label">
+                                                    Giới tính</label>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="sex" id="male" checked>
+                                                    <label class="form-check-label" for="male">
+                                                      Đực
+                                                    </label>
+                                                  </div>
+                                                  <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="sex" id="female">
+                                                    <label class="form-check-label" for="female">
+                                                      Cái
+                                                    </label>
+                                                  </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <div class="form-group row align-items-center">
+                                            <div class="col-12">
+                                                <label class="col-form-label">
+                                                    Loài vật</label>
+                                            </div>
+                                            <div class="col-12">
+                                                <select name="" id="" class="form-select text-dark" autocomplete="off"
+                                                    required="">
+                                                    <option hidden="" disabled="" selected="">Loài vật
+                                                    </option>
+                                                    <option value="Chó" data-id="1" data-select2-id="12">
+                                                        Chó
+                                                    </option>
+                                                    <option value="Mèo" data-id="2" data-select2-id="13">
+                                                        Mèo
+                                                    </option>
+                                                    <option value="Thỏ" data-id="3" data-select2-id="14">
+                                                        Thỏ
+                                                    </option>
+                                                    <option value="Chuột" data-id="4" data-select2-id="15">
+                                                        Chuột
+                                                    </option>
+                                                    <option value="Nhím" data-id="5" data-select2-id="16">
+                                                        Nhím
+                                                    </option>
+                                                    <option value="Bò Sát" data-id="6" data-select2-id="17">
+                                                        Bò Sát
+                                                    </option>
+                                                    <option value="Chim" data-id="7" data-select2-id="18">
+                                                        Chim
+                                                    </option>
+                                                    <option value="Gà" data-id="8" data-select2-id="19">
+                                                        Gà
+                                                    </option>
+                                                    <option value="Cá" data-id="9" data-select2-id="20">
+                                                        Cá
+                                                    </option>
+                                                    <option value="Sóc" data-id="10" data-select2-id="21">
+                                                        Sóc
+                                                    </option>
+                                                    <option value="Khỉ" data-id="11" data-select2-id="22">
+                                                        Khỉ
+                                                    </option>
+                                                    <option value="Rùa" data-id="12" data-select2-id="23">
+                                                        Rùa
+                                                    </option>
+                                                    <option value="Chồn Xương" data-id="13" data-select2-id="24">
+                                                        Chồn Xương
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <div class="form-group row align-items-center">
+                                            <div class="col-12">
+                                                <label class="col-form-label">
+                                                    Giống</label>
+                                            </div>
+                                            <div class="col-12">
+                                                <select name="" id="" class="form-select text-dark" autocomplete="off"
+                                                    required="">
+                                                    <option hidden="" disabled="" selected="">Giống
+                                                    </option>
+                                                    <option value="Abyssinian" data-select2-id="412">Abyssinian</option>
+                                                    <option value="American Bobtail" data-select2-id="413">American
+                                                        Bobtail</option>
+                                                    <option value="Mèo Mỹ tai xoắn (American Curl)"
+                                                        data-select2-id="414">Mèo Mỹ tai xoắn (American Curl)</option>
+                                                    <option value="Mèo Mỹ lông ngắn (American Short Hair)"
+                                                        data-select2-id="415">Mèo Mỹ lông ngắn (American Short Hair)
+                                                    </option>
+                                                    <option value="American Wirehair" data-select2-id="416">American
+                                                        Wirehair</option>
+                                                    <option value="Balinese" data-select2-id="417">Balinese</option>
+                                                    <option value="Mèo rừng (Bengal)" data-select2-id="418">Mèo rừng
+                                                        (Bengal)</option>
+                                                    <option value="Birman" data-select2-id="419">Birman</option>
+                                                    <option value="Bombay" data-select2-id="420">Bombay</option>
+                                                    <option value="Mèo Anh lông ngắn (British Short Hair)"
+                                                        data-select2-id="421">Mèo Anh lông ngắn (British Short Hair)
+                                                    </option>
+                                                    <option value="Mèo Anh lông dài (British Long Hair)"
+                                                        data-select2-id="422">Mèo Anh lông dài (British Long Hair)
+                                                    </option>
+                                                    <option value="Burmese" data-select2-id="423">Burmese</option>
+                                                    <option value="Burmilla" data-select2-id="424">Burmilla</option>
+                                                    <option value="Chartreux" data-select2-id="425">Chartreux</option>
+                                                    <option value="Chausie" data-select2-id="426">Chausie</option>
+                                                    <option value="Chinese Li Hua" data-select2-id="427">Chinese Li Hua
+                                                    </option>
+                                                    <option value="Colorpoint Shorthair" data-select2-id="428">
+                                                        Colorpoint Shorthair</option>
+                                                    <option value="Cornish Rex" data-select2-id="429">Cornish Rex
+                                                    </option>
+                                                    <option value="Devon Rex" data-select2-id="430">Devon Rex</option>
+                                                    <option value="Egyptian Mau" data-select2-id="431">Egyptian Mau
+                                                    </option>
+                                                    <option value="European Burmese" data-select2-id="432">European
+                                                        Burmese</option>
+                                                    <option value="Mèo Ba Tư lông ngắn (Exotic Shorthair)"
+                                                        data-select2-id="433">Mèo Ba Tư lông ngắn (Exotic Shorthair)
+                                                    </option>
+                                                    <option value="Havana Brown" data-select2-id="434">Havana Brown
+                                                    </option>
+                                                    <option value="Himalayan" data-select2-id="435">Himalayan</option>
+                                                    <option value="Japanese Bobtail" data-select2-id="436">Japanese
+                                                        Bobtail</option>
+                                                    <option value="Korat" data-select2-id="437">Korat</option>
+                                                    <option value="LaPerm" data-select2-id="438">LaPerm</option>
+                                                    <option value="Mèo Mỹ lông dài (Maine Coon)" data-select2-id="439">
+                                                        Mèo Mỹ lông dài (Maine Coon)</option>
+                                                    <option value="Mèo cộc đuôi (Manx)" data-select2-id="440">Mèo cộc
+                                                        đuôi (Manx)</option>
+                                                    <option value="Mèo Munchkin" data-select2-id="441">Mèo Munchkin
+                                                    </option>
+                                                    <option value="Norwegian Forest" data-select2-id="442">Norwegian
+                                                        Forest</option>
+                                                    <option value="Ocicat" data-select2-id="443">Ocicat</option>
+                                                    <option value="Oriental" data-select2-id="444">Oriental</option>
+                                                    <option value="Mèo Ba Tư lông dài (Persian)" data-select2-id="445">
+                                                        Mèo Ba Tư lông dài (Persian)</option>
+                                                    <option value="RagaMuffin" data-select2-id="446">RagaMuffin</option>
+                                                    <option value="Ragdoll" data-select2-id="447">Ragdoll</option>
+                                                    <option value="Mèo Nga mắt xanh (Russian Blue)"
+                                                        data-select2-id="448">Mèo Nga mắt xanh (Russian Blue)</option>
+                                                    <option value="Savannah Cat" data-select2-id="449">Savannah Cat
+                                                    </option>
+                                                    <option value="Mèo tai cụp Scotland (Scottish Fold)"
+                                                        data-select2-id="450">Mèo tai cụp Scotland (Scottish Fold)
+                                                    </option>
+                                                    <option value="Selkirk Rex" data-select2-id="451">Selkirk Rex
+                                                    </option>
+                                                    <option value="Mèo Xiêm (Siamese)" data-select2-id="452">Mèo Xiêm
+                                                        (Siamese)</option>
+                                                    <option value="Siberian" data-select2-id="453">Siberian</option>
+                                                    <option value="Singapura" data-select2-id="454">Singapura</option>
+                                                    <option value="Snowshoe" data-select2-id="455">Snowshoe</option>
+                                                    <option value="Somali" data-select2-id="456">Somali</option>
+                                                    <option value="Mèo nhân sư không lông (Sphynx)"
+                                                        data-select2-id="457">Mèo nhân sư không lông (Sphynx)</option>
+                                                    <option value="Tonkinese" data-select2-id="458">Tonkinese</option>
+                                                    <option value="Mèo Thổ Nhĩ Kỳ (Turkish Angora)"
+                                                        data-select2-id="459">Mèo Thổ Nhĩ Kỳ (Turkish Angora)</option>
+                                                    <option value="Mèo Van Thổ (Turkish Van)" data-select2-id="460">Mèo
+                                                        Van Thổ (Turkish Van)</option>
+                                                    <option value="Mèo mướp" data-select2-id="461">Mèo mướp</option>
+                                                    <option value="Mèo mun" data-select2-id="462">Mèo mun</option>
+                                                    <option value="Mèo tam thể" data-select2-id="463">Mèo tam thể
+                                                    </option>
+                                                    <option value="Mèo vàng" data-select2-id="464">Mèo vàng</option>
+                                                    <option value="Mèo nhị thể" data-select2-id="465">Mèo nhị thể
+                                                    </option>
+                                                    <option value="Mixed Breed" data-select2-id="466">Mixed Breed
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-12 col-md-4">
+                                        <div class="form-group row align-items-center">
+                                            <div class="col-12">
+                                                <label class="col-form-label">
+                                                    Cân nặng (kg)</label>
+                                            </div>
+                                            <div class="col-12">
+                                                <input type="text" name="code" id="" class="form-control" placeholder=""
+                                                    autocomplete="off">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <div class="form-group row align-items-center">
+                                            <div class="col-12">
+                                                <label class="col-form-label">
+                                                    màu sắc</label>
+                                            </div>
+                                            <div class="col-12">
+                                                <input type="text" name="code" id="" class="form-control" placeholder=""
+                                                    autocomplete="off">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <div class="form-group row align-items-center">
+                                            <div class="col-12">
+                                                <label class="col-form-label">
+                                                    Lông</label>
+                                            </div>
+                                            <div class="col-12">
+                                                <input type="text" name="code" id="" class="form-control" placeholder=""
+                                                    autocomplete="off">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <div class="form-group row align-items-center">
+                                            <div class="col-12">
+                                                <label class="col-form-label">
+                                                    Triệt sản</label>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="sterilization" id="yes">
+                                                    <label class="form-check-label" for="yes">
+                                                      Có
+                                                    </label>
+                                                  </div>
+                                                  <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="sterilization" id="no" checked>
+                                                    <label class="form-check-label" for="no">
+                                                      Không
+                                                    </label>
+                                                  </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <div class="form-group row align-items-center">
+                                            <div class="col-12">
+                                                <label class="col-form-label">Ngày tạo</label>
+                                            </div>
+                                            <div class="col-12">
+                                                <input type="text" name="address" id="" class="form-control"
+                                                    placeholder="18/12/2023" autocomplete="off" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-4">
+                                        <div class="form-group row align-items-center">
+                                            <div class="col-12">
+                                                <label class="col-form-label">Ghi chú</label>
+                                            </div>
+                                            <div class="col-12">
+                                                <textarea name="note" id="order-note" rows="3" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-12 mt-2 text-center">
+                                    <button type="submit" class="btn k-btn-info">Lưu thú cưng mới</button>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <footer>
+                    <div class="footer clearfix mb-0 text-muted">
+                        <div class="float-start">
+                            <p>2024 &copy; Trương Dung Pet</p>
+                        </div>
+                        <div class="float-end">
+                            <p>Thiết kế và xây dựng với <span class="text-danger"><i class="bi bi-heart"></i></span>
+                                từ <a href="https://keydigital.vn">Key Digital</a></p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendors/apexcharts/apexcharts.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/vendors/simple-datatables/simple-datatables.js"></script>
+    <script>
+        // Simple Datatable
+        let table1 = document.querySelector('#table-customer');
+        let dataTable = new simpleDatatables.DataTable(table1);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý dịch vụ - Trương Dung Pet</title>
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/logo/logo-main.svg">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/bootstrap.css">
+    <link rel="stylesheet" href="assets/vendors/iconly/bold.css">
+    <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
+    <!-- Include Choices CSS -->
+    <link rel="stylesheet" href="assets/vendors/choices.js/choices.min.css" />
+    <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="shortcut icon" href="assets/images/logo/logo-main.svg" type="image/x-icon">
+    <link rel="stylesheet" href="assets/vendors/simple-datatables/style.css">
+</head>
+
+<body>
+    <div id="app">
+        <div id="sidebar" class="active">
+            <div class="sidebar-wrapper active">
+                <div class="sidebar-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="logo">
+                            <a href="index.html"><img src="assets/images/logo/logo-footer.svg" alt="Logo" srcset=""
+                                    style="width: 100%; height: auto;"></a>
+                        </div>
+                        <div class="toggler">
+                            <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="sidebar-menu">
+                    <ul class="menu">
+                        <li class="sidebar-item key-bg-primary">
+                            <a href="selling.html" class='sidebar-btn'>
+                                <i class="bi bi-display"></i>
+                                <span>POS Bán Hàng</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item key-bg-secondary">
+                            <a href="info-new.html" class='sidebar-btn'>
+                                <i class="bi bi-calendar2-range"></i>
+                                <span>Tạo Phiếu Khám</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item key-bg-success">
+                            <a href="booking-new.html" class='sidebar-btn'>
+                                <i class="bi bi-clipboard-heart"></i>
+                                <span>Đặt Dịch Vụ</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-title">Quản lý</li>
+                        <li class="sidebar-item">
+                            <a href="index.html" class='sidebar-link'>
+                                <i class="bi bi-grid-fill"></i>
+                                <span>Tổng Quan</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-receipt-cutoff"></i>
+                                <span>Đơn hàng</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item ">
+                                    <a href="order.html">Các đơn hàng</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="order-new.html">Thêm mới</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="transaction.html">Thanh toán</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="customer.html" class='sidebar-link'>
+                                <i class="bi bi-people-fill"></i>
+                                <span>Khách hàng</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="pets.html" class='sidebar-link'>
+                                <i class="bi bi-github"></i>
+                                <span>Thú cưng</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="suppliers.html" class='sidebar-link'>
+                                <i class="bi bi-shield-check"></i>
+                                <span>Nhà cung cấp</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-stack"></i>
+                                <span>Sản phẩm</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item">
+                                    <a href="product.html">Các sản phẩm</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="product-new.html">Thêm mới</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="catalog.html">Danh mục</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="attribute.html">Thuộc tính</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-grid-1x2"></i>
+                                <span>Quản lý kho</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item">
+                                    <a href="inventory.html">Tồn kho</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="import.html">Nhập kho</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="export.html">Xuất kho</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-heart-pulse"></i>
+                                <span>Khám chữa</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item">
+                                    <a href="infos.html">Phiếu khám</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="indications.html">Phiếu Chỉ Định</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="quick-test.html">Kit Test Nhanh</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="ultrasounds.html">Phiếu Siêu Âm</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="bloodcell-tests.html">Phiếu XNTB Máu</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="biochemical-tests.html">Phiếu XNSH Máu</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="microscopes.html">Phiếu Soi KHV</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="xrays.html">Phiếu X-Quang</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="surgeries.html">Phiếu phẫu thuật</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="treatments.html">Điều Trị Nội Trú</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="prescriptions.html">Đơn Thuốc</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-circle-square"></i>
+                                <span>Dịch vụ</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item ">
+                                    <a href="service.html">Danh sách</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="booking.html">Đặt dịch vụ</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item active">
+                            <a href="spa-grooming.html" class='sidebar-link'>
+                                <i class="bi bi-snow2"></i>
+                                <span>Spa & Grooming</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="hotels.html" class='sidebar-link'>
+                                <i class="bi bi-door-closed"></i>
+                                <span>Khách Sạn</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-calendar3"></i>
+                                <span>Lịch làm việc</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item ">
+                                    <a href="timekeeping.html">Chấm công</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="timesheets.html">Danh sách</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="create-timesheets.html">Sắp lịch</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-title">Website</li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-pencil-square"></i>
+                                <span>Bài viết</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item">
+                                    <a href="posts.html">Tất cả bài viết</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="post-new.html">Thêm mới</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="category.html">Chuyên mục</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-globe2"></i>
+                                <span>Cài đặt web</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item">
+                                    <a href="popup.html">Popup</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="banner.html">Banner</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-title">Cài đặt</li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-sliders"></i>
+                                <span>Cài đặt hệ thống</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item ">
+                                    <a href="users.html">Tài khoản</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="role.html">Phân quyền</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="logs.html">Nhật ký hệ thống</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+            </div>
+        </div>
+        <div id="main" class="layout-navbar">
+            <header class='mb-3'>
+                <nav class="navbar navbar-expand navbar-light ">
+                    <div class="container-fluid">
+                        <a href="#" class="burger-btn d-block">
+                            <i class="bi bi-justify fs-3"></i>
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            </ul>
+                            <div class="dropdown">
+                                <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="user-menu d-flex align-items-center">
+                                        <div class="user-name text-end me-3">
+                                            <h6 class="mb-0 text-gray-600">Admin</h6>
+                                        </div>
+                                        <div class="user-img d-flex align-items-center">
+                                            <div class="avatar avatar-md">
+                                                <img src="assets/images/logo/logo-main.svg">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <h6 class="dropdown-header">Hello, Admin!</h6>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-person me-2"></i> My
+                                            Profile</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-gear me-2"></i>
+                                            Settings</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-wallet me-2"></i>
+                                            Wallet</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"><i
+                                                class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <div id="main-content">
+                <div class="page-heading">
+                    <div class="page-title">
+                        <div class="row">
+                            <div class="col-12 col-md-6 order-md-1 order-last">
+                                <h5 class="text-uppercase">Phiếu Spa & Grooming</h5>
+                            </div>
+                            <div class="col-12 col-md-6 order-md-2 order-first">
+                                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="index.html">Tổng quan</a></li>
+                                        <li class="breadcrumb-item"><a href="spa-grooming.html">Spa & Grooming</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Phiếu Spa & Grooming</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <section class="section">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="text-uppercase text-sm">Thông tin </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-4">
+                                    <div class="col-12 col-md-3 text-center">
+                                        <div class="form-group row align-items-center mb-4">
+                                            <div class="col-12 text-start">
+                                                <p class="fw-bold">Mã phiếu khám</p>
+                                            </div>
+                                            <div class="col-12">
+                                                <input type="text" name="" id="" class="form-control"
+                                                    placeholder="PK018589" autocomplete="off" readonly="">
+                                            </div>
+                                        </div>
+                                        <div class="avatar avatar-xxl mb-3">
+                                            <img src="assets/images/faces/pet-default.png" alt="" srcset="">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-9">
+                                        <div class="row">
+                                            <div class="col-12 col-md-6">
+                                                <p class="fw-bold">Thông tin thú cưng</p>
+                                                <p>
+                                                    Tên Thú Cưng: <span class="fw-bold" id="pet_name">La</span><br>
+                                                    Ngày Sinh: <span class="fw-bold" id="pet_birthday"></span><br>
+                                                    Loài vật: <span class="fw-bold" id="pet_animal">Chó</span><br>
+                                                    Giống: <span class="fw-bold" id="pet_breed">Pug</span><br>
+                                                    Cân nặng(kg): <span class="fw-bold" id="pet_weight"></span><br>
+                                                    Tính biệt: <span class="fw-bold" id="pet_gender">Đực</span><br>
+                                                    Triệt Sản: <span class="fw-bold"
+                                                        id="pet_is_neutered">Không</span><br>
+                                                    Trạng Thái: <span class="fw-bold" id="pet_is_active">Còn sống</span>
+                                                </p>
+                                            </div>
+                                            <div class="col-12 col-md-6">
+                                                <p class="fw-bold">Thông tin khách hàng</p>
+                                                <p>
+                                                    Tên khách hàng: <span class="fw-bold" id="customer_name">anh
+                                                        Yên</span><br>
+                                                    Giới tính: <span class="fw-bold" id="customer_gender">Nam</span><br>
+                                                    ĐT khách hàng: <span class="fw-bold"
+                                                        id="customer_phone">0985696161</span><br>
+                                                    Địa chỉ: <span class="fw-bold" id="customer_address"></span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="text-uppercase text-sm">Thông tin lâm sàng</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-4">
+                                    <div class="col-12">
+                                        <p>
+                                            Bác sĩ yêu cầu: <span class="fw-bold" id="doctor_name">Nguyễn Võ Kim
+                                                Ngà</span><br>
+                                            Chẩn đoán: <span class="fw-bold" id="doctor_diagnosis">tắm vs - cắt tỉa
+                                            </span><br>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="text-uppercase text-sm">Phiếu spa-grooming </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <select class="choices form-select multiple-remove" multiple="multiple">
+                                                <option value="romboid">Romboid</option>
+                                                <option value="trapeze">Trapeze</option>
+                                                <option value="triangle">Triangle</option>
+                                                <option value="polygon">Polygon</option>
+                                                <option value="red">Red</option>
+                                                <option value="green">Green</option>
+                                                <option value="blue">Blue</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-4 position-relative overflow-auto">
+                                        <table class="table table-bordered table-elements" id="">
+                                            <thead>
+                                                <tr class="text-center">
+                                                    <th scope="col" width="5%">STT</th>
+                                                    <th scope="col" width="40%">Dich vụ</th>
+                                                    <th scope="col" width="10%">Số lượng</th>
+                                                    <th scope="col" width="20%">Đơn giá</th>
+                                                    <th scope="col" width="20%">Thành tiền</th>
+                                                    <th scope="col" width="5%"><i class="bi bi-pencil-square"></i></th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody id="element-table-body">
+                                                <tr class="border-bottom">
+                                                    <td class="text-center">
+                                                        <span class="count">1</span>
+                                                    </td>
+                                                    <td>
+                                                        Tắm vệ sinh lông dài 4-6kg
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <input type="text" name="quantities[]"
+                                                            class="form-control input-quantity text-center"
+                                                            placeholder="1">
+                                                    </td>
+                                                    <td class="text-center">
+                                                        140,000
+                                                    </td>
+                                                    <td class="text-center">
+                                                        140,000
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button type="button"
+                                                            class="btn btn-link text-decoration-none btn-delete-element border-0 text-danger"
+                                                            onclick="deleteRow(this)"><i
+                                                                class="bi bi-trash"></i></button>
+                                                    </td>
+                                                </tr>
+                                                <tr class="border-bottom">
+                                                    <td class="text-center">
+                                                        <span class="count">1</span>
+                                                    </td>
+                                                    <td>
+                                                        Cắt tỉa
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <input type="text" name="quantities[]"
+                                                            class="form-control input-quantity text-center"
+                                                            placeholder="1">
+                                                    </td>
+                                                    <td class="text-center">
+                                                        140,000
+                                                    </td>
+                                                    <td class="text-center">
+                                                        140,000
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button type="button"
+                                                            class="btn btn-link text-decoration-none btn-delete-element border-0 text-danger"
+                                                            onclick="deleteRow(this)"><i
+                                                                class="bi bi-trash"></i></button>
+                                                    </td>
+                                                </tr>
+                                                <tr class="text-danger text-center">
+                                                    <td colspan="2" class="fw-bold">Tổng Cộng</td>
+                                                    <td id="recipe-quantity">2</td>
+                                                    <td></td>
+                                                    <td id="recipe-total">280,000</td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <div class="form-group row align-items-center">
+                                            <div class="col-12">
+                                                <label class="col-form-label">Yêu cầu của khách hàng</label>
+                                            </div>
+                                            <div class="col-12">
+                                                <textarea name="" id="" rows="4" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <div class="form-group row align-items-center">
+                                            <div class="col-12">
+                                                <label class="col-form-label">Ghi chú các bất thường</label>
+                                            </div>
+                                            <div class="col-12">
+                                                <textarea name="" id="" rows="4" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <div class="form-group row align-items-center">
+                                            <div class="col-12">
+                                                <label class="col-form-label">Hướng xử lý</label>
+                                            </div>
+                                            <div class="col-12">
+                                                <textarea name="" id="" rows="4" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <div class="form-group row align-items-center">
+                                            <div class="col-12">
+                                                <label class="col-form-label">Kết quả sau xửa lý</label>
+                                            </div>
+                                            <div class="col-12">
+                                                <textarea name="" id="" rows="4" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 my-3">
+                                        <div class="row">
+                                            <div class="col-12 col-md-3">
+                                                <div class="form-group">
+                                                    <label for="" class="form-label">Thời gian hẹn KH dự kiến</label>
+                                                    <div class="input-group">
+                                                        <input type="date" name="date" aria-label="Ngày"
+                                                            class="form-control form-control-sm " id=""
+                                                            value="2024-03-26">
+                                                        <input type="time" name="time" aria-label="Giờ"
+                                                            class="form-control form-control-sm " id=""
+                                                            value="12:29:59">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-6 text-center">
+                                                <div class="form-group row align-items-center">
+                                                    <div class="col-12">
+                                                        <label class="col-form-label">
+                                                            Địa chỉ nhận lại thú cưng</label>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="address-receive" id="home">
+                                                            <label class="form-check-label" for="home">
+                                                                Tại nhà
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="address-receive" id="clinic" checked="">
+                                                            <label class="form-check-label" for="clinic">
+                                                                Tại cơ sở
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="address-receive" id="other">
+                                                            <label class="form-check-label" for="other">
+                                                                Địa chỉ khác
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-3">
+                                                <div class="form-group">
+                                                    <label for="" class="form-label">Thời gian trả KH dự kiến</label>
+                                                    <div class="input-group">
+                                                        <input type="date" name="date" aria-label="Ngày"
+                                                            class="form-control form-control-sm " id=""
+                                                            value="2024-03-26">
+                                                        <input type="time" name="time" aria-label="Giờ"
+                                                            class="form-control form-control-sm " id=""
+                                                            value="12:29:59">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-4">
+                                        <div class="form-group row align-items-center">
+                                            <div class="col-12">
+                                                <label class="col-form-label">
+                                                    Trạng thái</label>
+                                            </div>
+                                            <div class="col-12">
+                                                <select name="" id="" class="form-select text-dark" autocomplete="off" required="">
+                                                    <option value="0" selected="">Đang làm</option>
+                                                    <option value="1">Hoàn thành</option>
+                                                    <option value="2">Hủy</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 text-end my-3">
+                                        <div>
+                                            <button type="button" class="btn k-btn-info ml-1">
+                                                <i class="bi bi-printer"></i>
+                                                <span class="">In phiếu</span>
+                                            </button>
+                                            <button type="button" class="btn btn-success ml-1">
+                                                <i class="bi bi-floppy"></i>
+                                                <span class="">Cập nhật</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <footer>
+                    <div class="footer clearfix mb-0 text-muted">
+                        <div class="float-start">
+                            <p>2024 &copy; Trương Dung Pet</p>
+                        </div>
+                        <div class="float-end">
+                            <p>Thiết kế và xây dựng với <span class="text-danger"><i class="bi bi-heart"></i></span>
+                                từ <a href="https://keydigital.vn">Key Digital</a></p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendors/apexcharts/apexcharts.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/vendors/simple-datatables/simple-datatables.js"></script>
+    <!-- Include Choices JavaScript -->
+    <script src="assets/vendors/choices.js/choices.min.js"></script>
+</body>
+
+</html>

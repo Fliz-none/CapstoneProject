@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý khám chữa - Trương Dung Pet</title>
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/logo/logo-main.svg">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/bootstrap.css">
+    <link rel="stylesheet" href="assets/vendors/iconly/bold.css">
+    <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="shortcut icon" href="assets/images/logo/logo-main.svg" type="image/x-icon">
+    <link rel="stylesheet" href="assets/vendors/simple-datatables/style.css">
+</head>
+
+<body>
+    <div id="app">
+        <div id="sidebar" class="active">
+            <div class="sidebar-wrapper active">
+                <div class="sidebar-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="logo">
+                            <a href="index.html"><img src="assets/images/logo/logo-footer.svg" alt="Logo" srcset=""
+                                    style="width: 100%; height: auto;"></a>
+                        </div>
+                        <div class="toggler">
+                            <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="sidebar-menu">
+                    <ul class="menu">
+                        <li class="sidebar-item key-bg-primary">
+                            <a href="selling.html" class='sidebar-btn'>
+                                <i class="bi bi-display"></i>
+                                <span>POS Bán Hàng</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item key-bg-secondary">
+                            <a href="info-new.html" class='sidebar-btn'>
+                                <i class="bi bi-calendar2-range"></i>
+                                <span>Tạo Phiếu Khám</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item key-bg-success">
+                            <a href="booking-new.html" class='sidebar-btn'>
+                                <i class="bi bi-clipboard-heart"></i>
+                                <span>Đặt Dịch Vụ</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-title">Quản lý</li>
+                        <li class="sidebar-item">
+                            <a href="index.html" class='sidebar-link'>
+                                <i class="bi bi-grid-fill"></i>
+                                <span>Tổng Quan</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-receipt-cutoff"></i>
+                                <span>Đơn hàng</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item ">
+                                    <a href="order.html">Các đơn hàng</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="order-new.html">Thêm mới</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="transaction.html">Thanh toán</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="customer.html" class='sidebar-link'>
+                                <i class="bi bi-people-fill"></i>
+                                <span>Khách hàng</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="pets.html" class='sidebar-link'>
+                                <i class="bi bi-github"></i>
+                                <span>Thú cưng</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="suppliers.html" class='sidebar-link'>
+                                <i class="bi bi-shield-check"></i>
+                                <span>Nhà cung cấp</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-stack"></i>
+                                <span>Sản phẩm</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item">
+                                    <a href="product.html">Các sản phẩm</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="product-new.html">Thêm mới</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="catalog.html">Danh mục</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="attribute.html">Thuộc tính</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-grid-1x2"></i>
+                                <span>Quản lý kho</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item">
+                                    <a href="inventory.html">Tồn kho</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="import.html">Nhập kho</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="export.html">Xuất kho</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item has-sub active">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-heart-pulse"></i>
+                                <span>Khám chữa</span>
+                            </a>
+                            <ul class="submenu active">
+                                <li class="submenu-item active">
+                                    <a href="infos.html">Phiếu khám</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="indications.html">Phiếu Chỉ Định</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="quick-test.html">Kit Test Nhanh</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="ultrasounds.html">Phiếu Siêu Âm</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="bloodcell-tests.html">Phiếu XNTB Máu</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="biochemical-tests.html">Phiếu XNSH Máu</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="microscopes.html">Phiếu Soi KHV</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="xrays.html">Phiếu X-Quang</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="surgeries.html">Phiếu phẫu thuật</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="treatments.html">Điều Trị Nội Trú</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="prescriptions.html">Đơn Thuốc</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-circle-square"></i>
+                                <span>Dịch vụ</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item ">
+                                    <a href="service.html">Danh sách</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="booking.html">Đặt dịch vụ</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="spa-grooming.html" class='sidebar-link'>
+                                <i class="bi bi-snow2"></i>
+                                <span>Spa & Grooming</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a href="hotels.html" class='sidebar-link'>
+                                <i class="bi bi-door-closed"></i>
+                                <span>Khách Sạn</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-calendar3"></i>
+                                <span>Lịch làm việc</span>
+                            </a>
+                            <ul class="submenu">
+                                <li class="submenu-item ">
+                                    <a href="timekeeping.html">Chấm công</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="timesheets.html">Danh sách</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="create-timesheets.html">Sắp lịch</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-title">Website</li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-pencil-square"></i>
+                                <span>Bài viết</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item">
+                                    <a href="posts.html">Tất cả bài viết</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="post-new.html">Thêm mới</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="category.html">Chuyên mục</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-globe2"></i>
+                                <span>Cài đặt web</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item">
+                                    <a href="popup.html">Popup</a>
+                                </li>
+                                <li class="submenu-item">
+                                    <a href="banner.html">Banner</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="sidebar-title">Cài đặt</li>
+                        <li class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-sliders"></i>
+                                <span>Cài đặt hệ thống</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item ">
+                                    <a href="users.html">Tài khoản</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="role.html">Phân quyền</a>
+                                </li>
+                                <li class="submenu-item ">
+                                    <a href="logs.html">Nhật ký hệ thống</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+            </div>
+        </div>
+        <div id="main" class="layout-navbar">
+            <header class='mb-3'>
+                <nav class="navbar navbar-expand navbar-light ">
+                    <div class="container-fluid">
+                        <a href="#" class="burger-btn d-block">
+                            <i class="bi bi-justify fs-3"></i>
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            </ul>
+                            <div class="dropdown">
+                                <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="user-menu d-flex align-items-center">
+                                        <div class="user-name text-end me-3">
+                                            <h6 class="mb-0 text-gray-600">Admin</h6>
+                                        </div>
+                                        <div class="user-img d-flex align-items-center">
+                                            <div class="avatar avatar-md">
+                                                <img src="assets/images/logo/logo-main.svg">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <h6 class="dropdown-header">Hello, Admin!</h6>
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-person me-2"></i> My
+                                            Profile</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-gear me-2"></i>
+                                            Settings</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-wallet me-2"></i>
+                                            Wallet</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="#"><i
+                                                class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <div id="main-content">
+                <div class="page-heading">
+                    <div class="page-title">
+                        <div class="row">
+                            <div class="col-12 col-md-6 order-md-1 order-last">
+                                <h5 class="text-uppercase">Phiếu khám</h5>
+                            </div>
+                            <div class="col-12 col-md-6 order-md-2 order-first">
+                                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="index.html">Tổng quan</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Phiếu khám</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <section class="section">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <a href="info-new.html" class="btn k-btn-info mb-3 block btn-create-catalog">
+                                    <i class="bi bi-plus-circle"></i>
+                                    Tạo phiếu khám
+                                </a>
+                            </div>
+                            <div class="col-12 col-md-6 text-end">
+                                <button type="button" class="btn btn-warning mb-3 block btn-output-excel"
+                                    data-bs-toggle="modal" data-bs-backdrop="false" data-bs-target="#outputExcel">
+                                    <i class="bi bi-box-arrow-in-up"></i>
+                                    Xuất ra excel
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <table class="table table-striped key-table table-sm" id="table-infos">
+                                    <thead>
+                                        <tr>
+                                            <th width="10%">Mã</th>
+                                            <th width="15%">Thú cưng</th>
+                                            <th width="15%">Khách hàng</th>
+                                            <th width="15%">Bác sĩ</th>
+                                            <th width="15%">Khám tại</th>
+                                            <th width="15%">Chuẩn đoán sơ bộ</th>
+                                            <th width="10%">Trạng thái</th>
+                                            <th width="5%">Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="text-center">
+                                            <td class="fw-bold">
+                                                <a href="info-new.html" class="text-info">
+                                                    PK018735
+                                                </a>
+                                                <br>
+                                                <small>29/03/2024</small>
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="link">
+                                                    Choco, Vani
+                                                </a><br>
+                                                Mèo
+                                                <br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="link">
+                                                    Vy
+                                                </a><br>
+                                                0913991181<br>
+                                                Quận Cái Răng, Cần Thơ
+                                            </td>
+                                            <td>vinh</td>
+                                            <td>Tại Cơ Sở</td>
+                                            <td class="text-start">hậu phẫu ngày 1,2,3. Vết thương lành tốt, vui vẻ lanh
+                                                lợi.</td>
+                                            <td>
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+
+                                                        <a class="dropdown-item" href="info.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold">
+                                                <a href="info-new.html" class="text-info">
+                                                    PK018734
+                                                </a>
+                                                <br>
+                                                <small>28/03/2024</small>
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="link">
+                                                    SÂU
+                                                </a><br>
+                                                Mèo
+                                                <br>
+                                                2kg
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="link">
+                                                    QUYÊN
+                                                </a><br>
+                                                0947196393<br>
+
+                                            </td>
+                                            <td>BSTY. Khánh Băng</td>
+                                            <td>Tại Cơ Sở</td>
+                                            <td class="text-start">ÓI RA THỨC ĂN, TC PHÂN TANH 1 LẦN, VẪN CÒN ĂN ĐƯỢC
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+
+                                                        <a class="dropdown-item" href="info.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold">
+                                                <a href="info-new.html" class="text-info">
+                                                    PK018733
+                                                </a>
+                                                <br>
+                                                <small>28/03/2024</small>
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="link">
+                                                    SỮA
+                                                </a><br>
+                                                Chó
+                                                <br>
+                                                2kg
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="link">
+                                                    THẢO
+                                                </a><br>
+                                                0794980722<br>
+
+                                            </td>
+                                            <td>BSTY. Khánh Băng</td>
+                                            <td>Tại Cơ Sở</td>
+                                            <td class="text-start">ÓI 1 LẦN RA THỨC ĂN, ĐI PHÂN KHUÔN, ĂN UỐNG SINH HOẠT
+                                                BT, CHO MEN VỀ</td>
+                                            <td>
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+
+                                                        <a class="dropdown-item" href="info.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold">
+                                                <a href="info-new.html" class="text-info">
+                                                    PK018732
+                                                </a>
+                                                <br>
+                                                <small>28/03/2024</small>
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="link">
+                                                    Mực
+                                                </a><br>
+                                                Chó
+                                                <br>
+                                                1.3kg
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="link">
+                                                    Chú Hùng
+                                                </a><br>
+                                                0787175090<br>
+
+                                            </td>
+                                            <td>DV NGỌC TUYỀN</td>
+                                            <td>Tại Cơ Sở</td>
+                                            <td class="text-start">xg l1</td>
+                                            <td>
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+
+                                                        <a class="dropdown-item" href="info.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold">
+                                                <a href="info-new.html" class="text-info">
+                                                    PK018731
+                                                </a>
+                                                <br>
+                                                <small>28/03/2024</small>
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="link">
+                                                    Gold
+                                                </a><br>
+                                                Chó
+                                                <br>
+                                                4kg
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="link">
+                                                    Chị Ngân
+                                                </a><br>
+                                                0886760606<br>
+                                                Phú An, Quận Cái Răng, Cần Thơ
+                                            </td>
+                                            <td>DV NGỌC TUYỀN</td>
+                                            <td>Tại Cơ Sở</td>
+                                            <td class="text-start">xgdk</td>
+                                            <td>
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+
+                                                        <a class="dropdown-item" href="info.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold">
+                                                <a href="info-new.html" class="text-info">
+                                                    PK018730
+                                                </a>
+                                                <br>
+                                                <small>28/03/2024</small>
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="link">
+                                                    Xẻn
+                                                </a><br>
+                                                Chó
+                                                <br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="link">
+                                                    Trương Mãn Ngọc (Cô Tuyến)
+                                                </a><br>
+                                                0795763627<br>
+
+                                            </td>
+                                            <td>DV NGỌC TUYỀN</td>
+                                            <td>Tại Cơ Sở</td>
+                                            <td class="text-start">xgdk</td>
+                                            <td>
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+
+                                                        <a class="dropdown-item" href="info.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold">
+                                                <a href="info-new.html" class="text-info">
+                                                    PK018729
+                                                </a>
+                                                <br>
+                                                <small>28/03/2024</small>
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="link">
+                                                    MÉO
+                                                </a><br>
+                                                Mèo
+                                                <br>
+                                                1.1kg
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="link">
+                                                    TÚ NHƯ
+                                                </a><br>
+                                                0846878796<br>
+
+                                            </td>
+                                            <td>BSTY. Khánh Băng</td>
+                                            <td>Tại Cơ Sở</td>
+                                            <td class="text-start">XGĐK</td>
+                                            <td>
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+
+                                                        <a class="dropdown-item" href="info.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold">
+                                                <a href="info-new.html" class="text-info">
+                                                    PK018728
+                                                </a>
+                                                <br>
+                                                <small>28/03/2024</small>
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="link">
+                                                    SU
+                                                </a><br>
+                                                Chó
+                                                <br>
+                                                4.7kg
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="link">
+                                                    CHỊ TÚ
+                                                </a><br>
+                                                0907029699<br>
+
+                                            </td>
+                                            <td>BSTY. Khánh Băng</td>
+                                            <td>Tại Cơ Sở</td>
+                                            <td class="text-start">XG+ UỐNG NVE</td>
+                                            <td>
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+
+                                                        <a class="dropdown-item" href="info.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold">
+                                                <a href="info-new.html" class="text-info">
+                                                    PK018727
+                                                </a>
+                                                <br>
+                                                <small>28/03/2024</small>
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="link">
+                                                    NI
+                                                </a><br>
+                                                Chó
+                                                <br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="link">
+                                                    HỮU NHIÊN
+                                                </a><br>
+                                                0362971785<br>
+
+                                            </td>
+                                            <td>BSTY. Khánh Băng</td>
+                                            <td>Tại Cơ Sở</td>
+                                            <td class="text-start">TÁI CHỦNG 7B</td>
+                                            <td>
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+
+                                                        <a class="dropdown-item" href="info.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold">
+                                                <a href="info-new.html" class="text-info">
+                                                    PK018726
+                                                </a>
+                                                <br>
+                                                <small>28/03/2024</small>
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="link">
+                                                    LIỄU
+                                                </a><br>
+                                                Chó
+                                                <br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="link">
+                                                    CHỊ TUYỀN
+                                                </a><br>
+                                                0772823393<br>
+
+                                            </td>
+                                            <td>BSTY. Khánh Băng</td>
+                                            <td>Tại Cơ Sở</td>
+                                            <td class="text-start">TN 5B M1</td>
+                                            <td>
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+
+                                                        <a class="dropdown-item" href="info.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold">
+                                                <a href="info-new.html" class="text-info">
+                                                    PK018725
+                                                </a>
+                                                <br>
+                                                <small>28/03/2024</small>
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="link">
+                                                    Xẻn
+                                                </a><br>
+                                                Chó
+                                                <br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="link">
+                                                    Trương Mãn Ngọc (Cô Tuyến)
+                                                </a><br>
+                                                0795763627<br>
+
+                                            </td>
+                                            <td>DV NGỌC TUYỀN</td>
+                                            <td>Tại Cơ Sở</td>
+                                            <td class="text-start">XỔ giun định kì</td>
+                                            <td>
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+
+                                                        <a class="dropdown-item" href="info.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold">
+                                                <a href="info-new.html" class="text-info">
+                                                    PK018724
+                                                </a>
+                                                <br>
+                                                <small>28/03/2024</small>
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="link">
+                                                    BÁNH BAO
+                                                </a><br>
+                                                Mèo
+                                                <br>
+                                                4.3kg
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="link">
+                                                    chị Kha
+                                                </a><br>
+                                                0393325399<br>
+                                                11,B5, KDC 91B
+                                            </td>
+                                            <td>BSTY. Khánh Băng</td>
+                                            <td>Tại Cơ Sở</td>
+                                            <td class="text-start">LƯU KS,DTRI TIÊU CHẢY</td>
+                                            <td>
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+
+                                                        <a class="dropdown-item" href="info.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold">
+                                                <a href="info-new.html" class="text-info">
+                                                    PK018723
+                                                </a>
+                                                <br>
+                                                <small>28/03/2024</small>
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="link">
+                                                    NU+KARO
+                                                </a><br>
+                                                Mèo
+                                                <br>
+                                                4.2kg
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="link">
+                                                    NHÃ TÂM
+                                                </a><br>
+                                                0859997439<br>
+
+                                            </td>
+                                            <td>BSTY. Khánh Băng</td>
+                                            <td>Tại Cơ Sở</td>
+                                            <td class="text-start">TVS</td>
+                                            <td>
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+
+                                                        <a class="dropdown-item" href="info.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold">
+                                                <a href="info-new.html" class="text-info">
+                                                    PK018722
+                                                </a>
+                                                <br>
+                                                <small>28/03/2024</small>
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="link">
+                                                    Coca
+                                                </a><br>
+                                                Mèo
+                                                <br>
+                                                3.5kg
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="link">
+                                                    ANH KHANG
+                                                </a><br>
+                                                0939996393<br>
+
+                                            </td>
+                                            <td>vinh</td>
+                                            <td>Tại Cơ Sở</td>
+                                            <td class="text-start">Triệt sản cái.</td>
+                                            <td>
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+
+                                                        <a class="dropdown-item" href="info.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <td class="fw-bold">
+                                                <a href="info-new.html" class="text-info">
+                                                    PK018721
+                                                </a>
+                                                <br>
+                                                <small>28/03/2024</small>
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="pet-detail.html" class="link">
+                                                    XÙ
+                                                </a><br>
+                                                Chó
+                                                <br>
+
+                                            </td>
+                                            <td class="text-start">
+                                                <a href="customer-detail.html" class="link">
+                                                    LOAN
+                                                </a><br>
+                                                0706564589<br>
+
+                                            </td>
+                                            <td>BSTY. Khánh Băng</td>
+                                            <td>Tại Cơ Sở</td>
+                                            <td class="text-start">ăn ít</td>
+                                            <td>
+                                                <span class="badge bg-success">Hoàn thành</span>
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <a class="btn" href="#" data-bs-toggle="dropdown"
+                                                        aria-haspopup="true" aria-expanded="false">
+                                                        <i class="bi bi-three-dots-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                        style="margin: 0px; position: absolute; inset: 0px auto auto 0px;"
+                                                        data-popper-placement="bottom-end">
+
+                                                        <a class="dropdown-item" href="info.html">Tạo phiếu khám</a>
+                                                        <a class="dropdown-item" href="#">Xóa</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <footer>
+                    <div class="footer clearfix mb-0 text-muted">
+                        <div class="float-start">
+                            <p>2024 &copy; Trương Dung Pet</p>
+                        </div>
+                        <div class="float-end">
+                            <p>Thiết kế và xây dựng với <span class="text-danger"><i class="bi bi-heart"></i></span>
+                                từ <a href="https://keydigital.vn">Key Digital</a></p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendors/apexcharts/apexcharts.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/vendors/simple-datatables/simple-datatables.js"></script>
+    <script>
+        // Simple Datatable
+        let table1 = document.querySelector('#table-infos');
+        let dataTable = new simpleDatatables.DataTable(table1);
+    </script>
+</body>
+</body>
+
+</html>

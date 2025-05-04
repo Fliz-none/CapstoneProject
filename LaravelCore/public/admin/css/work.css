@@ -1,0 +1,416 @@
+/**************************** Calendar ****************************/
+
+.dayname {
+    width: 14.285%;
+}
+
+.dayname p {
+    display: block;
+    text-align: center;
+    font-size: 10px;
+    line-height: 31px;
+    text-shadow: 0 1px 0 #ffffff;
+}
+
+.week {
+    overflow: auto;
+}
+
+.today {
+    background: rgb(238, 251, 255);
+    border-right: 1px solid #e5e5e5;
+}
+
+.today .daybar {
+    background: rgb(190, 221, 228);
+}
+
+.day {
+    width: 14.285%;
+    border-left: 1px solid #e5e5e5;
+}
+
+.week .day:last-child {
+    border-right: 1px solid #e5e5e5;
+}
+
+.week:first-child .day {
+    border-top: 1px solid #c2c2c2;
+}
+
+.sunday {
+    color: var(--danger);
+}
+
+.week:not(:last-child) .day {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.week:last-child .day {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.empty-day {
+    width: 14.285%;
+}
+
+.day:hover {
+    background: #e9f0f8;
+    cursor: pointer;
+}
+
+.daybar {
+    width: 100%;
+    float: left;
+    background: #f3f3f3;
+}
+
+.daybar p {
+    margin-left: 5px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    font-size: 15px;
+    font-weight: 400;
+    color: #969696;
+    text-shadow: 0 1px 0 #ffffff;
+}
+
+.dots {
+    width: 100%;
+    height: 35px;
+    clear: both;
+}
+
+.caldot {
+    float: left;
+    width: 14px;
+    height: 14px;
+    border-radius: 30px;
+    margin-left: 10px;
+    margin-top: 2px;
+    margin-right: 3px;
+}
+
+.work-duration {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+th.hour {
+    width: 3.75% !important;
+    border-left: 1px solid #2e0978;
+    border-right: 1px solid #2e0978;
+    height: 20px;
+    text-align: center;
+}
+
+th.name {
+    width: 10% !important;
+}
+
+/**************************** Events when slide is open ****************************/
+.open {
+    border-top: 1px solid #e5e5e5;
+    max-height: 700px;
+    overflow: auto;
+}
+.open li {
+    -webkit-border-radius: 10px;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+.open .timeline-item {
+    
+}
+
+.open li p {
+    width: 93px;
+    margin-top: 5px;
+    margin-left: 6px;
+    margin-right: 6px;
+    line-height: 12px;
+    font-size: 10px;
+    color: #ffffff;
+    overflow: hidden;
+}
+.open li:hover {
+    cursor: pointer;
+}
+
+/****************************** Web cam and clock *****************************/
+.image-taken {
+    width: 640px !important;
+    height: 480px !important;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.image-taken img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.camera video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/****************************** Color *****************************/
+.bg-blue, .btn-blue {
+    background-color: var(--bs-blue) !important;
+}
+.btn-outline-blue {
+    border: 1px solid var(--bs-blue) !important;
+}
+.btn-outline-blue {
+    color: var(--bs-blue); /* Màu chữ */
+    border-color: var(--bs-blue); /* Màu viền */
+}
+
+.btn-outline-blue:hover,
+.btn-outline-blue:focus,
+.btn-outline-blue:active,
+.btn-check:checked + .btn-outline-blue {
+    background-color: var(--bs-blue); /* Màu nền khi được chọn hoặc hover */
+    color: #fff; /* Màu chữ khi được chọn */
+    border-color: var(--bs-blue); /* Màu viền khi được chọn */
+}
+.bg-light-blue {
+    background-color: #c7cfeb !important;
+    color: #212f5f;
+}
+
+.bg-indigo, .btn-indigo {
+    background-color: var(--bs-indigo) !important;
+}
+.btn-outline-indigo {
+    border: 1px solid var(--bs-indigo) !important;
+}
+.btn-outline-indigo {
+    color: var(--bs-indigo); /* Màu chữ */
+    border-color: var(--bs-indigo); /* Màu viền */
+}
+
+.btn-outline-indigo:hover,
+.btn-outline-indigo:focus,
+.btn-outline-indigo:active,
+.btn-check:checked + .btn-outline-indigo {
+    background-color: var(--bs-indigo); /* Màu nền khi được chọn hoặc hover */
+    color: #fff; /* Màu chữ khi được chọn */
+    border-color: var(--bs-indigo); /* Màu viền khi được chọn */
+}
+.bg-light-indigo {
+    background-color: #e6dafa !important;
+    color: #33077a;
+}
+
+.bg-purple, .btn-purple {
+    background-color: var(--bs-purple) !important;
+}
+.btn-outline-purple {
+    border: 1px solid var(--bs-purple) !important;
+}
+.btn-outline-purple {
+    color: var(--bs-purple); /* Màu chữ */
+    border-color: var(--bs-purple); /* Màu viền */
+}
+
+.btn-outline-purple:hover,
+.btn-outline-purple:focus,
+.btn-outline-purple:active,
+.btn-check:checked + .btn-outline-purple {
+    background-color: var(--bs-purple); /* Màu nền khi được chọn hoặc hover */
+    color: #fff; /* Màu chữ khi được chọn */
+    border-color: var(--bs-purple); /* Màu viền khi được chọn */
+}
+.bg-light-purple {
+    background-color: #d4c6ec !important;
+    color: #372062;
+}
+
+.bg-pink, .btn-pink {
+    background-color: var(--bs-pink) !important;
+}
+.btn-outline-pink {
+    border: 1px solid var(--bs-pink) !important;
+}
+.btn-outline-pink {
+    color: var(--bs-pink); /* Màu chữ */
+    border-color: var(--bs-pink); /* Màu viền */
+}
+
+.btn-outline-pink:hover,
+.btn-outline-pink:focus,
+.btn-outline-pink:active,
+.btn-check:checked + .btn-outline-pink {
+    background-color: var(--bs-pink); /* Màu nền khi được chọn hoặc hover */
+    color: #fff; /* Màu chữ khi được chọn */
+    border-color: var(--bs-pink); /* Màu viền khi được chọn */
+}
+.bg-light-pink {
+    background-color: #f7e3ec !important;
+    color: #6e1642;
+}
+
+.bg-red, .btn-red {
+    background-color: var(--bs-red) !important;
+}
+.btn-outline-red {
+    border: 1px solid var(--bs-red) !important;
+}
+.btn-outline-red {
+    color: var(--bs-red); /* Màu chữ */
+    border-color: var(--bs-red); /* Màu viền */
+}
+
+.btn-outline-red:hover,
+.btn-outline-red:focus,
+.btn-outline-red:active,
+.btn-check:checked + .btn-outline-red {
+    background-color: var(--bs-red); /* Màu nền khi được chọn hoặc hover */
+    color: #fff; /* Màu chữ khi được chọn */
+    border-color: var(--bs-red); /* Màu viền khi được chọn */
+}
+.bg-light-red {
+    background-color: #ffdede !important;
+    color: #74141d;
+}
+
+.bg-orange, .btn-orange {
+    background-color: var(--bs-orange) !important;
+}
+.btn-outline-orange {
+    border: 1px solid var(--bs-orange) !important;
+}
+.btn-outline-orange {
+    color: var(--bs-orange); /* Màu chữ */
+    border-color: var(--bs-orange); /* Màu viền */
+}
+
+.btn-outline-orange:hover,
+.btn-outline-orange:focus,
+.btn-outline-orange:active,
+.btn-check:checked + .btn-outline-orange {
+    background-color: var(--bs-orange); /* Màu nền khi được chọn hoặc hover */
+    color: #fff; /* Màu chữ khi được chọn */
+    border-color: var(--bs-orange); /* Màu viền khi được chọn */
+}
+.bg-light-orange {
+    background-color: #fed8b9 !important;
+    color: #873e01;
+}
+
+.bg-yellow, .btn-yellow {
+    background-color: var(--bs-yellow) !important;
+}
+.btn-outline-yellow {
+    border: 1px solid var(--bs-yellow) !important;
+}
+.btn-outline-yellow {
+    color: var(--bs-yellow); /* Màu chữ */
+    border-color: var(--bs-yellow); /* Màu viền */
+}
+
+.btn-outline-yellow:hover,
+.btn-outline-yellow:focus,
+.btn-outline-yellow:active,
+.btn-check:checked + .btn-outline-yellow {
+    background-color: var(--bs-yellow); /* Màu nền khi được chọn hoặc hover */
+    color: #fff; /* Màu chữ khi được chọn */
+    border-color: var(--bs-yellow); /* Màu viền khi được chọn */
+}
+.bg-light-yellow {
+    background-color: #fffdd8 !important;
+    color: #836200;
+}
+
+.bg-green, .btn-green {
+    background-color: var(--bs-green) !important;
+}
+.btn-outline-green {
+    border: 1px solid  var(--bs-green) !important;
+}
+.btn-outline-green {
+    color: var(--bs-green); /* Màu chữ */
+    border-color: var(--bs-green); /* Màu viền */
+}
+
+.btn-outline-green:hover,
+.btn-outline-green:focus,
+.btn-outline-green:active,
+.btn-check:checked + .btn-outline-green {
+    background-color: var(--bs-green); /* Màu nền khi được chọn hoặc hover */
+    color: #fff; /* Màu chữ khi được chọn */
+    border-color: var(--bs-green); /* Màu viền khi được chọn */
+}
+.bg-light-green {
+    background-color: #d2ffe8 !important;
+    color: #0c442a;
+}
+
+.bg-teal, .btn-teal {
+    background-color: var(--bs-teal) !important;
+}
+.btn-outline-teal {
+    border: 1px solid var(--bs-teal) !important;
+}
+.btn-outline-teal {
+    color: var(--bs-teal); /* Màu chữ */
+    border-color: var(--bs-teal); /* Màu viền */
+}
+
+.btn-outline-teal:hover,
+.btn-outline-teal:focus,
+.btn-outline-teal:active,
+.btn-check:checked + .btn-outline-teal {
+    background-color: var(--bs-teal); /* Màu nền khi được chọn hoặc hover */
+    color: #fff; /* Màu chữ khi được chọn */
+    border-color: var(--bs-teal); /* Màu viền khi được chọn */
+}
+.bg-light-teal {
+    background-color: #b7f4e2 !important;
+    color: #10644b;
+}
+
+.bg-cyan, .btn-cyan {
+    background-color: var(--bs-cyan) !important;
+}
+.btn-outline-cyan {
+    border: 1px solid var(--bs-cyan) !important;
+}
+.btn-outline-cyan {
+    color: var(--bs-cyan); /* Màu chữ */
+    border-color: var(--bs-cyan); /* Màu viền */
+}
+
+.btn-outline-cyan:hover,
+.btn-outline-cyan:focus,
+.btn-outline-cyan:active,
+.btn-check:checked + .btn-outline-cyan {
+    background-color: var(--bs-cyan); /* Màu nền khi được chọn hoặc hover */
+    color: #fff; /* Màu chữ khi được chọn */
+    border-color: var(--bs-cyan); /* Màu viền khi được chọn */
+}
+.bg-light-cyan {
+    background-color: #e6fdff !important;
+    color: #076578;
+}
+
+.work-webcam video {
+    border-radius: 10px;
+    width: 480px;
+    height: 640px;
+}
+
+.work-image-taken img {
+    border-radius: 10px;
+    width: 480px;
+    height: 640px;
+    object-fit: cover;
+}

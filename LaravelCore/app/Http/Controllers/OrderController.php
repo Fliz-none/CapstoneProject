@@ -1,0 +1,17 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Setting;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class OrderController extends Controller
+{
+    public function orders()
+    {
+        $pageName = 'Đơn hàng của: ' . Auth::user()->name;
+        $settings = Setting::pluck('value', 'key');
+        return view('web.orders', compact('pageName', 'options'));
+    }
+}

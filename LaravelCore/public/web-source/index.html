@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
+    <meta property="fb:app_id" content="">
+    <link rel="shortcut icon" href="assets/images/logo-main.svg" type="image/x-icon">
+    <style>
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>truongdungpet.com - Trang chủ</title> <!-- Seo -->
+
+    <meta property="og:url" content="https://truongdungpet.com">
+
+    <link href="assets/css/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="assets/wow/animate.min.css" rel="stylesheet">
+    <link href="assets/vendors/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/jquery.fancybox.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="assets/css/key.css" rel="stylesheet">
+    <link href="assets/css/components/header.scss" rel="stylesheet">
+
+</head>
+
+<body class="home">
+
+    <div id="app">
+        <header class="header">
+            <div class="header-left">
+                <div class="d-flex align-items-center">
+                    <div class="circle-btn home-btn me-4">
+                        <a href="index.html" title="PHÒNG KHÁM THÚ Y TRUONGDUNG">
+                            <img class="img-fluid" src="assets/images/img/home.png" alt="">
+                        </a>
+                    </div>
+                    <div class="header-search">
+                        <form action="#">
+                            <input id="search" name="q" type="text" placeholder="Nhập từ khóa tìm kiếm...." value="">
+                            <button id="search_submit" class="border-0 bg-transparent p-0" type="submit">
+                                <img src="assets/images/img/search.png" alt="">
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="header-content">
+                <div class="container">
+                    <div class="header-content--inner">
+                        <div class="hamburger mb-show">
+                            <img class="img-fluid" src="assets/images/img/menu.png" alt="">
+                        </div>
+                        <div class="header-main">
+                            <a href="index.html" title="" class="header-logo">
+                                <img class="img-fluid" src="assets/images/logo-main.svg" alt="">
+                            </a>
+                            <ul class="header-list">
+                                <li class="header-list-item">
+                                    <a href="index.html" title="Bệnh viện thú y" class="header-item-link active">
+                                        Bệnh viện thú y
+                                    </a>
+                                </li>
+                                <li class="header-list-item">
+                                    <a href="dich-vu-thu-cung.html" title="Dịch vụ thú cưng" class="header-item-link  ">
+                                        Dịch vụ thú cưng
+                                    </a>
+
+                                </li>
+                                <li class="header-list-item">
+                                    <a href="cua-hang.html" title="Cửa hàng" class="header-item-link  ">
+                                        Cửa hàng
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <ul class="header-list">
+                                <li class="header-list-item has-sub">
+                                    <a href="ve-truongdungpet.html" title="Về TruongDungPet" class="header-item-link  ">
+                                        Về TruongDungPet
+                                    </a>
+                                </li>
+                                <li class="header-list-item has-sub">
+                                    <a href="cham-soc-boss.html" title="Chăm sóc boss" class="header-item-link  ">
+                                        Chăm sóc boss
+                                    </a>
+                                </li>
+                                <li class="header-list-item has-sub">
+                                    <a href="lien-he.html" title="Liên hệ" class="header-item-link  ">
+                                        Liên hệ
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="header-search mb-header-search mb-show">
+                            <div class="header-login circle-btn home-btn">
+                                <a data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
+                                    aria-controls="offcanvasCart"><img class="img-fluid" src="assets/images/cart3.svg"
+                                        alt="">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="header-login circle-btn home-btn me-4">
+                    <a class="" data-bs-toggle="modal" data-bs-backdrop="false" data-bs-target="#customerModal">
+                        <img class="img-fluid" src="assets/images/person.svg" alt="">
+                    </a>
+                </div>
+                <div class="header-login circle-btn home-btn">
+                    <a data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasCart" aria-controls="offcanvasCart"><img class="img-fluid" src="assets/images/cart3.svg" alt="">
+                    </a>
+                </div>
+            </div>
+            <div class="mb-backdrop mb-show"></div>
+            <div class="mb-header-content-wrapper mb-show">
+                <div class="menu-close">
+                    <img class="img-fluid" src="assets/images/img/close.png" alt="">
+                </div>
+                <div class="mb-header-content--inner">
+                    <div class="mb-logo">
+                        <a href="index.html" title="">
+                            <img class="img-fluid" src="assets/images/logo-main.svg" alt="">
+                        </a>
+                    </div>
+                    <div class="mb-widget-wrapper">
+                        <div class="d-flex justify-content-between overflow-auto">
+                            <div class="header-search mb-show active">
+                                <form action="#">
+                                    <input id="search" name="q" type="text" placeholder="Nhập từ khóa tìm kiếm...."
+                                        value="">
+                                    <button id="search_submit" class="border-0 bg-transparent p-0" type="submit">
+                                        <img src="assets/images/img/search.png" alt="">
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-widget-wrapper">
+                            <div class="header-login circle-btn home-btn me-4">
+                                <a class="d-flex w-100" data-bs-toggle="modal" data-bs-backdrop="false"
+                                    data-bs-target="#customerModal">
+                                    <img class="img-fluid" src="assets/images/person.svg" alt="">
+                                    <span class="ps-2">Trâm Nguyễn</span>
+                                </a>
+                            </div>
+                    </div>
+                    <div class="mb-header-content">
+                        <ul class="mb-header-list">
+                            <li class="mb-header-list-item">
+                                <div class="list-item-head">
+                                    <a href="index.html" title="Bệnh viện thú y" class="header-item-link active ">
+                                        Bệnh viện thú y
+                                    </a>
+                                </div>
+                            </li>
+                            <li class="mb-header-list-item">
+                                <div class="list-item-head">
+                                    <a href="dich-vu-thu-cung.html" title="Dịch vụ thú cưng" class="header-item-link">
+                                        Dịch vụ thú cưng
+                                    </a>
+                                </div>
+                            </li>
+                            <li class="mb-header-list-item ">
+                                <div class="list-item-head">
+                                    <a href="cua-hang.html" title="Cửa hàng" class="header-item-link ">
+                                        Cửa hàng
+                                    </a>
+                                </div>
+                            </li>
+                            <li class="mb-header-list-item">
+                                <div class="list-item-head">
+                                    <a href="ve-truongdungpet.html" title="Về TruongDungPet" class="header-item-link ">
+                                        Về TruongDungPet
+                                    </a>
+                                </div>
+                            </li>
+                            <li class="mb-header-list-item">
+                                <div class="list-item-head">
+                                    <a href="cham-soc-boss.html" title="Chăm sóc boss" class="header-item-link ">
+                                        Chăm sóc boss
+                                    </a>
+                                </div>
+                            </li>
+                            <li class="mb-header-list-item">
+                                <div class="list-item-head">
+                                    <a href="lien-he.html" title="Liên hệ" class="header-item-link">
+                                        Liên hệ
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="master-wrapper">
+            <div class="home-banner-wrapper">
+                <div class="swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="home-banner-slide">
+                                <img class="img-fluid" src="assets/images/banner/banner-hero.jpg" loading="lazy"
+                                    alt="Trang chủ">
+                            </div>
+                            <div class="text-box-banner-top text-center">
+                                <h2 class="fs-sm-1 fs-md-3 key-primary">...cho thú cưng hạnh phúc</h2>
+                                <p class="text-dark"><strong>Chuỗi dịch vụ thú cưng chuyên nghiệp TRUONGDUNGPET
+                                    </strong>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="home-banner-slide">
+                                <img class="img-fluid" src="assets/images/banner/spa-banner.jpg" loading="lazy"
+                                    alt="Trang chủ">
+                            </div>
+                            <div class="text-box-banner text-center">
+                                <h3>TruongDung Pet - Dịch Vụ Thú Y Cần Thơ</h3>
+                                <p>Chuyên: Khám & Điều trị bệnh, Spa, Cắt tỉa lông, Nhuộm, Pet hotel.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+                </div>
+
+                <div class="swiper-pagination"></div>
+            </div>
+            <div class="home-story-wrapper" style="background-image: url(assets/images/bg-store.jpg);">
+                <div class="bg-blur"></div>
+                <div class="child-container position-relative overflow-hidden">
+                    <div class="story-content-wrapper w-675">
+                        <div class="story-content-top">
+                            <div class="story-content-title text-center">
+                                <p class="fw-semibold">
+                                    CÂU CHUYỆN TRUONGDUNGPET
+                                </p>
+                                <h4>
+                                    mang lại sức khỏe và vẻ đẹp
+                                    cho thú cưng
+                                </h4>
+                            </div>
+
+                            <div class="story-content-des text-center">
+                                <p>TRUONGDUNGPET là không gian dịch vụ y tế và chăm sóc sức khỏe dành riêng cho thú
+                                    cưng.
+                                    Với đội ngũ bác sĩ, kỹ thuật viên chuyên nghiệp, giàu kinh nghiệm cùng các trang
+                                    thiết bị hiện đại sẽ mang đến
+                                    sức khỏe và vẻ đẹp chạm vào cảm xúc cho các boss</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-10 col-lg-3 col-md-6 text-center text-dark p-2 p-md-3">
+                            <a href="#" title="Dịch vụ thú y" class="story-list-item">
+                                <div
+                                    class="d-flex justify-content-center align-items-center rounded-4 p-4 pin-bg h-200">
+                                    <img class="img-fluid" src="assets/images/dich-vu-thu-y_1.png" alt="Dịch vụ thú y"
+                                        style="width: 100px; height: auto;">
+                                </div>
+                                <p class="text-dark fw-semibold mt-3 text-uppercase">Dịch vụ thú y</p>
+                            </a>
+
+                        </div>
+                        <div class="col-10 col-lg-3 col-md-6 text-center text-dark p-2 p-md-3">
+                            <a href="#" title="SPA & GROOMING" class="story-list-item">
+                                <div
+                                    class="d-flex justify-content-center align-items-center rounded-4 p-4 blue-bg h-200">
+                                    <img class="img-fluid" src="assets/images/spa-grooming_1.png" alt="SPA & GROOMING"
+                                        style="width: 100px; height: auto;">
+                                </div>
+                                <p class="text-dark fw-semibold mt-3 text-uppercase">SPA & GROOMING</p>
+                            </a>
+
+                        </div>
+                        <div class="col-10 col-lg-3 col-md-6 text-center text-dark p-2 p-md-3">
+                            <a href="#" title="KHÁCH SẠN THÚ CƯNG" class="story-list-item">
+                                <div
+                                    class="d-flex justify-content-center align-items-center rounded-4 p-4 amber-bg h-200">
+                                    <img class="img-fluid" src="assets/images/khach-san-thu-cung.png"
+                                        alt="KHÁCH SẠN THÚ CƯNG" style="width: 100px; height: auto;">
+                                </div>
+                                <p class="text-dark fw-semibold mt-3 text-uppercase">KHÁCH SẠN THÚ CƯNG</p>
+                            </a>
+
+                        </div>
+                        <div class="col-10 col-lg-3 col-md-6 text-center text-dark p-2 p-md-3">
+                            <a href="#" title="PETSHOP" class="story-list-item">
+                                <div
+                                    class="d-flex justify-content-center align-items-center rounded-4 p-4 teal-bg h-200">
+                                    <img class="img-fluid" src="assets/images/petshop_1.png" alt="PETSHOP"
+                                        style="width: 100px; height: auto;">
+                                </div>
+                                <p class="text-dark fw-semibold mt-2 text-uppercase">PETSHOP</p>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="home-recipe-wrapper" style="background-image: url(assets/images/bg-store-2.jpg);">
+                <div class="child-container">
+                    <div class="home-recipe-header">
+                        <div class="home-recipe-title text-dark">
+                            <p>GÓC KIẾN THỨC</p>
+                            <h4>
+                                chia sẻ bí quyết<br />
+                                chăm sóc boss
+                            </h4>
+                        </div>
+                        <a href="#" title="Xem tất cả" class="recipe-cta">
+                            Xem tất cả
+
+                            <img class="img-fluid" src="assets/images/img/arrow-right.png" alt="">
+                        </a>
+                    </div>
+
+                    <div class="recipe-list pc-recipe-list">
+                        <div class="recipe-item-column">
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 83.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 88.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 89.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="recipe-item-column">
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 90.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 91.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 92.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="recipe-item-column">
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 93.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 94.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Việt Nam</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 95.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="recipe-item-column">
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 96.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 97.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 98.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recipe-list mb-recipe-list">
+                        <div class="recipe-item-column">
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 83.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 88.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 89.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 90.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 91.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 92.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="recipe-item-column">
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 93.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 94.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 95.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 96.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 97.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="recipe-item recipe-img">
+                                <div class="recipe-image">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <img class="img-fluid" src="assets/images/Rectangle 98.jpg" alt="">
+                                    </a>
+                                </div>
+                                <div class="recipe-overlay">
+                                    <a href="#" title="chia sẻ bí quyết chăm sóc boss">
+                                        <p class="recipe-cate">Kiến thức</p>
+                                        <h5 class="recipe-name">chia sẻ bí quyết chăm sóc boss</h5>
+                                        <div class="item-cta">
+                                            <svg width="115" height="46" viewBox="0 0 115 46" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M51.4169 43.2545C63.7675 42.9768 77.54 41.9015 91.0627 38.7052C95.2628 37.7127 99.3916 36.531 103.288 34.5695C105.048 33.7082 106.714 32.6709 108.262 31.4736C109.387 30.5555 110.333 29.4401 111.052 28.1828C112.754 25.2287 112.278 22.1978 109.678 20C108.12 18.7111 106.41 17.6159 104.585 16.7387C99.3144 14.2457 93.7843 12.3338 88.094 11.0373C83.3876 9.99211 78.598 9.35946 73.7801 9.14671C73.212 9.17003 72.6441 9.09405 72.1024 8.92221C71.7098 8.74496 71.1803 8.1955 71.2279 7.87646C71.2967 7.62611 71.416 7.39227 71.5786 7.18914C71.7412 6.98601 71.9437 6.81783 72.1738 6.69483C72.6561 6.5438 73.1662 6.50141 73.6671 6.57075C81.4963 6.49395 89.0578 8.04779 96.417 10.5588C100.004 11.8031 103.52 13.2429 106.947 14.8717C108.769 15.7613 110.444 16.9207 111.915 18.3103C115.002 21.1816 115.633 25.0574 113.878 28.8741C112.957 30.8245 111.583 32.5296 109.868 33.8487C106.858 36.2533 103.395 37.7895 99.7902 39.0538C92.8296 41.5057 85.6131 42.9 78.3194 43.928C69.6452 45.1503 60.9026 45.833 52.1427 45.9723C41.6423 46.1377 31.2074 45.606 20.9509 43.2013C16.8568 42.2989 12.925 40.7828 9.29036 38.7052C6.89077 37.3941 4.7855 35.611 3.10316 33.4647C0.426001 29.8725 0.158282 26.0559 2.13343 22.0856C3.28804 19.9022 4.84844 17.9557 6.7322 16.3488C11.5927 11.9472 17.3218 8.99901 23.3901 6.65938C31.3026 3.60486 39.5482 1.93285 47.9485 0.904832C58.6784 -0.317218 69.5147 -0.301356 80.241 0.952099C89.5277 1.97421 98.6836 3.66395 107.471 6.95479C108.595 7.38018 109.678 7.906 110.772 8.40819C111.534 8.76268 112.028 9.31214 111.701 10.1806C111.457 10.8483 110.719 11.0491 109.737 10.6119C104.205 8.1187 98.3207 6.86616 92.425 5.63726C85.5219 4.25612 78.5271 3.37351 71.4956 2.99633C59.0689 2.18653 46.5902 3.24015 34.4795 6.12174C27.9188 7.61991 21.6067 10.039 15.7334 13.3061C12.6539 14.9653 9.84561 17.0789 7.40446 19.5746C6.4881 20.534 5.67463 21.5854 4.97716 22.7118C2.85924 26.2154 3.19241 29.6598 6.03019 32.5667C7.50543 34.0348 9.15565 35.3184 10.9442 36.3892C14.8826 38.7939 19.2732 40.0523 23.7708 40.9681C32.4091 42.7523 41.1366 43.2722 51.4169 43.2545Z"
+                                                    fill="white"></path>
+                                            </svg>
+
+                                            <span>Xem ngay</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-show mb-recipe">
+                        <a href="#" title="Xem tất cả" class="recipe-cta">
+                            Xem tất cả
+
+                            <img class="img-fluid" src="assets/images/img/arrow-right.png" alt="">
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="home-news-wrapper">
+                <div class="child-container">
+                    <div class="home-news-head">
+                        <div class="home-news-title">
+                            <p class="fw-semibold">
+                                TRUYỀN THÔNG
+                            </p>
+                            <h4>
+                                Tin tức - Sự kiện
+                            </h4>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <div class="news-slider">
+                    <div class="child-container">
+                        <div class="swiper ">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide ">
+                                    <div class="news-slide-item">
+                                        <div class="news-slide-image">
+                                            <a href="#" title="Những lý do nên học grooming">
+                                                <img class="img-fluid" src="assets/images/Rectangle 99.jpg"
+                                                    alt="Những lý do nên học grooming">
+                                            </a>
+                                        </div>
+                                        <div class="news-slide-content">
+                                            <a href="#" title="Những lý do nên học grooming" class="news-title">
+                                                Những lý do nên học grooming
+                                            </a>
+                                            <p class="news-des">
+                                                Chào mừng bạn đến với Phòng khám thú y TruongDung Pet - nơi chúng tôi
+                                                cam kết mang lại dịch vụ chăm sóc y tế tốt nhất cho thú cưng của bạn.
+                                            </p>
+                                            <p class="date">
+                                                07/08/2023
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="news-slide-item">
+                                        <div class="news-slide-image">
+                                            <a href="#" title="TruongDung Pet tìm đồng đội">
+                                                <img class="img-fluid" src="assets/images/Rectangle 100.jpg"
+                                                    alt="TruongDung Pet tìm đồng đội">
+                                            </a>
+                                        </div>
+                                        <div class="news-slide-content">
+                                            <a href="#" title="TruongDung Pet tìm đồng đội" class="news-title">
+                                                TruongDung Pet tìm đồng đội
+                                            </a>
+                                            <p class="news-des">
+                                                Chào mừng bạn đến với Phòng khám thú y TruongDung Pet - nơi chúng tôi
+                                                cam kết mang lại dịch vụ chăm sóc y tế tốt nhất cho thú cưng của bạn.
+                                            </p>
+                                            <p class="date">
+                                                05/08/2023
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="news-slide-item">
+                                        <div class="news-slide-image">
+                                            <a href="#" title="Valentine’s Petiu">
+                                                <img class="img-fluid" src="assets/images/Rectangle 101.jpg"
+                                                    alt="Valentine’s Petiu">
+                                            </a>
+                                        </div>
+                                        <div class="news-slide-content">
+                                            <a href="#" title="Valentine’s Petiu" class="news-title">
+                                                Valentine’s Petiu
+                                            </a>
+                                            <p class="news-des">
+                                                Chào mừng bạn đến với Phòng khám thú y TruongDung Pet - nơi chúng tôi
+                                                cam kết mang lại dịch vụ chăm sóc y tế tốt nhất cho thú cưng của bạn.
+                                            </p>
+                                            <p class="date">
+                                                28/07/2023
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="news-slide-item">
+                                        <div class="news-slide-image">
+                                            <a href="#" title="Vì sao các bạn nhỏ đặc biệt yêu thích lá kim ăn liền?">
+                                                <img class="img-fluid" src="assets/images/img/-1690972973.png"
+                                                    alt="Vì sao các bạn nhỏ đặc biệt yêu thích lá kim ăn liền?">
+                                            </a>
+                                        </div>
+                                        <div class="news-slide-content">
+                                            <a href="#" title="Vì sao các bạn nhỏ đặc biệt yêu thích lá kim ăn liền?"
+                                                class="news-title">
+                                                Vì sao các bạn nhỏ đặc biệt yêu thích lá kim ăn liền?
+                                            </a>
+                                            <p class="news-des">
+                                                Lá kim phổ biến và được yêu thích tại Hàn Quốc, không chỉ bởi hương vị
+                                                thơm ngon mà còn cực giàu dưỡng chất
+                                            </p>
+                                            <p class="date">
+                                                02/08/2023
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="news-slide-item">
+                                        <div class="news-slide-image">
+                                            <a href="#"
+                                                title="Dân nghiền món ăn truyền thống Hàn Quốc mà ngại vào bếp, không thể bỏ qua Tokpokki ăn liền O’Food">
+                                                <img class="img-fluid" src="assets/images/img/-1690968640.jpg"
+                                                    alt="Dân nghiền món ăn truyền thống Hàn Quốc mà ngại vào bếp, không thể bỏ qua Tokpokki ăn liền O’Food">
+                                            </a>
+                                        </div>
+                                        <div class="news-slide-content">
+                                            <a href="#"
+                                                title="Dân nghiền món ăn truyền thống Hàn Quốc mà ngại vào bếp, không thể bỏ qua Tokpokki ăn liền O’Food"
+                                                class="news-title">
+                                                Dân nghiền món ăn truyền thống Hàn Quốc mà ngại vào bếp, không thể bỏ
+                                                qua Tokpokki ăn liền O’Food
+                                            </a>
+                                            <p class="news-des">
+                                                Nếu bận rộn, chỉ cần vài phút là bạn đã có món Tokpokki từ thương hiệu
+                                                O'Food chuẩn vị Hàn ngon thơm, hấp dẫn.
+                                            </p>
+                                            <p class="date">
+                                                02/08/2023
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="news-slide-item">
+                                        <div class="news-slide-image">
+                                            <a href="#"
+                                                title="Để chinh phục các Oppa Hàn Quốc, hãy đăng ký ngay lớp học nấu ăn miễn phí này">
+                                                <img class="img-fluid" src="assets/images/img/-1690967248.jpg"
+                                                    alt="Để chinh phục các Oppa Hàn Quốc, hãy đăng ký ngay lớp học nấu ăn miễn phí này">
+                                            </a>
+                                        </div>
+                                        <div class="news-slide-content">
+                                            <a href="#"
+                                                title="Để chinh phục các Oppa Hàn Quốc, hãy đăng ký ngay lớp học nấu ăn miễn phí này"
+                                                class="news-title">
+                                                Để chinh phục các Oppa Hàn Quốc, hãy đăng ký ngay lớp học nấu ăn miễn
+                                                phí này
+                                            </a>
+                                            <p class="news-des">
+                                                Cùng với làn sóng Hallyu du nhập vào Việt Nam, thời gian gần đây, ẩm
+                                                thực Hàn Quốc được rất nhiều bạn trẻ Việt Nam ưa chuộng. Hãy dắt túi một
+                                                số thông tin về ẩm thực và công thức nấu ăn cộp mác Hàn Quốc để “cưa đổ”
+                                                bất cứ Oppa nào.
+                                            </p>
+                                            <p class="date">
+                                                02/08/2023
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swiper-slide">
+                                    <div class="news-slide-item">
+                                        <div class="news-slide-image">
+                                            <a href="#"
+                                                title="30 phút với món Kimbap vừa dinh dưỡng vừa giải nhiệt mùa hè">
+                                                <img class="img-fluid" src="assets/images/img/-1690963428.png"
+                                                    alt="30 phút với món Kimbap vừa dinh dưỡng vừa giải nhiệt mùa hè">
+                                            </a>
+                                        </div>
+                                        <div class="news-slide-content">
+                                            <a href="#"
+                                                title="30 phút với món Kimbap vừa dinh dưỡng vừa giải nhiệt mùa hè"
+                                                class="news-title">
+                                                30 phút với món Kimbap vừa dinh dưỡng vừa giải nhiệt mùa hè
+                                            </a>
+                                            <p class="news-des">
+                                                Tín đồ yêu thích ẩm thực Hàn Quốc chỉ cần dành 30 vào bếp với những
+                                                nguyên liệu phổ biến, tiện dụng là đã có món Kimbap (cơm cuộn rong biển)
+                                                chuẩn Hàn Quốc.
+                                            </p>
+                                            <p class="date">
+                                                02/08/2023
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span><span
+                                class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+                        </div>
+                        <div class="custom-slide-nav">
+                            <div class="swiper-button-prev swiper-button-disabled" tabindex="-1" role="button"
+                                aria-label="Previous slide" aria-controls="swiper-wrapper-da1010f63314d107d10d"
+                                aria-disabled="true">
+                                <svg width="48" height="30" viewBox="0 0 48 30" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="15" cy="15" r="14.5" transform="rotate(180 15 15)" stroke="#333333">
+                                    </circle>
+                                    <path d="M48 15.5L12.5 15.5M12.5 15.5L15.5 19M12.5 15.5L15.5 12" stroke="#333333">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide"
+                                aria-controls="swiper-wrapper-da1010f63314d107d10d" aria-disabled="false">
+                                <svg width="48" height="30" viewBox="0 0 48 30" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="33" cy="15" r="14.5" stroke="#333333"></circle>
+                                    <path d="M0 15.5H35.5M35.5 15.5L32.5 12M35.5 15.5L32.5 19" stroke="#333333"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="news-cta text-center">
+                    <a href="tin-tuc.html" class="cta-btn" title="Xem tất cả">
+                        Xem tất cả
+                    </a>
+                </div>
+            </div>
+            <div class="support-wrapper support-fwidth-wrapper"
+                style="background-image: url(assets/images/bg-store-3.jpg);">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 col-md-8">
+                            <h2 class="text-dark fw-semibold">Bạn có biết?</h2>
+                            <p class="text-dark">TruongDung Pet là chuỗi cung ứng đầy đủ các dịch vụ thú y với tầm nhìn
+                                trở thành thương hiệu Phòng khám Thú y-Dịch vụ chăm sóc Thú cưng có tâm, có tầm, hiện
+                                đại hoá lớn nhất khu vực Cần Thơ và các tỉnh lân cận</p>
+
+                            <a href="tel:0344 333 586" title="HOTLINE 0344 333 586" class="cta-btn">
+                                HOTLINE 0344 333 586
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="child-container">
+                <div class="footer-logo">
+                    <a href="https://dungit.com.vn/" title="PHÒNG KHÁM THÚ Y TRUONGDUNG">
+                        <img class="img-fluid" src="assets/images/logo-footer.svg" alt="PHÒNG KHÁM THÚ Y TRUONGDUNG">
+                    </a>
+                </div>
+                <div class="footer-content">
+                    <div class="row">
+                        <div class="col-xl-7 col-lg-7 col-12 text-white">
+                            <div class="company-short-Info">
+                                <h5 class="company-name">
+                                    PHÒNG KHÁM THÚ Y TRUONGDUNG
+                                </h5>
+                                <p class="company-des">
+                                    Chào mừng bạn đến với Phòng khám thú y TruongDung Pet - nơi chúng tôi cam kết mang
+                                    lại dịch vụ chăm sóc y tế tốt nhất cho thú cưng của bạn. Tại TruongDung Pet, chúng
+                                    tôi hiểu rõ tình cảm và tình yêu mà bạn dành cho thành viên bốn chân của gia đình,
+                                    và chúng tôi cam kết đem đến sự chăm sóc tận tâm và chuyên nghiệp nhất.
+                                </p>
+                            </div>
+                            <div class="footer-menu mx-0">
+                                <div class="footer-menu-item f-width">
+                                    <h5 class="fw-semibold">LIÊN HỆ</h5>
+
+                                    <ul class="menu-list ic-list">
+                                        <li>
+                                            <img class="img-fluid" src="assets/images/img/map-pin.png" alt="">
+                                            <p>
+                                                H2-26 Bùi Quang Trinh, KDC 586, Phú Thứ Cái Răng, Cần Thơ
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <img class="img-fluid" src="assets/images/img/mail.png" alt="">
+                                            <a href="mailto:truongthithuydung98@gmail.com" title="">
+                                                Email: truongthithuydung98@gmail.com
+                                            </a>
+                                        </li>
+                                        <li class="align-items-start">
+                                            <img class="img-fluid" src="assets/images/img/phone.png" alt="">
+                                            <p>
+                                                <span>Điện thoại: 0344 333 586</span>
+                                            </p>
+                                        </li>
+                                        <li class="align-items-start">
+                                            <img class="img-fluid" src="assets/images/img/truso.png" alt="">
+                                            <p>
+                                                <span>1801xxxxxx
+                                                    do sở KH-ĐT TP. Cần Thơ cấp ngày 19/01/2024</span>
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-5 col-lg-5 col-12">
+                            <div class="footer-menu">
+                                <div class="footer-menu-item">
+                                    <h5 class="menu-item-name">DỊCH VỤ</h5>
+                                    <ul class="menu-list">
+                                        <li>
+                                            <a href="kham-chua-benh.html" title=" Khám chữa bệnh">
+                                                Khám chữa bệnh
+                                            </a>
+                                        <li>
+                                            <a href="tiem-ngua.html" title=" Tiêm ngừa">
+                                                Tiêm ngừa
+                                            </a>
+                                        <li>
+                                            <a href="ho-san.html" title=" Hộ sản">
+                                                Hộ sản
+                                            </a>
+                                        <li>
+                                            <a href="triet-san.html" title=" Triệt sản">
+                                                Triệt sản
+                                            </a>
+                                        <li>
+                                            <a href="spa-grooming.html" title=" Spa & Grooming">
+                                                Spa & Grooming
+                                            </a>
+                                        <li>
+                                            <a href="khach-san-thu-cung.html" title=" Khách sạn thú cưng">
+                                                Khách sạn thú cưng
+                                            </a>
+                                        <li>
+                                            <a href="petshop.html" title=" PetShop">
+                                                PetShop
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <h5 class="menu-item-name mt-4">LIÊN KẾT</h5>
+                                    <div class="key-follow">
+                                        <div class="social-overlap process-scetion">
+                                            <div class="social-icons mb-3 iconpad text-center">
+                                                <a href="#" class="slider-nav-item color-facebook" target="_blank"
+                                                    rel="noopener"> <i class="facebook-icon"></i><br />
+                                                </a><br />
+                                                <a href="#" class="slider-nav-item color-messenger" target="_blank"
+                                                    rel="noopener"><i class="messenger-icon"></i><br />
+                                                </a><br />
+                                                <a href="#" class="slider-nav-item color-youtube" target="_blank"
+                                                    rel="noopener"><i class="youtube-icon"></i><br />
+                                                </a><br />
+                                                <a href="#" class="slider-nav-item color-zalo" target="_blank"
+                                                    rel="noopener"><i class="zalo-icon"></i><br />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="footer-menu-item">
+                                    <h5 class="menu-item-name">DANH MỤC</h5>
+                                    <ul class="menu-list">
+                                        <li>
+                                            <a href="index.html" title=" Trang chủ">
+                                                Trang chủ
+                                            </a>
+                                        <li>
+                                            <a href="ve-truongdungpet.html" title=" Giới thiệu">
+                                                Giới thiệu
+                                            </a>
+                                        <li>
+                                            <a href="cham-soc-boss.html" title=" Chăm sóc boss">
+                                                Chăm sóc boss
+                                            </a>
+                                        <li>
+                                            <a href="tin-tuc.html" title=" Tin tức truyền thông">
+                                                Tin tức truyền thông
+                                            </a>
+                                        <li>
+                                            <a href="lien-he.html" title=" Liên hệ">
+                                                Liên hệ
+                                            </a>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-credit text-center">
+                    <p>
+                        © 2022 TruongDung Pet. All rights reserved.
+                    </p>
+                </div>
+                <div class="fixed-ele">
+                    <a href="tel:0344333586" title="" class="hotline-btn">
+                        <img class="img-fluid" src="assets/images/img/hotline-btn.png" alt="">
+                    </a>
+                    <a href="#" title="" class="backtop-btn" id="backTop">
+                        <img src="assets/images/img/backtotop.png" alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+          <!-- modal  -->
+        <!--Disabled customerModal Modal -->
+        <div class="modal fade text-left" id="customerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                <div class="modal-content key-bg-white-transparent">
+                    <div class="modal-header" style="border-bottom: 1px solid #b1b1b1;">
+                        <p class="modal-title fw-bold">Đăng nhập
+                        </p>
+                        <a class="close btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </a>
+
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-4">
+                            <div class="col-12 mb-3">
+                                <input type="email" name="name" id="" class="form-control" placeholder="Email đăng nhập"
+                                    autocomplete="off">
+                            </div>
+                            <div class="col-12 mb-3">
+                                <input type="password" name="phone" id="passwordInput" class="form-control"
+                                    placeholder="Nhập mật khẩu" autocomplete="off">
+                                <label for="cbx" class="p-2">
+                                    <input type="checkbox" name="rules" id="cbx">
+                                    <span toggle="#passwordInput" class="fa fa-fw fa-eye field-icon toggle-password">
+                                        Hiên mật khẩu</span>
+                                </label>
+                            </div>
+
+                            <div class="col-12 mb-3">
+                                <a href="#" class="btn btn-warning">Đăng nhập</a>
+                                <a href="#" class="">Quên mật khẩu?</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="border-top: 1px solid #b1b1b1;">
+                        <p>Chưa có tài khoản? <a href="#">Đăng ký</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end customerModal  -->
+        <!-- cartModal -->
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="offcanvasCartLabel">Giỏ hàng của bạn</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <hr class="m-1">
+            <div class="offcanvas-body">
+              <div class="row">
+                  <div class="col-12 text-center">
+                      <div class="d-flex justify-content-center">
+                          <img src="assets/images/cart-x.png" alt="" class="img-fluid mb-2" style="width: 50px;">
+                      </div>
+                      <p>Không có sản phẩm nào trong giỏ hàng</p>
+                  </div>
+              </div>
+            </div>
+            <hr class="m-1">
+            <div class="offcanvas-footer p-4">
+              <div class="row">
+                  <div class="col-12 text-center">
+                      <p class="mb-3 fw-bold"><trong>Tạm tính: 0đ</trong></p>
+                      <a href="#" class="btn btn-warning" style="width: 100%;">Thanh toán</a>
+                  </div>
+              </div>
+            </div>
+          </div>
+        <!-- end cartModal -->
+
+        <!-- <script type="module" src="assets/vendors/main.js"></script> -->
+        <!-- Bootstrap and necessary plugins -->
+        <script type="text/javascript" src="assets/vendors/js/vue.js"></script>
+        <script type="text/javascript" src="assets/vendors/js/httpVueLoader.js"></script>
+        <script type="text/javascript" src="assets/vendors/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="assets/vendors/bootstrap/popper.min.js"></script>
+        <script type="text/javascript" src="assets/vendors/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="assets/vendors/swiper/swiper-bundle.min.js"></script>
+        <script type="text/javascript" src="assets/vendors/wow/wow.min.js"></script>
+        <script type="text/javascript" src="assets/vendors/js/core.js"></script>
+        <script type="text/javascript" src="assets/vendors/js/library/sweetalert2.all.min.js"></script>
+        <script type="text/javascript" src="assets/vendors/jquery.fancybox.min.js"></script>
+    </div>
+    <script>
+        $(window).bind('load', function () {
+            const featureProduct = new Swiper('.home-banner-wrapper .swiper', {
+                speed: 1000,
+                lazy: true,
+                autoplay: {
+                    delay: 4000,
+                    disableOnInteraction: false,
+                },
+
+                // pagination
+                pagination: {
+                    el: '.home-banner-wrapper .swiper-pagination',
+                    clickable: true,
+                    renderBullet: function (index, className) {
+                        return `
+                                <button class="${className} circle">
+                                    <svg class="progresss" width="36" height="36">
+                                        <circle class="circle-origin" r="16" cx="17" cy="19"></circle>
+                                    </svg>
+                                    <span>0${(index + 1)}</span>
+                                </button>
+                                `;
+                    },
+                },
+            });
+
+            const homenewsSlider = new Swiper('.home-news-wrapper .swiper', {
+                // Optional parameters
+                slidesPerView: 'auto',
+                spaceBetween: 20,
+
+
+                // Navigation arrows
+                navigation: {
+                    nextEl: '.home-news-wrapper .swiper-button-next',
+                    prevEl: '.home-news-wrapper .swiper-button-prev',
+                },
+
+            });
+            // productSliders();
+
+            const newsHomeSlider = new Swiper('.home-news-wrapper .swiper', {
+                // Optional parameters
+                slidesPerView: 'auto',
+                spaceBetween: 20,
+
+
+                // Navigation arrows
+                navigation: {
+                    nextEl: '.home-news-wrapper .swiper-button-next',
+                    prevEl: '.home-news-wrapper .swiper-button-prev',
+                },
+                breakpoints: {
+                    1200: {
+                        slidesPerView: 3,
+                        spaceBetween: 20,
+                    },
+                }
+            });
+
+            const newsSlider = new Swiper('.news-relative-wrapper .swiper', {
+                // Optional parameters
+                slidesPerView: 'auto',
+                spaceBetween: 20,
+
+
+                // Navigation arrows
+                navigation: {
+                    nextEl: '.news-relative-wrapper .swiper-button-next',
+                    prevEl: '.news-relative-wrapper .swiper-button-prev',
+                },
+
+            });
+
+            var factoryswiperThumb = new Swiper("#factory-thumb .swiper", {
+                spaceBetween: 36,
+                slidesPerView: 'auto',
+                freeMode: true,
+                watchSlidesProgress: true,
+                watchOverflow: true,
+            });
+
+            var factoryswiperMain = new Swiper("#factory-main .swiper", {
+                spaceBetween: 10,
+                watchOverflow: true,
+                simulateTouch: false,
+                effect: "fade",
+                fadeEffect: {
+                    crossFade: true
+                },
+                thumbs: {
+                    swiper: factoryswiperThumb,
+                },
+            });
+
+            const classSlider = new Swiper('.class-reg-list .swiper', {
+                // Optional parameters
+                slidesPerView: 'auto',
+                spaceBetween: 24,
+
+
+                // Navigation arrows
+                navigation: {
+                    nextEl: '.class-reg-list .swiper-button-next',
+                    prevEl: '.class-reg-list .swiper-button-prev',
+                },
+
+            });
+
+        });
+
+
+    </script>
+    <!-- Your SDK code -->
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                xfbml: true,
+                version: 'v17.0'
+            });
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var btn = document.querySelector('.hamburger');
+            if (btn) {
+                btn.addEventListener('click', function () {
+                    document.body.classList.add('open');
+                    var header = btn.closest('.header');
+                    if (header) {
+                        header.querySelector('.mb-backdrop').classList.add('show');
+                        header.querySelector('.mb-header-content-wrapper').classList.add('menu-open');
+                    }
+                });
+
+                var menuClose = document.querySelector('.menu-close');
+                if (menuClose) {
+                    menuClose.addEventListener('click', function () {
+                        document.body.classList.remove('open');
+                        var header = btn.closest('.header');
+                        if (header) {
+                            header.querySelector('.mb-backdrop').classList.remove('show');
+                            header.querySelector('.mb-header-content-wrapper').classList.remove('menu-open');
+                        }
+                    });
+                }
+            }
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            var wrappers = document.querySelectorAll('.header-search');
+            wrappers.forEach(function (wrapper) {
+                var input = wrapper.querySelector('input');
+
+                wrapper.addEventListener('click', function () {
+                    if (input.value === '' && !wrapper.classList.contains('active')) {
+                        wrapper.classList.add('active');
+                    } else if (input.value !== '') {
+                        wrapper.classList.add('active');
+                    }
+                });
+            });
+
+            document.addEventListener('click', function (e) {
+                var closestWrapper = e.target.closest('.header-search');
+                if (!closestWrapper) {
+                    wrappers.forEach(function (wrapper) {
+                        wrapper.classList.remove('active');
+                    });
+                }
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            var btns = document.querySelectorAll('.list-arrow');
+            if (btns.length && window.innerWidth < 1200) {
+                btns.forEach(function (btn) {
+                    var parentHasSub = btn.closest('.has-sub');
+                    var subList = parentHasSub.querySelector('.header-sub-list');
+
+                    subList.style.display = 'none';
+
+                    btn.addEventListener('click', function () {
+                        this.classList.toggle('active');
+                        var siblings = parentHasSub.parentElement.querySelectorAll('.has-sub');
+                        siblings.forEach(function (sibling) {
+                            var siblingArrow = sibling.querySelector('.list-arrow');
+                            var siblingSubList = sibling.querySelector('.header-sub-list');
+                            if (sibling !== parentHasSub) {
+                                siblingSubList.style.display = 'none';
+                                siblingArrow.classList.remove('active');
+                            }
+                        });
+                        subList.style.display = subList.style.display === 'none' ? 'block' : 'none';
+                    });
+                });
+            }
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            var fixedEle = document.querySelector('.fixed-ele');
+
+            window.addEventListener('scroll', function () {
+                var scrollPosition = window.scrollY || window.pageYOffset;
+                var triggerPosition = document.body.scrollHeight * 0.3; // 30% of document height
+
+                if (scrollPosition > triggerPosition) {
+                    fixedEle.classList.add('show');
+                } else {
+                    fixedEle.classList.remove('show');
+                }
+            });
+        });
+
+    </script>
+    <script>
+        // Khi biểu tượng con mắt được click
+        $(".toggle-password").click(function () {
+            // Lấy thuộc tính toggle của nó (ID của input)
+            var input = $($(this).attr("toggle"));
+            // Nếu input đang ở dạng password, chuyển sang text
+            if (input.attr("type") === "password") {
+                input.attr("type", "text");
+            } else {
+                // Ngược lại, chuyển về dạng password
+                input.attr("type", "password");
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>
