@@ -88,8 +88,8 @@ class Order extends Model
     }
 
     public function sync_scores($amount) {
-            $settings = cache()->get('settings');
-            $scores_rate_exchange = $settings['scores_rate_exchange'];
+            $settings = cache()->get('settings')->toArray();
+            $scores_rate_exchange = $settings['scores_rate_exchange'] ?? 1;
             optional($this->customer)->increment('scores', intdiv($amount, $scores_rate_exchange));
     }
 

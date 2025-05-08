@@ -54,7 +54,7 @@ class SettingsSeeder extends Seeder
         // 'user_id',
         DB::table('versions')->insert([
             'name' => '1.0.0',
-            'description' => 'Phiên bản đầu tiên',
+            'description' => 'The first version',
             'user_id' => 1,
         ]);
     }
