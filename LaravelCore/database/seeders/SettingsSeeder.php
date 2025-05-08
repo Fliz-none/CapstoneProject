@@ -39,7 +39,7 @@ class SettingsSeeder extends Seeder
             ['allow_negative_stock', '0'],
             ['work_info', ''],
             ['scores_rate_exchange ', '1'],
-            ['expense_group', ''],
+            ['expense_group', '[]'],
         ];
 
         foreach ($settings as $key => $setting) {
@@ -48,5 +48,14 @@ class SettingsSeeder extends Seeder
                 'value' => $setting[1],
             ]);
         }
+        
+        // 'name',
+        // 'description',
+        // 'user_id',
+        DB::table('versions')->insert([
+            'name' => '1.0.0',
+            'description' => 'Phiên bản đầu tiên',
+            'user_id' => 1,
+        ]);
     }
 }
