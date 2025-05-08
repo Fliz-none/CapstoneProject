@@ -8,9 +8,6 @@
             $user = Auth::user();
                 $notis = $user
                     ->notifications()
-                    ->where(function ($query) use ($user) {
-                        $query->where('company_id', $user->company_id)->orWhereNull('company_id');
-                    })
                     ->wherePivot('status', 0)
                     ->orderBy('id', 'DESC')
                     ->get();
@@ -29,7 +26,7 @@
                         <div class="user-menu d-flex align-items-start">
                             <div class="user-name text-end me-3">
                                 <h6 class="mb-0 mt-1 text-gray-600">{{ Auth::user()->name }}</h6>
-                                <small class="text-secondary">{{ Auth::user()->branch ? (Auth::user()->company_id == Auth::user()->branch->company_id ? Auth::user()->branch->name : 'Không có chi nhánh') : 'Không có chi nhánh' }}</small>
+                                <small class="text-secondary">{{ Auth::user()->branch ? Auth::user()->branch->name : 'Không có chi nhánh' }}</small>
                             </div>
                             <div class="user-img d-flex align-items-center">
                                 <div class="avatar avatar-md">
@@ -71,9 +68,10 @@
                             </a>
                         </li>
                         @php
-                            $work_info = json_decode(cache()->get('settings_' . Auth::user()->company_id)['work_info']);
+                            $work_info = json_decode(cache()->get('settings')['work_info']) ?? '';
+                            $allow_self_register = $work_info->allow_self_register ?? 1;
                         @endphp
-                        @if ($work_info->allow_self_register)
+                        @if ($allow_self_register)
                             <li class="submenu-item">
                                 <a class="dropdown-item cursor-pointer btn-self-schedule">
                                     <i class="bi bi-calendar2-week"></i>

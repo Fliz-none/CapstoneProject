@@ -13,7 +13,7 @@
                             <span class="form-label text-info" for="variable-attribute-1">Thuộc tính</span>
                             <div class="accordion" id="variable-accordion">
                                 @php
-                                    $attributes = cache()->get('attributes_' . Auth::user()->company_id);
+                                    $attributes = cache()->get('attributes', []);
                                 @endphp
                                 @foreach ($attributes as $index => $attribute)
                                     @if ($index == 0 || $attribute->key != $attributes[$index - 1]->key)

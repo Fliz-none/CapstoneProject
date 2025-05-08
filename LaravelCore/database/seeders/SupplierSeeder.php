@@ -32,7 +32,6 @@ class SupplierSeeder extends Seeder
 
         foreach ($suppliers as $supplier) {
             Supplier::create([
-                'company_id' => 1,
                 'id' => $supplier[0],
                 'name' => $supplier[1],
                 'phone' => $supplier[2],

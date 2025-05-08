@@ -50,11 +50,6 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link{!! Request::path() === 'quantri/setting/clinic' ? ' active" aria-current="page' : '' !!}" href="{{ route('admin.setting', ['key' => 'clinic']) }}">
-                                Cài đặt phòng khám
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link{!! Request::path() === 'quantri/setting/website' ? ' active" aria-current="page' : '' !!}" href="{{ route('admin.setting', ['key' => 'website']) }}">
                                 Cài đặt website
                             </a>
@@ -68,10 +63,6 @@
                     @switch(true)
                         @case(Request::path() === 'quantri/setting/shop')
                             @include('admin.includes.setting_shop')
-                        @break
-
-                        @case(Request::path() === 'quantri/setting/clinic')
-                            @include('admin.includes.setting_clinic')
                         @break
 
                         @case(Request::path() === 'quantri/setting/website')

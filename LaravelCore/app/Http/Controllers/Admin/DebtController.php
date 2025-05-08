@@ -47,8 +47,7 @@ class DebtController extends Controller
                         }, function ($query) {
                             $query->whereIn('branch_id', $this->user->branches->pluck('id'));
                         });
-                    })
-                    ->where('users.company_id', $this->user->company_id)->get()
+                    })->get()
                     ->filter(function ($user) {
                         $totalOrderValue = $user->orders->sum('total');
                         $totalPaid = $user->orders->sum('paid');

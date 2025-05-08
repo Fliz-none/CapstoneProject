@@ -101,7 +101,7 @@ class WorkController extends Controller
                     $works = Work::whereBetween('sign_checkin', [Carbon::now()->addWeek()->startOfWeek(), Carbon::now()->addWeek()->endOfWeek()])
                         ->whereIn('branch_id', Auth::user()->branches->pluck('id'))
                         ->get();
-                    $workSettings = collect(json_decode(Cache::get('settings_' . $this->user->company_id)['work_info']));
+                    $workSettings = collect(json_decode(Cache::get('settings')['work_info']));
 
                     $works = $works->map(function ($work) use ($workSettings) {
                         // Tìm index dựa trên sign_checkin (chỉ giờ phút)
@@ -138,8 +138,7 @@ class WorkController extends Controller
             return response()->json($result, 200);
         } else {
             if ($request->ajax()) {
-                $works = Work::where('works.company_id', $this->user->company_id)
-                    ->where(function ($query) use ($request) {
+                $works = Work::where(function ($query) use ($request) {
                         $query->when($request->has('branch_id'), function ($query) use ($request) {
                             $query->where('branch_id', $request->branch_id);
                         }, function ($query) {
@@ -278,7 +277,6 @@ class WorkController extends Controller
                     }
                 ])->whereNotIn('id', [1, 2, 3, 519, 27034])
                     ->permission(User::ACCESS_ADMIN)
-                    ->where('company_id', Auth::user()->company_id)
                     ->where(function ($query) use ($request) {
                         $query->when($request->has('branch_id'), function ($query) use ($request) {
                             $query->where('main_branch', $request->branch_id);
@@ -411,7 +409,7 @@ class WorkController extends Controller
                 $shifts = explode('-', $request->shift);
                 $sign_checkin = Carbon::createFromFormat('Y-m-d H:i', $request->date . ' ' . $shifts[0]);
                 $sign_checkout = Carbon::createFromFormat('Y-m-d H:i', $request->date . ' ' . $shifts[1]);
-                $work_info = json_decode(cache()->get('settings_' . $this->user->company_id)['work_info']);
+                $work_info = json_decode(cache()->get('settings')['work_info']);
 
                 $work = Work::where('user_id', $request->user_id)->where('branch_id', $request->main_branch)->where('sign_checkin', $sign_checkin)->where('sign_checkout', $sign_checkout)->first();
                 if (is_null($work)) { // Chưa đăng ký thì tạo mới
@@ -435,7 +433,6 @@ class WorkController extends Controller
                     Work::create([
                         'user_id' => $request->user_id,
                         'branch_id' => $request->main_branch,
-                        'company_id' => $this->user->company_id,
                         'shift_name' => $shiftFound->shift_name,
                         'sign_checkin' => $sign_checkin,
                         'sign_checkout' => $sign_checkout,

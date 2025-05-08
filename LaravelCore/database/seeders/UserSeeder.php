@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         $users = [
-            [1, 'Anh Quân', '0939403090', 'keydigital.vn@gmail.com', 'TKH00001.jpg', 0, '$2y$10$GPelLF/Sq/oahsiOBtEQv.TNOPJCXjgi4VNc.Y/qIs0rfPlomsCo2', NULL, NULL, NULL, NULL, 2, NULL, NULL, 1, '2024-08-01 22:53:25', NULL, NULL, 'hABlHJTDSbQVvS9NEyflTinlj0yCNja5KgsXmHeb9mZlQiOdfG9siF3C5uyW', NULL, '2024-01-15 13:12:15', '2024-09-14 17:25:57'],
+            [1, 'Super Admin', '0939403090', 'admin@gmail.com', 'TKH000001.jpg', 0, Hash::make('Admin@123'), NULL, NULL, NULL, NULL, 2, NULL, NULL, 1, '2024-08-01 22:53:25', NULL, NULL, 'hABlHJTDSbQVvS9NEyflTinlj0yCNja5KgsXmHeb9mZlQiOdfG9siF3C5uyW', NULL, '2024-01-15 13:12:15', '2024-09-14 17:25:57'],
             [2, 'Lê Hải Đăng', '0942852755', 'lhd4388@gmail.com', NULL, 0, Hash::make('haidang1210'), NULL, NULL, NULL, NULL, 2, NULL, NULL, 1, '2024-08-16 09:12:54', NULL, NULL, NULL, NULL, '2024-06-09 10:09:31', '2024-09-14 06:52:10'],
             [3, 'Lê Hoàng Thắng', '0358351262', 'thangle2003ss@gmail.com', 'TKH00003.webp', 0, '$2y$10$cUGIuovj26VlZS1pwumZj.7I6m724ZOa787sA9mQ8iveHxxywrJ8C', NULL, NULL, NULL, NULL, NULL, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, '2024-06-09 10:09:31', '2024-08-15 05:00:00'],
             [4, 'Chị Thi', '0939550105', NULL, NULL, 1, NULL, NULL, 'Hưng Phú', '20', NULL, NULL, NULL, NULL, 1, '2024-04-27 19:02:00', NULL, NULL, NULL, NULL, '2024-04-25 18:01:40', NULL],
@@ -4923,60 +4923,54 @@ class UserSeeder extends Seeder
                 'deleted_at' => $user[19],
                 'created_at' => $user[20],
                 'updated_at' => $user[21],
-                'company_id' => 1,
             ]);
         }
 
         DB::statement("
-        INSERT INTO `branch_user` (`id`, `user_id`, `branch_id`) VALUES
-        (12, 519, 1),
-        (25, 3939, 1),
-        (29, 3606, 1),
-        (30, 832, 2),
-        (32, 4507, 2),
-        (33, 1, 1),
-        (34, 1, 2),
-        (37, 4216, 1),
-        (38, 4216, 2),
-        (41, 2, 2),
-        (42, 4499, 2),
-        (44, 3312, 1),
-        (45, 867, 1),
-        (46, 4227, 1),
-        (47, 3496, 1),
-        (48, 236, 2),
-        (50, 4629, 1);");
+        INSERT INTO `branch_user` (`user_id`, `branch_id`) VALUES
+        (519, 1),
+        (3939, 1),
+        (3606, 1),
+        (832, 2),
+        (4507, 2),
+        (1, 1),
+        (1, 2),
+        (4216, 1),
+        (4216, 2),
+        (2, 2),
+        (4499, 2),
+        (3312, 1),
+        (867, 1),
+        (4227, 1),
+        (3496, 1),
+        (236, 2),
+        (4629, 1);");
 
         DB::statement("
-        INSERT INTO `user_warehouse` (`id`, `user_id`, `warehouse_id`) VALUES
-        (22, 519, 6),
-        (50, 3939, 7),
-        (51, 3939, 6),
-        (58, 3606, 6),
-        (59, 832, 6),
-        (62, 4507, 6),
-        (63, 1, 4),
-        (64, 1, 5),
-        (65, 1, 6),
-        (66, 1, 7),
-        (71, 4216, 4),
-        (72, 4216, 5),
-        (73, 4216, 6),
-        (74, 4216, 7),
-        (77, 2, 6),
-        (78, 2, 7),
-        (79, 4499, 6),
-        (81, 3312, 5),
-        (82, 867, 4),
-        (83, 867, 5),
-        (84, 4227, 4),
-        (85, 3496, 5),
-        (86, 236, 6),
-        (88, 4629, 5);");
-
-        DB::statement("
-        INSERT INTO `password_resets` (`email`, `token`, `created_at`) VALUES
-        ('thanhtai249113@gmail.com', '$2y$10\$kJn2h57J7EcH/u8hDybyKOxBK7VrMpLeOYy3ICKhEXES.3E4W66SK', '2024-08-25 19:44:06'),
-        ('ngnhuy22@gmail.com', '$2y$10\$D.oqCx5axfUXRoAHyGixv.Ieh0AUxLVXvMfY12DO0oHDVmsnZ9zeW', '2024-08-27 19:33:50');");
+        INSERT INTO `user_warehouse` (`user_id`, `warehouse_id`) VALUES
+        (519, 6),
+        (3939, 7),
+        (3939, 6),
+        (3606, 6),
+        (832, 6),
+        (4507, 6),
+        (1, 4),
+        (1, 5),
+        (1, 6),
+        (1, 7),
+        (4216, 4),
+        (4216, 5),
+        (4216, 6),
+        (4216, 7),
+        (2, 6),
+        (2, 7),
+        (4499, 6),
+        (3312, 5),
+        (867, 4),
+        (867, 5),
+        (4227, 4),
+        (3496, 5),
+        (236, 6),
+        (4629, 5);");
     }
 }

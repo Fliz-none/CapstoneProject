@@ -39,7 +39,7 @@
                         <div class="col-12 p-1 m-0">
                             <div class="form-group p-0">
                                 @php
-                                    $catalogues = Cache::get('catalogues_' . Auth::user()->company_id);
+                                    $catalogues = Cache::get('catalogues') ?? '[]';
                                 @endphp
                                 <label class="form-label" for="col_catalogue">
                                     Chọn một danh mục

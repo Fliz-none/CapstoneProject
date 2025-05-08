@@ -71,7 +71,7 @@
 <body>
     @php
         $booking = $data['data'];
-        $settings = cache()->get('settings_' . Auth::user()->company_id);
+        $settings = cache()->get('settings');
     @endphp
     @if ($booking)
         <div class="header">
@@ -85,13 +85,13 @@
             </div>
             <div class="footer">
                 <p>
-                    <span class="fw-bold">Hotline:</span> {{ isset($settings['company_hotline']) ? $settings['company_hotline'] : '' }}
+                    <span class="fw-bold">Hotline:</span> 
                 </p>
                 <p>
-                    <span class="fw-bold">Địa chỉ:</span> {{ isset($settings['company_address']) ? $settings['company_address'] : '' }}
+                    <span class="fw-bold">Địa chỉ:</span> 
                 </p>
                 <p>
-                    &copy; {{ \Carbon\Carbon::now()->format('YYYY') - isset($settings['company_name']) ? $settings['company_name'] : '' }}
+                    &copy; {{ \Carbon\Carbon::now()->format('YYYY') }}
                 </p>
             </div>
         </div>

@@ -28,7 +28,6 @@ class WarehouseSeeder extends Seeder
 
         foreach ($warehouses as $warehouse) {
             Warehouse::create([
-                'company_id' => $warehouse[0],
                 'id' => $warehouse[1],
                 'branch_id' => $warehouse[2],
                 'name' => $warehouse[3],

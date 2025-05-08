@@ -16,14 +16,12 @@ class CreateStocksTable extends Migration
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('import_detail_id');
-            $table->unsignedBigInteger('company_id');
             $table->decimal('quantity',8,2)->default(0);
             $table->string('lot')->nullable();
             $table->date('expired')->nullable();
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('import_detail_id')->references('id')->on('import_details');
         });
     }

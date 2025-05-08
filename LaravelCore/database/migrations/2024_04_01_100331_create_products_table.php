@@ -24,12 +24,10 @@ class CreateProductsTable extends Migration
             $table->string('keyword')->nullable();
             $table->text('gallery')->nullable();
             $table->unsignedInteger('sort')->nullable();
-            $table->unsignedBigInteger('company_id');
             $table->tinyInteger('allow_review')->coment('0: no; 1: yes')->default(1);
             $table->tinyInteger('status')->coment('0: block; 1: offline; 2: online; 3: featured')->default(1);
             $table->softDeletes();
             $table->timestamps();
-            $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 

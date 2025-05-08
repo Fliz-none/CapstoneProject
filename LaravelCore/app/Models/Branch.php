@@ -28,17 +28,12 @@ class Branch extends Model
 
     public function orders()
     {
-        return $this->hasMany(Order::class)->whereNull('info_id');
+        return $this->hasMany(Order::class);
     }
 
     public function logs()
     {
         return $this->hasMany(Log::class);
-    }
-
-    public function rooms()
-    {
-        return $this->hasMany(Room::class);
     }
 
     public function expenses()

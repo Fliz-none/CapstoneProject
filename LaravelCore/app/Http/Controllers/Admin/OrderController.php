@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Accommodation;
 use App\Models\Detail;
 use App\Models\Export;
 use App\Models\ExportDetail;
-use App\Models\Info;
 use App\Models\Order;
 use App\Models\Transaction;
 use App\Models\Unit;
@@ -42,11 +40,11 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         if (isset($request->key)) {
-            $objs = Order::where('orders.company_id', $this->user->company_id);
+            $objs = Order::query();
             switch ($request->key) {
                 case 'new':
                     $pageName = 'Bán hàng';
-                    $settings = cache()->get('settings_' . Auth::user()->company_id);
+                    $settings = cache()->get('settings');
                     $bankInfos = isset($settings['bank_info']) ? json_decode($settings['bank_info'], true) : [];
                     return view('admin.order', compact('pageName', 'bankInfos'));
                     break;
@@ -62,19 +60,6 @@ class OrderController extends Controller
                         'details._unit',
                         'details._stock.import_detail._variable._product',
                         'details._stock.import_detail._import._warehouse',
-                        'details._service',
-                        'details._info._doctor',
-                        'details._info._pet',
-                        'details.info',
-                        'details.prescription',
-                        'details.quicktest',
-                        'details.microscope',
-                        'details.bloodcell',
-                        'details.biochemical',
-                        'details.ultrasound',
-                        'details.xray',
-                        'details.surgery',
-                        'details.accommodation',
                     ];
                     $obj = $objs->with($relationships)->find($request->key);
                     if ($obj) {
@@ -97,8 +82,7 @@ class OrderController extends Controller
             return response()->json($result, 200);
         } else {
             if ($request->ajax()) {
-                $objs = Order::where('orders.company_id', $this->user->company_id)
-                    ->with('_customer.local', '_dealer.local', '_branch', 'details', 'transactions')
+                $objs = Order::with('_customer.local', '_dealer.local', '_branch', 'details', 'transactions')
                     ->when($request->has('customer_id'), function ($query) use ($request) {
                         $query->where('customer_id', $request->customer_id);
                     })
@@ -169,10 +153,7 @@ class OrderController extends Controller
                             $query->where('users.name', 'like', "%" . $keyword . "%")
                                 ->orWhere('users.phone', 'like', "%" . $keyword . "%")
                                 ->orWhere('users.email', 'like', "%" . $keyword . "%")
-                                ->orWhere('users.address', 'like', "%" . $keyword . "%")
-                                ->orWhereHas('pets', function ($query) use ($keyword) {
-                                    $query->where('pets.name', 'like', "%" . $keyword . "%");
-                                });
+                                ->orWhere('users.address', 'like', "%" . $keyword . "%");
                         });
                     })
                     ->orderColumn('customer', function ($query, $order) {
@@ -401,7 +382,6 @@ class OrderController extends Controller
                         'discount' => $request->discount ?? 0,
                         'status' => $request->has('status') ? $request->status : 0,
                         'note' => $request->note,
-                        'company_id' => $this->user->company_id,
                     ]);
                     if ($request->has('scores')) {
                         optional($order->customer)->update(['scores' => $request->scores]);
@@ -414,7 +394,6 @@ class OrderController extends Controller
                             'status' => 1,
                             'note' => 'Xuất theo đơn ' . $order->code,
                             'date' => date('Y-m-d'),
-                            'company_id' => $this->user->company_id,
                         ]);
 
                         if ($request->has('stock_ids')) {
@@ -423,7 +402,7 @@ class OrderController extends Controller
                                 $unit = $units->where('id', $request->unit_ids[$i])->first();
                                 $detail = Detail::create([
                                     'order_id' => $order->id,
-                                    'stock_id' => $request->stock_ids[$i],
+                                    'stock_id' => $id,
                                     'unit_id' => $unit->id,
                                     'quantity' => $request->quantities[$i],
                                     'price' => $request->prices[$i],
@@ -432,7 +411,7 @@ class OrderController extends Controller
                                 ]);
                                 if ($detail) {
                                     $export_detail = ExportDetail::create([
-                                        'stock_id' => $request->stock_ids[$i],
+                                        'stock_id' => $id,
                                         'export_id' => $export->id,
                                         'detail_id' => $detail->id,
                                         'unit_id' => $unit->id,
@@ -451,35 +430,6 @@ class OrderController extends Controller
                             }
                         }
 
-                        if ($request->has('service_ids')) {
-                            $offset = count($request->stock_ids ?? []);
-                            foreach ($request->service_ids as $key => $id) {
-                                $detail = Detail::create([
-                                    'order_id' => $order->id,
-                                    'service_id' => $request->service_ids[$key],
-                                    'quantity' => $request->quantities[$offset + $key],
-                                    'price' => $request->prices[$offset + $key],
-                                    'discount' => $request->discounts[$offset + $key],
-                                    'note' => $request->notes[$offset + $key]
-                                ]);
-
-                                switch ($request->service_tickets[$key]) {
-                                    case 'accommodation':
-                                        Accommodation::create([
-                                            'detail_id' => $detail->id,
-                                            'company_id' => $order->company_id
-                                        ]);
-                                        break;
-                                    case 'info':
-                                        Info::create([
-                                            'detail_id' => $detail->id,
-                                            'company_id' => $order->company_id
-                                        ]);
-                                        break;
-                                }
-                            }
-                        }
-
                         if ($request->has('transaction_payments') && count($request->transaction_payments)) {
                             foreach ($request->transaction_payments as $i => $payment) {
                                 $refund = $request->transaction_refund[$i] ? -1 : 1;
@@ -491,7 +441,6 @@ class OrderController extends Controller
                                     'amount' => $request->transaction_amounts[$i] * $refund,
                                     'date' => Carbon::now(),
                                     'note' => $request->transaction_notes[$i] . ' - ' . $order->code,
-                                    'company_id' => $this->user->company_id,
                                 ]);
                             }
                         }
@@ -504,7 +453,6 @@ class OrderController extends Controller
                                 'amount' => $request->change * -1,
                                 'date' => Carbon::now(),
                                 'note' => 'Tiền thừa đơn hàng ' . $order->code,
-                                'company_id' => $this->user->company_id,
                             ]);
                         }
                         $order->sync_scores($order->paid);
@@ -640,7 +588,6 @@ class OrderController extends Controller
                             'discount' => $request->discount ?? 0,
                             'status' => $request->status ? $request->status : 0,
                             'note' => $request->note,
-                            'company_id' => Auth::user()->company_id,
                         ]);
                         if ($request->has('stock_ids')) {
                             foreach (array_unique(array_filter($request->export_ids)) as $i => $id) {
@@ -653,7 +600,6 @@ class OrderController extends Controller
                                     'status' => 1,
                                     'note' => 'Xuất theo đơn ' . $order->code,
                                     'date' => date('Y-m-d'),
-                                    'company_id' => Auth::user()->company_id,
                                 ]);
                             }
                             $export_id = null;
@@ -680,7 +626,6 @@ class OrderController extends Controller
                                         'status' => 1,
                                         'note' => 'Xuất theo đơn ' . $order->code,
                                         'date' => date('Y-m-d'),
-                                        'company_id' => Auth::user()->company_id,
                                     ]);
                                     $export_id = $export->id;
                                 }
@@ -707,39 +652,6 @@ class OrderController extends Controller
                                 }
                             }
                         }
-                        if ($request->has('service_ids')) {
-                            $offset = count($request->stock_ids ?? []);
-                            foreach ($request->service_ids as $key => $id) {
-
-                                $detail = Detail::updateOrCreate([
-                                    'id' => $request->ids[$offset + $key]
-                                ], [
-                                    'order_id' => $order->id,
-                                    'service_id' => $request->service_ids[$key],
-                                    'quantity' => $request->quantities[$offset + $key],
-                                    'price' => $request->prices[$offset + $key],
-                                    'discount' => $request->discounts[$offset + $key],
-                                    'note' => $request->notes[$offset + $key]
-                                ]);
-
-                                if ($detail->wasRecentlyCreated) {
-                                    switch ($request->service_tickets[$key]) {
-                                        case 'accommodation':
-                                            Accommodation::create([
-                                                'detail_id' => $detail->id,
-                                                'company_id' => $order->company_id
-                                            ]);
-                                            break;
-                                        case 'info':
-                                            Info::create([
-                                                'detail_id' => $detail->id,
-                                                'company_id' => $order->company_id
-                                            ]);
-                                            break;
-                                    }
-                                }
-                            }
-                        }
                         if ($request->has('transaction_payments') && count($request->transaction_payments)) {
                             foreach ($request->transaction_payments as $i => $payment) {
                                 $refund = $request->transaction_refund[$i] ? -1 : 1;
@@ -751,7 +663,6 @@ class OrderController extends Controller
                                     'amount' => $request->transaction_amounts[$i] * $refund,
                                     'date' => Carbon::now(),
                                     'note' => $request->transaction_notes[$i] . ' - ' . $order->code,
-                                    'company_id' => Auth::user()->company_id,
                                 ]);
                                 $order->sync_scores($transaction->amount);
                             }
@@ -803,37 +714,7 @@ class OrderController extends Controller
             if ($obj && $obj->status < 3) {
                 DB::beginTransaction();
                 try {
-                    foreach ($obj->details()->whereNotNull('service_id')->get() as $key => $detail) {
-                        $ticket = $detail->indication->ticket ?? null;
-                        if ($ticket != 'info' && $ticket != 'prescription') {
-                            if ($ticket && optional($detail->indication->$ticket)->status) {
-                                DB::rollBack();
-                                return response()->json(['errors' => ['message' => ['Không thể xóa đơn hàng có dịch vụ đã hoàn thành']]], 422);
-                            }
-                        }
-                    }
                     $obj->details->each(function ($detail) {
-                        if ($detail->service_id) {
-                            $ticket = $detail->indication->ticket ?? null;
-                            if ($ticket) {
-                                if ($ticket != 'info' && $ticket != 'prescription') { //Nếu là phiếu con thông thường
-                                    if ($detail->indication->$ticket && !$detail->indication->$ticket->status) { //Nếu trạng thái phiếu con chưa hoàn thành
-                                        optional($detail->indication->$ticket)->delete();
-                                        $detail->indication->delete();
-                                    } else {
-                                        DB::rollBack();
-                                        return response()->json(['errors' => ['message' => ['Không thể xóa dịch vụ đã thực hiện. Hãy thử xóa phiếu xét nghiệm nhanh']]], 422);
-                                    }
-                                } else { //Nếu là phiếu khám hoặc đơn thuốc
-                                    if (optional($detail->$ticket)->export_id) {
-                                        DB::rollBack();
-                                        return response()->json(['errors' => ['message' => ['Không thể xóa đơn hàng đã xuất toa thuốc']]], 422);
-                                    }
-                                    optional($detail->$ticket)->delete();
-                                }
-                            }
-                            $detail->delete();
-                        }
                         if ($detail->stock_id) {
                             $export_detail = $detail->export_detail;
                             if ($export_detail) {
@@ -852,13 +733,6 @@ class OrderController extends Controller
                             DB::rollBack();
                         }
                     });
-                    $obj->infos->each(function ($info) {
-                        if (!$info->indications->count()) {
-                            $info->delete();
-                        } else {
-                            DB::rollBack();
-                        }
-                    });
                     $obj->sync_scores($obj->total);
                     $obj->delete();
                     DB::commit();
@@ -872,7 +746,7 @@ class OrderController extends Controller
                             'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
                             'Chi tiết lỗi: ' . $e->getTraceAsString()
                     );
-                    Controller::resetAutoIncrement(['imports', 'import_details', 'stocks', 'exports', 'export_details', 'infos', 'indications', 'quicktests', 'microscopes', 'bloodcells', 'biochemicals', 'surgeries', 'ultrasounds', 'xrays', 'prescriptions', 'prescription_details', 'accommodations']);
+                    Controller::resetAutoIncrement(['imports', 'import_details', 'stocks', 'exports', 'export_details']);
                     return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
                 }
             } else {

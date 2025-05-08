@@ -15,11 +15,9 @@ class CreateAttributesTable extends Migration
     {
         Schema::create('attributes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
             $table->string('key');
             $table->string('value')->nullable();
             $table->timestamps();
-            $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 

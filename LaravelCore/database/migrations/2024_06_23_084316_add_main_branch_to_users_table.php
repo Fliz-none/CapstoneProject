@@ -28,9 +28,7 @@ class AddMainBranchToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropForeign(['main_branch']);
-            $table->dropForeign(['company_id']);
             $table->dropColumn('main_branch');
-            $table->dropColumn('company_id');
         });
     }
 }

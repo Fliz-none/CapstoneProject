@@ -88,14 +88,7 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
-        public_path('storage/pet') => storage_path('app/public/pet'),
         public_path('storage/user') => storage_path('app/public/user'),
-        public_path('storage/quicktest') => storage_path('app/public/quicktest'),
-        public_path('storage/ultrasound') => storage_path('app/public/ultrasound'),
-        public_path('storage/bloodcell') => storage_path('app/public/bloodcell'),
-        public_path('storage/biochemical') => storage_path('app/public/biochemical'),
-        public_path('storage/microscope') => storage_path('app/public/microscope'),
-        public_path('storage/xray') => storage_path('app/public/xray'),
     ],
 
 ];

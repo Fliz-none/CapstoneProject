@@ -17,7 +17,6 @@ class CreateWorksTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('branch_id');
-            $table->unsignedBigInteger('company_id');
             $table->string('shift_name');
             $table->dateTime('sign_checkin');
             $table->dateTime('real_checkin')->nullable();
@@ -29,7 +28,6 @@ class CreateWorksTable extends Migration
             $table->string('note')->nullable();
             $table->timestamps();
 
-            $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('branch_id')->references('id')->on('branches');
         });

@@ -43,8 +43,7 @@ class StockController extends Controller
     public function index(Request $request)
     {
         if (isset($request->key)) {
-            $objs = Stock::where('stocks.company_id', $this->user->company_id)
-                ->where('quantity', '>', 0);
+            $objs = Stock::where('quantity', '>', 0);
             switch ($request->key) {
                 case 'search':
                     $result = $objs->with('import_detail._variable._units', 'import_detail._variable._product.catalogues')
@@ -164,7 +163,7 @@ class StockController extends Controller
                                 });
                         })
                         ->where(function ($query) {
-                            $query->when(cache()->get('settings_' . Auth::user()->company_id)['allow_expired_sale'] > 0, function ($query) {
+                            $query->when(cache()->get('settings')['allow_expired_sale'] > 0, function ($query) {
                                 $query->where('expired', '>', Carbon::now())->orWhereNull('expired');
                             });
                         })
@@ -208,7 +207,7 @@ class StockController extends Controller
                                 ->whereRaw('`quantity` >= `rate`'); // So sánh quantity với rate của unit
                         })
                         ->where(function ($query) {
-                            $query->when(cache()->get('settings_' . Auth::user()->company_id)['allow_expired_sale'] > 0, function ($query) {
+                            $query->when(cache()->get('settings')['allow_expired_sale'] > 0, function ($query) {
                                 $query->where('expired', '>', Carbon::now())->orWhereNull('expired');
                             });
                         })
@@ -222,7 +221,7 @@ class StockController extends Controller
                     $range[1] = Carbon::createFromFormat('d/m/Y', $range[1])->format('Y-m-d') . ' 23:59:59';
                     $products = json_decode($request->catalogue_id) ? Catalogue::find($request->catalogue_id)->all_products() : collect();
                     if (!$products->count()) {
-                        Product::withTrashed()->with('variables')->where('company_id', $this->user->company_id)->chunk(300, function ($chunk) use (&$products) {
+                        Product::withTrashed()->with('variables')->chunk(300, function ($chunk) use (&$products) {
                             $products = $products->merge($chunk);
                         });
                     }
@@ -260,7 +259,6 @@ class StockController extends Controller
         } else {
             if ($request->ajax()) {
                 $objs = Stock::with(['import_detail._import._warehouse', 'import_detail._variable.units', 'import_detail._variable._product', 'import_detail._import.import_details.stock.export_details'])
-                    ->where('stocks.company_id', $this->user->company_id)
                     // ->where('stocks.quantity', '!=', 0)
                     ->whereHas('import_detail._import', function ($query) {
                         $query->where('status', 1);
@@ -514,7 +512,6 @@ class StockController extends Controller
                         'note' => 'Nhập đồng bộ kho ' . Carbon::now()->format('d/m/Y'),
                         'created_at' => $range[1],
                         'status' => 0,
-                        'company_id' => $this->user->company_id,
                     ]);
                     if ($import) {
                         $import_detail = ImportDetail::create([
@@ -531,7 +528,6 @@ class StockController extends Controller
                                 'quantity' => abs($diff),
                                 'lot' => $last_import_detail ? $last_import_detail->stock->lot : null,
                                 'expired' => $last_import_detail ? $last_import_detail->stock->expired : Carbon::now()->format('Y-m-d'),
-                                'company_id' => $this->user->company_id,
                                 'created_at' => $range[1],
                             ]);
                         }
@@ -551,7 +547,6 @@ class StockController extends Controller
                         'date' => $range[1],
                         'user_id' => $this->user->id,
                         'receiver_id' => $this->user->id,
-                        'company_id' => $this->user->company_id,
                         'note' => 'Xuất đồng bộ kho ' . Carbon::now()->format('d/m/Y'),
                         'status' => 0,
                         'created_at' => $range[1],

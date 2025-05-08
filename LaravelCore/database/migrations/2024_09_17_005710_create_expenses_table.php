@@ -17,7 +17,6 @@ class CreateExpensesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('receiver_id');
-            $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('branch_id')->nullable();
             $table->unsignedTinyInteger('payment')->comment('1: tiền mặt, 2: chuyển khoản')->default(1);
             $table->unsignedDecimal('amount',10,0);
@@ -27,7 +26,6 @@ class CreateExpensesTable extends Migration
             $table->unsignedTinyInteger('status')->default(0)->comment('0:waiting; 1:accepted');
             $table->softDeletes();
             $table->timestamps();
-            $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('branch_id')->references('id')->on('branches');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('receiver_id')->references('id')->on('users');

@@ -42,7 +42,7 @@
                                 <label data-bs-toggle="tooltip" data-bs-title="Phân loại các khoản chi tùy theo mục đích cụ thể" for="expense-note">Chọn danh mục chi tiêu</label>
                                 <select class="form-control" name="group" id="expense-group">
                                     @php
-                                        $expense_group = cache()->get('settings_' . Auth::user()->company_id)['expense_group'] ?? '[]';
+                                        $expense_group = cache()->get('settings')['expense_group'] ?? '[]';
                                     @endphp
                                     @foreach (json_decode($expense_group) as $item)
                                         <option value="{{ $item }}">{{ $item }}</option>

@@ -58,11 +58,10 @@ class SupplierController extends Controller
         if (isset($request->key)) {
             switch ($request->key) {
                 case 'list':
-                    $result = Supplier::where('suppliers.company_id', $this->user->company_id)->whereStatus(1)->get();
+                    $result = Supplier::whereStatus(1)->get();
                     break;
                 case 'select2':
                     $result = Supplier::where('status', '>', 0)
-                        ->where('suppliers.company_id', Auth::user()->company_id)
                         ->where(function ($query) use ($request) {
                             $query->where('name', 'LIKE', '%' . $request->q . '%')
                                 ->orWhere('phone', 'LIKE', '%' . $request->q . '%')
@@ -91,7 +90,7 @@ class SupplierController extends Controller
             return response()->json($result, 200);
         } else {
             if ($request->ajax()) {
-                $objs = Supplier::select('*')->where('suppliers.company_id', $this->user->company_id);
+                $objs = Supplier::select('*');
                 return DataTables::of($objs)
                     ->addColumn('checkboxes', function ($obj) {
                         return '<input class="form-check-input choice" type="checkbox" name="choices[]" value="' . $obj->id . '">';
@@ -170,7 +169,6 @@ class SupplierController extends Controller
                     'address' => $request->address,
                     'organ' => $request->organ,
                     'status' => $request->has('status'),
-                    'company_id' => Auth::user()->company_id,
                     'note' => $request->note
                 ]);
 
@@ -218,7 +216,6 @@ class SupplierController extends Controller
                             'organ' => $request->organ,
                             'note' => $request->note,
                             'status' => $request->has('status'),
-                            'company_id' => Auth::user()->company_id,
                         ]);
 
                         LogController::create('sửa', self::NAME, $supplier->id);

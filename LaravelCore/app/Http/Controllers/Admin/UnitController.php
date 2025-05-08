@@ -27,9 +27,7 @@ class UnitController extends Controller
     public function index(Request $request)
     {
         if (isset($request->key)) {
-            $objs = Unit::query()->whereHas('_variable._product', function ($query) {
-                $query->where('company_id', $this->user->company_id);
-            });
+            $objs = Unit::query();
             switch ($request->key) {
                 case 'list':
                     $result = $objs->get();

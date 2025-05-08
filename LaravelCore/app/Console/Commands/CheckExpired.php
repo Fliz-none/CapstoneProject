@@ -76,7 +76,7 @@ class CheckExpired extends Command
                                 </div>
                             </a>
                         </div>';
-                $noti = NotificationController::create($str, $warehouse->company_id);
+                $noti = NotificationController::create($str);
                 NotificationController::push($noti, $users);
                 //Gửi email thông báo
                 if (!empty($users)) {

@@ -15,7 +15,6 @@ class CreateLogsTable extends Migration
     {
         Schema::create('logs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('user_id');
             $table->string('action');
             $table->string('type');
@@ -26,7 +25,6 @@ class CreateLogsTable extends Migration
             $table->string('device');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 

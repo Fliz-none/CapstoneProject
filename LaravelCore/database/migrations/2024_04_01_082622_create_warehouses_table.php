@@ -16,7 +16,6 @@ class CreateWarehousesTable extends Migration
         Schema::create('warehouses', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('branch_id')->nullable();
-            $table->unsignedBigInteger('company_id');
             $table->string('name');
             $table->string('address')->nullable();
             $table->text('note')->nullable();
@@ -24,7 +23,6 @@ class CreateWarehousesTable extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('branch_id')->references('id')->on('branches');
         });
     }

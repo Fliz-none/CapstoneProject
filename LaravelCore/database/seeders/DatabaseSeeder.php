@@ -15,13 +15,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             LocalSeeder::class,
-            CompanySeeder::class,
             BranchSeeder::class,
             WarehouseSeeder::class,
             UserSeeder::class,
             PermissionSeeder::class,
-            AnimalSeeder::class,
-            PetSeeder::class,
 
             CatalogueSeeder::class,
             AttributeSeeder::class,
@@ -29,31 +26,7 @@ class DatabaseSeeder extends Seeder
             VariableSeeder::class,
             UnitSeeder::class,
             SupplierSeeder::class,
-
-            ImportSeeder::class,
-            ImportDetailSeeder::class,
-            StockSeeder::class,
-            ExportSeeder::class,
-            ExportDetailSeeder::class,
-            OrderSeeder::class,
-            DetailSeeder::class,
-            TransactionSeeder::class,
-
-            MajorSeeder::class,
-            CriterialSeeder::class,
-            ServiceSeeder::class,
-
             SettingsSeeder::class,
-            ImageSeeder::class,
-            MedicalSeeder::class,
-
-            BookingSeeder::class,
-            ExpenseSeeder::class,
-            NotificationSeeder::class,
-            VersionSeeder::class,
-            InfoSeeder::class,
-
-            SuBeoSeeder::class
         ]);
     }
 }

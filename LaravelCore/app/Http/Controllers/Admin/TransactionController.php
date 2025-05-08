@@ -45,14 +45,13 @@ class TransactionController extends Controller
     ];
 
     protected $zalo;
-    public function __construct(Zalo $zalo)
+    public function __construct()
     {
         parent::__construct();
         if ($this->user === null) {
             $this->user = Auth::user();
         }
         $this->middleware(['admin', 'auth']);
-        $this->zalo = $zalo;
     }
 
     /**
@@ -66,12 +65,10 @@ class TransactionController extends Controller
             switch ($request->key) {
                 case 'amountOfDate':
                     if ($request->date) {
-                        $cash = Transaction::where('transactions.company_id', $this->user->company_id)
-                            ->whereDate('date', $request->date)
+                        $cash = Transaction::whereDate('date', $request->date)
                             ->where('payment', '<=', 1)
                             ->sum('amount');
-                        $transfer = Transaction::where('transactions.company_id', $this->user->company_id)
-                            ->whereDate('date', $request->date)
+                        $transfer = Transaction::whereDate('date', $request->date)
                             ->where('payment', '>', 1)
                             ->sum('amount');
                         $result = [$request->date, $cash, $transfer];
@@ -108,7 +105,6 @@ class TransactionController extends Controller
                     }
                 }
                 $objs = Transaction::with('_customer', '_cashier', '_order.details', '_order.transactions')
-                    ->where('transactions.company_id', Auth::user()->company_id)
                     ->whereHas('order', function ($query) use ($request) {
                         $query->when($request->has('branch_id'), function ($query) use ($request) {
                             $query->where('branch_id', $request->branch_id);
@@ -280,21 +276,13 @@ class TransactionController extends Controller
                         'amount' => $request->amount * $status,
                         'note' => $request->note,
                         'date' => Carbon::now(),
-                        'company_id' => Auth::user()->company_id,
                     ]);
                     $transaction->order->sync_scores($transaction->amount);
-
-                    if ($request->has('send_zns')) {
-                        $request->replace(['id' => $transaction->id]);
-                        $res = app(TransactionController::class)->send_zns($request);
-                    } else {
-                        $res = null;
-                    }
 
                     LogController::create('tạo', self::NAME, $transaction->id);
                     $response = array(
                         'status' => 'success',
-                        'msg' => 'Đã thêm giao dịch ' . $transaction->id . '. ' . ($res ? $res->getData()->msg : '')
+                        'msg' => 'Đã thêm giao dịch ' . $transaction->id
                     );
                     DB::commit();
                 } catch (\Exception $e) {
@@ -327,7 +315,6 @@ class TransactionController extends Controller
                                     'amount' => $amount,
                                     'date' => Carbon::now(),
                                     'note' => $request->note,
-                                    'company_id' => Auth::user()->company_id,
                                 ]);
                                 $order->sync_scores($transaction->amount);
 
@@ -381,19 +368,12 @@ class TransactionController extends Controller
                             'payment' => $request->payment,
                             'amount' => $request->amount * $status,
                             'note' => $request->note,
-                            'company_id' => Auth::user()->company_id,
                         ]);
 
                         LogController::create('sửa', self::NAME, $transaction->id);
-                        if ($request->has('send_zns')) {
-                            $request->replace(['id' => $transaction->id]);
-                            $res = app(TransactionController::class)->send_zns($request);
-                        } else {
-                            $res = null;
-                        }
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Đã cập nhật giao dịch ' . $transaction->id . '. ' . ($res ? $res->getData()->msg : '')
+                            'msg' => 'Đã cập nhật giao dịch ' . $transaction->id
                         );
                     } else {
                         $response = array(
@@ -418,47 +398,6 @@ class TransactionController extends Controller
         } else {
             return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
         }
-    }
-
-    public function send_zns(Request $request)
-    {
-        $transaction = Transaction::with('_customer', '_order')->find($request->id);
-        if ($phone = $transaction->_customer->phone) {
-            $params = (object) [
-                "customer_name" => $transaction->_customer->name,
-                "order_code" => $transaction->_order->code,
-                "order_date" => Carbon::parse($transaction->created_at)->format('H:i d/m/Y'),
-                "scores" => intdiv($transaction->amount, cache()->get('settings_' . $this->user->company_id)['scores_rate_exchange']),
-            ];
-            if ($template = Cache::get('settings_' . $this->user->company_id)['zalo_transaction_template']) {
-                $result = $this->zalo->send($phone, $template, $params, $this->user->company_id);
-                if (!$result['error']) {
-                    $transaction->note .= '. Đã gửi zalo đến ' . $phone;
-                    $transaction->save();
-                    $response = [
-                        'status' => 'success',
-                        'msg' => 'Gửi thông báo thành công. Bạn còn ' . $result['data']['quota']['remainingQuota'] . '/' . $result['data']['quota']['dailyQuota'] . ' tin nhắn mỗi ngày'
-                    ];
-                } else {
-                    $response = [
-                        'status' => 'error',
-                        'msg' => 'Gửi thông báo thất bại. Nội dung lỗi: ' . $result['message']
-                    ];
-                }
-            } else {
-                $response = [
-                    'status' => 'error',
-                    'msg' => 'Không tìm thấy mẫu tin nhắn Zalo'
-                ];
-            }
-        } else {
-            $response = [
-                'status' => 'error',
-                'msg' => 'Khách hàng không có số điện thoại'
-            ];
-        }
-
-        return response()->json($response, 200);
     }
 
     public function remove(Request $request)

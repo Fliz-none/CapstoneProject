@@ -101,7 +101,7 @@
                                         <div class="catalogue-select search-item">
                                             <ul class="list-group search-list">
                                                 @include('admin.includes.catalogue_recursion', [
-                                                    'catalogues' => cache()->get('catalogues_' . Auth::user()->company_id)->whereNull('parent_id'),
+                                                    'catalogues' => cache()->get('catalogues')->whereNull('parent_id'),
                                                     'product' => isset($product) ? $product : null,
                                                 ])
                                             </ul>

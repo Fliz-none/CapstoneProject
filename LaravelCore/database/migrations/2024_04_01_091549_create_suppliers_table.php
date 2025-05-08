@@ -20,12 +20,10 @@ class CreateSuppliersTable extends Migration
             $table->string('email')->unique()->nullable();
             $table->string('address')->nullable();
             $table->string('organ')->nullable();
-            $table->unsignedBigInteger('company_id');
             $table->unsignedTinyInteger('status')->comment('0: block; 1: active')->default(1);
             $table->text('note')->nullable();
             $table->softDeletes();
             $table->timestamps();
-            $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 

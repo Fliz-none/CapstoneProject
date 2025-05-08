@@ -22,7 +22,7 @@
                         </thead>
                         <tbody>
                             @php
-                                $work_info = json_decode(cache()->get('settings_' . Auth::user()->company_id)['work_info']);
+                                $work_info = json_decode(cache()->get('settings')['work_info']);
                                 unset($work_info->allow_self_register); // Loại bỏ trường 'allow_self_register'
                             @endphp
                             @foreach ($users as $user)

@@ -30,19 +30,6 @@ class NotificationController extends Controller
     {
         if (isset($request->key)) {
             abort(404);
-            // switch ($request->key) {
-            //     case 'list':
-            //         return response()->json(cache()->get('notifications_' . Auth::user()->company_id), 200);
-            //         break;
-
-            //     default:
-            //         switch ($request->action) {
-            //             default:
-            //                 # code...
-            //                 break;
-            //         }
-            //         break;
-            // }
         } else {
             if ($request->ajax()) {
             } else {
@@ -52,12 +39,11 @@ class NotificationController extends Controller
         }
     }
 
-    static function create($text, $company = null)
+    static function create($text)
     {
         try {
             $noti = Notification::create([
-                'description' => sprintf($text),
-                'company_id' => $company ?? Auth::user()->company_id,
+                'description' => sprintf($text)
             ]);
             return $noti;
         } catch (\Throwable $e) {
@@ -76,7 +62,7 @@ class NotificationController extends Controller
             ];
         })->toArray();
         DB::table('notification_user')->insert($data);
-        cache()->forget('notifications_' . Auth::user()->company_id);
+        cache()->forget('notifications');
     }
 
     public function mark(Request $request)

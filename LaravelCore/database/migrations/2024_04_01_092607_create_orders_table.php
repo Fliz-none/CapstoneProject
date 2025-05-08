@@ -16,7 +16,6 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('branch_id');
-            $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('customer_id')->nullable();
             $table->unsignedBigInteger('dealer_id')->nullable();
             $table->unsignedTinyInteger('method')->nullable();
@@ -27,7 +26,6 @@ class CreateOrdersTable extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('customer_id')->references('id')->on('users');
             $table->foreign('dealer_id')->references('id')->on('users');
             $table->foreign('branch_id')->references('id')->on('branches');

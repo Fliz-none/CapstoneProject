@@ -42,7 +42,7 @@ class CatalogueController extends Controller
      */
     public function index(Request $request)
     {
-        $objs = Catalogue::whereStatus(1)->where('catalogues.company_id', $this->user->company_id)->with('_parent');
+        $objs = Catalogue::whereStatus(1)->with('_parent');
         if (isset($request->key)) {
             switch ($request->key) {
                 case 'list':
@@ -156,7 +156,7 @@ class CatalogueController extends Controller
     public function sort(Request $request)
     {
         $ids = $request->input('sort');
-        if (count($ids) == Catalogue::where('catalogues.company_id', $this->user->company_id)->count()) {
+        if (count($ids) == Catalogue::count()) {
             foreach ($ids as $index => $id) {
                 Catalogue::where('id', $id)->update(['sort' => $index + 1]);
             }
@@ -187,11 +187,10 @@ class CatalogueController extends Controller
                     'note' => $request->note,
                     'status' => $request->has('status'),
                     'avatar' => $request->avatar,
-                    'company_id' => $this->user->company_id,
                 ]);
 
                 LogController::create('tạo', self::NAME, $catalogue->id);
-                cache()->forget('catalogues_' . Auth::user()->company_id);
+                cache()->forget('catalogues');
                 $response = array(
                     'status' => 'success',
                     'msg' => 'Đã tạo ' . self::NAME . ' ' . $catalogue->name
@@ -236,7 +235,6 @@ class CatalogueController extends Controller
                             'note' => $request->note,
                             'status' => $request->has('status'),
                             'avatar' => $request->avatar,
-                            'company_id' => $this->user->company_id,
                         ]);
                     } else {
                         $response = array(
@@ -246,7 +244,7 @@ class CatalogueController extends Controller
                     }
 
                     LogController::create('sửa', self::NAME, $catalogue->id);
-                    cache()->forget('catalogues_' . Auth::user()->company_id);
+                    cache()->forget('catalogues');
                     $response = array(
                         'status' => 'success',
                         'msg' => 'Đã cập nhật ' . $catalogue->name
@@ -274,7 +272,7 @@ class CatalogueController extends Controller
         foreach ($request->choices as $key => $id) {
             $obj = Catalogue::find($id);
             $obj->delete();
-            cache()->forget('catalogues_' . Auth::user()->company_id);
+            cache()->forget('catalogues');
             array_push($msg, $obj->name);
             LogController::create("xóa", self::NAME, $obj->id);
         }

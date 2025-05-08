@@ -18,7 +18,6 @@ class CreateTransactionsTable extends Migration
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('customer_id')->nullable();
             $table->unsignedBigInteger('cashier_id');
-            $table->unsignedBigInteger('company_id');
             $table->unsignedTinyInteger('payment')->comment('0:card; 1:cash; 2:transfer')->default(1);
             $table->double('amount', 10, 0);
             $table->dateTime('date');
@@ -26,7 +25,6 @@ class CreateTransactionsTable extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('order_id')->references('id')->on('orders');
             $table->foreign('customer_id')->references('id')->on('users');
             $table->foreign('cashier_id')->references('id')->on('users');

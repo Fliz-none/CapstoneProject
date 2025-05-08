@@ -34,7 +34,7 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = cache()->get('categories_' . Auth::user()->company_id)->whereNull('parent_id');
+        $categories = cache()->get('categories')->whereNull('parent_id');
         if (isset($request->key)) {
             switch ($request->key) {
                 case 'new':
@@ -43,7 +43,7 @@ class PostController extends Controller
                     break;
                 case 'list':
                     $ids = json_decode($request->ids);
-                    $obj = Post::where('posts.company_id', $this->user->company_id)->orderBy('sort', 'ASC')->when(count($ids), function ($query) use ($ids) {
+                    $obj = Post::orderBy('sort', 'ASC')->when(count($ids), function ($query) use ($ids) {
                         $query->whereIn('id', $ids);
                     })->get();
                     return response()->json($obj, 200);
@@ -63,8 +63,7 @@ class PostController extends Controller
                     break;
             }
         } else {
-            $objs = Post::with('category')
-                ->where('posts.company_id', $this->user->company_id);
+            $objs = Post::with('category');
             if ($request->ajax()) {
                 return DataTables::of($objs)
                     ->addColumn('checkboxes', function ($obj) {
@@ -135,7 +134,7 @@ class PostController extends Controller
                     })
                     ->addColumn('action', function ($obj) {
                         $str = '';
-                        if ($this->user->can(User::DELETE_SERVICE)) {
+                        if ($this->user->can(User::DELETE_POST)) {
                             $str .= '<div class="d-flex justify-content-center">
                             <form method="post" action="' . route('admin.post.remove') . '" class="save-form">
                                     <input type="hidden" name="choices[]" value="' . $obj->id . '"/>
@@ -193,7 +192,6 @@ class PostController extends Controller
                         'category_id' => $request->category_id,
                         'status' => $request->status,
                         'author_id' => Auth::user()->id,
-                        'company_id' => Auth::user()->company_id,
                     ]
                 );
                 if (isset($request->image)) {
@@ -226,7 +224,7 @@ class PostController extends Controller
     {
         $success = [];
         $fail = [];
-        if ($this->user->can(User::DELETE_SERVICE)) {
+        if ($this->user->can(User::DELETE_POST)) {
             foreach ($request->choices as $key => $id) {
                 $obj = Post::find($id);
                 if ($obj->canRemove()) {

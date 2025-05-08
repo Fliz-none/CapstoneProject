@@ -50,9 +50,6 @@
                                             <th>Mã</th>
                                             <th>Tên</th>
                                             <th>Số điện thoại</th>
-                                            @if (Auth::user()->company->has_clinic || Auth::user()->company->has_beauty)
-                                                <th>Thú cưng</th>
-                                            @endif
                                             <th>Vai trò</th>
                                             <th>Địa chỉ</th>
                                             <th>Trạng thái</th>
@@ -93,13 +90,7 @@
                     {
                         data: 'phone',
                         name: 'phone'
-                    },
-                    @if (Auth::user()->company->has_clinic || Auth::user()->company->has_beauty)
-                        {
-                            data: 'pet',
-                            name: 'pet',
-                        },
-                    @endif {
+                    }, {
                         data: 'role',
                         name: 'role'
                     }, {

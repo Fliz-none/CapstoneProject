@@ -165,11 +165,8 @@ class VariableController extends Controller
                     if ($count[$value] > 1) {
                         $fail('Barcode ' . $value . ' bị trùng, hãy sửa lại.');
                     } else {
-                        $checkAvailable = Unit::where('barcode', $value)->whereHas('variable', function ($query) {
-                            $query->whereHas('product', function ($query) {
-                                $query->where('company_id', $this->user->company_id);
-                            });
-                        })->whereNull('deleted_at')->exists();
+                        $checkAvailable = Unit::where('barcode', $value)
+                        ->whereNull('deleted_at')->exists();
                         if ($checkAvailable) {
                             $fail('Barcode ' . $attribute . ' đã được sử dụng.');
                         }
@@ -266,11 +263,8 @@ class VariableController extends Controller
                     } else {
                         preg_match('/barcode\.(\d+)/', $attribute, $matches);
                         $index = $matches[1];
-                        $checkAvailable = Unit::where('barcode', $value)->whereHas('variable', function ($query) {
-                            $query->whereHas('product', function ($query) {
-                                $query->where('company_id', $this->user->company_id);
-                            });
-                        })->whereNull('deleted_at')->where('id', '!=', $request->unit_id[$index])->exists();
+                        $checkAvailable = Unit::where('barcode', $value)
+                        ->whereNull('deleted_at')->where('id', '!=', $request->unit_id[$index])->exists();
                         if ($checkAvailable) {
                             $fail('Barcode ' . $attribute . ' bị trùng với sản phẩm khác.');
                         }

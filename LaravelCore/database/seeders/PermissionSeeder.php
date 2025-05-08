@@ -328,7 +328,6 @@ class PermissionSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         foreach ($roles as $key => $role) {
             Role::create([
-                'company_id' => $role[0],
                 'id' => $role[1],
                 'name' => $role[2],
                 'guard_name' => $role[3],

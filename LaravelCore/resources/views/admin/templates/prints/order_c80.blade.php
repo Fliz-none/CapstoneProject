@@ -6,7 +6,7 @@
     <div class="container-fluid print-template">
         <div class="row">
             <div class="col-4">
-                <img class="img-fluid" src="{{ Auth::user()->company->logo_square_bw }}" />
+                <img class="img-fluid" src="{{ cache()->get('settings')['logo_square_bw'] }}" />
             </div>
             <div class="col-8">
                 <h6 class="text-uppercase mb-0">{{ $settings['company_brandname'] }}</h6>
@@ -32,7 +32,7 @@
             @endif
         </div>
         @php
-            $goods = $order->details->whereNull('service_id');
+            $goods = $order->details;
         @endphp
         @if ($goods->count())
             <div class=" fw-bold mb-0 mt-3 text-uppercase">Các hàng hóa</div>
@@ -47,26 +47,6 @@
                     </div>
                     <div class="col-4 text-end">
                         {{ $good->realPrice ? number_format($good->total) . 'đ' : 'Miễn phí' }}
-                    </div>
-                @endforeach
-            </div>
-        @endif
-        @php
-            $services = $order->details->whereNull('stock_id');
-        @endphp
-        @if ($services->count())
-            <div class="fw-bold mb-0 pt-3 mt-3 text-uppercase">Các dịch vụ</div>
-            <div class="row">
-                @foreach ($services as $i => $service)
-                    <div class="col-12 fw-bold {{ $i ? 'mt-2' : '' }}">
-                        {{ $service->_service->name }}
-                        <br /><small>{{ $service->note }}</small>
-                    </div>
-                    <div class="col-8">
-                        <small>{!! $service->quantity . ' ' . ($service->_service->unit ?? 'ĐVT') !!} &times; {!! number_format($service->realPrice) . 'đ' !!} {!! $service->discount > 0 ? '<br/><small>Đã giảm ' . number_format($service->originalTotal - $service->total) . 'đ</small>' : '' !!}</small>
-                    </div>
-                    <div class="col-4 text-end">
-                        {{ $service->realPrice ? number_format($service->quantity * $service->realPrice) . 'đ' : 'Miễn phí' }}
                     </div>
                 @endforeach
             </div>

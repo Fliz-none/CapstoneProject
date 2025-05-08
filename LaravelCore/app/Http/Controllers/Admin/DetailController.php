@@ -31,15 +31,15 @@ class DetailController extends Controller
         if (isset($request->key)) {
             switch ($request->key) {
                 default:
-                    $detail = Detail::with('info._pet._customer', 'info._doctor', '_service', '_order')->find($request->key);
-                    if(!$detail) {
+                    $detail = Detail::with('_order')->find($request->key);
+                    if (!$detail) {
                         return response()->json(['errors' => ['message' => ['Không tìm thấy chi tiết đơn hàng']]], 422);
                     }
                     switch ($request->action) {
                         case 'print':
                             $result = view('admin.templates.prints.' . ($request->template != 'undefined' ? $request->template : 'commitment_a5'), ['detail' => $detail])->render();
                             break;
-                        
+
                         default:
                             $result = $detail;
                             break;
@@ -90,46 +90,6 @@ class DetailController extends Controller
                 ->rawColumns(['order_id', 'product', 'quantity', 'amount'])
                 ->make(true);
         }
-        if (isset($request->key)) {
-            $detail = Detail::with(['_service'])->find($request->key);
-            $ticket = $detail->_service->ticket;
-            $indication = $detail->$ticket->load('info._doctor', 'detail._service');
-            if ($indication) {
-                switch ($request->action) {
-                    case 'print':
-                        return view('admin.templates.prints.indication_a5', ['indication' => $detail->$ticket]);
-                    case "export":
-                        if ($detail->_service->consumables) {
-                            $consumables = json_decode($detail->_service->consumables);
-                            foreach ($consumables as $key => $consumable) {
-                                $quantity = $consumable->quantity * $consumable->unit_rate;
-                                $variable = Variable::find($consumable->variable_id);
-                                $stock_ids = $variable->getStocksToExport($quantity);
-                                if ($stock_ids) {
-                                    $stocks = Stock::with('import_detail._variable._product')->whereIn('id', $stock_ids)->get();
-                                    foreach ($stocks as $e => $stock) {
-                                        $stock->stockConvertQuantity = $stock->import_detail->_variable->convertUnit($stock->quantity);
-                                        $stock->productName = $stock->productName();
-                                        $stock->unit = $stock->import_detail->_variable->_units->where('rate', 1)->first();
-                                    }
-                                    $consumable->stocks = $stocks;
-                                } else {
-                                    return null;
-                                }
-                            }
-                            $indication->detail->_service->consumables = json_encode($consumables);
-                        }
-                        $result = $indication;
-                        break;
-                    default:
-                        $result = $indication;
-                        break;
-                }
-                return response()->json($result, 200);
-            } else {
-                abort(404);
-            }
-        }
     }
 
     public function remove(Request $request)
@@ -140,23 +100,6 @@ class DetailController extends Controller
             if ($obj) {
                 DB::beginTransaction();
                 try {
-                    if ($obj->service_id) {
-                        $ticket = $obj->_service->ticket;
-                        if ($ticket == null) {
-                            $obj->delete();
-                        } else if ($ticket != 'info' && $ticket != 'prescription') {
-                            if ($obj->$ticket && !$obj->$ticket->status) {
-                                $obj->$ticket->delete();
-                            } else {
-                                return response()->json(['errors' => ['message' => ['Không thể xóa dịch vụ đã thực hiện. Hãy thử xóa phiếu ' . $obj->_service->name]]], 422);
-                            }
-                        } else {
-                            if (optional($obj->$ticket)->export_id) {
-                                return response()->json(['errors' => ['message' => ['Không thể xóa đơn hàng đã xuất toa thuốc']]], 422);
-                            }
-                            optional($obj->$ticket)->delete();
-                        }
-                    }
                     if ($obj->stock_id) {
                         array_push($names, $obj->quantity . ' ' . $obj->_unit->term . ' ' . $obj->_stock->import_detail->_variable->_product->name . ' - ' . $obj->_stock->import_detail->_variable->name);
                         $obj->_stock->increment('quantity', $obj->quantity * $obj->_unit->rate);
@@ -175,7 +118,7 @@ class DetailController extends Controller
                             'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
                             'Chi tiết lỗi: ' . $e->getTraceAsString()
                     );
-                    Controller::resetAutoIncrement(['imports', 'import_details', 'stocks', 'exports', 'export_details', 'infos', 'indications', 'quicktests', 'microscopes', 'bloodcells', 'biochemicals', 'surgeries', 'ultrasounds', 'xrays', 'prescriptions', 'prescription_details', 'accommodations']);
+                    Controller::resetAutoIncrement(['imports', 'import_details', 'stocks', 'exports', 'export_details']);
                     return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
                 }
             }

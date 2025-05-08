@@ -27,7 +27,7 @@
                             <div class="col-8">
                                 <select class="form-select" id="transaction-cashier_id" name="cashier_id">
                                     <option selected disabled hidden>Chọn thu ngân</option>
-                                    @foreach (cache()->get('cashiers_' . Auth::user()->company_id) as $id => $name)
+                                    @foreach (cache()->get('cashiers') as $id => $name)
                                         <option value="{{ $id }}">{{ $name }}</option>
                                     @endforeach
                                 </select>
@@ -44,7 +44,7 @@
                                     <select class="form-select" id="transaction-payment" name="payment">
                                         <option value="1">Tiền mặt</option>
                                         @php
-                                            $settings = cache()->get('settings_' . Auth::user()->company_id);
+                                            $settings = cache()->get('settings');
                                             $bankInfos = isset($settings['bank_info']) ? json_decode($settings['bank_info'], true) : [];
                                         @endphp
                                         @foreach ($bankInfos as $index => $bank)

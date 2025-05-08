@@ -14,7 +14,7 @@ class DetailObserver
      */
     public function created(Detail $detail)
     {
-        $detail->order->update(['total' => $detail->order->total()]);
+       // $detail->order->update(['total' => $detail->order->total()]);
     }
 
     /**
@@ -25,7 +25,7 @@ class DetailObserver
      */
     public function updated(Detail $detail)
     {
-        $detail->order->update(['total' => $detail->order->total()]);
+       // $detail->order->update(['total' => $detail->order->total()]);
     }
 
     /**

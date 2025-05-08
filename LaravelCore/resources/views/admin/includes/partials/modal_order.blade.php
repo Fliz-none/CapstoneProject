@@ -33,29 +33,6 @@
                                 <div class="card-body order-details">
                                 </div>
                             </div>
-                            <div class="card card-services mb-3">
-                                <div class="card-header">
-                                    <div class="row">
-                                        <div class="col-12 d-flex justify-content-end">
-                                            <div class="dropdown ajax-search">
-                                                <div class="form-group mb-0 has-icon-left">
-                                                    <div class="position-relative search-form">
-                                                        <input class="form-control form-control-lg search-input" data-url="{{ route('admin.service') }}?key=search" type="text" autocomplete="off" placeholder="Chọn dịch vụ">
-                                                        <div class="form-control-icon">
-                                                            <i class="bi bi-search"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <ul class="dropdown-menu shadow-lg overflow-auto search-result" aria-labelledby="dropdownMenuButton" style="max-height: 45rem; max-width: 600px">
-                                                    <!-- Search results will be appended here -->
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body order-services">
-                                </div>
-                            </div>
                             <div class="card card-transactions mb-3">
                                 <div class="card-header">
                                     <div class="row">

@@ -39,7 +39,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         if (isset($request->key)) {
-            $objs = User::whereStatus(1)->where('users.company_id', $this->user->company_id);
+            $objs = User::whereStatus(1);
             switch ($request->key) {
                 case 'find':
                     $result = $objs
@@ -63,31 +63,6 @@ class UserController extends Controller
                                         Tạo tài khoản mới cho ' . $request->q . '
                                     </button>
                                 </li>');
-                    break;
-                case 'doctor':
-                    $result = $objs->permission(User::CREATE_INFO)
-                        ->where(function ($query) use ($request) {
-                            $query->where('id', 'LIKE', '' . $request->q . '%')
-                                ->orWhere('name', 'LIKE', '%' . $request->q . '%')
-                                ->orWhere('phone', 'LIKE', '%' . $request->q . '%')
-                                ->orWhere('email', 'LIKE', '%' . $request->q . '%');
-                        })
-                        ->orderByDesc('id')
-                        ->distinct()
-                        ->take(20)
-                        ->get()
-                        ->map(function ($obj, $index) {
-                            return '<li class="list-group-item border border-0 pb-0">
-                                            <input type="radio" name="doctor_id" id="doctor-' . $obj->id . '" class="form-check-input me-1" value="' . $obj->id . '">
-                                            <label class="form-check-label d-inline" for="doctor-' . $obj->id . '">' . $obj->full_name . ($obj->phone ? ' - ' . $obj->phone : '') . '</label>
-                                        </li>';
-                        })->push('<li class="list-group-item border border-0 pb-0">
-                                                <div class="row p-0 mx-0">
-                                                    <div class="col-12 py-3 text-center">
-                                                        Không tìm thấy bác sĩ nào khác
-                                                    </div>
-                                                </div>
-                                            </li>');
                     break;
                 case 'staff':
                     $result = $objs->permission(User::ACCESS_ADMIN)
@@ -153,7 +128,7 @@ class UserController extends Controller
                                 </li>');
                     break;
                 default:
-                    $obj = User::with('local', 'roles', 'warehouses', 'branches', 'pets.animal')->find($request->key);
+                    $obj = User::with('local', 'roles', 'warehouses', 'branches')->find($request->key);
                     if ($obj) {
                         switch ($request->action) {
                             case 'suggestions':
@@ -192,7 +167,7 @@ class UserController extends Controller
             return response()->json($result, 200);
         } else {
             if ($request->ajax()) {
-                $objs = User::with(['roles', 'local', 'pets.animal'])->where('users.company_id', $this->user->company_id); //Eager Loading
+                $objs = User::with(['roles', 'local']);
                 return DataTables::of($objs)
                     ->addColumn('checkboxes', function ($obj) {
                         return '<input class="form-check-input choice" type="checkbox" name="choices[]" value="' . $obj->id . '">';
@@ -235,17 +210,6 @@ class UserController extends Controller
                         $query->where('name', 'like', "%" . $keyword . "%")
                             ->orWhere('email', 'like', "%{$keyword}%");
                     })
-                    ->addColumn('pet', function ($obj) {
-                        $str = collect($obj->pets)->map(function ($pet) {
-                            return ($this->user->can(User::UPDATE_PET)) ? '<a class="btn btn-link text-decoration-none btn-update-pet text-primary text-start" data-id="' . $pet->id . '">' . $pet->name . '<small> (' . $pet->animal->specie . ')</small>' . '</a>' : $pet->name;
-                        })->implode(', ');
-                        return $str;
-                    })
-                    ->filterColumn('pet', function ($query, $keyword) {
-                        $query->whereHas('pets', function ($query) use ($keyword) {
-                            $query->where('name', 'like', "%" . $keyword . "%");
-                        });
-                    })
                     ->addColumn('email', function ($obj) {
                         return $obj->email;
                     })
@@ -285,13 +249,6 @@ class UserController extends Controller
                     })
                     ->addColumn('action', function ($obj) {
                         $str = '<div class="d-flex justify-content-end">';
-                        if ($this->user->company->has_clinic || $this->user->company->has_beauty) {
-                            if ($this->user->can(User::CREATE_PET)) {
-                                $str .= '<a class="btn text-primary btn-create-pet" data-customer="' . $obj->id . '">
-                                <i class="bi bi-github" data-bs-toggle="tooltip" data-bs-title="Thêm pet mới"></i>
-                            </a>';
-                            }
-                        }
                         if ($this->user->can(User::UPDATE_USER)) {
                             $str .= '<a class="btn text-primary btn-update-user_password" data-id="' . $obj->id . '">
                                 <i class="bi bi-key" data-bs-toggle="tooltip" data-bs-title="Đổi mật khẩu"></i>
@@ -310,7 +267,7 @@ class UserController extends Controller
                         }
                         return $str . '</div>';
                     })
-                    ->rawColumns(['checkboxes', 'name', 'phone', 'code', 'status', 'action', 'pet'])
+                    ->rawColumns(['checkboxes', 'name', 'phone', 'code', 'status', 'action'])
                     ->setTotalRecords($objs->count())
                     ->make(true);
             } else {
@@ -330,7 +287,7 @@ class UserController extends Controller
                 'digits:10',
                 'regex:/^0[0-9]{9,10}$/',
                 function ($attribute, $value, $fail) use ($request) {
-                    if (User::where('phone', $value)->where('company_id', Auth::user()->company_id)->count()) {
+                    if (User::where('phone', $value)->count()) {
                         $fail('Số điện thoại không được trùng với một tài khoản khác');
                     }
                 }
@@ -344,7 +301,7 @@ class UserController extends Controller
                 'email',
                 'max:125',
                 function ($attribute, $value, $fail) use ($request) {
-                    if (User::where('email', $value)->where('company_id', Auth::user()->company_id)->count()) {
+                    if (User::where('email', $value)->count()) {
                         $fail('Email không được trùng với một tài khoản khác');
                     }
                 }
@@ -395,7 +352,6 @@ class UserController extends Controller
                     'local_id' => $request->local_id,
                     'note' => $request->note,
                     'status' => $request->has('status'),
-                    'company_id' => Auth::user()->company_id,
                 ]);
 
                 if ($request->avatar) {
@@ -411,7 +367,7 @@ class UserController extends Controller
                     'status' => 'success',
                     'msg' => 'Đã tạo ' . self::NAME . ' ' . $user->name
                 );
-                cache()->forget('users_' . $this->user->company_id);
+                cache()->forget('users');
             } catch (\Exception $e) {
                 Log::error(
                     'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
@@ -438,7 +394,7 @@ class UserController extends Controller
                 'digits:10',
                 'regex:/^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/',
                 function ($attribute, $value, $fail) use ($request) {
-                    if (User::where('phone', $value)->where('company_id', Auth::user()->company_id)->where('id', '!=', $request->id)->count()) {
+                    if (User::where('phone', $value)->where('id', '!=', $request->id)->count()) {
                         $fail('Số điện thoại không được trùng với một tài khoản khác');
                     }
                 }
@@ -452,7 +408,7 @@ class UserController extends Controller
                 'email',
                 'max:125',
                 function ($attribute, $value, $fail) use ($request) {
-                    if (User::where('email', $value)->where('company_id', Auth::user()->company_id)->where('id', '!=', $request->id)->count()) {
+                    if (User::where('email', $value)->where('id', '!=', $request->id)->count()) {
                         $fail('Email không được trùng với một tài khoản khác');
                     }
                 }
@@ -505,7 +461,6 @@ class UserController extends Controller
                             'local_id' => $request->local_id,
                             'note' => $request->note,
                             'status' => $request->has('status'),
-                            'company_id' => Auth::user()->company_id,
                         ]);
 
                         if ($request->avatar) {
@@ -521,7 +476,7 @@ class UserController extends Controller
                             'status' => 'success',
                             'msg' => 'Đã cập nhật ' . $user->name
                         );
-                        cache()->forget('users_' . $this->user->company_id);
+                        cache()->forget('users');
                     } else {
                         $response = array(
                             'status' => 'error',
@@ -571,15 +526,15 @@ class UserController extends Controller
         }
         $user->syncWarehouses($request->warehouse_id);
         $user->syncBranches($request->branch_id);
-        cache()->forget('dealers_' . Auth::user()->company_id);
-        cache()->forget('cashiers_' . Auth::user()->company_id);
+        cache()->forget('dealers');
+        cache()->forget('cashiers');
         $roles = $user->getRoleNames()->implode(', ');
         LogController::create('cập nhật vai trò ' . $roles, "tài khoản", $user->id);
         $response = array(
             'status' => 'success',
             'msg' => 'Đã cập nhật vai trò ' . $roles . ' cho ' . $user->name . '!'
         );
-        cache()->forget('users_' . $this->user->company_id);
+        cache()->forget('users');
         return response()->json($response, 200);
     }
 
@@ -630,7 +585,7 @@ class UserController extends Controller
             }
             if (count($success)) {
                 $msg = 'Đã xóa ' . self::NAME . ' ' . implode(', ', $success) . '. ';
-                cache()->forget('users_' . $this->user->company_id);
+                cache()->forget('users');
             }
             if (count($fail)) {
                 $msg .= implode(', ', $fail) . ' không thể xóa!';

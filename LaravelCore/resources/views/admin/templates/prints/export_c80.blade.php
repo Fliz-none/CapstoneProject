@@ -1,6 +1,3 @@
-@php
-    $settings = cache()->get('settings_' . Auth::user()->company_id);
-@endphp
 <div id="print-container" style="font-size: 75%; color: #000000">
     <div class="container-fluid print-template">
         <div class="row">

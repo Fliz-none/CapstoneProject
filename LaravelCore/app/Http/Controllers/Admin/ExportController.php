@@ -7,8 +7,6 @@ use App\Models\Export;
 use App\Models\ExportDetail;
 use App\Models\Import;
 use App\Models\ImportDetail;
-use App\Models\Indication;
-use App\Models\Prescription;
 use App\Models\Stock;
 use App\Models\Unit;
 use App\Models\User;
@@ -102,8 +100,7 @@ class ExportController extends Controller
             return response()->json($result, 200);
         } else {
             if ($request->ajax()) {
-                $objs = Export::where('exports.company_id', $this->user->company_id)
-                    ->with(['_user.local', '_receiver.local', 'import', 'export_details._stock.import_detail._import.import_details.stock.export_details'])->whereHas('export_details', function ($query) use ($request) {
+                $objs = Export::with(['_user.local', '_receiver.local', 'import', 'export_details._stock.import_detail._import.import_details.stock.export_details'])->whereHas('export_details', function ($query) use ($request) {
                         $query->whereHas('_stock', function ($query) use ($request) {
                             $query->whereHas('import_detail', function ($query) use ($request) {
                                 $query->whereHas('_import', function ($query) use ($request) {
@@ -278,7 +275,6 @@ class ExportController extends Controller
                     'to_warehouse_id' => $request->to_warehouse_id,
                     'user_id' => $this->user->id,
                     'order_id' => $request->order_id,
-                    'company_id' => $this->user->company_id,
                     'note' => $request->note,
                     'status' => $request->status,
                 ]);
@@ -287,7 +283,6 @@ class ExportController extends Controller
                         $import = Import::create([
                             'warehouse_id' => $request->to_warehouse_id,
                             'export_id' => $export->id,
-                            'company_id' => $this->user->company_id,
                             'note' => 'Nhập từ ' . $export->code,
                             'created_at' => $export->created_at,
                             'status' => 0,
@@ -317,7 +312,6 @@ class ExportController extends Controller
                                     ]);
                                     if ($import_detail) {
                                         $stock = Stock::create([
-                                            'company_id' => $this->user->company_id,
                                             'import_detail_id' => $import_detail->id,
                                             'quantity' => $request->quantities[$i] * $unit->rate,
                                             'lot' => $export_detail->_stock->lot,
@@ -334,10 +328,6 @@ class ExportController extends Controller
                                 }
                             }
                         }
-                    }
-                    if ($request->prescription_id != null) {
-                        $prescription = Prescription::find($request->prescription_id);
-                        $prescription->update(['export_id' => $export->id]);
                     }
                 }
 
@@ -386,7 +376,6 @@ class ExportController extends Controller
                             'date' => $request->date,
                             'receiver_id' => $request->receiver_id,
                             'to_warehouse_id' => $request->to_warehouse_id,
-                            'company_id' => $this->user->company_id,
                             'user_id' => $this->user->id,
                             'note' => $request->note,
                             'status' => $request->status,
@@ -398,7 +387,6 @@ class ExportController extends Controller
                             ], [
                                 'warehouse_id' => $request->to_warehouse_id,
                                 'export_id' => $export->id,
-                                'company_id' => $this->user->company_id,
                                 'note' => 'Nhập từ ' . $export->code,
                                 'created_at' => $export->created_at,
                                 'status' => 0,
@@ -434,7 +422,6 @@ class ExportController extends Controller
                                             $stock = Stock::updateOrCreate([
                                                 'id' => $import_detail->stock ? $import_detail->stock->id : null
                                             ], [
-                                                'company_id' => $this->user->company_id,
                                                 'import_detail_id' => $import_detail->id,
                                                 'quantity' => $request->quantities[$i] * $unit->rate,
                                                 'lot' => $export_detail->_stock->lot,

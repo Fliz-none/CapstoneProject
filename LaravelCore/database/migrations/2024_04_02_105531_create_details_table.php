@@ -17,7 +17,6 @@ class CreateDetailsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('stock_id')->nullable();
-            $table->unsignedBigInteger('service_id')->nullable();
             $table->unsignedBigInteger('unit_id')->nullable();
             $table->unsignedInteger('quantity');
             $table->unsignedDouble('price', 10, 0)->default(0);
@@ -29,7 +28,6 @@ class CreateDetailsTable extends Migration
 
             $table->foreign('order_id')->references('id')->on('orders');
             $table->foreign('stock_id')->references('id')->on('stocks');
-            $table->foreign('service_id')->references('id')->on('services');
             $table->foreign('unit_id')->references('id')->on('units');
         });
     }

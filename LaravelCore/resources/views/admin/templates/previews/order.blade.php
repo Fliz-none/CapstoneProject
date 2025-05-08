@@ -35,7 +35,7 @@
                     </thead>
                     <tbody>
                         @php
-                            $goods = $order->details->whereNull('service_id');
+                            $goods = $order->details;
                         @endphp
                         @if($goods->count())
                             <tr>
@@ -56,32 +56,6 @@
                                     </td>
                                     <td class="text-end">
                                         {{ $good->realPrice ? number_format($good->quantity * $good->realPrice) . 'đ' : 'Miễn phí' }}
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @endif
-                        @php
-                            $services = $order->details->whereNull('stock_id');
-                        @endphp
-                        @if($services->count())
-                            <tr>
-                                <td colspan="4"><h5 class="text-primary mb-0">Các dịch vụ</h5></td>
-                            </tr>
-                            @foreach ($services as $service)
-                                <tr>
-                                    <td>
-                                        {!! $service->_service->fullName !!}<br />
-                                        <small>{{ $service->note }}</small>
-                                    </td>
-                                    <td class="text-center">
-                                        {{ $service->quantity . ' ' . ($service->_service->unit ?? 'ĐVT') }}
-                                    </td>
-                                    <td class="text-end">
-                                        {{ number_format($service->realPrice) . 'đ' }}
-                                        {!! $service->discount > 0 ? '<br/><small>Đã giảm ' . number_format($service->originalTotal - $service->total) . 'đ</small>' : '' !!}
-                                    </td>
-                                    <td class="text-end">
-                                        {{ $service->realPrice ? number_format($service->quantity * $service->realPrice) . 'đ' : 'Miễn phí' }}
                                     </td>
                                 </tr>
                             @endforeach

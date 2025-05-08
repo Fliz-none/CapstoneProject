@@ -2024,7 +2024,6 @@ class ExportSeeder extends Seeder
         // DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         // foreach ($exports as $key => $export) {
         //     Export::create([
-        //         'company_id' => 1,
         //         'id' => $export[0],
         //         'user_id' => $export[1],
         //         'receiver_id' => $export[2],
@@ -2116,8 +2115,16 @@ class ExportSeeder extends Seeder
         //stock_id, export_id, quantity, unit_id
         foreach ($exports as $key => $export) {
             $unit = Unit::find($export[3]);
-            if($unit) {
-                Stock::find($export[0])->increment('quantity', ($export[4] - $export[2]) * $unit->rate);
+            $stock = Stock::find($export[0]);
+            if (!$stock) {
+                dump("Stock ID not found: " . $export[0]);
+            } else {
+                if ($stock && $unit) {
+                    $stock->increment('quantity', ($export[4] - $export[2]) * $unit->rate);
+                }
+            }
+            if (!$unit) {
+                dump("Unit ID not found: " . $export[3]);
             }
         }
     }

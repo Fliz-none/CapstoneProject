@@ -19,11 +19,9 @@ class CreateImagesTable extends Migration
             $table->string('alt')->nullable();;
             $table->text('caption')->nullable();;
             $table->unsignedBigInteger('author_id');
-            $table->unsignedBigInteger('company_id');
             $table->timestamps();
 
             $table->foreign('author_id')->references('id')->on('users');
-            $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 

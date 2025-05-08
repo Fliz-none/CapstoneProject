@@ -1,60 +1,34 @@
 <?php
 
-use App\Http\Controllers\Admin\AnimalController;
 use App\Http\Controllers\Admin\AttributeController;
-use App\Http\Controllers\Admin\BeautyController;
-use App\Http\Controllers\Admin\BiochemicalController;
-use App\Http\Controllers\Admin\BloodcellController;
-use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\CatalogueController;
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DebtController;
 use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\ExportController;
 use App\Http\Controllers\Admin\ExportDetailController;
-use App\Http\Controllers\Admin\AccommodationController;
 use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\ImportController;
-use App\Http\Controllers\Admin\IndicationController;
-use App\Http\Controllers\Admin\InfoController;
 use App\Http\Controllers\Admin\LocalController;
 use App\Http\Controllers\Admin\LogController;
-use App\Http\Controllers\Admin\MajorController;
-use App\Http\Controllers\Admin\MicroscopeController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\OrderController;
-use App\Http\Controllers\Admin\PetController;
 use App\Http\Controllers\Admin\PostController;
-use App\Http\Controllers\Admin\PrescriptionController;
 use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\QuicktestController;
 use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StockController;
 use App\Http\Controllers\Admin\SupplierController;
-use App\Http\Controllers\Admin\SurgeryController;
 use App\Http\Controllers\Admin\TransactionController;
-use App\Http\Controllers\Admin\CriterialController;
 use App\Http\Controllers\Admin\DetailController;
-use App\Http\Controllers\Admin\DiseaseController;
-use App\Http\Controllers\Admin\DosageController;
 use App\Http\Controllers\Admin\ImportDetailController;
-use App\Http\Controllers\Admin\MedicineController;
-use App\Http\Controllers\Admin\PrescriptionDetailController;
-use App\Http\Controllers\Admin\RoomController;
-use App\Http\Controllers\Admin\UltrasoundController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VariableController;
 use App\Http\Controllers\Admin\WarehouseController;
 use App\Http\Controllers\Admin\WorkController;
-use App\Http\Controllers\Admin\XrayController;
 use App\Http\Controllers\Admin\SelfController;
-use App\Http\Controllers\Admin\SymptomController;
-use App\Http\Controllers\Admin\TrackingController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\VersionController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -131,14 +105,6 @@ Route::group(['prefix' => 'quantri'], function () {
         Route::post('/changepassword', [UserController::class, 'changePassword'])->name('admin.user.changepassword');
     });
 
-    Route::group(['prefix' => 'pet'], function () {
-        Route::get('{key?}', [PetController::class, 'index'])->name('admin.pet');
-        Route::post('create', [PetController::class, 'create'])->name('admin.pet.create');
-        Route::post('update', [PetController::class, 'update'])->name('admin.pet.update');
-        Route::post('remove', [PetController::class, 'remove'])->name('admin.pet.remove');
-        Route::post('remove/avatar', [PetController::class, 'removeAvatar'])->name('admin.pet.remove.avatar');
-    });
-
     Route::group(['prefix' => 'supplier'], function () {
         Route::get('{key?}', [SupplierController::class, 'index'])->name('admin.supplier');
         Route::post('create', [SupplierController::class, 'create'])->name('admin.supplier.create');
@@ -166,14 +132,6 @@ Route::group(['prefix' => 'quantri'], function () {
         Route::post('remove', [CatalogueController::class, 'remove'])->name('admin.catalogue.remove');
     });
 
-    Route::group(['prefix' => 'major'], function () {
-        Route::get('{key?}', [MajorController::class, 'index'])->name('admin.major');
-        Route::post('/sort', [MajorController::class, 'sort'])->name('admin.major.sort');
-        Route::post('create', [MajorController::class, 'create'])->name('admin.major.create');
-        Route::post('update', [MajorController::class, 'update'])->name('admin.major.update');
-        Route::post('remove', [MajorController::class, 'remove'])->name('admin.major.remove');
-    });
-
     Route::group(['prefix' => 'attribute'], function () {
         Route::get('{key?}', [AttributeController::class, 'index'])->name('admin.attribute');
         Route::post('create', [AttributeController::class, 'create'])->name('admin.attribute.create');
@@ -186,21 +144,6 @@ Route::group(['prefix' => 'quantri'], function () {
         Route::post('create', [VariableController::class, 'create'])->name('admin.variable.create');
         Route::post('update', [VariableController::class, 'update'])->name('admin.variable.update');
         Route::post('remove', [VariableController::class, 'remove'])->name('admin.variable.remove');
-    });
-
-    Route::group(['prefix' => 'service'], function () {
-        Route::get('{key?}', [ServiceController::class, 'index'])->name('admin.service');
-        Route::post('/sort', [ServiceController::class, 'sort'])->name('admin.service.sort');
-        Route::post('/save', [ServiceController::class, 'save'])->name('admin.service.save');
-        Route::post('remove', [ServiceController::class, 'remove'])->name('admin.service.remove');
-    });
-
-    Route::group(['prefix' => 'booking'], function () {
-        Route::get('{key?}/{action?}', [BookingController::class, 'index'])->name('admin.booking');
-        Route::post('create', [BookingController::class, 'create'])->name('admin.booking.create');
-        Route::post('update', [BookingController::class, 'update'])->name('admin.booking.update');
-        Route::post('send-zns', [BookingController::class, 'send_zns'])->name('admin.booking.send_zns');
-        Route::post('remove', [BookingController::class, 'remove'])->name('admin.booking.remove');
     });
 
     Route::group(['prefix' => 'import'], function () {
@@ -237,121 +180,11 @@ Route::group(['prefix' => 'quantri'], function () {
         Route::post('remove', [ExportDetailController::class, 'remove'])->name('admin.export_detail.remove');
     });
 
-    Route::group(['prefix' => 'info'], function () {
-        Route::get('{key?}/{action?}', [InfoController::class, 'index'])->name('admin.info');
-        Route::post('expand', [InfoController::class, 'expand'])->name('admin.info.expand');
-        Route::post('create', [InfoController::class, 'create'])->name('admin.info.create');
-        Route::post('update', [InfoController::class, 'update'])->name('admin.info.update');
-        Route::post('remove', [InfoController::class, 'remove'])->name('admin.info.remove');
-    });
-
-    Route::group(['prefix' => 'indication'], function () {
-        Route::get('{key?}/{action?}', [IndicationController::class, 'index'])->name('admin.indication');
-        Route::post('save', [IndicationController::class, 'save'])->name('admin.indication.save');
-        Route::post('remove', [IndicationController::class, 'remove'])->name('admin.indication.remove');
-    });
-
-    Route::group(['prefix' => 'quicktest'], function () {
-        Route::get('{key?}/{action?}', [QuicktestController::class, 'index'])->name('admin.quicktest');
-        Route::post('create', [QuicktestController::class, 'create'])->name('admin.quicktest.create');
-        Route::post('update', [QuicktestController::class, 'update'])->name('admin.quicktest.update');
-        Route::post('remove', [QuicktestController::class, 'remove'])->name('admin.quicktest.remove');
-    });
-
-    Route::group(['prefix' => 'ultrasound'], function () {
-        Route::get('{key?}/{action?}', [UltrasoundController::class, 'index'])->name('admin.ultrasound');
-        Route::post('create', [UltrasoundController::class, 'create'])->name('admin.ultrasound.create');
-        Route::post('update', [UltrasoundController::class, 'update'])->name('admin.ultrasound.update');
-        Route::post('remove', [UltrasoundController::class, 'remove'])->name('admin.ultrasound.remove');
-    });
-
     Route::group(['prefix' => 'unit'], function () {
         Route::get('{key?}', [UnitController::class, 'index'])->name('admin.unit');
         Route::post('create', [UnitController::class, 'create'])->name('admin.unit.create');
         Route::post('update', [UnitController::class, 'update'])->name('admin.unit.update');
         Route::post('remove', [UnitController::class, 'remove'])->name('admin.unit.remove');
-    });
-
-    Route::group(['prefix' => 'bloodcell'], function () {
-        Route::get('{key?}/{action?}', [BloodcellController::class, 'index'])->name('admin.bloodcell');
-        Route::post('create', [BloodcellController::class, 'create'])->name('admin.bloodcell.create');
-        Route::post('update', [BloodcellController::class, 'update'])->name('admin.bloodcell.update');
-        Route::post('remove', [BloodcellController::class, 'remove'])->name('admin.bloodcell.remove');
-    });
-
-    Route::group(['prefix' => 'biochemical'], function () {
-        Route::get('{key?}/{action?}', [BiochemicalController::class, 'index'])->name('admin.biochemical');
-        Route::post('create', [BiochemicalController::class, 'create'])->name('admin.biochemical.create');
-        Route::post('update', [BiochemicalController::class, 'update'])->name('admin.biochemical.update');
-        Route::post('remove', [BiochemicalController::class, 'remove'])->name('admin.biochemical.remove');
-    });
-
-    Route::group(['prefix' => 'microscope'], function () {
-        Route::get('{key?}/{action?}', [MicroscopeController::class, 'index'])->name('admin.microscope');
-        Route::post('create', [MicroscopeController::class, 'create'])->name('admin.microscope.create');
-        Route::post('update', [MicroscopeController::class, 'update'])->name('admin.microscope.update');
-        Route::post('remove', [MicroscopeController::class, 'remove'])->name('admin.microscope.remove');
-    });
-
-    Route::group(['prefix' => 'xray'], function () {
-        Route::get('{key?}/{action?}', [XrayController::class, 'index'])->name('admin.xray');
-        Route::post('create', [XrayController::class, 'create'])->name('admin.xray.create');
-        Route::post('update', [XrayController::class, 'update'])->name('admin.xray.update');
-        Route::post('remove', [XrayController::class, 'remove'])->name('admin.xray.remove');
-    });
-
-    Route::group(['prefix' => 'surgery'], function () {
-        Route::get('{key?}/{action?}', [SurgeryController::class, 'index'])->name('admin.surgery');
-        Route::post('create', [SurgeryController::class, 'create'])->name('admin.surgery.create');
-        Route::post('update', [SurgeryController::class, 'update'])->name('admin.surgery.update');
-        Route::post('remove', [SurgeryController::class, 'remove'])->name('admin.surgery.remove');
-    });
-
-    Route::group(['prefix' => 'criterial'], function () {
-        Route::get('{key?}', [CriterialController::class, 'index'])->name('admin.criterial');
-        Route::post('create', [CriterialController::class, 'create'])->name('admin.criterial.create');
-        Route::post('update', [CriterialController::class, 'update'])->name('admin.criterial.update');
-        Route::post('remove', [CriterialController::class, 'remove'])->name('admin.criterial.remove');
-    });
-
-    Route::group(['prefix' => 'prescription'], function () {
-        Route::get('{key?}/{action?}', [PrescriptionController::class, 'index'])->name('admin.prescription');
-        Route::post('create', [PrescriptionController::class, 'create'])->name('admin.prescription.create');
-        Route::post('update', [PrescriptionController::class, 'update'])->name('admin.prescription.update');
-        Route::post('remove', [PrescriptionController::class, 'remove'])->name('admin.prescription.remove');
-        Route::post('refund', [PrescriptionController::class, 'refund'])->name('admin.prescription.refund');
-    });
-
-    Route::group(['prefix' => 'prescription_detail'], function () {
-        Route::post('remove', [PrescriptionDetailController::class, 'remove'])->name('admin.prescription_detail.remove');
-    });
-
-    Route::group(['prefix' => 'beauty'], function () {
-        Route::get('{key?}', [BeautyController::class, 'index'])->name('admin.beauty');
-        Route::post('create', [BeautyController::class, 'create'])->name('admin.beauty.create');
-        Route::post('update', [BeautyController::class, 'update'])->name('admin.beauty.update');
-        Route::post('remove', [BeautyController::class, 'remove'])->name('admin.beauty.remove');
-    });
-
-    Route::group(['prefix' => 'accommodation'], function () {
-        Route::get('{key?}', [AccommodationController::class, 'index'])->name('admin.accommodation');
-        Route::post('create', [AccommodationController::class, 'create'])->name('admin.accommodation.create');
-        Route::post('update', [AccommodationController::class, 'update'])->name('admin.accommodation.update');
-        Route::post('remove', [AccommodationController::class, 'remove'])->name('admin.accommodation.remove');
-    });
-
-    Route::group(['prefix' => 'tracking'], function () {
-        Route::get('{key?}', [TrackingController::class, 'index'])->name('admin.tracking');
-        Route::post('create', [TrackingController::class, 'create'])->name('admin.tracking.create');
-        Route::post('update', [TrackingController::class, 'update'])->name('admin.tracking.update');
-        Route::post('remove', [TrackingController::class, 'remove'])->name('admin.tracking.remove');
-    });
-
-    Route::group(['prefix' => 'room'], function () {
-        Route::get('{key?}', [RoomController::class, 'index'])->name('admin.room');
-        Route::post('create', [RoomController::class, 'create'])->name('admin.room.create');
-        Route::post('update', [RoomController::class, 'update'])->name('admin.room.update');
-        Route::post('remove', [RoomController::class, 'remove'])->name('admin.room.remove');
     });
 
     Route::group(['prefix' => 'post'], function () {
@@ -384,13 +217,6 @@ Route::group(['prefix' => 'quantri'], function () {
         Route::post('schedule', [WorkController::class, 'schedule'])->name('admin.work.schedule');
     });
 
-    Route::group(['prefix' => 'animal'], function () {
-        Route::get('{key?}', [AnimalController::class, 'index'])->name('admin.animal');
-        Route::post('create', [AnimalController::class, 'create'])->name('admin.animal.create');
-        Route::post('update', [AnimalController::class, 'update'])->name('admin.animal.update');
-        Route::post('remove', [AnimalController::class, 'remove'])->name('admin.animal.remove');
-    });
-
     Route::group(['prefix' => 'local'], function () {
         Route::get('{key?}', [LocalController::class, 'index'])->name('admin.local');
         Route::post('create', [LocalController::class, 'create'])->name('admin.local.create');
@@ -419,14 +245,6 @@ Route::group(['prefix' => 'quantri'], function () {
         Route::post('remove', [ExpenseController::class, 'remove'])->name('admin.expense.remove');
     });
 
-    Route::group(['prefix' => 'company'], function () {
-        Route::get('{key?}', [CompanyController::class, 'index'])->name('admin.company');
-        Route::post('create', [CompanyController::class, 'create'])->name('admin.company.create');
-        Route::post('update', [CompanyController::class, 'update'])->name('admin.company.update');
-        Route::post('remove', [CompanyController::class, 'remove'])->name('admin.company.remove');
-        Route::post('login', [CompanyController::class, 'login'])->name('admin.company.login');
-    });
-
     Route::group(['prefix' => 'log'], function () {
         Route::get('{key?}', [LogController::class, 'index'])->name('admin.log');
     });
@@ -452,7 +270,6 @@ Route::group(['prefix' => 'quantri'], function () {
         Route::post('website', [SettingController::class, 'updateWebsite'])->name('admin.setting.website');
         Route::post('work', [SettingController::class, 'updatework'])->name('admin.setting.work');
         Route::post('zalo', [SettingController::class, 'updateZalo'])->name('admin.setting.zalo');
-        Route::post('symptom_disease', [SettingController::class, 'updateSymptom_Disease'])->name('admin.setting.symptom_disease');
         Route::post('print', [SettingController::class, 'updatePrint'])->name('admin.setting.print');
     });
 
@@ -463,30 +280,6 @@ Route::group(['prefix' => 'quantri'], function () {
         Route::post('remove', [RoleController::class, 'remove'])->name('admin.role.remove');
     });
 
-    Route::group(['prefix' => 'disease'], function () {
-        Route::get('{key?}/{action?}', [DiseaseController::class, 'index'])->name('admin.disease');
-        Route::post('create', [DiseaseController::class, 'create'])->name('admin.disease.create');
-        Route::post('update', [DiseaseController::class, 'update'])->name('admin.disease.update');
-        Route::post('remove', [DiseaseController::class, 'remove'])->name('admin.disease.remove');
-    });
-    Route::group(['prefix' => 'symptom'], function () {
-        Route::get('{key?}', [SymptomController::class, 'index'])->name('admin.symptom');
-        Route::post('create', [SymptomController::class, 'create'])->name('admin.symptom.create');
-        Route::post('update', [SymptomController::class, 'update'])->name('admin.symptom.update');
-        Route::post('remove', [SymptomController::class, 'remove'])->name('admin.symptom.remove');
-    });
-    Route::group(['prefix' => 'medicine'], function () {
-        Route::get('{key?}', [MedicineController::class, 'index'])->name('admin.medicine');
-        Route::post('create', [MedicineController::class, 'create'])->name('admin.medicine.create');
-        Route::post('update', [MedicineController::class, 'update'])->name('admin.medicine.update');
-        Route::post('remove', [MedicineController::class, 'remove'])->name('admin.medicine.remove');
-    });
-    Route::group(['prefix' => 'dosage'], function () {
-        Route::get('{key?}', [DosageController::class, 'index'])->name('admin.dosage');
-        Route::post('create', [DosageController::class, 'create'])->name('admin.dosage.create');
-        Route::post('update', [DosageController::class, 'update'])->name('admin.dosage.update');
-        Route::post('remove', [DosageController::class, 'remove'])->name('admin.dosage.remove');
-    });
     Route::group(['prefix' => 'version'], function () {
         Route::get('{key?}/{action?}', [VersionController::class, 'index'])->name('admin.version');
         Route::post('create', [VersionController::class, 'create'])->name('admin.version.create');

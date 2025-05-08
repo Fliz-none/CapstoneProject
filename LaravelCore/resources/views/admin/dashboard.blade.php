@@ -133,7 +133,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 col-lg-3 col-md-6">
+                        {{-- <div class="col-6 col-lg-3 col-md-6">
                             <div class="card mb-3">
                                 <div class="card-body px-3 py-4">
                                     <div class="row">
@@ -153,7 +153,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-6 col-lg-3 col-md-6">
                             <div class="card mb-3">
                                 <div class="card-body px-3 py-4">
@@ -263,7 +263,7 @@
                     <!-- /Invoice Chart -->
                 </div>
 
-                <div class="col-md-4 d-flex">
+                <div class="col-md-6 d-flex">
                     <!-- Recent Orders -->
                     <div class="card card-table card-stats-product mb-3 flex-fill">
                         <div class="card-header">
@@ -297,7 +297,7 @@
                     <!-- /Recent Orders -->
                 </div>
 
-                <div class="col-md-4 d-flex">
+                <div class="col-md-6 d-flex">
                     <!-- Feed Activity -->
                     <div class="card card-table card-stats-product mb-3 flex-fill">
                         <div class="card-header">
@@ -329,7 +329,7 @@
                     <!-- /Feed Activity -->
                 </div>
 
-                <div class="col-md-4 d-flex">
+                {{-- <div class="col-md-4 d-flex">
                     <!-- Service Activity -->
                     <div class="card card-table card-stats-product mb-3 flex-fill">
                         <div class="card-header">
@@ -359,7 +359,7 @@
                         </div>
                     </div>
                     <!-- /Service Activity -->
-                </div>
+                </div> --}}
             @else
                 @include('admin.includes.access_denied')
             @endif
@@ -439,12 +439,10 @@
                         loadAnalytics()
                         loadDataTables('user');
                         loadDataTables('product');
-                        loadDataTables('service');
                 });
                 loadAnalytics()
                 loadDataTables('user');
                 loadDataTables('product');
-                loadDataTables('service');
 
                 function loadAnalytics() {
                     const range = [startDate.format('YYYY-MM-DD HH:mm:ss'), endDate.format('YYYY-MM-DD HH:mm:ss')],
@@ -515,9 +513,6 @@
 
                     $('h3.customers').html(number_format(data.allCustomers)).attr('data-bs-title',
                         `Khách mới: ${number_format(data.newCustomers)}<br/>Khách cũ: ${number_format(data.oldCustomers)}`).prev().val(data.allCustomers)
-
-                    $('h3.pets').html(number_format(data.allPets)).attr('data-bs-title',
-                        `Khám lần đầu: ${number_format(data.newPets)}<br/>Quay lại: ${number_format(data.oldPets)}`).prev().val(data.allPets)
 
                     $('h3.products').html(`${number_format(data.allProducts)} &times; ${number_format(data.allVariables)}`).attr('data-bs-title',
                         `Có nhập: ${number_format(data.newCustomers)}<br/>Có bán: ${number_format(data.oldCustomers)}`).prev().val(data.allProducts * data.allVariables)

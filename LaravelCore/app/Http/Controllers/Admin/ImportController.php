@@ -86,8 +86,7 @@ class ImportController extends Controller
     public function index(Request $request)
     {
         if (isset($request->key)) {
-            $import = Import::where('imports.company_id', $this->user->company_id)
-                ->withTrashed()->with(['import_details.stock.export_details', '_supplier', 'import_details._unit', '_export', '_warehouse', 'import_details._variable._product', 'import_details._variable.units'])
+            $import = Import::withTrashed()->with(['import_details.stock.export_details', '_supplier', 'import_details._unit', '_export', '_warehouse', 'import_details._variable._product', 'import_details._variable.units'])
                 ->find($request->key);
             if ($import) {
                 switch ($request->action) {
@@ -107,7 +106,7 @@ class ImportController extends Controller
             return response()->json($result, 200);
         } else {
             if ($request->ajax()) {
-                $objs = Import::with(['import_details.stock.export_details', '_user.local', '_supplier', '_warehouse', '_export.export_details'])->where('imports.company_id', Auth::user()->company_id)->when($request->has('warehouse_id'), function ($query) use ($request) {
+                $objs = Import::with(['import_details.stock.export_details', '_user.local', '_supplier', '_warehouse', '_export.export_details'])->when($request->has('warehouse_id'), function ($query) use ($request) {
                     $query->where('warehouse_id', $request->warehouse_id);
                 }, function ($query) {
                     $query->whereIn('warehouse_id', $this->user->warehouses->pluck('id'));
@@ -316,7 +315,6 @@ class ImportController extends Controller
                     'note' => $request->note,
                     'created_at' => $request->created_at,
                     'status' => $request->status,
-                    'company_id' => $this->user->company_id,
                 ]);
                 if ($import) {
                     $units = Unit::whereIn('id', $request->unit_ids)->get();
@@ -335,7 +333,6 @@ class ImportController extends Controller
                                 'quantity' => $request->quantities[$i] * $unit->rate,
                                 'lot' => $request->lots[$i],
                                 'expired' => $request->expireds[$i],
-                                'company_id' => $this->user->company_id,
                             ]);
                         }
                     }
@@ -411,7 +408,6 @@ class ImportController extends Controller
                             if ($old->export_id) {
                                 $old->user_id = $this->user->id;
                                 $old->status = $request->status;
-                                $old->company_id = $this->user->company_id;
                                 $old->save();
                             }
                             foreach (array_filter($request->import_detail_ids) as $i => $id) {
@@ -461,7 +457,6 @@ class ImportController extends Controller
                                         $stock->quantity = ($old->checkLoss() && $stock->id) ? $stock->quantity : $request->quantities[$i] * $unit->rate;
                                         $stock->lot = $request->lots[$i];
                                         $stock->expired = $request->expireds[$i];
-                                        $stock->company_id = $this->user->company_id;
                                         $stock->save();
                                         if ($stock) {
                                             $this->updateStockRecursive($stock);
@@ -594,7 +589,6 @@ class ImportController extends Controller
                     ], [
                         'lot' => $stock->lot,
                         'expired' => $stock->expired,
-                        'company_id' => $user->company_id,
                     ]);
                     self::updateStockRecursive($child);
                 }

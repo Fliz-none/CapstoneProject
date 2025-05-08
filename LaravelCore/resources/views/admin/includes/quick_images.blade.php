@@ -39,7 +39,7 @@
 <!-- END Quick Images -->
 
 @push('quick_images')
-    <script src="{{ asset('admin/js/quick_images.js') }}?v={{ cache()->get('version_' . Auth::user()->company_id)->name }}"></script>
+    <script src="{{ asset('admin/js/quick_images.js') }}?v={{ cache()->get('version')->name }}"></script>
     <script type="text/javascript">
         /**
          * IMAGE DATATABLE

@@ -20,13 +20,11 @@ class CreateCataloguesTable extends Migration
             $table->string('avatar')->nullable();
             $table->unsignedInteger('sort')->nullable();
             $table->unsignedBigInteger('parent_id')->nullable();
-            $table->unsignedBigInteger('company_id');
             $table->unsignedTinyInteger('status')->coment('0: block; 1: active')->default(1);
             $table->text('note')->nullable();
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('parent_id')->references('id')->on('catalogues');
         });
     }

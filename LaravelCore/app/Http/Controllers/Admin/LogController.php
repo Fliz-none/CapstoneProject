@@ -34,16 +34,14 @@ class LogController extends Controller
             switch ($request->key) {
                 case 'list':
                     $ids = json_decode($request->ids);
-                    $result = Log::where('logs.company_id', $this->user->company_id)
-                        ->orderBy('created_at', 'DESC')
-                        ->when(count($ids), function ($query) use ($ids) {
-                            $query->whereIn('id', $ids);
-                        })->get();
+                    $result = Log::orderByDesc('created_at')
+                        ->when(count($ids), fn($query) => $query->whereIn('id', $ids))
+                        ->limit(500)
+                        ->get();
                     break;
 
                 case 'search':
-                    $result = Log::where('logs.company_id', $this->user->company_id)
-                        ->where(function ($query) use ($request) {
+                    $result = Log::where(function ($query) use ($request) {
                             $query->where('action', 'like', "%{$request->q}%")
                                 ->orWhere('type', 'like', "%{$request->q}%")
                                 ->orWhere('object', 'like', "%{$request->q}%");
@@ -62,7 +60,7 @@ class LogController extends Controller
             return response()->json($result, 200);
         } else {
             if ($request->ajax()) {
-                $logs = Log::with(['_user', 'branch'])->where('logs.company_id', $this->user->company_id); //Eager Loading
+                $logs = Log::with(['_user', 'branch'])->orderByDesc('created_at');
                 return DataTables::of($logs)
                     ->addColumn('code', function ($log) {
                         $code = '<span class="fw-bold text-success">' . $log->code . '</span>';
@@ -75,12 +73,12 @@ class LogController extends Controller
                             $query->when($date['year'], function ($query) use ($date) {
                                 $query->whereYear('logs.created_at', $date['year']);
                             })
-                            ->when($date['month'], function ($query) use ($date) {
-                                $query->whereMonth('logs.created_at', $date['month']);
-                            })
-                            ->when($date['day'], function ($query) use ($date) {
-                                $query->whereDay('logs.created_at', $date['day']);
-                            });
+                                ->when($date['month'], function ($query) use ($date) {
+                                    $query->whereMonth('logs.created_at', $date['month']);
+                                })
+                                ->when($date['day'], function ($query) use ($date) {
+                                    $query->whereDay('logs.created_at', $date['day']);
+                                });
                         }, function ($query) use ($keyword) {
                             $numericKeyword = ltrim(preg_replace('/[^0-9]/', '', $keyword), '0');
                             if (!empty($numericKeyword)) {
@@ -126,7 +124,7 @@ class LogController extends Controller
                     ->orderColumn('code', function ($query, $order) {
                         $query->orderBy('id', $order);
                     })
-                    ->rawColumns(['code', 'user_id', 'company_id', 'action', 'type'])
+                    ->rawColumns(['code', 'user_id', 'action', 'type'])
                     ->make(true);
             } else {
                 $pageName = 'Quản lý ' . self::NAME;
@@ -140,7 +138,6 @@ class LogController extends Controller
         $agent = new Agent();
         $geolocation = Http::get('https://ipinfo.io/' . session('ip') . '/json?token=d89e4a0555c438')->json();
         Log::create([
-            'company_id' => Auth::user()->company_id,
             'user_id' => Auth::user()->id,
             'action' => $action,
             'type' => $object,

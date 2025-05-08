@@ -19,7 +19,6 @@ class CreatePostsTable extends Migration
             $table->text('title');
             $table->unsignedBigInteger('author_id');
             $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('company_id');
             $table->text('excerpt')->nullable();
             $table->longText('content');
             $table->string('image')->nullable();
@@ -28,7 +27,6 @@ class CreatePostsTable extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('author_id')->references('id')->on('users');
             $table->foreign('category_id')->references('id')->on('categories');
         });

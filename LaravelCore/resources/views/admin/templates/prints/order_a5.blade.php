@@ -1,5 +1,5 @@
 @php
-    $settings = cache()->get('settings_' . Auth::user()->company_id);
+    $settings = cache()->get('settings');
 @endphp
 {{-- <link href="{{ asset('admin/css/bootstrap.css') }}" rel="stylesheet"> --}}
 <div id="print-container" style="font-size: 75%; color: #000000">
@@ -19,7 +19,7 @@
         <div class="container content">
             <div class="row mb-1">
                 <div class="col-2 text-center">
-                    <img class="img-fluid" src="{{ Auth::user()->company->logo_square_bw }}" alt="Logo" style="width: 200px;" />
+                    <img class="img-fluid" src="{{ cache()->get('settings')['logo_square_bw'] }}" alt="Logo" style="width: 200px;" />
                 </div>
                 <div class="col-5">
                     <h6 class="text-uppercase mb-0">{{ $settings['company_brandname'] }}</h6>
@@ -64,7 +64,7 @@
                         </thead>
                         <tbody class="border-top">
                             @php
-                                $goods = $order->details->whereNull('service_id');
+                                $goods = $order->details;
                             @endphp
                             @if ($goods->count())
                                 <tr>
@@ -87,34 +87,6 @@
                                         </td>
                                         <td class="text-end p-1">
                                             {{ $good->realPrice ? number_format($good->quantity * $good->realPrice) . 'đ' : 'Miễn phí' }}
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                            @php
-                                $services = $order->details->whereNull('stock_id');
-                            @endphp
-                            @if ($services->count())
-                                <tr>
-                                    <td class="p-1 ps-4" colspan="4">
-                                        <h5 class="text-primary mb-0">Các dịch vụ</h5>
-                                    </td>
-                                </tr>
-                                @foreach ($services as $service)
-                                    <tr>
-                                        <td class="p-1">
-                                            {{ $service->_service->name }}
-                                            <small>{{ $service->note ? '(' . $service->note . ')' : '' }}</small>
-                                        </td>
-                                        <td class="text-center p-1">
-                                            {{ $service->quantity . ' ' . ($service->_service->unit ?? 'ĐVT') }}
-                                        </td>
-                                        <td class="text-end p-1">
-                                            {{ number_format($service->realPrice) . 'đ' }}
-                                            {!! $service->discount > 0 ? '<br/><small>Đã giảm ' . number_format($service->originalTotal - $service->total) . 'đ</small>' : '' !!}
-                                        </td>
-                                        <td class="text-end p-1">
-                                            {{ $service->realPrice ? number_format($service->quantity * $service->realPrice) . 'đ' : 'Miễn phí' }}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -208,7 +180,7 @@
         <div class="row justify-content-between align-items-start mt-2">
             <div class="col-6 pt-1 text-center">
                 @php
-                    $print_order_bank_a5 = cache()->get('settings_' . Auth::user()->company_id)['print_order_bank_a5'] ?? 0
+                    $print_order_bank_a5 = cache()->get('settings')['print_order_bank_a5'] ?? 0
                 @endphp
                 @if ($order->transactions->count() && $order->transactions->last()->payment >= 2 && $print_order_bank_a5)
                     Quét mã thanh toán bằng ứng dụng ngân hàng. <br>

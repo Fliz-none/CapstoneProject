@@ -45,8 +45,7 @@ class BranchController extends Controller
      */
     public function index(Request $request)
     {
-        $company_id = $this->user->company_id;
-        $objs = Branch::where('branches.company_id', $company_id);
+        $objs = Branch::query();
         if (isset($request->key)) {
             switch ($request->key) {
                 case 'list':
@@ -181,11 +180,10 @@ class BranchController extends Controller
                     'address' => $request->address,
                     'note' => $request->note,
                     'status' => $request->has('status'),
-                    'company_id' => $this->user->company_id,
                 ]);
 
                 LogController::create('tạo', self::NAME, $branch->id);
-                cache()->forget('branches_' . Auth::user()->company_id);
+                cache()->forget('branches');
                 $response = array(
                     'status' => 'success',
                     'msg' => 'Đã tạo ' . self::NAME . ' ' . $branch->name
@@ -226,11 +224,10 @@ class BranchController extends Controller
                             'address' => $request->address,
                             'note' => $request->note,
                             'status' => $request->has('status'),
-                            'company_id' => $this->user->company_id,
                         ]);
 
                         LogController::create('sửa', self::NAME, $branch->id);
-                        cache()->forget('branches_' . Auth::user()->company_id);
+                        cache()->forget('branches');
                         $response = array(
                             'status' => 'success',
                             'msg' => 'Đã cập nhật ' . self::NAME . ' ' . $branch->name
@@ -270,7 +267,7 @@ class BranchController extends Controller
             foreach ($request->choices as $key => $id) {
                 $obj = Branch::find($id);
                 $obj->delete();
-                cache()->forget('branches_' . Auth::user()->company_id);
+                cache()->forget('branches');
                 LogController::create("xóa", self::NAME, $obj->id);
                 array_push($success, $obj->name);
             }

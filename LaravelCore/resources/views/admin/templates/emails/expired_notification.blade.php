@@ -119,7 +119,7 @@
     <div class="container">
         <div class="main">
             @php
-                $settings = cache()->get('settings_' . Auth::user()->company_id);
+                $settings = cache()->get('settings') ?? '[]';
             @endphp
             <h4 class="fw-bold">Các sản phẩm sắp hết hạn sử dụng
                 {{ isset($settings['expired_notification_frequency']) ? $settings['expired_notification_frequency'] . ' ngày tới' : '' }}
@@ -139,7 +139,8 @@
                             <tr>
                                 <td data-label="Mã tồn kho">{{ $stock->code }}</td>
                                 <td data-label="Tên sản phẩm">{{ $stock->product_name }}</td>
-                                <td data-label="Số lượng">{{ $stock->import_detail->_variable->convertUnit($stock->quantity) }}</td>
+                                <td data-label="Số lượng">
+                                    {{ $stock->import_detail->_variable->convertUnit($stock->quantity) }}</td>
                                 <td data-label="Ngày hết hạn">
                                     {{ \Carbon\Carbon::parse($stock->expired)->format('d/m/Y') }}</td>
                             </tr>
@@ -154,13 +155,13 @@
         </div>
         <div class="footer">
             <p>
-                <span class="fw-bold">Hotline:</span> {{ isset($settings['company_hotline']) ? $settings['company_hotline'] : ''}}
+                <span class="fw-bold">Hotline:</span>
             </p>
             <p>
-                <span class="fw-bold">Địa chỉ:</span> {{ isset($settings['company_address']) ? $settings['company_address'] : ''}}
+                <span class="fw-bold">Địa chỉ:</span>
             </p>
             <p>
-                &copy; {{ \Carbon\Carbon::now()->format('YYYY') - isset($settings['company_name']) ? $settings['company_name'] : ''}}
+                &copy; {{ \Carbon\Carbon::now()->format('YYYY') }}
             </p>
         </div>
     </div>

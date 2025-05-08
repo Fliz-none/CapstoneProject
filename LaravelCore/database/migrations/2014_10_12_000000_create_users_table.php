@@ -24,7 +24,6 @@ class CreateUsersTable extends Migration
             $table->date('birthday')->nullable();
             $table->string('address')->nullable();
             $table->unsignedBigInteger('local_id')->nullable();
-            $table->unsignedBigInteger('company_id');
             $table->unsignedDecimal('debt', 10, 0)->default(0);
             $table->string('scores')->nullable();
             $table->unsignedTinyInteger('level')->default(0);
@@ -37,7 +36,6 @@ class CreateUsersTable extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('company_id')->references('id')->on('companies')->constrained()->onDelete('restrict');
             $table->foreign('local_id')->references('id')->on('locals')->constrained()->onDelete('restrict');
         });
     }

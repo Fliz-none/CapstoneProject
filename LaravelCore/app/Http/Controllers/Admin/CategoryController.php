@@ -48,7 +48,7 @@ class CategoryController extends Controller
             switch ($request->key) {
                 case 'list':
                     $ids = json_decode($request->ids);
-                    $obj = Category::where('categories.company_id', $this->user->company_id)->orderBy('sort', 'ASC')->when(count($ids), function ($query) use ($ids) {
+                    $obj = Category::orderBy('sort', 'ASC')->when(count($ids), function ($query) use ($ids) {
                         $query->whereIn('id', $ids);
                     })->get();
                     return response()->json($obj, 200);
@@ -65,7 +65,7 @@ class CategoryController extends Controller
             }
         } else {
             if ($request->ajax()) {
-                $objs = Category::select('*')->where('categories.company_id', $this->user->company_id);
+                $objs = Category::select('*');
                 return DataTables::of($objs)
                     ->addColumn('checkboxes', function ($obj) {
                         return '<input class="form-check-input choice" type="checkbox" name="choices[]" value="' . $obj->id . '">';
@@ -108,7 +108,7 @@ class CategoryController extends Controller
     public function sort(Request $request)
     {
         $ids = $request->input('sort');
-        if (count($ids) == Category::where('categories.company_id', $this->user->company_id)->count()) {
+        if (count($ids) == Category::count()) {
             foreach ($ids as $index => $id) {
                 Category::where('id', $id)->update(['sort' => $index + 1]);
             }
@@ -131,11 +131,10 @@ class CategoryController extends Controller
                     'slug' => Str::slug($request->name),
                     'note' => $request->note,
                     'status' => $request->has('status'),
-                    'company_id' => $this->user->company_id,
                 ]);
 
                 LogController::create('tạo', self::NAME, $category->id);
-                cache()->forget('categories_' . Auth::user()->company_id);
+                cache()->forget('categories');
                 $response = array(
                     'status' => 'success',
                     'msg' => 'Đã tạo ' . self::NAME . ' ' . $category->name
@@ -168,11 +167,10 @@ class CategoryController extends Controller
                             'slug' => Str::slug($request->name),
                             'note' => $request->note,
                             'status' => $request->has('status'),
-                            'company_id' => $this->user->company_id,
                         ]);
 
                         LogController::create('sửa', self::NAME, $category->id);
-                        cache()->forget('categories_' . Auth::user()->company_id);
+                        cache()->forget('categories');
                         $response = array(
                             'status' => 'success',
                             'msg' => 'Đã cập nhật ' . $category->name
@@ -215,7 +213,7 @@ class CategoryController extends Controller
                 $obj = Category::find($id);
                 if ($obj->canRemove()) {
                     $obj->delete();
-                    cache()->forget('categories_' . Auth::user()->company_id);
+                    cache()->forget('categories');
                     LogController::create("xóa", self::NAME, $obj->id);
                     array_push($success, $obj->name);
                 } else {

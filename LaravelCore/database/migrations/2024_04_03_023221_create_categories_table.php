@@ -20,10 +20,8 @@ class CreateCategoriesTable extends Migration
             $table->unsignedInteger('sort')->nullable();
             $table->unsignedTinyInteger('status')->comment('0: block; 1: active')->default(1);
             $table->text('note')->nullable();
-            $table->unsignedBigInteger('company_id');
             $table->softDeletes();
             $table->timestamps();
-            $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 

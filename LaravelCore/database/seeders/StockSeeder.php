@@ -2248,7 +2248,6 @@ class StockSeeder extends Seeder
 
         foreach ($stocks as $stock) {
             Stock::create([
-                'company_id' => 1,
                 'id' => $stock[0],
                 'import_detail_id' => $stock[1],
                 'quantity' => $stock[2],

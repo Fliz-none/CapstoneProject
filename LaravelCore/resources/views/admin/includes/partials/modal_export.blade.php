@@ -15,7 +15,7 @@
                                     <div class="row">
                                         <div class="col-3">
                                             <select class="form-select form-control-lg" name="export_warehouse" type="text">
-                                                @foreach (cache()->get('warehouses_' . Auth::user()->company_id)->whereIn('id', Auth::user()->warehouses->pluck('id')) as $warehouse)
+                                                @foreach (cache()->get('warehouses')->whereIn('id', Auth::user()->warehouses->pluck('id')) as $warehouse)
                                                     <option value="{{ $warehouse->id }}">{{ $warehouse->name }}</option>
                                                 @endforeach
                                             </select>

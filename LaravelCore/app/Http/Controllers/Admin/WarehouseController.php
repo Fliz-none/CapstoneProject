@@ -51,7 +51,7 @@ class WarehouseController extends Controller
     public function index(Request $request)
     {
         if (isset($request->key)) {
-            $objs = Warehouse::query()->where('warehouses.company_id', $this->user->company_id);
+            $objs = Warehouse::query();
             switch ($request->key) {
                 case 'list':
                     $result = $objs->orderBy('sort', 'ASC')->get();
@@ -88,7 +88,7 @@ class WarehouseController extends Controller
             return response()->json($result, 200);
         } else {
             if ($request->ajax()) {
-                $warehouses = Warehouse::with('_branch')->where('warehouses.company_id', $this->user->company_id);
+                $warehouses = Warehouse::with('_branch');
                 return DataTables::of($warehouses)
                     ->addColumn('checkboxes', function ($obj) {
                         return '<input class="form-check-input choice" type="checkbox" name="choices[]" value="' . $obj->id . '">';
@@ -183,11 +183,10 @@ class WarehouseController extends Controller
                     'address' => $request->address,
                     'note' => $request->note,
                     'status' => $request->status,
-                    'company_id' => Auth::user()->company_id,
                 ]);
 
                 LogController::create('xóa', self::NAME, $warehouse->id);
-                cache()->forget('warehouses_' . Auth::user()->company_id);
+                cache()->forget('warehouses');
                 $response = array(
                     'status' => 'success',
                     'msg' => 'Đã tạo ' . self::NAME . ' ' . $warehouse->name
@@ -221,11 +220,10 @@ class WarehouseController extends Controller
                             'address' => $request->address,
                             'note' => $request->note,
                             'status' => $request->status,
-                            'company_id' => Auth::user()->company_id,
                         ]);
 
                         LogController::create('sửa', self::NAME, $warehouse->id);
-                        cache()->forget('warehouses_' . Auth::user()->company_id);
+                        cache()->forget('warehouses');
                         $response = array(
                             'status' => 'success',
                             'msg' => 'Đã cập nhật ' . $warehouse->name
@@ -268,7 +266,7 @@ class WarehouseController extends Controller
                 $obj = Warehouse::find($id);
                 if ($obj->canRemove()) {
                     $obj->delete();
-                    cache()->forget('warehouses_' . Auth::user()->company_id);
+                    cache()->forget('warehouses');
                     LogController::create("xóa", self::NAME, $obj->id);
                     array_push($success, $obj->name);
                 } else {

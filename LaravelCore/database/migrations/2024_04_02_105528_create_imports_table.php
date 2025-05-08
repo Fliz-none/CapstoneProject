@@ -19,13 +19,11 @@ class CreateImportsTable extends Migration
             $table->unsignedBigInteger('warehouse_id');
             $table->unsignedBigInteger('export_id')->nullable();
             $table->unsignedBigInteger('supplier_id')->nullable();
-            $table->unsignedBigInteger('company_id');
             $table->text('note')->nullable();
             $table->unsignedTinyInteger('status')->default(0)->comment('0:waiting; 1:imported');
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('warehouse_id')->references('id')->on('warehouses');
             $table->foreign('export_id')->references('id')->on('exports');

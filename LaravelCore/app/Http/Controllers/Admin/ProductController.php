@@ -53,7 +53,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         if (isset($request->key)) {
-            $catalogues = Cache::get('catalogues_' . Auth::user()->company_id)->whereNull('parent_id');
+            $catalogues = Cache::get('catalogues')->whereNull('parent_id');
             switch ($request->key) {
                 case 'render':
                     $request->validate([
@@ -66,7 +66,6 @@ class ProductController extends Controller
                     $catalogue_ids = Controller::getDescendantIds($request->catalogue_id);
                     $catalogue_ids[] = $request->catalogue_id;
                     $objs = Product::with('variables.units')
-                        ->where('products.company_id', $this->user->company_id)
                         ->when($request->catalogue_id, function ($query) use ($catalogue_ids) {
                             $query->whereHas('catalogues', function ($query) use ($catalogue_ids) {
                                 $query->whereIn('catalogues.id', $catalogue_ids);
@@ -81,20 +80,19 @@ class ProductController extends Controller
                     break;
                 case 'list':
                     $ids = json_decode($request->ids);
-                    $result = Product::where('products.company_id', $this->user->company_id)->orderBy('sort', 'ASC')->when(count($ids), function ($query) use ($ids) {
+                    $result = Product::orderBy('sort', 'ASC')->when(count($ids), function ($query) use ($ids) {
                         $query->whereIn('id', $ids);
                     })->get();
                     break;
                 case 'barcode':
                     $ids = json_decode($request->ids);
-                    $result = Product::where('products.company_id', $this->user->company_id)->withTrashed()->with('variables.units')->when(count($ids), function ($query) use ($ids) {
+                    $result = Product::withTrashed()->with('variables.units')->when(count($ids), function ($query) use ($ids) {
                         $query->whereIn('id', $ids);
                     })->get();
                     break;
                 case 'select2':
                     if ($request->barcode) {
                         $product = Product::with('catalogues', 'variables.units')
-                            ->where('products.company_id', $this->user->company_id)
                             ->whereHas('variables', function ($query) use ($request) {
                                 $query->whereHas('units', function ($query) use ($request) {
                                     $query->whereBarcode($request->barcode);
@@ -110,7 +108,6 @@ class ProductController extends Controller
                         }
                     } else {
                         $result = Product::with('variables.units')
-                            ->where('products.company_id', $this->user->company_id)
                             ->where('status', '>', 0)
                             ->where(function ($query) use ($request) {
                                 $query->where('name', 'LIKE', '%' . $request->q . '%')
@@ -153,7 +150,7 @@ class ProductController extends Controller
                     'variables' => function ($query) {
                         $query->withTrashed()->with('_product');
                     }
-                ])->where('products.company_id', $this->user->company_id);
+                ]);
                 $can_update_product = $this->user->can(User::UPDATE_PRODUCT);
                 $can_read_catalogues = $this->user->can(User::READ_CATALOGUES);
                 $can_delete_product = $this->user->can(User::DELETE_PRODUCT);
@@ -280,11 +277,10 @@ class ProductController extends Controller
             }
         }
     }
-
     public function sort(Request $request)
     {
         $ids = $request->input('sort');
-        $totalProducts = Product::where('products.company_id', $this->user->company_id)->count();
+        $totalProducts = Product::count();
 
         if (count($ids) == $totalProducts) {
             $sql = "UPDATE products SET sort = CASE ";
@@ -296,10 +292,8 @@ class ProductController extends Controller
                 $idArray[] = $index + 1;
             }
 
-            $sql .= "END WHERE id IN (" . implode(',', array_fill(0, count($ids), '?')) . ") AND company_id = ?";
-
+            $sql .= "END WHERE id IN (" . implode(',', array_fill(0, count($ids), '?')) . ")";
             $idArray = array_merge($idArray, $ids);
-            $idArray[] = $this->user->company_id;
 
             DB::statement($sql, $idArray);
         } else {
@@ -314,7 +308,6 @@ class ProductController extends Controller
             }
 
             $sql .= "END WHERE id IN (" . implode(',', array_fill(0, count($ids), '?')) . ")";
-
             $idArray = array_merge($idArray, $ids);
 
             DB::statement($sql, $idArray);
@@ -348,7 +341,6 @@ class ProductController extends Controller
                         'gallery' => $request->gallery,
                         'allow_review' => $request->has('allow_review'),
                         'status' => $request->status,
-                        'company_id' => Auth::user()->company_id,
                     ]
                 );
                 if ($product) {
@@ -401,7 +393,6 @@ class ProductController extends Controller
                     'gallery' => $request->gallery,
                     'allow_review' => $request->has('allow_review'),
                     'status' => $request->status,
-                    'company_id' => Auth::user()->company_id,
                 ]);
                 if ($product) {
                     LogController::create('tạo', self::NAME, $product->id);
@@ -415,7 +406,6 @@ class ProductController extends Controller
 
                         $image = Image::create([
                             'name' => $imageName,
-                            'company_id' => Auth::user()->company_id,
                             'author_id' => Auth::user()->id
                         ]);
                         LogController::create('tạo', 'Hình ảnh ' . $image->name, $image->id);
@@ -474,7 +464,6 @@ class ProductController extends Controller
                             'gallery' => $request->gallery,
                             'allow_review' => $request->has('allow_review'),
                             'status' => $request->status,
-                            'company_id' => Auth::user()->company_id,
                         ]);
 
                         if ($request->avatar) {
@@ -487,7 +476,6 @@ class ProductController extends Controller
 
                             $image = Image::create([
                                 'name' => $imageName,
-                                'company_id' => Auth::user()->company_id,
                                 'author_id' => Auth::user()->id
                             ]);
                             LogController::create('tạo', 'Hình ảnh ' . $image->name, $image->id);
@@ -646,7 +634,7 @@ class ProductController extends Controller
 
     public function remove_catalogues(Request $request)
     {
-        if(!$request->choices || count($request->choices) <= 1) return response()->json(['errors' => ['catalogue' => ['Vui chọn nhiều hơn một danh mục!']]], 422);
+        if (!$request->choices || count($request->choices) <= 1) return response()->json(['errors' => ['catalogue' => ['Vui chọn nhiều hơn một danh mục!']]], 422);
         $success = [];
         if ($this->user->can(User::UPDATE_PRODUCT)) {
             try {

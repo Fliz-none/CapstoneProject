@@ -39,7 +39,7 @@ class RoleController extends Controller
     public function index(Request $request)
     {
         if (isset($request->key)) {
-            $objs = Role::query()->where('roles.company_id', $this->user->company_id);
+            $objs = Role::query();
             switch ($request->key) {
                 case 'select2':
                     if ($this->user->hasRole('Super Admin')) {
@@ -64,7 +64,7 @@ class RoleController extends Controller
             return response()->json($result, 200);
         } else {
             if ($request->ajax()) {
-                $roles = Role::query()->where('roles.company_id', $this->user->company_id);
+                $roles = Role::query();
                 if ($this->user->hasRole('Super Admin')) {
                     $roles->orWhere('roles.id', 1);
                 }
@@ -105,7 +105,7 @@ class RoleController extends Controller
         $rules = [
             'name' => ['required', 'string', 'min: 3', 'max:125', 
             function ($attribute, $value, $fail) use ($request) {
-                if(Role::where('name', $value)->where('company_id', Auth::user()->company_id)->count()){
+                if(Role::where('name', $value)->count()){
                     $fail('Vai trò này đã được tạo trước đó');
                 }
             }],
@@ -125,7 +125,6 @@ class RoleController extends Controller
                 $role = Role::create([
                     'name' => $request->name,
                     'guard_name' => 'web',
-                    'company_id' => Auth::user()->company_id,
                 ]);
 
                 if ($request->permissions != null) {
@@ -135,9 +134,9 @@ class RoleController extends Controller
                     }
                 }
 
-                cache()->forget('roles_' . Auth::user()->company_id);
-                cache()->forget('dealers_' . Auth::user()->company_id);
-                cache()->forget('cashiers_' . Auth::user()->company_id);
+                cache()->forget('roles');
+                cache()->forget('dealers');
+                cache()->forget('cashiers');
 
                 DB::commit();
                 LogController::create('tạo', self::NAME, $role->id);
@@ -167,7 +166,7 @@ class RoleController extends Controller
         $rules = [
             'name' => ['required', 'string', 'min: 3', 'max:125', 
             function ($attribute, $value, $fail) use ($request) {
-                if(Role::where('name', $value)->where('company_id', Auth::user()->company_id)->where('id', '!=', $request->id)->count()){
+                if(Role::where('name', $value)->where('id', '!=', $request->id)->count()){
                     $fail('Vai trò này đã được tạo trước đó');
                 }
             }],
@@ -189,7 +188,6 @@ class RoleController extends Controller
                     if ($role) {
                         $role->update([
                             'name' => $request->name,
-                            'company_id' => Auth::user()->company_id,
                         ]);
 
                         // $permissions = Permission::all();
@@ -206,9 +204,9 @@ class RoleController extends Controller
                         }
                         DB::table('role_has_permissions')->insert($arr_permissions);
 
-                        cache()->forget('roles_' . Auth::user()->company_id);
-                        cache()->forget('dealers_' . Auth::user()->company_id);
-                        cache()->forget('cashiers_' . Auth::user()->company_id);
+                        cache()->forget('roles');
+                        cache()->forget('dealers');
+                        cache()->forget('cashiers');
 
                         LogController::create('sửa', self::NAME, $role->id);
                         DB::commit();
@@ -251,7 +249,7 @@ class RoleController extends Controller
             array_push($names, $role->name);
             LogController::create("xóa", "nhóm quyền", $role->id);
         }
-        cache()->forget('roles_' . Auth::user()->company_id);
+        cache()->forget('roles');
         return response()->json([
             'status' => 'success',
             'msg' => 'Đã xóa ' . self::NAME . ' ' . $role->name,

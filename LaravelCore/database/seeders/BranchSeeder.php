@@ -17,9 +17,8 @@ class BranchSeeder extends Seeder
     {
         DB::table('branches')->insert([
             [
-                'company_id' => 1,
-                'name' => 'TRƯƠNGDUNG PET 586',
-                'phone' => '0344333586',
+                'name' => 'CN 586',
+                'phone' => '0942852755',
                 'address' => 'H2-25,26 Bùi Quang Trinh, Phú Thứ, Cần Thơ',
                 'note' => 'Quản Lý:\r\nPhó Quản Lý:\r\nGiám Sát:',
                 'status' => 1,
@@ -28,9 +27,8 @@ class BranchSeeder extends Seeder
                 'updated_at' => Carbon::create('2024', '07', '05', '17', '37', '58'),
             ],
             [
-                'company_id' => 1,
-                'name' => 'TRƯƠNGDUNG PET THN',
-                'phone' => '0344333586',
+                'name' => 'CN Trần Hoàng Na',
+                'phone' => '0987654321',
                 'address' => '97B, TRẦN HOÀNG NA, AN BÌNH, NINH KIỀU, CẦN THƠ',
                 'note' => null,
                 'status' => 1,
@@ -39,10 +37,9 @@ class BranchSeeder extends Seeder
                 'updated_at' => Carbon::create('2024', '06', '09', '14', '09', '32'),
             ],
             [
-                'company_id' => 2,
-                'name' => 'Mậu Thân',
-                'phone' => '0907443370',
-                'address' => '74A, Đ. Mậu Thân/142 Đ. Nguyễn Việt Hồng, An Nghiệp, Ninh Kiều, Cần Thơ',
+                'name' => 'CN Mậu Thân',
+                'phone' => '0123456789',
+                'address' => '123, Đ. Nguyễn Việt Hồng, An Nghiệp, Ninh Kiều, Cần Thơ',
                 'note' => null,
                 'status' => 1,
                 'deleted_at' => null,

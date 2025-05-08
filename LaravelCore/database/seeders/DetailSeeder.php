@@ -3226,7 +3226,6 @@ class DetailSeeder extends Seeder
                 'id' => $detail[0],
                 'order_id' => $detail[1],
                 'stock_id' => $detail[2],
-                'service_id' => $detail[3],
                 'unit_id' => $detail[4],
                 'quantity' => $detail[5],
                 'price' => $detail[6],

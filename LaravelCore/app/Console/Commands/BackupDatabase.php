@@ -48,7 +48,6 @@ class BackupDatabase extends Command
         $fileName = 'backup_' . Carbon::now()->format('Y_m_d_H_i_s') . '.sql';
         $path = storage_path('logs/' . $fileName);
 
-        // Replace the values below with your actual DB credentials
         $database = env('DB_DATABASE');
         $username = env('DB_USERNAME');
         $password = env('DB_PASSWORD');

@@ -294,7 +294,6 @@ class ImportSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         foreach ($imports as $key => $import) {
             Import::create([
-                'company_id' => 1,
                 'id' => $import[0],
                 'user_id' => $import[1],
                 'warehouse_id' => $import[2],

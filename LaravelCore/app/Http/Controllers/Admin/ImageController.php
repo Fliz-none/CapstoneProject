@@ -45,7 +45,7 @@ class ImageController extends Controller
             }
         } else {
             if ($request->ajax()) {
-                $images = Image::where('images.company_id', $this->user->company_id)->with('author')->orderBy('id', 'DESC')->get();
+                $images = Image::with('author')->orderBy('id', 'DESC')->get();
                 return DataTables::of($images->toArray())->setTotalRecords($images->count())->make(true);
             } else {
                 $pageName = 'Quản lý ' . self::NAME;
@@ -67,7 +67,6 @@ class ImageController extends Controller
             $image = Image::create([
                 'name' => $imageName,
                 'author_id' => $this->user->id,
-                'company_id' => $this->user->company_id,
             ]);
             LogController::create('tạo', self::NAME . ' ' . $image->name,  $image->id);
 
@@ -120,7 +119,6 @@ class ImageController extends Controller
                 $image->name = $imageName;
                 $image->alt = $request->alt;
                 $image->caption = $request->caption;
-                $image->company_id = $this->user->company_id;
                 $image->save();
                 LogController::create('xóa', self::NAME . ' ' . $image->name,  $image->id);
             } else {

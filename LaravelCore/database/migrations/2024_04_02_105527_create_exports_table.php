@@ -18,7 +18,6 @@ class CreateExportsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('receiver_id')->nullable();
             $table->unsignedBigInteger('order_id')->nullable();
-            $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('to_warehouse_id')->nullable();
             $table->unsignedTinyInteger('status')->default(0)->comment('0:waiting; 1:exported');
             $table->text('note')->nullable();
@@ -26,7 +25,6 @@ class CreateExportsTable extends Migration
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('receiver_id')->references('id')->on('users');
             $table->foreign('order_id')->references('id')->on('orders');

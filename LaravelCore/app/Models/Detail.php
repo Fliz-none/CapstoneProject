@@ -32,11 +32,6 @@ class Detail extends Model
         return $this->belongsTo(Stock::class);
     }
 
-    public function info()
-    {
-        return $this->hasOne(Info::class);
-    }
-
     public function unit()
     {
         return $this->belongsTo(Unit::class);
@@ -55,11 +50,6 @@ class Detail extends Model
     public function _stock()
     {
         return $this->belongsTo(Stock::class, 'stock_id')->withTrashed();
-    }
-
-    public function _info()
-    {
-        return $this->hasOne(Info::class, 'detail_id')->withTrashed();
     }
 
     public function _unit()

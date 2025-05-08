@@ -56,7 +56,7 @@ class ExpenseController extends Controller
     public function index(Request $request)
     {
         if (isset($request->key)) {
-            $objs = Expense::query()->where('expenses.company_id', $this->user->company_id);
+            $objs = Expense::query();
             switch ($request->key) {
                 case 'select2':
                     $result = $objs->get()->map(function ($expense) {
@@ -78,7 +78,7 @@ class ExpenseController extends Controller
             return response()->json($result, 200);
         } else {
             if ($request->ajax()) {
-                $expenses = Expense::with('company', 'branch', 'user', 'receiver')->where('expenses.company_id', $this->user->company_id)
+                $expenses = Expense::with('company', 'branch', 'user', 'receiver')
                     ->when($request->has('branch_id'), function ($query) use ($request) {
                         $query->where('branch_id', $request->branch_id);
                     }, function ($query) {
@@ -219,7 +219,7 @@ class ExpenseController extends Controller
             'note' => ['required', 'string', 'min:0', 'max:255'],
         ];
         $request->validate($rules, self::MESSAGES);
-        $settings = cache()->get('settings_' . Auth::user()->company_id);
+        $settings = cache()->get('settings');
         if ($settings && $settings['expense_image_required'] == 1 && !$request->hasFile('avatar')) {
             return response()->json(['errors' => ['avatar' => ['Hãy bổ sung thêm hình ảnh hóa đơn']]], 422);
         }
@@ -233,7 +233,6 @@ class ExpenseController extends Controller
                     'note' => $request->note,
                     'status' => $request->has('status'),
                     'group' => $request->group,
-                    'company_id' => $this->user->company_id,
                     'branch_id' => $this->user->main_branch,
                 ]);
 

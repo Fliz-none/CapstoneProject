@@ -2071,7 +2071,6 @@ class TransactionSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         foreach ($transactions as $key => $transaction) {
             Transaction::create([
-                'company_id' => 1,
                 'id' => $transaction[0],
                 'order_id' => $transaction[1],
                 'customer_id' => $transaction[2],

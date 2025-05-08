@@ -10,7 +10,7 @@ class Role extends SpatieRole
     {
     }
 
-    // Overriding the method to include company_id in unique check
+    // Overriding the method to include guard_name in unique check
     public static function create(array $attributes = [])
     {
         return static::query()->firstOrCreate([

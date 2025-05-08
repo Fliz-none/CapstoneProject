@@ -7,9 +7,7 @@ use App\Models\Detail;
 use App\Models\ExportDetail;
 use App\Models\ImportDetail;
 use App\Models\Order;
-use App\Models\Pet;
 use App\Models\Product;
-use App\Models\Service;
 use App\Models\Stock;
 use App\Models\Transaction;
 use App\Models\User;
@@ -48,11 +46,9 @@ class DashboardController extends Controller
     {
         $result = [];
         $range = json_decode($request->range);
-        $orders = Order::where('company_id', Auth::user()->company_id)->whereBetween('orders.created_at', $range)->get();
-        // $details = Detail::whereHas('orders', function ($query) {
-        //     $query->where('orders.company_id', $this->user->company_id);
-        // })
-        // ->whereBetween('created_at', $range);
+        $orders = Order::whereBetween('orders.created_at', $range)->get();
+        // $details = Detail::
+        // whereBetween('created_at', $range);
 
         if ($request->has('key')) {
             // Tính khoảng cách bằng ngày
@@ -62,8 +58,7 @@ class DashboardController extends Controller
             $previousEndDate = Carbon::parse($range[1])->subDay($daysDifference)->format('Y-m-d') . ' 23:59:59';
 
             // Lấy dữ liệu đơn hàng của ngày trước đó
-            $previousOrders = Order::where('company_id', Auth::user()->company_id)
-                ->whereBetween('orders.created_at', [$previousStartDate, $previousEndDate])
+            $previousOrders = Order::whereBetween('orders.created_at', [$previousStartDate, $previousEndDate])
                 ->get();
 
             // Gộp dữ liệu từ các đơn hàng hiện tại và trước đó
@@ -77,14 +72,14 @@ class DashboardController extends Controller
         // Trả lại dữ liệu của Order theo khoảng ngày 
 
         //Doanh thu
-        $transactions = Transaction::where('company_id', Auth::user()->company_id)->whereBetween('created_at', $range)->get();
+        $transactions = Transaction::whereBetween('created_at', $range)->get();
         $result['allRevenue'] = $transactions->sum('amount');
-        $result['cashRevenue'] = Order::where('company_id', Auth::user()->company_id)->whereBetween('created_at', $range)->whereIn('id', $transactions->pluck('order_id')->unique())->get()->sum('paid');
+        $result['cashRevenue'] = Order::whereBetween('created_at', $range)->whereIn('id', $transactions->pluck('order_id')->unique())->get()->sum('paid');
         $result['debtRevenue'] = $result['allRevenue'] - $result['cashRevenue'];
 
         // Tính doanh thu của phần sản phẩm
         $result['productSales'] = Detail::whereHas('order', function ($query) use ($range) {
-            $query->where('company_id', Auth::user()->company_id)->whereBetween('created_at', $range);
+            $query->whereBetween('created_at', $range);
         })->whereNotNull('stock_id') // Chỉ lấy những chi tiết có liên kết với sản phẩm
             ->sum(DB::raw(
                 'quantity *
@@ -94,20 +89,6 @@ class DashboardController extends Controller
                 ELSE price - discount
             END'
             ));
-
-        // Tính doanh thu của phần dịch vụ
-        $result['serviceSales'] = Detail::whereHas('order', function ($query) use ($range) {
-            $query->where('company_id', Auth::user()->company_id)->whereBetween('created_at', $range);
-        })->whereNotNull('service_id') // Chỉ lấy những chi tiết có liên kết với dịch vụ
-            ->sum(DB::raw(
-                'quantity *
-            CASE
-                WHEN discount > 0 AND discount <= 100
-                    THEN price * (1 - discount / 100)
-                ELSE price - discount
-            END'
-            ));
-
         //Doanh số
         $result['allSales'] = $orders->sum('total');
         $result['cashSales'] = $orders->sum('paid');
@@ -115,7 +96,7 @@ class DashboardController extends Controller
 
         // Tính tổng giá vốn của sản phẩm từ bảng stocks
         $result['productCost'] = Detail::whereHas('order', function ($query) use ($range) {
-            $query->where('company_id', Auth::user()->company_id)->whereBetween('created_at', $range);
+            $query->whereBetween('created_at', $range);
         })
             ->whereNotNull('stock_id')
             ->join('stocks', 'details.stock_id', '=', 'stocks.id')
@@ -123,19 +104,9 @@ class DashboardController extends Controller
             ->join('units', 'units.id', '=', 'import_details.unit_id')
             ->sum(DB::raw('details.quantity * (import_details.price / units.rate)'));
 
-        //Giá vốn dịch vụ từ vật tư tiêu hao
-        $result['serviceCost'] = ExportDetail::with('export') // Eager load quan hệ với bảng Export
-            ->join('stocks', 'export_details.stock_id', '=', 'stocks.id') // Kết nối với bảng stocks
-            ->join('import_details', 'stocks.import_detail_id', '=', 'import_details.id') // Kết nối với bảng import_details
-            ->whereNull('export_details.detail_id') // Lọc các chi tiết có detail_id là NULL
-            ->whereHas('export', function ($query) { // Kiểm tra điều kiện trên bảng Export
-                $query->whereNotNull('order_id')->where('company_id', Auth::user()->company_id);
-            })
-            ->whereBetween('export_details.created_at', $range) // Lọc theo thời gian tạo trong bảng ExportDetail
-            ->sum(DB::raw('export_details.quantity * (import_details.price / export_details.unit_id)')); // Tính giá vốn
-
+        
         //Lợi nhuận
-        $result['allProfits'] = $result['allRevenue'] - $result['productCost'] - $result['serviceCost'];
+        $result['allProfits'] = $result['allRevenue'] - $result['productCost'];
         $result['totalOrderDiscount'] = $orders->sum(function ($order) {
             if ($order->discount > 0 && $order->discount <= 100) {
                 return ($order->discount / 100) * $order->total;
@@ -144,8 +115,7 @@ class DashboardController extends Controller
             }
         });
 
-        $result['productProfits'] = $result['allRevenue'] - $result['serviceSales'] - $result['productCost'];
-        $result['serviceProfits'] = $result['allRevenue'] - $result['productSales'] - $result['serviceCost'];
+        $result['productProfits'] = $result['allRevenue'] - $result['productCost'];
 
         //Đơn hàng
         $result['allOrders'] = $orders->count();
@@ -156,46 +126,39 @@ class DashboardController extends Controller
         $result['cancelOrders'] = $orders->where('status', 0)->count();
 
         //Khách hàng
-        $customers = User::where('company_id', Auth::user()->company_id)->whereHas('orders', function ($query) use ($range) {
+        $customers = User::whereHas('orders', function ($query) use ($range) {
             $query->whereBetween('orders.created_at', $range);
         })->get();
         $result['allCustomers'] = $customers->count();
         $result['oldCustomers'] = $customers->where('created_at', '<', $range[0])->count();
         $result['newCustomers'] = $result['allCustomers'] - $result['oldCustomers'];
-
-        //Thú cưng
-        $pets = Pet::where('company_id', Auth::user()->company_id)->whereHas('infos', function ($query) use ($range) {
-            $query->whereBetween('infos.created_at', $range);
-        })->get();
-        $result['allPets'] = $pets->count();
-        $result['oldPets'] = $pets->where('created_at', '<', $range[0])->count();
-        $result['newPets'] = $result['allPets'] - $result['oldPets'];
+       
 
         //Sản phẩm
-        $result['allProducts'] = Product::where('company_id', Auth::user()->company_id)->where('status', '>', 0)->count();
+        $result['allProducts'] = Product::where('status', '>', 0)->count();
         $result['allVariables'] = Variable::whereHas('_product', function ($query) {
-            $query->where('company_id', Auth::user()->company_id);
+            $query;
         })->where('status', '>', 0)->count();
-        $result['importProducts'] = Product::where('company_id', Auth::user()->company_id)->whereHas('variables.import_details.stock', function ($query) use ($range) {
+        $result['importProducts'] = Product::whereHas('variables.import_details.stock', function ($query) use ($range) {
             $query->whereBetween('created_at', $range);
         })->count();
-        $result['exportProducts'] = Product::where('company_id', Auth::user()->company_id)->whereHas('variables.import_details.stock.export_details', function ($query) use ($range) {
+        $result['exportProducts'] = Product::whereHas('variables.import_details.stock.export_details', function ($query) use ($range) {
             $query->whereBetween('created_at', $range);
         })->count();
 
         //Nhập hàng
         $result['allStocks'] = ImportDetail::whereHas('import', function ($query) use ($range) {
-            $query->where('company_id', Auth::user()->company_id)->whereNull('export_id')
+            $query->whereNull('export_id')
                 ->whereBetween('created_at', $range);
         })->count();
-        $result['saleStocks'] = Stock::where('company_id', Auth::user()->company_id)->whereBetween('created_at', $range)
+        $result['saleStocks'] = Stock::whereBetween('created_at', $range)
             ->whereHas('export_details')
             ->count();
         $result['costStocks'] = ImportDetail::whereHas('import', function ($query) use ($range) {
-            $query->where('company_id', Auth::user()->company_id)->whereBetween('created_at', $range);
+            $query->whereBetween('created_at', $range);
         })->sum('price');
         $result['revenueStocks'] = Detail::whereHas('stock.import_detail._import', function ($query) use ($range) {
-            $query->where('company_id', Auth::user()->company_id)->whereBetween('created_at', $range); // Nhập trong khoảng thời gian đã cho
+            $query->whereBetween('created_at', $range); // Nhập trong khoảng thời gian đã cho
         })
             ->sum(DB::raw(
                 'quantity *
@@ -222,7 +185,7 @@ class DashboardController extends Controller
             case 'revenue':
                 $transactions = Transaction::with('_customer')
                     ->whereHas('_customer', function ($query) {
-                        $query->where('company_id', Auth::user()->company_id); // Thêm điều kiện để lấy giao dịch thuộc công ty hiện tại
+                        $query; // Thêm điều kiện để lấy giao dịch thuộc công ty hiện tại
                     })
                     ->whereBetween('created_at', $range) // Lọc theo thời gian tạo
                     ->whereNotNull('customer_id')
@@ -245,7 +208,7 @@ class DashboardController extends Controller
                 $orders = Order::with('_customer')
                     ->whereBetween('created_at', $range) // Lọc theo thời gian tạo
                     ->whereHas('_customer', function ($query) {
-                        $query->where('company_id', Auth::user()->company_id); // Thêm điều kiện để lấy giao dịch thuộc công ty hiện tại
+                        $query; // Thêm điều kiện để lấy giao dịch thuộc công ty hiện tại
                     })
                     ->whereNotNull('customer_id')
                     ->select('customer_id', DB::raw('COUNT(id) as total'))
@@ -265,7 +228,6 @@ class DashboardController extends Controller
 
             case 'debt':
                 $users = User::with(['orders.details', 'orders.transactions'])
-                    ->where('users.company_id', Auth::user()->company_id) // Lọc theo công ty
                     ->whereHas('orders', function ($query) use ($range) {
                         $query->whereBetween('created_at', $range); // Lọc theo thời gian tạo); // Lọc theo created_at của orders
                     })
@@ -311,7 +273,7 @@ class DashboardController extends Controller
             case 'revenue':
                 $stocks = ExportDetail::with('_unit._variable._product', '_export')
                     ->whereHas('_export', function ($query) {
-                        $query->where('company_id', Auth::user()->company_id);
+                        $query;
                     })->whereBetween('created_at', $range)->get();
 
                 $data = [];
@@ -346,7 +308,7 @@ class DashboardController extends Controller
             case 'quantity':
                 $stocks = ExportDetail::with('_unit._variable._product')
                     ->whereHas('_export', function ($query) {
-                        $query->where('company_id', Auth::user()->company_id);
+                        $query;
                     })->whereBetween('created_at', $range)->get();
                 $data = [];
                 foreach ($stocks as $exportDetail) {
@@ -391,75 +353,9 @@ class DashboardController extends Controller
 
         switch ($type) {
             case 'revenue':
-                $details = Detail::with('_service')
-                    ->whereBetween('created_at', $range)
-                    ->whereNotNull('service_id')
-                    ->whereHas('_service', function ($query) {
-                        $query->where('company_id', Auth::user()->company_id);
-                    })
-                    ->get();
-
-                $data = [];
-                foreach ($details as $detail) {
-                    $serviceId = $detail->_service->id;
-                    $serviceName = $detail->_service->name;
-                    $totalPrice = $detail->quantity * $detail->_service->price;
-
-                    // Nếu dịch vụ chưa tồn tại trong $data, khởi tạo
-                    if (!isset($data[$serviceId])) {
-                        $data[$serviceId] = [
-                            'name' => $serviceName,
-                            'total' => 0,
-                        ];
-                    }
-
-                    // Cộng dồn doanh thu cho dịch vụ
-                    $data[$serviceId]['total'] += $totalPrice;
-                }
-
-                $result = [];
-                foreach ($data as $serviceId => $serviceData) {
-                    if ($serviceData['total'] > 0) { // Chỉ lấy các dịch vụ có doanh thu lớn hơn 0
-                        $result[] = [
-                            'name' => '<a class="cursor-pointer btn-update-service text-primary fw-bold" data-id="' . $serviceId . '">' . $serviceData['name'] . '</a>',
-                            'total' => number_format($serviceData['total']), // Định dạng số doanh thu
-                        ];
-                    }
-                }
-
                 break;
 
             case 'quantity':
-                $details = Detail::with('service')
-                    ->whereBetween('created_at', $range)
-                    ->whereNotNull('service_id')
-                    ->whereHas('service', function ($query) {
-                        $query->where('company_id', Auth::user()->company_id);
-                    })
-                    ->get();
-
-                // Nhóm theo service_id và đếm số lần sử dụng
-                $serviceCounts = $details->groupBy('service_id')->map(function ($items) {
-                    return $items->count(); // Đếm số lần xuất hiện của mỗi service_id
-                });
-
-                // Lọc các dịch vụ có số lần sử dụng lớn hơn 0
-                $filteredServiceCounts = $serviceCounts->filter(function ($count) {
-                    return $count > 0;
-                });
-
-                // Lấy tên dịch vụ theo service_id và số lần sử dụng
-                $serviceData = $filteredServiceCounts->map(function ($count, $serviceId) {
-                    // Lấy tên dịch vụ một lần từ bảng services
-                    $service = Service::find($serviceId);
-                    return [
-                        'name' => '<a class="cursor-pointer btn-update-service text-primary fw-bold" data-id="' . $service->id . '">' .  $service->name . '</a>', // Trả về tên dịch vụ nếu có
-                        'total' => $count, // Số lần sử dụng (không cần format số vì sẽ làm ở front-end)
-                    ];
-                });
-
-                // Sắp xếp mảng theo số lần sử dụng từ cao đến thấp
-                $result  = $serviceData->sortByDesc('total')->values()->toArray();
                 break;
 
             default:
@@ -494,9 +390,6 @@ class DashboardController extends Controller
                 break;
             case 'product':
                 $result = $this->getProduct($request->type, $range);
-                break;
-            case 'service':
-                $result = $this->getService($request->type, $range);
                 break;
 
             default:

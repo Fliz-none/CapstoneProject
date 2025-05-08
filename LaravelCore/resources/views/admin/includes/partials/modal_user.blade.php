@@ -116,7 +116,7 @@
                             </div>
                             <div class="search-item overflow-auto h-100" id="roles-check">
                                 <ul class="list-group search-list">
-                                    @foreach (cache()->get('roles_' . Auth::user()->company_id) as $id => $roleName)
+                                    @foreach (cache()->get('roles') as $id => $roleName)
                                         <li class="list-group-item border border-0 pb-0">
                                             <input class="form-check-input me-1" id="role-{{ $id }}" name="role_id[]" type="checkbox" value="{{ $id }}">
                                             <label class="form-check-label" for="role-{{ $id }}">{{ $roleName }}</label>
@@ -132,7 +132,7 @@
                             </div>
                             <div class="search-item overflow-auto h-100" id="warehouses-check">
                                 <ul class="list-group search-list">
-                                    @foreach (cache()->get('warehouses_' . Auth::user()->company_id) as $warehouse)
+                                    @foreach (cache()->get('warehouses') as $warehouse)
                                         <li class="list-group-item border border-0 pb-0">
                                             <input class="form-check-input me-1" id="warehouse-{{ $warehouse->id }}" name="warehouse_id[]" type="checkbox" value="{{ $warehouse->id }}">
                                             <label class="form-check-label d-inline" for="warehouse-{{ $warehouse->id }}">{{ $warehouse->name }}</label>
@@ -148,7 +148,7 @@
                             </div>
                             <div class="search-item overflow-auto h-100" id="branches-check">
                                 <ul class="list-group search-list">
-                                    @foreach (cache()->get('branches_' . Auth::user()->company_id) as $branch)
+                                    @foreach (cache()->get('branches') as $branch)
                                         <li class="list-group-item border border-0 pb-0">
                                             <input class="form-check-input me-1" id="branch-{{ $branch->id }}" name="branch_id[]" type="checkbox" value="{{ $branch->id }}">
                                             <label class="form-check-label d-inline" for="branch-{{ $branch->id }}">{{ $branch->name }}</label>
@@ -224,7 +224,7 @@
                         </thead>
                         <tbody>
                             @php
-                                $work_info = json_decode(cache()->get('settings_' . Auth::user()->company_id)['work_info']);
+                                $work_info = json_decode(cache()->get('settings')['work_info']) ?? [];
                                 unset($work_info->allow_self_register); // Loại bỏ trường 'allow_self_register'
                                 $user = Auth::user();
                             @endphp

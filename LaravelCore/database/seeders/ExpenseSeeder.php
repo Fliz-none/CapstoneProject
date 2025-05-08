@@ -20,7 +20,6 @@ class ExpenseSeeder extends Seeder
 
         // foreach ($expenses as $key => $expense) {
         //     Expense::create([
-        //         'company_id' => $expense[0],
         //         'id' => $expense[1],
         //         'user_id' => $expense[2],
         //         'receiver_id' => $expense[3],

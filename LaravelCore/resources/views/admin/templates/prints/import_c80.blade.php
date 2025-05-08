@@ -1,21 +1,9 @@
 @php
-    $settings = cache()->get('settings_' . Auth::user()->company_id);
+    $settings = cache()->get('settings');
 @endphp
 {{-- <link href="{{ asset('admin/css/bootstrap.css') }}" rel="stylesheet"> --}}
 <div id="print-container" style="font-size: 75%; color: #000000">
     <div class="container-fluid print-template">
-        {{-- <div class="row">
-            <div class="col-4">
-                <img class="img-fluid" src="{{ cache()->get('settings_' . Auth::user()->company_id)['logo_square_bw_url'] ?? asset('admin/images/logo/logo_square_bw_key.png') }}" />
-            </div>
-            <div class="col-8">
-                <h6 class="text-uppercase mb-0">{{ $settings['company_brandname'] }}</h6>
-                <small class="mb-0">
-                    Website: {{ $settings['company_website'] . $import->total}} <br />
-                    Điện thoại: {{ $settings['company_phone'] }}
-                </small>
-            </div>
-        </div> --}}
         <div class="row">
             <div class="col-12">
                 <h6 class="text-center mb-0 py-3">NHẬP HÀNG {{ $import->code }}</h6>

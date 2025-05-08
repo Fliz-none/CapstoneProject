@@ -41,13 +41,6 @@ class User extends Authenticatable implements MustVerifyEmail
     const BRANCH_USER = 'Bố trí chi nhánh cho tài khoản';
     const WAREHOUSE_USER = 'Bố trí kho cho tài khoản';
 
-    const READ_PETS = 'Xem danh sách thú cưng';
-    const READ_PET = 'Xem chi tiết thú cưng';
-    const CREATE_PET = 'Thêm thú cưng';
-    const UPDATE_PET = 'Cập nhật thú cưng';
-    const DELETE_PET = 'Xóa thú cưng';
-    const DELETE_PETS = 'Xóa hàng loạt thú cưng';
-
     const READ_SUPPLIERS = 'Xem danh sách nhà cung cấp';
     const READ_SUPPLIER = 'Xem chi tiết nhà cung cấp';
     const CREATE_SUPPLIER = 'Thêm nhà cung cấp';
@@ -126,13 +119,6 @@ class User extends Authenticatable implements MustVerifyEmail
     const DELETE_CRITERIAL = 'Xóa tiêu chí';
     const DELETE_CRITERIALS = 'Xóa hàng loạt tiêu chí';
 
-    const READ_SERVICES = 'Xem danh sách dịch vụ';
-    const READ_SERVICE = 'Xem chi tiết dịch vụ';
-    const CREATE_SERVICE = 'Thêm dịch vụ';
-    const UPDATE_SERVICE = 'Cập nhật dịch vụ';
-    const DELETE_SERVICE = 'Xóa dịch vụ';
-    const DELETE_SERVICES = 'Xóa hàng loạt dịch vụ';
-
     const CREATE_VARIABLE = 'Thêm biến thể';
     const UPDATE_VARIABLE = 'Cập nhật biến thể';
     const DELETE_VARIABLE = 'Xóa biến thể';
@@ -159,124 +145,6 @@ class User extends Authenticatable implements MustVerifyEmail
     const DELETE_TRANSACTION = 'Xóa giao dịch';
     const DELETE_TRANSACTIONS = 'Xóa hàng loạt giao dịch';
     const SEND_ZNS_TRANSACTION = 'Gửi zalo giao dịch cho khách hàng';
-
-    const READ_DISEASES = 'Xem danh sách bệnh lý';
-    const READ_DISEASE = 'Xem chi tiết bệnh lý';
-    const CREATE_DISEASE = 'Thêm bệnh lý';
-    const UPDATE_DISEASE = 'Cập nhật bệnh lý';
-    const DELETE_DISEASE = 'Xóa bệnh lý';
-    const DELETE_DISEASES = 'Xóa hàng loạt bệnh lý';
-
-    const READ_INFOS = 'Xem danh sách p. khám';
-    const READ_INFO = 'Xem chi tiết p. khám';
-    const CREATE_INFO = 'Thêm p. khám';
-    const UPDATE_INFO = 'Cập nhật p. khám';
-    const DELETE_INFO = 'Xóa p. khám';
-    const DELETE_INFOS = 'Xóa hàng loạt p. khám';
-    const EXCEL_INFO = 'Xuất excel danh sách p. khám';
-    const PRINT_INFO = 'In p. khám';
-
-    const READ_INDICATIONS = 'Xem danh sách p. chỉ định';
-    const READ_INDICATION = 'Xem chi tiết p. chỉ định';
-    const CREATE_INDICATION = 'Thêm p. chỉ định';
-    const DELETE_INDICATION = 'Xóa p. chỉ định';
-    const PRINT_INDICATION = 'In p. chỉ định';
-
-    const READ_QUICKTESTS = 'Xem danh sách p. kit test nhanh';
-    const READ_QUICKTEST = 'Xem chi tiết p. kit test nhanh';
-    const CREATE_QUICKTEST = 'Thêm p. kit test nhanh';
-    const UPDATE_QUICKTEST = 'Cập nhật p. kit test nhanh';
-    const CANCEL_QUICKTEST = 'Hủy p. kit test nhanh';
-    const DELETE_QUICKTEST = 'Xóa p. kit test nhanh';
-    const PRINT_QUICKTEST = 'In p. kit test nhanh';
-
-    const READ_ULTRASOUNDS = 'Xem danh sách p. siêu âm';
-    const READ_ULTRASOUND = 'Xem chi tiết p. siêu âm';
-    const CREATE_ULTRASOUND = 'Thêm p. siêu âm';
-    const UPDATE_ULTRASOUND = 'Cập nhật p. siêu âm';
-    const CANCEL_ULTRASOUND = 'Hủy p. siêu âm';
-    const DELETE_ULTRASOUND = 'Xóa p. siêu âm';
-    const PRINT_ULTRASOUND = 'In p. siêu âm';
-
-    const READ_BLOODCELLS = 'Xem danh sách p. XNTB máu';
-    const READ_BLOODCELL = 'Xem chi tiết p. XNTB máu';
-    const CREATE_BLOODCELL = 'Thêm p. XNTB máu';
-    const UPDATE_BLOODCELL = 'Cập nhật p. XNTB máu';
-    const CANCEL_BLOODCELL = 'Hủy p. XNTB máu';
-    const DELETE_BLOODCELL = 'Xóa p. XNTB máu';
-    const PRINT_BLOODCELL = 'In p. XNTB máu';
-
-    const READ_BIOCHEMICALS = 'Xem danh sách p. XNSH máu';
-    const READ_BIOCHEMICAL = 'Xem chi tiết p. XNSH máu';
-    const CREATE_BIOCHEMICAL = 'Thêm p. XNSH máu';
-    const UPDATE_BIOCHEMICAL = 'Cập nhật p. XNSH máu';
-    const CANCEL_BIOCHEMICAL = 'Hủy p. XNSH máu';
-    const DELETE_BIOCHEMICAL = 'Xóa p. XNSH máu';
-    const PRINT_BIOCHEMICAL = 'In p. XNSH máu';
-
-    const READ_MICROSCOPES = 'Xem danh sách p. soi KHV';
-    const READ_MICROSCOPE = 'Xem chi tiết p. soi KHV';
-    const CREATE_MICROSCOPE = 'Thêm p. soi KHV';
-    const UPDATE_MICROSCOPE = 'Cập nhật p. soi KHV';
-    const CANCEL_MICROSCOPE = 'Hủy p. soi KHV';
-    const DELETE_MICROSCOPE = 'Xóa p. soi KHV';
-    const PRINT_MICROSCOPE = 'In p. soi KHV';
-
-    const READ_XRAYS = 'Xem danh sách p. x-quang';
-    const READ_XRAY = 'Xem chi tiết p. x-quang';
-    const CREATE_XRAY = 'Thêm p. x-quang';
-    const UPDATE_XRAY = 'Cập nhật p. x-quang';
-    const CANCEL_XRAY = 'Hủy p. x-quang';
-    const DELETE_XRAY = 'Xóa p. x-quang';
-    const PRINT_XRAY = 'In p. x-quang';
-
-    const READ_SURGERIES = 'Xem danh sách p. phẫu thuật';
-    const READ_SURGERY = 'Xem chi tiết p. phẫu thuật';
-    const CREATE_SURGERY = 'Thêm p. phẫu thuật';
-    const UPDATE_SURGERY = 'Cập nhật p. phẫu thuật';
-    const CANCEL_SURGERY = 'Hủy p. phẫu thuật';
-    const DELETE_SURGERY = 'Xóa p. phẫu thuật';
-    const PRINT_SURGERY = 'In p. phẫu thuật';
-
-    const READ_PRESCRIPTIONS = 'Xem danh sách đơn thuốc';
-    const READ_PRESCRIPTION = 'Xem chi tiết đơn thuốc';
-    const CREATE_PRESCRIPTION = 'Thêm đơn thuốc';
-    const UPDATE_PRESCRIPTION = 'Cập nhật đơn thuốc';
-    const CANCEL_PRESCRIPTION = 'Hủy đơn thuốc';
-    const DELETE_PRESCRIPTION = 'Xóa đơn thuốc';
-    const PRINT_PRESCRIPTION = 'In đơn thuốc';
-
-    const READ_BOOKINGS = 'Xem danh sách p. đặt dịch vụ';
-    const READ_BOOKING = 'Xem chi tiết p. đặt dịch vụ';
-    const CREATE_BOOKING = 'Thêm p. đặt dịch vụ';
-    const UPDATE_BOOKING = 'Cập nhật p. đặt dịch vụ';
-    const CANCEL_BOOKING = 'Hủy p. đặt dịch vụ';
-    const DELETE_BOOKING = 'Xóa p. đặt dịch vụ';
-    const SEND_ZNS_BOOKING = 'Gửi zalo p. đặt dịch vụ cho khách hàng';
-
-    const READ_BEAUTIES = 'Xem danh sách p. Spa & Grooming';
-    const READ_BEAUTY = 'Xem chi tiết p. Spa & Grooming';
-    const CREATE_BEAUTY = 'Thêm p. Spa & Grooming';
-    const UPDATE_BEAUTY = 'Cập nhật p. Spa & Grooming';
-    const CANCEL_BEAUTY = 'Hủy p. Spa & Grooming';
-    const DELETE_BEAUTY = 'Xóa p. Spa & Grooming';
-    const PRINT_BEAUTY = 'In p. Spa & Grooming';
-    const SEND_ZNS_BEAUTY = 'Gửi zalo p. Spa & Grooming cho khách hàng';
-
-    const READ_ROOMS = 'Xem danh sách chuồng';
-    const READ_ROOM = 'Xem chi tiết chuồng';
-    const CREATE_ROOM = 'Thêm chuồng';
-    const UPDATE_ROOM = 'Cập nhật chuồng';
-    const DELETE_ROOM = 'Xóa chuồng';
-
-    const READ_ACCOMMODATIONS = 'Xem danh sách phiếu lưu trú';
-    const READ_ACCOMMODATION = 'Xem chi tiết phiếu lưu trú';
-    const CREATE_ACCOMMODATION = 'Thêm phiếu lưu trú';
-    const UPDATE_ACCOMMODATION = 'Cập nhật phiếu lưu trú';
-    const CANCEL_ACCOMMODATION = 'Hủy phiếu lưu trú';
-    const DELETE_ACCOMMODATION = 'Xóa phiếu lưu trú';
-    const PRINT_ACCOMMODATION = 'In phiếu lưu trú';
-    const SEND_ZNS_ACCOMMODATION = 'Gửi zalo phiếu lưu trú cho khách hàng';
 
     const READ_POSTS = 'Xem danh sách bài viết';
     const READ_POST = 'Xem chi tiết bài viết';

@@ -15,11 +15,9 @@ class CreateSettingsTable extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
             $table->string('key');
             $table->text('value')->nullable();
             
-            $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 

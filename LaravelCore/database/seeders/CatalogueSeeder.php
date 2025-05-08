@@ -153,7 +153,6 @@ class CatalogueSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         foreach ($catalogues as $key => $catalogue) {
             Catalogue::create([
-                'company_id' => 1,
                 'id' => $catalogue[0],
                 'slug' => $catalogue[1],
                 'name' => $catalogue[2],
