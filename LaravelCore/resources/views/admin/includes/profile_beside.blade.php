@@ -13,7 +13,7 @@
             <div class="mt-3">
                 <h4>{{ Auth::user()->name }}</h4>
                 <p class="text-secondary mb-1">{{ Auth::user()->getRoleNames()->first() }}</p>
-                <p class="text-muted font-size-sm">{{ Auth::user()->scores }} điểm</p>
+                <p class="text-muted font-size-sm">{{ Auth::user()->scores }} points</p>
             </div>
         </div>
     </div>
@@ -23,31 +23,31 @@
         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-4">
             <a href="{{ route('admin.profile') }}">
                 <i class="bi bi-person-circle me-2"></i>
-                Thông tin tài khoản
+                Account Information
             </a>
         </li>
         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-4">
             <a href="{{ route('admin.profile', ['key' => 'settings']) }}">
                 <i class="bi bi-gear-fill me-2"></i>
-                Cập nhật thông tin
+                Update Information
             </a>
         </li>
         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-4">
             <a href="{{ route('admin.profile', ['key' => 'password']) }}">
                 <i class="bi bi-shield-lock-fill me-2"></i>
-                Đổi mật khẩu
+                Change Password
             </a>
         </li>
         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-4">
             <a href="{{ route('admin.profile', ['key' => 'activity']) }}">
                 <i class="bi bi-ui-checks me-2"></i>
-                Nhật ký hoạt động
+                Activity Log
             </a>
         </li>
         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-4">
             <a href="{{ route('admin.profile', ['key' => 'logout']) }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                 <i class="bi bi-x-circle-fill me-2"></i>
-                Đăng xuất
+                Logout
             </a>
         </li>
     </ul>

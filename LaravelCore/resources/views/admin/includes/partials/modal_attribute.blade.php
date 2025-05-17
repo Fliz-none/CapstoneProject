@@ -4,17 +4,17 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="attribute-modal-label">Thuộc tính</h1>
+                    <h1 class="modal-title fs-5" id="attribute-modal-label">Attribute</h1>
                     <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3 form-group">
-                        <label class="form-label" for="attribute-key" data-bs-toggle="tooltip" data-bs-title="Tên đặc điểm cụ thể được sử dụng để mô tả và phân biệt sản phẩm">Tên thuộc tính</label>
-                        <input class="form-control" id="attribute-key" name="key" type="text" placeholder="Tên thuộc tính">
+                        <label class="form-label" for="attribute-key" data-bs-toggle="tooltip" data-bs-title="A specific characteristic used to describe and distinguish a product">Attribute Name</label>
+                        <input class="form-control" id="attribute-key" name="key" type="text" placeholder="Attribute Name">
                     </div>
                     <div class="mb-3 form-group">
-                        <label class="form-label" for="attribute-value" data-bs-toggle="tooltip" data-bs-title="Giá trị của thuộc tính">Giá trị</label>
-                        <textarea class="form-control" id="attribute-value" name="value" placeholder="Nhập giá trị thuộc tính. MẸO: thêm dấu phẩy để thêm nhiều hơn 1 giá trị"></textarea>
+                        <label class="form-label" for="attribute-value" data-bs-toggle="tooltip" data-bs-title="The value of the attribute">Value</label>
+                        <textarea class="form-control" id="attribute-value" name="value" placeholder="Enter attribute values. TIP: use commas to add more than one value"></textarea>
                     </div>
                     <hr class="px-5">
                     <div class="mb-3">
@@ -22,7 +22,7 @@
                             <div class="col-12 text-end">
                                 @if (!empty(Auth::user()->hasAnyPermission(App\Models\User::UPDATE_ATTRIBUTE, App\Models\User::CREATE_ATTRIBUTE)))
                                     <input name="id" type="hidden">
-                                    <button class="btn btn-primary" type="submit">Lưu</button>
+                                    <button class="btn btn-primary" type="submit">Save</button>
                                 @endif
                             </div>
                         </div>

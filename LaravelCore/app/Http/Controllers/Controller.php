@@ -39,11 +39,12 @@ class Controller extends BaseController
     }
 
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    const DATA_INVALID = 'Dữ liệu không hợp lệ';
-    const NOT_EMPTY = 'Vui lòng không để trống thông tin này';
-    const ONE_LEAST = 'Phải có ít nhất một mục';
-    const MIN = 'Phải có một số lượng tối thiểu';
-    const MAX = 'Không được vượt quá số lượng tối đa';
+    const DATA_INVALID = 'Invalid data';
+    const NOT_EMPTY = 'Please do not leave this field empty';
+    const ONE_LEAST = 'At least one item is required';
+    const MIN = 'Must meet the minimum quantity';
+    const MAX = 'Cannot exceed the maximum quantity';
+
 
     // public function options()
     // {

@@ -11,7 +11,6 @@
                     <h5 class="text-uppercase">{{ $pageName }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Bảng tin</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
                         </ol>
                     </nav>

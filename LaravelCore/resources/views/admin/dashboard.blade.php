@@ -16,7 +16,7 @@
                 </div>
                 <div class="col-12 col-md-3 ms-auto">
                     <div class="input-group input-daterange">
-                        <input class="form-control" id="daterange" name="daterange" type="text" placeholder="Thời gian báo cáo" size="25" />
+                        <input class="form-control" id="daterange" name="daterange" type="text" placeholder="Range" size="25" />
                         <button class="btn btn-outline-info btn-compare" type="button"><i class="bi bi-graph-up-arrow"></i></button>
                     </div>
                 </div>
@@ -39,11 +39,11 @@
                                         </div>
                                         <div class="col-md-8">
                                             <h6 class="text-muted font-semibold">
-                                                Doanh thu
+                                                Revenue
                                                 <i class="bi bi-eye cursor-pointer btn-show-money"></i>
                                             </h6>
                                             <input class="form-control fs-3 py-0 bg-transparent revenue-input form-control-plaintext" type="password" readonly>
-                                            <h3 class="d-none revenue" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Thu tiền: 0<br/>Công nợ: 0">0</h3>
+                                            <h3 class="d-none revenue" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Collected: 0<br/>Debt: 0">0</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -60,11 +60,11 @@
                                         </div>
                                         <div class="col-md-8">
                                             <h6 class="text-muted font-semibold">
-                                                Doanh số
+                                                Sales
                                                 <i class="bi bi-eye cursor-pointer btn-show-money"></i>
                                             </h6>
                                             <input class="form-control fs-3 py-0 bg-transparent sales-input form-control-plaintext" type="password" readonly>
-                                            <h3 class="sales d-none" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Thu bán hàng: 1.500.000 / 2.300.000<br/>Thu công nợ: 0">0</h3>
+                                            <h3 class="sales d-none" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Sales: 0<br/>Debt: 0">0</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -81,11 +81,11 @@
                                         </div>
                                         <div class="col-md-8">
                                             <h6 class="text-muted font-semibold">
-                                                Lợi nhuận gộp
+                                                Gross Profit
                                                 <i class="bi bi-eye cursor-pointer btn-show-money"></i>
                                             </h6>
                                             <input class="form-control fs-3 py-0 bg-transparent profits-input form-control-plaintext" type="password" readonly>
-                                            <h3 class="d-none profits" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Bán hàng: 0<br/>Dịch vụ: 0">0</h3>
+                                            <h3 class="d-none profits" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Sales: 0">0</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -102,11 +102,11 @@
                                         </div>
                                         <div class="col-md-8">
                                             <h6 class="text-muted font-semibold">
-                                                Đơn hàng
+                                                Orders
                                                 <i class="bi bi-eye cursor-pointer btn-show-money"></i>
                                             </h6>
                                             <input class="form-control fs-3 py-0 bg-transparent orders-input form-control-plaintext" type="password" readonly>
-                                            <h3 class="d-none orders" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Hoàn thành: 0<br/>Thu đủ: 0<br/>Bị hủy: 0">0</h3>
+                                            <h3 class="d-none orders" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Completed: 0<br/>Collected: 0<br/>Cancelled: 0">0</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -123,37 +123,16 @@
                                         </div>
                                         <div class="col-md-8">
                                             <h6 class="text-muted font-semibold">
-                                                Khách hàng
+                                                Customers
                                                 <i class="bi bi-eye cursor-pointer btn-show-money"></i>
                                             </h6>
                                             <input class="form-control fs-3 py-0 bg-transparent customers-input form-control-plaintext" type="password" readonly>
-                                            <h3 class="d-none customers" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Mới / Cũ<br/>0 / 0">0</h3>
+                                            <h3 class="d-none customers" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="New / Old<br/>0 / 0">0</h3>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        {{-- <div class="col-6 col-lg-3 col-md-6">
-                            <div class="card mb-3">
-                                <div class="card-body px-3 py-4">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="stats-icon yellow">
-                                                <i class="bi bi-github"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <h6 class="text-muted font-semibold">
-                                                Thú cưng
-                                                <i class="bi bi-eye cursor-pointer btn-show-money"></i>
-                                            </h6>
-                                            <input class="form-control fs-3 py-0 bg-transparent pets-input form-control-plaintext" type="password" readonly>
-                                            <h3 class="d-none pets" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Mới / Cũ<br/>0 / 0<br/>Khám chữa: 0<br/>Làm đẹp: 0<br/>Lưu trú: 0">0</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
                         <div class="col-6 col-lg-3 col-md-6">
                             <div class="card mb-3">
                                 <div class="card-body px-3 py-4">
@@ -165,11 +144,11 @@
                                         </div>
                                         <div class="col-md-8">
                                             <h6 class="text-muted font-semibold">
-                                                Sản phẩm
+                                                Products
                                                 <i class="bi bi-eye cursor-pointer btn-show-money"></i>
                                             </h6>
                                             <input class="form-control fs-3 py-0 bg-transparent products-input form-control-plaintext" type="password" readonly>
-                                            <h3 class="d-none products" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Có bán / Nhập mới<br/>0 / 0">0/0</h3>
+                                            <h3 class="d-none products" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Sold / New imports<br/>0 / 0">0/0</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -186,11 +165,11 @@
                                         </div>
                                         <div class="col-md-8">
                                             <h6 class="text-muted font-semibold">
-                                                Nhập hàng
+                                                Imports
                                                 <i class="bi bi-eye cursor-pointer btn-show-money"></i>
                                             </h6>
                                             <input class="form-control fs-3 py-0 bg-transparent imports-input form-control-plaintext" type="password" readonly>
-                                            <h3 class="d-none imports" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Có bán: 32/34<br/>Doanh số/Giá vốn: 0/0">0</h3>
+                                            <h3 class="d-none imports" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Sold: 0<br/>Revenue/Cost: 0/0">0</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -204,21 +183,21 @@
                         <div class="card-header">
                             <div class="row justify-content-between">
                                 <div class="col-4 mb-0">
-                                    <h5 class="card-title font-weight-bolder">Đơn hàng</h5>
+                                    <h5 class="card-title font-weight-bolder">Orders</h5>
                                 </div>
                                 <div class="col-8 mb-0 text-end">
                                     <form>
                                         <div class="btn-group" data-toggle="buttons" role="group">
                                             <input class="btn-check" id="orders-chart-date" name="timeframe" type="radio" value="day" autocomplete="off" checked>
-                                            <label class="btn btn-outline-info" for="orders-chart-date">Ngày</label>
+                                            <label class="btn btn-outline-info" for="orders-chart-date">Day</label>
                                             <input class="btn-check" id="orders-chart-week" name="timeframe" type="radio" value="week" autocomplete="off">
-                                            <label class="btn btn-outline-info" for="orders-chart-week">Tuần</label>
+                                            <label class="btn btn-outline-info" for="orders-chart-week">Week</label>
                                             <input class="btn-check" id="orders-chart-month" name="timeframe" type="radio" value="month" autocomplete="off">
-                                            <label class="btn btn-outline-info" for="orders-chart-month">Tháng</label>
+                                            <label class="btn btn-outline-info" for="orders-chart-month">Month</label>
                                             <input class="btn-check" id="orders-chart-quarter" name="timeframe" type="radio" value="quarter" autocomplete="off">
-                                            <label class="btn btn-outline-info" for="orders-chart-quarter">Quý</label>
+                                            <label class="btn btn-outline-info" for="orders-chart-quarter">Quarter</label>
                                             <input class="btn-check" id="orders-chart-year" name="timeframe" type="radio" value="year" autocomplete="off">
-                                            <label class="btn btn-outline-info" for="orders-chart-year">Năm</label>
+                                            <label class="btn btn-outline-info" for="orders-chart-year">Year</label>
                                         </div>
                                     </form>
                                 </div>
@@ -236,21 +215,21 @@
                         <div class="card-header">
                             <div class="row justify-content-between">
                                 <div class="col-4 mb-0">
-                                    <h5 class="card-title font-weight-bolder">Doanh số</h5>
+                                    <h5 class="card-title font-weight-bolder">Sales</h5>
                                 </div>
                                 <div class="col-8 mb-0 text-end">
                                     <form>
                                         <div class="btn-group" data-toggle="buttons" role="group">
                                             <input class="btn-check" id="sales-chart-date" name="timeframe" type="radio" value="day" autocomplete="off" checked>
-                                            <label class="btn btn-outline-info" for="sales-chart-date">Ngày</label>
+                                            <label class="btn btn-outline-info" for="sales-chart-date">Day</label>
                                             <input class="btn-check" id="sales-chart-week" name="timeframe" type="radio" value="week" autocomplete="off">
-                                            <label class="btn btn-outline-info" for="sales-chart-week">Tuần</label>
+                                            <label class="btn btn-outline-info" for="sales-chart-week">Week</label>
                                             <input class="btn-check" id="sales-chart-month" name="timeframe" type="radio" value="month" autocomplete="off">
-                                            <label class="btn btn-outline-info" for="sales-chart-month">Tháng</label>
+                                            <label class="btn btn-outline-info" for="sales-chart-month">Month</label>
                                             <input class="btn-check" id="sales-chart-quarter" name="timeframe" type="radio" value="quarter" autocomplete="off">
-                                            <label class="btn btn-outline-info" for="sales-chart-quarter">Quý</label>
+                                            <label class="btn btn-outline-info" for="sales-chart-quarter">Quarter</label>
                                             <input class="btn-check" id="sales-chart-year" name="timeframe" type="radio" value="year" autocomplete="off">
-                                            <label class="btn btn-outline-info" for="sales-chart-year">Năm</label>
+                                            <label class="btn btn-outline-info" for="sales-chart-year">Year</label>
                                         </div>
                                     </form>
                                 </div>
@@ -269,13 +248,13 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-12 col-lg-6">
-                                    <h4 class="card-title">Danh sách khách hàng</h4>
+                                    <h4 class="card-title">Customer List</h4>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <select class="form-control" id="user-select">
-                                        <option value="revenue" selected>Doanh số cao nhất</option>
-                                        <option value="quantity">Mua nhiều hàng nhất</option>
-                                        <option value="debt">Công nợ nhiều nhất</option>
+                                        <option value="revenue" selected>Highest Revenue</option>
+                                        <option value="quantity">Most Purchased</option>
+                                        <option value="debt">Highest Debt</option>
                                     </select>
                                 </div>
                             </div>
@@ -285,8 +264,8 @@
                                 <table class="table table-hover table-center" id="user-table">
                                     <thead>
                                         <tr>
-                                            <th>Tên khách hàng</th>
-                                            <th>Tổng kết</th>
+                                            <th>Name</th>
+                                            <th>Total</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody> <!-- Bảng sẽ được cập nhật thông qua AJAX -->
@@ -303,12 +282,12 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-12 col-lg-6">
-                                    <h4 class="card-title">Danh sách sản phẩm</h4>
+                                    <h4 class="card-title">Product List</h4>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <select class="form-control" id="product-select">
-                                        <option value="revenue" selected>Doanh số cao nhất</option>
-                                        <option value="quantity">Bán được nhiều nhất</option>
+                                        <option value="revenue" selected>Highest Revenue</option>
+                                        <option value="quantity">Most Purchased</option>
                                     </select>
                                 </div>
                             </div>
@@ -318,8 +297,8 @@
                                 <table class="table table-hover table-center" id="product-table">
                                     <thead>
                                         <tr>
-                                            <th>Tên sản phẩm</th>
-                                            <th>Tổng kết</th>
+                                            <th>Name</th>
+                                            <th>Total</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -328,38 +307,6 @@
                     </div>
                     <!-- /Feed Activity -->
                 </div>
-
-                {{-- <div class="col-md-4 d-flex">
-                    <!-- Service Activity -->
-                    <div class="card card-table card-stats-product mb-3 flex-fill">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-12 col-lg-6">
-                                    <h4 class="card-title">Danh sách dịch vụ</h4>
-                                </div>
-                                <div class="col-12 col-lg-6">
-                                    <select class="form-control" id="service-select">
-                                        <option value="revenue" selected>Doanh số cao nhất</option>
-                                        <option value="quantity">Được dùng nhiều nhất</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body px-4">
-                            <div class="table-responsive">
-                                <table class="table table-hover table-center" id="service-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Tên dịch vụ</th>
-                                            <th>Tổng</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /Service Activity -->
-                </div> --}}
             @else
                 @include('admin.includes.access_denied')
             @endif
@@ -385,44 +332,44 @@
 
                 $('input[name="daterange"]').daterangepicker({
                     ranges: {
-                        'Hôm nay': [moment(), moment()],
-                        'Hôm qua': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                        '7 ngày trước': [moment().subtract(6, 'days'), moment()],
-                        '30 ngày trước': [moment().subtract(29, 'days'), moment()],
-                        'Tháng này': [moment().startOf('month'), moment().endOf('month')],
-                        'Tháng trước': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                        'Today': [moment(), moment()],
+                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        '7 days ago': [moment().subtract(6, 'days'), moment()],
+                        '30 days ago': [moment().subtract(29, 'days'), moment()],
+                        'This month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
                     },
                     "locale": {
                         "format": "DD/MM/YYYY",
                         "separator": " - ",
-                        "applyLabel": "OK",
-                        "cancelLabel": "Hủy",
-                        "fromLabel": "Từ",
-                        "toLabel": "Tới",
-                        "customRangeLabel": "Tùy chọn",
+                        "applyLabel": "Apply",
+                        "cancelLabel": "Cancel",
+                        "fromLabel": "From",
+                        "toLabel": "To",
+                        "customRangeLabel": "Custom",
                         "weekLabel": "W",
                         "daysOfWeek": [
-                            "CN",
-                            "T2",
-                            "T3",
-                            "T4",
-                            "T5",
-                            "T6",
-                            "T7"
+                            "Su",
+                            "Mo",
+                            "Tu",
+                            "We",
+                            "Th",
+                            "Fr",
+                            "Sa"
                         ],
                         "monthNames": [
-                            "Tháng 1",
-                            "Tháng 2",
-                            "Tháng 3",
-                            "Tháng 4",
-                            "Tháng 5",
-                            "Tháng 6",
-                            "Tháng 7",
-                            "Tháng 8",
-                            "Tháng 9",
-                            "Tháng 10",
-                            "Tháng 11",
-                            "Tháng 12"
+                            "January",
+                            "February",
+                            "March",
+                            "April",
+                            "May",
+                            "June",
+                            "July",
+                            "August",
+                            "September",
+                            "October",
+                            "November",
+                            "December"
                         ],
                         "firstDay": 1
                     },
@@ -492,33 +439,31 @@
 
                 function showData(data) {
                     $('h3.sales').html(number_format(data.allSales) + 'đ').attr('data-bs-title',
-                        `Bán hàng / Công nợ: <br/>
+                        `Sales / Debt: <br/>
                             ${number_format(data.cashSales)+'đ'} / ${number_format(data.debtSales)+'đ'}<br/>
-                            Sản phẩm / Dịch vụ: <br/>
-                            ${number_format(data.productSales)+'đ'} / ${number_format(data.serviceSales)+'đ'}`).prev().val(data.allSales)
+                            Products: <br/>
+                            ${number_format(data.productSales)+'đ'}`).prev().val(data.allSales)
 
                     $('h3.revenue').html(number_format(data.allRevenue) + 'đ').attr('data-bs-title',
-                        `Thanh toán: ${number_format(data.cashRevenue)+'đ'}<br/>
-                            Thu nợ: ${number_format(data.debtRevenue)+'đ'}`).prev().val(data.allRevenue)
+                        `Payment: ${number_format(data.cashRevenue)+'đ'}<br/>
+                            Debt Collection: ${number_format(data.debtRevenue)+'đ'}`).prev().val(data.allRevenue)
 
                     $('h3.profits').html(number_format(data.allProfits) + 'đ').attr('data-bs-title',
-                        `Sản phẩm: ${number_format(data.productProfits)}đ<br/>
-                            Giá vốn hàng bán: ${number_format(data.productCost)}đ<br/>
-                            Dịch vụ: ${number_format(data.serviceProfits)}đ<br/>
-                            Giá vốn dịch vụ: ${number_format(data.serviceCost)}đ`).prev().val(data.allProfits)
+                        `Products: ${number_format(data.productProfits)}đ<br/>
+                            Cost of Goods Sold: ${number_format(data.productCost)}đ<br/>`).prev().val(data.allProfits)
 
                     $('h3.orders').html(number_format(data.allOrders)).attr('data-bs-title',
-                        `Đã thu đủ: ${number_format(data.paidOrders)}<br/>Đã hoàn thành: ${number_format(data.completeOrders)}<br/>
-                            Bị hủy: ${number_format(data.cancelOrders)}`).prev().val(data.allOrders)
+                        `Collected: ${number_format(data.paidOrders)}<br/>Completed: ${number_format(data.completeOrders)}<br/>
+                            Canceled: ${number_format(data.cancelOrders)}`).prev().val(data.allOrders)
 
                     $('h3.customers').html(number_format(data.allCustomers)).attr('data-bs-title',
-                        `Khách mới: ${number_format(data.newCustomers)}<br/>Khách cũ: ${number_format(data.oldCustomers)}`).prev().val(data.allCustomers)
+                        `New Customers: ${number_format(data.newCustomers)}<br/>Old Customers: ${number_format(data.oldCustomers)}`).prev().val(data.allCustomers)
 
                     $('h3.products').html(`${number_format(data.allProducts)} &times; ${number_format(data.allVariables)}`).attr('data-bs-title',
-                        `Có nhập: ${number_format(data.newCustomers)}<br/>Có bán: ${number_format(data.oldCustomers)}`).prev().val(data.allProducts * data.allVariables)
+                        `New Products: ${number_format(data.newProducts)}<br/>Sale Products: ${number_format(data.oldProducts)}`).prev().val(data.allProducts * data.allVariables)
 
                     $('h3.imports').html(number_format(data.allStocks)).attr('data-bs-title',
-                        `Có bán: ${number_format(data.saleStocks)}<br/>Doanh thu/Giá vốn: <br/>${number_format(data.revenueStocks)}/${number_format(data.costStocks)}`).prev().val(data.allStocks)
+                        `Sale Products: ${number_format(data.saleStocks)}<br/>Revenue/Cost: <br/>${number_format(data.revenueStocks)}/${number_format(data.costStocks)}`).prev().val(data.allStocks)
                     //Chart  
                     buildChart(data.listOrders);
                     chartData = data.listOrders
@@ -569,11 +514,11 @@
                             sumCtx,
                             labelsCurrent,
                             totalsCurrent,
-                            'Số tiền (Hiện tại)',
+                            'Current Amount',
                             'rgba(54, 162, 235, 1)',
                             labelsPrevious,
                             totalsPrevious,
-                            'Số tiền (Trước đó)',
+                            'Previous Amount',
                             '#ccc'
                         );
 
@@ -581,11 +526,11 @@
                             countCtx,
                             labelsCurrent,
                             countsCurrent,
-                            'Số đơn (Hiện tại)',
+                            'Current Orders',
                             'rgba(75, 192, 192, 1)',
                             labelsPrevious,
                             countsPrevious,
-                            'Số đơn (Trước đó)',
+                            'Previous Orders',
                             '#ccc'
                         );
                     } else {
@@ -603,7 +548,7 @@
                             sumCtx,
                             labelsCurrent,
                             totalsCurrent,
-                            'Số tiền',
+                            'Current Amount',
                             'rgba(54, 162, 235, 1)'
                         );
 
@@ -611,7 +556,7 @@
                             countCtx,
                             labelsCurrent,
                             countsCurrent,
-                            'Số đơn',
+                            'Current Orders',
                             'rgba(75, 192, 192, 1)'
                         );
                     }
@@ -705,7 +650,7 @@
                                 y: {
                                     title: {
                                         display: true,
-                                        text: 'Giá trị'
+                                        text: 'Value'
                                     },
                                     beginAtZero: true
                                 }
@@ -764,7 +709,7 @@
                             buildChart(response.listOrders, selectedTimeFrame, true);
                         }
                     }).error(function() {
-                        alert('Đã xảy ra lỗi khi lấy dữ liệu');
+                        alert('An error occurred while fetching data.');
                     });
                 });
 
@@ -804,7 +749,7 @@
                             {
                                 data: 'total',
                                 name: 'total',
-                                title: 'Tổng'
+                                title: 'Total'
                             },
                         ],
                         columnDefs: [{

@@ -2,21 +2,21 @@
     <div class="container-fluid print-template">
         <div class="row">
             <div class="col-12">
-                <h6 class="text-center mb-0 py-3">XUẤT HÀNG {{ $export->code }}</h6>
+                <h6 class="text-center mb-0 py-3">EXPORT NOTE {{ $export->code }}</h6>
             </div>
-            <div class="col-6"><small>Người xuất: </small></div>
+            <div class="col-6"><small>Exporter:</small></div>
             <div class="col-6 text-end"><small>{{ $export->_user->name }}</small></div>
-            <div class="col-6"><small>Ngày xuất:</small></div>
+            <div class="col-6"><small>Export Date:</small></div>
             <div class="col-6 text-end"><small>{{ $export->created_at->format('d/m/Y H:i') }}</small></div>
             @if ($export->to_warehouse_id)
-                <div class="col-6"><small>Kho tiếp nhận:</small></div>
+                <div class="col-6"><small>Receiving Warehouse:</small></div>
                 <div class="col-6 text-end"><small>{{ $export->_to_warehouse->name }}</small></div>
-                <div class="col-6"><small>Người nhận:</small></div>
+                <div class="col-6"><small>Receiver:</small></div>
                 <div class="col-6 text-end"><small>{{ $export->_receiver->name }}</small></div>
             @endif
             @if ($export->order_id)
                 @if ($export->_order->customer_id)
-                    <div class="col-6"><small>Khách hàng:</small></div>
+                    <div class="col-6"><small>Customer:</small></div>
                     <div class="col-6 text-end"><small>{{ $export->_order->_customer->name }}</small></div>
                 @endif
             @endif
@@ -39,7 +39,7 @@
         <hr style="opacity: 1;">
         <div class="row">
             <div class="col-7 mb-3 fw-bold">
-                TỔNG XUẤT {{ $export->export_details->sum('quantity') }} MÓN
+                TOTAL EXPORTED {{ $export->export_details->sum('quantity') }} ITEMS
             </div>
             <div class="col-5 mb-3 text-end fw-bold">
                 {{ number_format($export->total) }}đ
@@ -48,7 +48,7 @@
         @if ($export->order_id)
             <div class="row">
                 <div class="col-7 mb-3 fw-bold">
-                    GIÁ TRỊ ĐƠN HÀNG
+                    ORDER VALUE
                 </div>
                 <div class="col-5 mb-3 text-end fw-bold">
                     {{ number_format($export->_order->total) }}đ
@@ -56,7 +56,7 @@
             </div>
             <div class="row">
                 <div class="col-7 mb-3 fw-bold">
-                    LỢI NHUẬN
+                    PROFIT
                 </div>
                 <div class="col-5 mb-3 text-end fw-bold">
                     {{ number_format($export->_order->total - $export->total) }}đ
@@ -72,6 +72,6 @@
         </div>
     @endif
     <div class="row mt-3">
-        <div class="col-12 text-center">PHIẾU NÀY KHÔNG CÓ GIÁ TRỊ THANH TOÁN<br />CHI TIẾT VUI LÒNG LIÊN HỆ 0911 677 154</div>
+        <div class="col-12 text-center">THIS DOCUMENT IS NOT A VALID INVOICE<br />FOR DETAILS, PLEASE CONTACT {{ cache('settings')->company_phone }}</div>
     </div>
 </div>

@@ -4,7 +4,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="detail-modal-label">Danh sách</h1>
+                    <h1 class="modal-title fs-5" id="detail-modal-label">Details List</h1>
                     <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -12,10 +12,10 @@
                         <table class="table table-striped table-bordered key-table" id="detail-table">
                             <thead>
                                 <tr>
-                                    <th>Mã ĐH</th>
-                                    <th>Tên sản phẩm</th>
-                                    <th>Số lượng</th>
-                                    <th>Thành tiền</th>
+                                    <th>Order Code</th>
+                                    <th>Product Name</th>
+                                    <th>Quantity</th>
+                                    <th>Amount</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>

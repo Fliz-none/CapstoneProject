@@ -10,7 +10,6 @@
                     <h5 class="text-uppercase">{{ $pageName }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Bảng tin</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
                         </ol>
                     </nav>
@@ -25,7 +24,7 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_TRANSACTION)))
                         <a class="btn btn-info mb-3 block btn-create-transaction">
                             <i class="bi bi-plus-circle"></i>
-                            Thêm
+                            Add
                         </a>
                     @endif
                 </div>
@@ -34,7 +33,7 @@
                         <select
                             class="form-control form-control-lg form-control-plaintext bg-transparent text-end list-branches"
                             required autocomplete="off">
-                            <option selected hidden disabled>Chi nhánh của bạn</option>
+                            <option selected hidden disabled>Your branch</option>
                             @foreach (Auth::user()->branches as $branch)
                                 <option value="{{ $branch->id }}"
                                     {{ isset($_GET['branch_id']) && $_GET['branch_id'] == $branch->id ? 'selected' : '' }}>
@@ -52,15 +51,15 @@
                                 <table class="table table-bordered key-table" id="transaction-table">
                                     <thead>
                                         <tr>
-                                            <th>Mã</th>
-                                            <th>Thời gian</th>
-                                            <th>Khách hàng</th>
-                                            <th>Tiền mặt</th>
-                                            <th>Chuyển khoản</th>
-                                            <th>Đơn hàng</th>
-                                            <th>Nội dung</th>
-                                            <th>Thu ngân</th>
-                                            <th>Trạng thái</th>
+                                            <th>Code</th>
+                                            <th>Time</th>
+                                            <th>Customer</th>
+                                            <th>Cash</th>
+                                            <th>Transfer</th>
+                                            <th>Order</th>
+                                            <th>Note</th>
+                                            <th>Cashier</th>
+                                            <th>Status</th>
                                             <th></th>
                                             <th>
                                                 <input class="form-check-input" id="all-choices" type="checkbox">

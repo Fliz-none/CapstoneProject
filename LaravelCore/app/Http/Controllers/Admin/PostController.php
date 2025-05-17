@@ -16,7 +16,7 @@ use Yajra\DataTables\DataTables;
 
 class PostController extends Controller
 {
-    const NAME = 'bài viết';
+    const NAME = 'Post';
 
     public function __construct()
     {
@@ -38,7 +38,7 @@ class PostController extends Controller
         if (isset($request->key)) {
             switch ($request->key) {
                 case 'new':
-                    $pageName = 'Bài viết mới';
+                    $pageName = 'New ' . self::NAME;
                     return view('admin.post', compact('pageName', 'categories'));
                     break;
                 case 'list':
@@ -151,7 +151,7 @@ class PostController extends Controller
                     ->setTotalRecords($objs->count())
                     ->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = self::NAME . ' management';
                 return view('admin.posts', compact('pageName'));
             }
         }
@@ -168,16 +168,16 @@ class PostController extends Controller
             'description' => ['nullable'],
         ];
         $messages = [
-            'title.required' => 'Tên dịch vụ: ' . Controller::NOT_EMPTY,
-            'title.string' => 'Tên dịch vụ: ' . Controller::DATA_INVALID,
-            'title.max' => 'Tên dịch vụ: ' . Controller::MAX,
-            'excerpt.string' => 'Mô tả ngắn: ' . Controller::DATA_INVALID,
-            'excerpt.max' => 'Mô tả ngắn: ' . Controller::MAX,
-            'status.numeric' => 'Trạng thái: ' . Controller::NOT_EMPTY,
-            'status.required' => 'Trạng thái: ' . Controller::DATA_INVALID,
-            'category_id.numeric' => 'Chuyên mục: ' . Controller::DATA_INVALID,
-            'category_id.required' => 'Chuyên mục: ' . Controller::NOT_EMPTY,
-            'image.string' => 'Ảnh: ' . Controller::DATA_INVALID,
+            'title.required' => 'Post name: ' . Controller::NOT_EMPTY,
+            'title.string' => 'Post name: ' . Controller::DATA_INVALID,
+            'title.max' => 'Post name: ' . Controller::MAX,
+            'excerpt.string' => 'Excerpt: ' . Controller::DATA_INVALID,
+            'excerpt.max' => 'Excerpt: ' . Controller::MAX,
+            'status.numeric' => 'Status: ' . Controller::NOT_EMPTY,
+            'status.required' => 'Status: ' . Controller::DATA_INVALID,
+            'category_id.numeric' => 'Category: ' . Controller::DATA_INVALID,
+            'category_id.required' => 'Category: ' . Controller::NOT_EMPTY,
+            'image.string' => 'Image: ' . Controller::DATA_INVALID,
         ];
         $request->validate($rules, $messages);
         if (!empty($this->user->can(User::UPDATE_POST)) || !empty($this->user->can(User::CREATE_POST))) {
@@ -198,24 +198,20 @@ class PostController extends Controller
                     $post->image = $request->image;
                     $post->save();
                 }
-                $action = ($request->id) ? 'sửa' : 'tạo';
+                $action = ($request->id) ? 'update' : 'create';
 
                 LogController::create($action, self::NAME, $post->id);
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Đã ' . $action . ' ' . self::NAME . ' ' . $post->name
+                    'msg' => 'Successfully ' . $action . ' ' . self::NAME . ' ' . $post->name
                 );
             } catch (\Exception $e) {
-                Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                log_exception($e);
+                DB::rollBack();
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return redirect()->route('admin.post', ['key' => $post->id])->with('response', $response);
     }
@@ -229,26 +225,26 @@ class PostController extends Controller
                 $obj = Post::find($id);
                 if ($obj->canRemove()) {
                     $obj->delete();
-                    LogController::create("xóa", self::NAME, $obj->id);
+                    LogController::create("delete", self::NAME, $obj->id);
                     array_push($success, $obj->name);
                 } else {
                     array_push($fail, $obj->name);
                 }
             }
             if (count($success)) {
-                $msg = 'Đã xóa ' . self::NAME . ' ' . implode(', ', $success);
+                $msg = 'Deleted ' . self::NAME . ' ' . implode(', ', $success);
             }
             if (count($fail) && count($success)) {
-                $msg .= ' ngoại trừ ' . implode(', ', $fail) . '!';
+                $msg .= ' except ' . implode(', ', $fail) . '!';
             } else if (count($fail)) {
-                $msg = 'Không thể xóa ' . self::NAME . ' ' . implode(', ', $fail) . '!';
+                $msg = 'Can not delete ' . self::NAME . ' ' . implode(', ', $fail) . '!';
             }
             $response = array(
                 'status' => 'success',
                 'msg' => $msg
             );
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }

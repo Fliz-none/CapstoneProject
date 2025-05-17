@@ -13,7 +13,7 @@
         @endforeach
     @else
         <li>
-            <p class="text-center px-3 fst-italic text-nowrap">Không có thông báo nào</p>
+            <p class="text-center px-3 fst-italic text-nowrap">No notifications.</p>
         </li>
     @endif
 </ul>

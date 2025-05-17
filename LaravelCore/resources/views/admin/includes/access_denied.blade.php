@@ -36,6 +36,6 @@
                 <path d="M321.19229,78.95414h-84.81c-1.48004,0-2.67004,1.20001-2.67004,2.67004s1.19,2.66998,2.67004,2.66998h84.81c1.46997,0,2.66998-1.20001,2.66998-2.66998s-1.20001-2.67004-2.66998-2.67004Z" fill="var(--primary)" />
             </g>
         </svg>
-        <h5 class="my-3">Bạn chưa được cấp quyền truy cập vào đây!</h5>
+        <h5 class="my-3">You do not have permission to access this page!</h5>
     </div>
 </div>

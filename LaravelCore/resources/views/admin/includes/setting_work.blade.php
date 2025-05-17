@@ -2,24 +2,24 @@
     <form id="work-form" action="{{ route('admin.setting.work') }}" method="post">
         @csrf
         <div class="card-header d-flex justify-content-between">
-            <h3>Thiết lập ca làm việc</h3>
-            <button class="btn btn-primary" type="submit">Lưu</button>
+            <h3>Shift settings</h3>
+            <button class="btn btn-primary" type="submit">Save</button>
         </div>
         <div class="card-body">
             <div class="form-check form-check-inline mb-3">
                 <input class="form-check-input form-check-info" id="allow_self_register-checkbox" name="allow_self_register" type="checkbox" {{ old('allow_self_register', json_decode($settings['work_info'])->allow_self_register) ? 'checked' : '' }}>
                 <label class="form-check-label" for="allow_self_register-checkbox">
-                    Cho phép nhân viên tự đăng ký ca
+                    Allow employees to self-register shifts
                 </label>
             </div>
             <div class="table-responsive">
                 <table class="table table-hover table-striped table-shift">
                     <thead>
                         <tr>
-                            <th>Tên ca</th>
-                            <th>Giờ vào</th>
-                            <th>Giờ ra</th>
-                            <th>SL nhân sự/ca</th>
+                            <th>Shift Name</th>
+                            <th>Check-in Time</th>
+                            <th>Check-out Time</th>
+                            <th>Staff Count/Shift</th>
                             <th style="width: 5%"></th>
                         </tr>
                     </thead>
@@ -70,7 +70,7 @@
                         @else
                             <tr class="text-center fst-italic text-primary">
                                 <th colspan="5">
-                                    <h6 class="pt-2">Chưa có ca làm việc</h6>
+                                    <h6 class="pt-2">No shifts available</h6>
                                 </th>
                             </tr>
                         @endif

@@ -26,7 +26,7 @@
                         <div class="user-menu d-flex align-items-start">
                             <div class="user-name text-end me-3">
                                 <h6 class="mb-0 mt-1 text-gray-600">{{ Auth::user()->name }}</h6>
-                                <small class="text-secondary">{{ Auth::user()->branch ? Auth::user()->branch->name : 'Không có chi nhánh' }}</small>
+                                <small class="text-secondary">{{ Auth::user()->branch ? Auth::user()->branch->name : 'No branches available.' }}</small>
                             </div>
                             <div class="user-img d-flex align-items-center">
                                 <div class="avatar avatar-md">
@@ -37,34 +37,34 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                         <li>
-                            <h6 class="dropdown-header">Xin chào, {{ Auth::user()->name }}</h6>
+                            <h6 class="dropdown-header">Hello, {{ Auth::user()->name }}</h6>
                         </li>
                         <li><a class="dropdown-item" href="{{ route('admin.profile') }}">
                                 <i class="bi bi-person-circle me-2"></i>
-                                Thông tin tài khoản
+                                Account Information
                             </a>
                         </li>
                         <li><a class="dropdown-item" href="{{ route('admin.profile', ['key' => 'settings']) }}">
                                 <i class="bi bi-gear-fill me-2"></i>
-                                Cài đặt tài khoản
+                                Account Settings
                             </a>
                         </li>
                         @if (Auth::user()->branches->count() > 1)
                             <li><a class="dropdown-item cursor-pointer btn-change-branch">
                                     <i class="bi bi-git"></i>
-                                    Đổi chi nhánh
+                                    Change Branch
                                 </a>
                             </li>
                         @endif
                         <li><a class="dropdown-item" href="{{ route('admin.profile', ['key' => 'password']) }}">
                                 <i class="bi bi-shield-lock-fill me-2"></i>
-                                Đổi mật khẩu
+                                Change Password
                             </a>
                         </li>
                         <li class="submenu-item">
                             <a class="dropdown-item" href="{{ route('admin.work', ['key' => 'timekeeping']) }}">
                                 <i class="bi bi-stopwatch"></i>
-                                Chấm công
+                                Timekeeping
                             </a>
                         </li>
                         @php
@@ -75,7 +75,7 @@
                             <li class="submenu-item">
                                 <a class="dropdown-item cursor-pointer btn-self-schedule">
                                     <i class="bi bi-calendar2-week"></i>
-                                    Sắp lịch làm việc
+                                    Schedule Work
                                 </a>
                             </li>
                         @endif

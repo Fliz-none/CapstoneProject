@@ -3,13 +3,13 @@
     <form id="company-form" action="{{ route('admin.setting.shop') }}" method="post">
         @csrf
         <div class="card-header d-flex justify-content-between">
-            <h3>Thiết lập cửa hàng</h3>
-            <button class="btn btn-primary btn-save" type="submit">Lưu</button>
+            <h3>Shop settings</h3>
+            <button class="btn btn-primary btn-save" type="submit">Save</button>
         </div>
         <div class="card-body">
             <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label" for="inventory_manage">Quản lý hàng hóa lưu kho<br />
-                    <small class="form-text text-muted" id="inventory_manage-help">Kiểm soát nhập, xuất, tồn kho</small>
+                <label class="col-sm-4 col-form-label" for="inventory_manage">Inventory management<br />
+                    <small class="form-text text-muted" id="inventory_manage-help">Control stock in, out, and remaining inventory</small>
                 </label>
                 <div class="col-sm-8">
                     <input class="form-control @error('inventory_manage') is-invalid @enderror" id="inventory_manage" name="inventory_manage" type="text" value="{{ $settings['inventory_manage'] }}">
@@ -19,8 +19,8 @@
                 </div>
             </div>
             <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label" for="scores_rate_exchange">Tỷ lệ quy đổi điểm thưởng<br />
-                    <small class="form-text text-muted" id="scores_rate_exchange-help">Mua hàng bao nhiêu tiền thì được 1 điểm thưởng</small>
+                <label class="col-sm-4 col-form-label" for="scores_rate_exchange">Reward points exchange rate<br />
+                    <small class="form-text text-muted" id="scores_rate_exchange-help">How much money spent equals 1 reward point</small>
                 </label>
                 <div class="col-sm-8">
                     <input class="form-control @error('scores_rate_exchange') is-invalid @enderror" id="scores_rate_exchange" name="scores_rate_exchange" type="text" value="{{ $settings['scores_rate_exchange'] }}">
@@ -36,14 +36,14 @@
     <form id="print-form" action="{{ route('admin.setting.print') }}" method="post">
         @csrf
         <div class="card-header d-flex justify-content-between">
-            <h3>Thiết lập giấy in hoá đơn</h3>
-            <button class="btn btn-primary btn-save" type="submit">Lưu</button>
+            <h3>Invoice printing settings</h3>
+            <button class="btn btn-primary btn-save" type="submit">Save</button>
         </div>
         <div class="card-body">
             <div class="mb-3 row">
                 <label class="col-sm-4 col-form-label" for="print_order_bank_a5">
-                    Thêm mã QR vào khổ giấy A5<br />
-                    <small class="form-text text-muted">Thêm mã QR thanh toán vào hóa đơn bằng khổ giấy A5</small>
+                    Add QR code to A5 paper<br />
+                    <small class="form-text text-muted">Add payment QR code to invoice on A5 paper</small>
                 </label>
                 <div class="col-sm-8">
                     <input name="print_order_bank_a5" type="hidden" value="0">
@@ -58,8 +58,8 @@
             </div>
             <div class="mb-3 row">
                 <label class="col-sm-4 col-form-label" for="print_order_bank_c80">
-                    Thêm mã QR vào khổ giấy C80<br />
-                    <small class="form-text text-muted">Thêm mã QR thanh toán vào hóa đơn bằng khổ giấy C80</small>
+                    Add QR code to C80 paper<br />
+                    <small class="form-text text-muted">Add payment QR code to invoice on C80 paper</small>
                 </label>
                 <div class="col-sm-8">
                     <input name="print_order_bank_c80" type="hidden" value="0">
@@ -82,10 +82,10 @@
     <form id="expense-group-form" action="{{ route('admin.setting.expense') }}" method="post">
         @csrf
         <div class="card-header d-flex justify-content-between">
-            <h3>Thiết lập phiếu chi</h3>
-            <button class="ms-auto btn btn-outline-primary btn-add-expense" type="button"><i class="bi bi-plus"></i> Thêm</button>
-            <button class="ms-2 btn btn-outline-primary btn-remove-expense" type="button"><i class="bi bi-dash"></i> Xóa</button>
-            <button class="ms-2 btn btn-primary btn-save" type="submit">Lưu</button>
+            <h3>Setup expense voucher</h3>
+            <button class="ms-auto btn btn-outline-primary btn-add-expense" type="button"><i class="bi bi-plus"></i> Add</button>
+            <button class="ms-2 btn btn-outline-primary btn-remove-expense" type="button"><i class="bi bi-dash"></i> Remove</button>
+            <button class="ms-2 btn btn-primary btn-save" type="submit">Save</button>
         </div>
         <div class="card-body expense-group-container">
             @php
@@ -93,7 +93,7 @@
             @endphp
             @foreach ($expenseGroups as $index => $group)
                 <div class="mb-3 row expense-group-item">
-                    <input class="form-control @error('expense_group.' . $index) is-invalid @enderror" name="expense_group[]" type="text" value="{{ old('expense_group.' . $index, $group) }}" placeholder="Nhập nội dung phiếu chi">
+                    <input class="form-control @error('expense_group.' . $index) is-invalid @enderror" name="expense_group[]" type="text" value="{{ old('expense_group.' . $index, $group) }}" placeholder="Enter expense content">
                     @error('expense_group.' . $index)
                         <span class="invalid-feedback d-block" role="alert">
                             <strong>{{ $message }}</strong>

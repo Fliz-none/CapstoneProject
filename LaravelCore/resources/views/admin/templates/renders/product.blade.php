@@ -1,10 +1,10 @@
 @php
     $columnTitles = [
-        'name' => 'Tên sản phẩm',
-        'price' => 'Giá',
-        'sum_stock' => 'Tổng tồn kho',
-        'stock_limit' => 'Ngưỡng hết hàng',
-        'created_at' => 'Ngày tạo',
+        'name' => 'Product Name',
+        'price' => 'Price',
+        'sum_stock' => 'Total Stock',
+        'stock_limit' => 'Stock Threshold',
+        'created_at' => 'Created Date',
     ];
 @endphp
 <div id="render-container">
@@ -48,7 +48,7 @@
                                             @break
 
                                             @default
-                                                {{ 'Không rõ' }}
+                                                {{ 'N/A' }}
                                         @endswitch
                                     </td>
                                 @endforeach

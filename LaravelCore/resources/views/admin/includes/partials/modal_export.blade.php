@@ -4,7 +4,7 @@
         <div class="modal-dialog modal-fullscreen modal-dialog-scrollable export-receipt">
             <div class="modal-content">
                 <div class="modal-header bg-info">
-                    <h1 class="modal-title fs-5 text-white" id="export-modal-label">Xuất kho</h1>
+                    <h1 class="modal-title fs-5 text-white" id="export-modal-label">Warehouse Export</h1>
                     <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -29,7 +29,7 @@
                                                     <div class="position-relative search-form">
                                                         <input class="form-control form-control-lg search-input" id="export-search-input"
                                                             data-url="{{ route('admin.stock') }}?key=search{{ $my_warehouses->count() ? '&warehouse_id=' . $my_warehouses->first()->id : '' }}&action=export" type="text" autocomplete="off"
-                                                            placeholder="Tìm kiếm sản phẩm">
+                                                            placeholder="Search products">
                                                         <div class="form-control-icon">
                                                             <i class="bi bi-search"></i>
                                                         </div>
@@ -48,33 +48,30 @@
                         </div>
                         <div class="col-12 col-lg-3 d-flex flex-column">
                             <div class="form-group">
-                                <label data-bs-toggle="tooltip" data-bs-title="Thông tin về các mặt hàng hoặc lý do xuất hàng" for="export-note">Nội dung</label>
+                                <label data-bs-toggle="tooltip" data-bs-title="Information about the items or reason for export" for="export-note">Description</label>
                                 <input class="form-control form-control-lg" id="export-note" name="note" type="note" required autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label data-bs-toggle="tooltip" data-bs-title="Ngày mà hàng hóa hoặc sản phẩm được chuyển ra khỏi kho" for="export-date">Ngày xuất</label>
+                                <label data-bs-toggle="tooltip" data-bs-title="Date when goods or products are exported from warehouse" for="export-date">Export Date</label>
                                 <input class="form-control form-control-lg" id="export-date" name="date" type="date" value="{{ date('Y-m-d') }}" max="{{ date('Y-m-d') }}" required inputmode="numeric">
                             </div>
                             <div class="form-group">
-                                <label data-bs-toggle="tooltip" data-bs-title="Kho tiếp nhận các sản phẩm được nhập vào" for="export-to_warehouse_id">Kho nhận</label>
-                                <select class="form-select form-control-lg select2" id="export-to_warehouse_id" name="to_warehouse_id" data-ajax--url="{{ route('admin.warehouse', ['key' => 'select2']) }}" data-placeholder="Chọn kho tiếp nhập"
-                                    autocomplete="off"> </select>
+                                <label data-bs-toggle="tooltip" data-bs-title="Warehouse receiving the imported products" for="export-to_warehouse_id">Receiving Warehouse</label>
+                                <select class="form-select form-control-lg select2" id="export-to_warehouse_id" name="to_warehouse_id" data-ajax--url="{{ route('admin.warehouse', ['key' => 'select2']) }}" data-placeholder="Select receiving warehouse" autocomplete="off"></select>
                             </div>
                             <div class="form-group">
-                                <label data-bs-toggle="tooltip" data-bs-title="Người tiếp nhận hàng hóa nhập" for="export-receiver_id">Người nhận</label>
-                                <select class="form-select form-control-lg select2" id="export-receiver_id" name="receiver_id" data-ajax--url="{{ route('admin.user', ['key' => 'select2']) }}" data-placeholder="Chọn người nhận" required
-                                    autocomplete="off">
-                                </select>
+                                <label data-bs-toggle="tooltip" data-bs-title="Person receiving the goods" for="export-receiver_id">Receiver</label>
+                                <select class="form-select form-control-lg select2" id="export-receiver_id" name="receiver_id" data-ajax--url="{{ route('admin.user', ['key' => 'select2']) }}" data-placeholder="Select receiver" required autocomplete="off"></select>
                             </div>
                             <div class="form-group">
-                                <label data-bs-toggle="tooltip" data-bs-title="Trạng thái thú cưng (Có thể thay đổi sau)" for="export-status-waiting">Trạng thái</label>
+                                <label data-bs-toggle="tooltip" data-bs-title="Current status (can be changed later)" for="export-status-waiting">Status</label>
                                 <div class="form-group">
                                     <div class="d-grid gap-2">
                                         <div class="btn-group btn-group-lg" role="group">
                                             <input class="btn-check" id="export-status-waiting" name="status" type="radio" value="0">
-                                            <label class="btn btn-outline-danger" for="export-status-waiting">Đang chờ</label>
+                                            <label class="btn btn-outline-danger" for="export-status-waiting">Pending</label>
                                             <input class="btn-check" id="export-status-exported" name="status" type="radio" value="1">
-                                            <label class="btn btn-outline-success" for="export-status-exported">Đã xuất</label>
+                                            <label class="btn btn-outline-success" for="export-status-exported">Exported</label>
                                         </div>
                                     </div>
                                 </div>
@@ -90,7 +87,7 @@
                                             <button class="btn btn-light btn-print print-export" data-url="{{ getPath(route('admin.export')) }}" type="button">
                                                 <i class="bi bi-printer-fill"></i>
                                             </button>
-                                            <a class="btn btn-lg btn-info w-75 btn-submit-export">Lưu</a>
+                                            <a class="btn btn-lg btn-info w-75 btn-submit-export">Save</a>
                                         </div>
                                     </div>
                                 @endif

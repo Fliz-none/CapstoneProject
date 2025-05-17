@@ -1,36 +1,36 @@
 <div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
-            <h1 class="modal-title fs-5" id="order-modal-label">Đơn hàng {{ $order->code }}</h1>
+            <h1 class="modal-title fs-5" id="order-modal-label">Order {{ $order->code }}</h1>
             <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
         </div>
         <div class="modal-body">
             <div class="container">
                 <div class="row mb-3">
                     <div class="col-12 col-lg-6">
-                        <strong>Khách hàng:</strong> {{ $order->customer ? $order->customer->name : 'Vô danh' }}<br>
+                        <strong>Customer:</strong> {{ $order->customer ? $order->customer->name : 'Anonymous' }}<br>
                         @if (optional($order->customer)->phone)
-                            <strong>Số điện thoại:</strong> {{ $order->customer ? $order->customer->phone : 'Không có' }}<br>
+                            <strong>Phone:</strong> {{ $order->customer ? $order->customer->phone : 'N/A' }}<br>
                         @endif
                         @if (optional($order->customer)->address || $order->local_id)
-                            <strong>Địa chỉ:</strong> {{ $order->fullAddress }}
+                            <strong>Address:</strong> {{ $order->fullAddress }}
                         @endif
-                        <strong>Ghi chú:</strong> {{ $order->note }}
+                        <strong>Note:</strong> {{ $order->note }}
                     </div>
                     <div class="col-12 col-lg-6 text-end">
-                        <strong>Chi nhánh:</strong> {{ $order->branch->name }}<br />
-                        <strong>Người bán:</strong> {{ $order->dealer->name }}<br />
-                        <strong>Ngày bán:</strong> {{ $order->created_at->format('d/m/Y H:i') }}<br />
-                        <strong>Trạng thái:</strong> {{ $order->statusStr['string'] }}
+                        <strong>Branch:</strong> {{ $order->branch->name }}<br />
+                        <strong>Seller:</strong> {{ $order->dealer->name }}<br />
+                        <strong>Sale Date:</strong> {{ $order->created_at->format('d/m/Y H:i') }}<br />
+                        <strong>Status:</strong> {{ $order->statusStr['string'] }}
                     </div>
                 </div>
                 <table class="table table-bordered mb-3">
                     <thead>
                         <tr>
-                            <th>Hàng hóa / Dịch vụ</th>
-                            <th class="text-center">Số lượng</th>
-                            <th class="text-center">Đơn giá</th>
-                            <th class="text-end">Thành tiền</th>
+                            <th>Product</th>
+                            <th class="text-center">Quantity</th>
+                            <th class="text-center">Unit Price</th>
+                            <th class="text-end">Amount</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,7 +39,7 @@
                         @endphp
                         @if($goods->count())
                             <tr>
-                                <td colspan="4"><h5 class="text-primary mb-0">Các hàng hóa</h5></td>
+                                <td colspan="4"><h5 class="text-primary mb-0">Products</h5></td>
                             </tr>
                             @foreach ($goods as $good)
                                 <tr>
@@ -51,11 +51,11 @@
                                         {{ $good->quantity . ' ' . $good->_unit->term }}
                                     </td>
                                     <td class="text-end">
-                                        {{ number_format($good->realPrice) . 'đ' }}
-                                        {!! $good->discount > 0 ? '<br/><small>Đã giảm ' . number_format($good->originalTotal - $good->total) . 'đ</small>' : '' !!}
+                                        {{ number_format($good->realPrice) . 'VND' }}
+                                        {!! $good->discount > 0 ? '<br/><small>Discounted ' . number_format($good->originalTotal - $good->total) . 'VND</small>' : '' !!}
                                     </td>
                                     <td class="text-end">
-                                        {{ $good->realPrice ? number_format($good->quantity * $good->realPrice) . 'đ' : 'Miễn phí' }}
+                                        {{ $good->realPrice ? number_format($good->quantity * $good->realPrice) . 'VND' : 'Free' }}
                                     </td>
                                 </tr>
                             @endforeach
@@ -68,29 +68,29 @@
                                     return $detail->realPrice > $detail->price ? $detail->total : $detail->originalTotal;
                                 });
                             @endphp
-                            <th colspan="3">TỔNG {{ $goods->sum('quantity') ? $goods->sum('quantity') . ' SẢN PHẨM' : '' }}{{ $goods->sum('quantity') && $services->sum('quantity') ? ' - ' : '' }}{{ $services->sum('quantity') ? $services->sum('quantity') . ' DỊCH VỤ' : '' }} </th>
-                            <th class="text-end fw-bold">{{ number_format($sumOriginal) }}đ</th>
+                            <th colspan="3">TOTAL {{ $goods->sum('quantity') ? $goods->sum('quantity') . ' PRODUCTS' : '' }}{{ $goods->sum('quantity') ? ' - ' : '' }}</th>
+                            <th class="text-end fw-bold">{{ number_format($sumOriginal) }}VND</th>
                         </tr>
                         @if ($order->discount)
                             <tr>
-                                <th colspan="3">GIẢM GIÁ</th>
+                                <th colspan="3">DISCOUNT</th>
                                 <th class="text-end fw-bold">{{ parseDiscount($order->discount) }}</th>
                             </tr>
                         @endif
                         <tr>
-                            <th colspan="3">PHẢI THANH TOÁN</th>
-                            <th class="text-end fw-bold">{{ number_format($order->total) . 'đ' }}</th>
+                            <th colspan="3">AMOUNT DUE</th>
+                            <th class="text-end fw-bold">{{ number_format($order->total) . 'VND' }}</th>
                         </tr>
                     </tfoot>
                 </table>
-                <h5 class="text-primary">Các thanh toán</h5>
+                <h5 class="text-primary">Payments</h5>
                 <table class="table table-bordered mb-3">
                     <thead>
                         <tr>
-                            <th>Mã giao dịch</th>
-                            <th class="text-center">Nội dung</th>
-                            <th class="text-center">Người thu</th>
-                            <th class="text-end">Số tiền</th>
+                            <th>Transaction Code</th>
+                            <th class="text-center">Description</th>
+                            <th class="text-center">Collector</th>
+                            <th class="text-end">Amount</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -123,16 +123,16 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th class="text-end" colspan="3">TỔNG GIÁ TRỊ ĐƠN HÀNG</th>
-                            <th class="text-end fw-bold">{{ number_format($order->total) }}đ</th>
+                            <th class="text-end" colspan="3">TOTAL ORDER VALUE</th>
+                            <th class="text-end fw-bold">{{ number_format($order->total) }}VND</th>
                         </tr>
                         <tr>
-                            <th class="text-end" colspan="3">TỔNG SỐ TIỀN ĐÃ THANH TOÁN</th>
-                            <th class="text-end fw-bold">{{ number_format($order->paid) }}đ</th>
+                            <th class="text-end" colspan="3">TOTAL PAID</th>
+                            <th class="text-end fw-bold">{{ number_format($order->paid) }}VND</th>
                         </tr>
                         <tr>
-                            <th class="text-end" colspan="3">{{ $order->total > $order->paid ? 'CÒN THIẾU' : 'TIỀN THỪA' }}</th>
-                            <th class="text-end fw-bold {{ $order->total > $order->paid ? 'text-danger' : 'text-success' }}">{{ number_format($order->total - $order->paid) }}đ</th>
+                            <th class="text-end" colspan="3">{{ $order->total > $order->paid ? 'AMOUNT DUE' : 'CHANGE' }}</th>
+                            <th class="text-end fw-bold {{ $order->total > $order->paid ? 'text-danger' : 'text-success' }}">{{ number_format($order->total - $order->paid) }}VND</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -141,21 +141,21 @@
         <div class="modal-footer">
             @if (Auth::user()->can(App\Models\User::CREATE_TRANSACTION)) 
             <button class="btn btn-primary text-decoration-none btn-create-transaction" data-bs-dismiss="modal" data-order="{{ $order->id }}" type="button" aria-label="Close">
-                <i class="bi bi-pencil-square"></i> Thanh toán
+                <i class="bi bi-pencil-square"></i> Make Payment
             </button>
             @endif
             <div class="dropdown">
                 <button class="btn btn-primary text-decoration-none" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-printer-fill"></i> In phiếu
+                    <i class="bi bi-printer-fill"></i> Print Receipt
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item cursor-pointer btn-print print-order" data-id="{{ $order->id }}" data-url="{{ getPath(route('admin.order')) }}" data-template="a5">Khổ A5</a></li>
-                    <li><a class="dropdown-item cursor-pointer btn-print print-order" data-id="{{ $order->id }}" data-url="{{ getPath(route('admin.order')) }}" data-template="c80">Khổ 80mm</a></li>
+                    <li><a class="dropdown-item cursor-pointer btn-print print-order" data-id="{{ $order->id }}" data-url="{{ getPath(route('admin.order')) }}" data-template="a5">Size A5</a></li>
+                    <li><a class="dropdown-item cursor-pointer btn-print print-order" data-id="{{ $order->id }}" data-url="{{ getPath(route('admin.order')) }}" data-template="c80">Size 80mm</a></li>
                 </ul>
             </div>
             @if (Auth::user()->can(App\Models\User::UPDATE_ORDER)) 
             <button class="btn btn-primary text-decoration-none btn-update-order" data-bs-dismiss="modal" data-id="{{ $order->id }}" type="button" aria-label="Close">
-                <i class="bi bi-pencil-square"></i> Cập nhật
+                <i class="bi bi-pencil-square"></i> Update
             </button>
             @endif
         </div>

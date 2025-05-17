@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    const NAME = 'sản phẩm',
+    const NAME = 'Product',
         MESSAGES = [
             'sku.string' => Controller::DATA_INVALID,
             'sku.max' => Controller::MAX,
@@ -32,8 +32,8 @@ class ProductController extends Controller
             'name.string' => Controller::DATA_INVALID,
             'name.max' => Controller::MAX,
             'status.numeric' => Controller::DATA_INVALID,
-            'catalogues.required' => 'Danh mục không thể bỏ trống',
-            'catalogues.array' => 'Danh mục: ' . Controller::DATA_INVALID,
+            'catalogues.required' => 'Category can not be empty',
+            'catalogues.array' => 'Category: ' . Controller::DATA_INVALID,
         ];
 
     public function __construct()
@@ -60,8 +60,8 @@ class ProductController extends Controller
                         'columns' => 'required',
                         'catalogue_id' => 'required|numeric',
                     ], [
-                        'columns.required' => 'Vui lòng chọn ít nhất một cột',
-                        'catalogue_id.required' => 'Danh mục không thể bỏ trống',
+                        'columns.required' => 'Please select at least one column',
+                        'catalogue_id.required' => 'Category can not be empty',
                     ]);
                     $catalogue_ids = Controller::getDescendantIds($request->catalogue_id);
                     $catalogue_ids[] = $request->catalogue_id;
@@ -75,7 +75,7 @@ class ProductController extends Controller
                         ->get();
                     return view('admin.templates.renders.product', ['products' => $objs, 'columns' => $request->columns]);
                 case 'new':
-                    $pageName = 'Sản phẩm mới';
+                    $pageName = 'New Product';
                     return view('admin.product', compact('pageName', 'catalogues'));
                     break;
                 case 'list':
@@ -133,7 +133,7 @@ class ProductController extends Controller
                         if ($request->ajax()) {
                             $result = $product;
                         } else {
-                            $pageName = 'Chi tiết sản phẩm';
+                            $pageName = 'Product Details';
                             return view('admin.product', compact('pageName', 'catalogues', 'product'));
                         }
                     } else {
@@ -249,10 +249,10 @@ class ProductController extends Controller
                         $actionButtons = '
                             <div class="d-flex align-items-center">
                                 <a class="btn btn-link text-decoration-none btn-view-import_detail" data-id="' . $obj->id . '">
-                                    <i class="bi bi-box-arrow-in-down" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Xem lịch sử nhập hàng của sản phẩm"></i>
+                                    <i class="bi bi-box-arrow-in-down" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View product import history"></i>
                                 </a>
                                 <a class="btn btn-link text-decoration-none btn-view-export_detail" data-id="' . $obj->id . '">
-                                    <i class="bi bi-box-arrow-in-up" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Xem lịch sử xuất hàng của sản phẩm"></i>
+                                    <i class="bi bi-box-arrow-in-up" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View product export history"></i>
                                 </a>';
                         if ($can_delete_product) {
                             $actionButtons .= '
@@ -272,7 +272,7 @@ class ProductController extends Controller
                     ->make(true);
             } else {
                 $objs = Product::get();
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = self::NAME . ' management';
                 return view('admin.products', compact('pageName'));
             }
         }
@@ -313,7 +313,7 @@ class ProductController extends Controller
             DB::statement($sql, $idArray);
         }
 
-        return response()->json(['msg' => 'Thứ tự đã được cập nhật thành công']);
+        return response()->json(['msg' => 'The sort order has been updated successfully!'], 200);
     }
 
     public function save(Request $request)
@@ -346,24 +346,18 @@ class ProductController extends Controller
                 if ($product) {
                     $product->syncCatalogues($request->catalogues);
                 }
-                $action = ($request->id) ? 'sửa' : 'thêm';
+                $action = ($request->id) ? 'update' : 'create';
                 LogController::create($action, self::NAME, $product->id);
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Đã ' . $action . ' ' . self::NAME . ' ' . $product->name
+                    'msg' => 'Successfully ' . $action . ' ' . self::NAME . ' ' . $product->name
                 );
             } catch (\Exception $e) {
-                Log::error(
-                    'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                );
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                log_exception($e);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return redirect()->route('admin.product', ['key' => $product->id])->with('response', $response);
     }
@@ -395,7 +389,7 @@ class ProductController extends Controller
                     'status' => $request->status,
                 ]);
                 if ($product) {
-                    LogController::create('tạo', self::NAME, $product->id);
+                    LogController::create('create', self::NAME, $product->id);
                     if ($request->avatar) {
                         $image = $request->file('avatar');
                         $imageName = $image->getClientOriginalName();
@@ -408,7 +402,7 @@ class ProductController extends Controller
                             'name' => $imageName,
                             'author_id' => Auth::user()->id
                         ]);
-                        LogController::create('tạo', 'Hình ảnh ' . $image->name, $image->id);
+                        LogController::create('create', 'Image ' . $image->name, $image->id);
                         $product->update(['gallery' => '|' . $imageName]);
                     }
                     $product->syncCatalogues($request->catalogues);
@@ -416,22 +410,16 @@ class ProductController extends Controller
                 DB::commit();
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Đã tạo ' . self::NAME . ' ' . $product->name
+                    'msg' => 'Created ' . self::NAME . ' ' . $product->name
                 );
             } catch (\Exception $e) {
                 DB::rollBack();
-                Log::error(
-                    'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                );
+                log_exception($e);
                 Controller::resetAutoIncrement(['products', 'images']);
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -478,45 +466,39 @@ class ProductController extends Controller
                                 'name' => $imageName,
                                 'author_id' => Auth::user()->id
                             ]);
-                            LogController::create('tạo', 'Hình ảnh ' . $image->name, $image->id);
+                            LogController::create('create', 'Image ' . $image->name, $image->id);
                             $product->update(['gallery' => '|' . $imageName]);
                         }
 
                         $product->syncCatalogues($request->catalogues);
 
-                        LogController::create('sửa', self::NAME, $product->id);
+                        LogController::create('update', self::NAME, $product->id);
                         DB::commit();
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Đã cập nhật ' . self::NAME . ' ' . $product->name
+                            'msg' => 'Updated ' . self::NAME . ' ' . $product->name
                         );
                     } else {
                         DB::rollBack();
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                            'msg' => 'An error occurred, please reload the page and try again!'
                         );
                     }
                 } catch (\Exception $e) {
                     DB::rollBack();
-                    Log::error(
-                        'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                            'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                            'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                            'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                            'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
+                    log_exception($e);
                     Controller::resetAutoIncrement(['products', 'images']);
-                    return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                    'msg' => 'An error occurred, please reload the page and try again!'
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -541,25 +523,9 @@ class ProductController extends Controller
                                     $unit->delete();
                                 }
                             });
-
-                            /* ----- Xử lý thuốc liên quan ------ */
-                            if ($variable->medicine) { // Nếu biến thể có thuốc
-                                if ($variable->medicine->prescription_details->count()) { // Nếu thuốc có chi tiết đơn thuốc thì xóa mềm hết
-                                    $variable->medicine->dosages->each(function ($dosage) {
-                                        $dosage->delete();
-                                    });
-                                    $variable->medicine->delete();
-                                } else { // Nếu không có chi tiết đơn thuốc nào thì xóa cứng luôn
-                                    $variable->medicine->dosages->each(function ($dosage) {
-                                        $dosage->forceDelete();
-                                    });
-                                    $variable->medicine->forceDelete();
-                                }
-                            }
                             $units = $variable->units()->withTrashed()->count();
-                            $medicine = $variable->medicine;
                             $import_details = $variable->import_details()->withTrashed()->count();
-                            if (!$units && !$medicine && !$import_details) { // Nếu biến thể không có ĐVT, không có thuốc, k có chi tiết nhập hàng nào thì xóa cứng
+                            if (!$units && !$import_details) { // Nếu biến thể không có ĐVT, k có chi tiết nhập hàng nào thì xóa cứng
                                 DB::table('attribute_variable')->where('variable_id', $variable->id)->delete();
                                 $variable->forceDelete();
                             } else {
@@ -572,13 +538,13 @@ class ProductController extends Controller
                             DB::table('catalogue_product')->where('product_id', $obj->id)->delete();
                             $obj->forceDelete();
                         }
-                        LogController::create("xóa", self::NAME, $obj->id);
+                        LogController::create("delete", self::NAME, $obj->id);
                         array_push($success, $obj->name);
                     }
                 }
                 $msg = '';
                 if (count($success)) {
-                    $msg .= 'Đã xóa ' . self::NAME . ' ' . implode(', ', $success) . '. ';
+                    $msg .= 'Deleted ' . self::NAME . ' ' . implode(', ', $success) . '. ';
                 }
                 $response = array(
                     'status' => 'success',
@@ -587,18 +553,12 @@ class ProductController extends Controller
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();
-                Log::error(
-                    'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                );
+                log_exception($e);
                 Controller::resetAutoIncrement(['units', 'variables', 'products', 'medicines', 'dosages']);
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -618,10 +578,10 @@ class ProductController extends Controller
                 $invalidRow[] = $row['ten_san_pham'] . ' - ' . $row['unit_id'];
             }
         }
-        $msg = 'Đã nhập file thành công';
+        $msg = 'File imported successfully';
         $status = '';
         if (count($invalidRow)) {
-            $msg .= ', nhưng có ' . count($invalidRow) . ' mặt hàng không thể cập nhật. ' . implode(', ', $invalidRow);
+            $msg .= ', but there are ' . count($invalidRow) . ' items that could not be updated. ' . implode(', ', $invalidRow);
         } else {
             $status = 'success';
         }
@@ -634,7 +594,7 @@ class ProductController extends Controller
 
     public function remove_catalogues(Request $request)
     {
-        if (!$request->choices || count($request->choices) <= 1) return response()->json(['errors' => ['catalogue' => ['Vui chọn nhiều hơn một danh mục!']]], 422);
+        if (!$request->choices || count($request->choices) <= 1) return response()->json(['errors' => ['catalogue' => ['You must select more than one category!']]], 422);
         $success = [];
         if ($this->user->can(User::UPDATE_PRODUCT)) {
             try {
@@ -658,7 +618,7 @@ class ProductController extends Controller
                             $obj->catalogues()->detach($common_categories);
                         }
                     }
-                    $msg = 'Đã xóa các danh mục chung của ' . implode(', ', $success) . '.';
+                    $msg = 'Deleted common categories of ' . implode(', ', $success) . '.';
                     $response = [
                         'status' => 'success',
                         'msg' => $msg,
@@ -667,24 +627,18 @@ class ProductController extends Controller
                     // Không có danh mục chung
                     $response = [
                         'status' => 'error',
-                        'msg' => 'Không có danh mục chung giữa các sản phẩm.',
+                        'msg' => 'No common categories found between products.',
                     ];
                 }
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();
-                Log::error(
-                    'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                );
+                log_exception($e);
                 Controller::resetAutoIncrement(['units', 'variables', 'products', 'medicines', 'dosages']);
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
 
         return response()->json($response, 200);
@@ -694,9 +648,10 @@ class ProductController extends Controller
     {
         if ($this->user->can(User::UPDATE_PRODUCT)) {
             try {
+                DB::beginTransaction();
                 $catalogue = Catalogue::find($request->catalogue_id);
                 if (!$catalogue) {
-                    return response()->json(['errors' => ['catalogue' => ['Danh mục không tồn tại!']]], 422);
+                    return response()->json(['errors' => ['catalogue' => ['This category does not exist!']]], 422);
                 }
 
                 // Thêm danh mục vào tất cả các sản phẩm trong choices mà không xóa danh mục cũ
@@ -704,22 +659,18 @@ class ProductController extends Controller
                     $product->catalogues()->syncWithoutDetaching([$catalogue->id]);
                 });
 
+                DB::commit();
                 return response()->json([
                     'status' => 'success',
-                    'msg' => 'Đã thêm danh mục vào các sản phẩm.',
+                    'msg' => 'Added ' . $catalogue->name . ' to ' . count($request->choices) . ' products.',
                 ], 200);
             } catch (\Exception $e) {
-                Log::error(
-                    'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                );
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                DB::rollBack();
+                log_exception($e);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
     }
 }

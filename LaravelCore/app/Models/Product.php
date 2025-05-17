@@ -143,26 +143,26 @@ class Product extends Model
     public function displayPrice()
     {
         if ($this->variables->min('price') == $this->variables->max('price')) {
-            $price = number_format($this->variables->min('price')) . 'đ';
+            $price = number_format($this->variables->min('price')) . 'VND';
         } else {
-            $price = number_format($this->variables->min('price')) . '₫ - ' . number_format($this->variables->max('price')) . '₫';
+            $price = number_format($this->variables->min('price')) . 'VND - ' . number_format($this->variables->max('price')) . 'VND';
         }
         return $price;
     }
 
     public function minPrice()
     {
-        return number_format($this->variables->min('price')) . '₫';
+        return number_format($this->variables->min('price')) . 'VND';
     }
 
     public function maxPrice()
     {
-        return number_format($this->variables->max('price')) . '₫';
+        return number_format($this->variables->max('price')) . 'VND';
     }
 
     public function salePrice()
     {
-        return number_format($this->variables->min('price')) . '₫';
+        return number_format($this->variables->min('price')) . 'VND';
     }
     public function relatedProducts()
     {

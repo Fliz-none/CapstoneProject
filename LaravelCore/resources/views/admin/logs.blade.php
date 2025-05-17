@@ -10,7 +10,6 @@
                     <h5 class="text-uppercase">{{ $pageName }}</h5>
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Bảng tin</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
                         </ol>
                     </nav>
@@ -32,14 +31,14 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Người dùng</th>
-                                        <th>Hành động</th>
-                                        <th>Đối tượng</th>
-                                        <th>Mã</th>
-                                        <th>Vị trí</th>
-                                        <th>Trình duyệt</th>
-                                        <th>Nền tảng</th>
-                                        <th>Thiết bị</th>
+                                        <th>User</th>
+                                        <th>Action</th>
+                                        <th>Object</th>
+                                        <th>Code</th>
+                                        <th>Location</th>
+                                        <th>Browser</th>
+                                        <th>Platform</th>
+                                        <th>Device</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -110,30 +109,6 @@
                 ]
             })
             initDataTable('log-table')
-
-            // $(document).on('click', '.btn-create-role', function(e) {
-            //     e.preventDefault();
-            //     const form = $('#role-form')
-            //     resetForm(form)
-            //     form.attr('action', `{{ route('admin.role.create') }}`)
-            //     form.find('.modal').modal('show')
-            // })
-
-            // $(document).on('click', '.btn-update-role', function(e) {
-            //     e.preventDefault();
-            //     const id = $(this).attr('data-id'),
-            //         form = $('#role-form');
-            //     resetForm(form)
-            //     $.get(`{{ route('admin.role') }}/${id}`, function(role) {
-            //         form.find('[name=name]').val(role.name)
-            //         form.find('[name=id]').val(role.id)
-            //         $.each(role.permissions, function(index, permission) {
-            //             form.find(`#permission-${permission.id}`).prop('checked', true)
-            //         })
-            //         form.attr('action', `{{ route('admin.role.update') }}`)
-            //         form.find('.modal').modal('show')
-            //     })
-            // })
         })
     </script>
 @endpush

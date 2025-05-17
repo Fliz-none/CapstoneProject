@@ -10,7 +10,6 @@
                     <h5 class="text-uppercase">{{ $pageName }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Bảng tin</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
                         </ol>
                     </nav>
@@ -25,7 +24,7 @@
                 </div>
                 <div class="col-12 col-lg-6 d-flex align-items-center justify-content-end">
                     <select class="form-control form-control-plaintext text-center w-auto ms-2 list-branches">
-                        <option selected hidden disabled>Chi nhánh của bạn</option>
+                        <option selected hidden disabled>Your branch</option>
                         @foreach (Auth::user()->branches as $branch)
                             <option value="{{ $branch->id }}" {{ isset($_GET['branch_id']) && $_GET['branch_id'] == $branch->id ? 'selected' : '' }}>{{ $branch->name }}</option>
                         @endforeach
@@ -52,11 +51,11 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Mã</th>
-                                        <th>Tên nhân viên</th>
-                                        <th>Giờ vào</th>
-                                        <th>Giờ ra</th>
-                                        <th>Hình ảnh</th>
+                                        <th>Code</th>
+                                        <th>Name</th>
+                                        <th>Check-in</th>
+                                        <th>Check-out</th>
+                                        <th>Images</th>
                                         <th></th>
                                     </tr>
                                 </thead>

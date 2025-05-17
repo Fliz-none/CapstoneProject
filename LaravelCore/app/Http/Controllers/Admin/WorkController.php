@@ -139,12 +139,12 @@ class WorkController extends Controller
         } else {
             if ($request->ajax()) {
                 $works = Work::where(function ($query) use ($request) {
-                        $query->when($request->has('branch_id'), function ($query) use ($request) {
-                            $query->where('branch_id', $request->branch_id);
-                        }, function ($query) {
-                            $query->whereIn('branch_id', $this->user->branches->pluck('id'));
-                        });
-                    })->orderBy('created_at', 'desc');
+                    $query->when($request->has('branch_id'), function ($query) use ($request) {
+                        $query->where('branch_id', $request->branch_id);
+                    }, function ($query) {
+                        $query->whereIn('branch_id', $this->user->branches->pluck('id'));
+                    });
+                })->orderBy('created_at', 'desc');
                 $can_update_work = $this->user->can(User::UPDATE_WORK);
                 $can_update_user = $this->user->can(User::UPDATE_USER);
                 $can_update_branch = $this->user->can(User::UPDATE_BRANCH);
@@ -167,12 +167,12 @@ class WorkController extends Controller
                             $query->when($date['year'], function ($query) use ($date) {
                                 $query->whereYear('works.created_at', $date['year']);
                             })
-                            ->when($date['month'], function ($query) use ($date) {
-                                $query->whereMonth('works.created_at', $date['month']);
-                            })
-                            ->when($date['day'], function ($query) use ($date) {
-                                $query->whereDay('works.created_at', $date['day']);
-                            });
+                                ->when($date['month'], function ($query) use ($date) {
+                                    $query->whereMonth('works.created_at', $date['month']);
+                                })
+                                ->when($date['day'], function ($query) use ($date) {
+                                    $query->whereDay('works.created_at', $date['day']);
+                                });
                         }, function ($query) use ($keyword) {
                             $numericKeyword = ltrim(preg_replace('/[^0-9]/', '', $keyword), '0');
                             if (!empty($numericKeyword)) {
@@ -191,7 +191,7 @@ class WorkController extends Controller
                                 $str = $obj->user->fullName;
                             }
                         } else {
-                            $str = 'Không có';
+                            $str = 'N/A';
                         }
                         if ($obj->branch_id) {
                             if ($can_update_branch) {
@@ -211,7 +211,7 @@ class WorkController extends Controller
                         $query->orderBy('works.user_id', $order);
                     })
                     ->addColumn('check_in', function ($obj) {
-                        return '<small>' . (isset($obj->real_checkin) ? Carbon::parse($obj->real_checkin)->format('d/m/Y H:i') : 'Chưa có') . $obj->gap_checkin() . '</small>';
+                        return '<small>' . (isset($obj->real_checkin) ? Carbon::parse($obj->real_checkin)->format('d/m/Y H:i') : 'Not available') . $obj->gap_checkin() . '</small>';
                     })
                     ->filterColumn('check_in', function ($query, $keyword) {
                         $date = parseDate($keyword);
@@ -226,7 +226,7 @@ class WorkController extends Controller
                             });
                     })
                     ->addColumn('check_out', function ($obj) {
-                        return '<small>' . (isset($obj->real_checkout) ? Carbon::parse($obj->real_checkout)->format('d/m/Y H:i') : 'Chưa có') . $obj->gap_checkout() . '</small>';
+                        return '<small>' . (isset($obj->real_checkout) ? Carbon::parse($obj->real_checkout)->format('d/m/Y H:i') : 'Not available') . $obj->gap_checkout() . '</small>';
                     })
                     ->filterColumn('check_out', function ($query, $keyword) {
                         $date = parseDate($keyword);
@@ -253,7 +253,7 @@ class WorkController extends Controller
                         return '<div class="d-flex justify-content-end">
                                     <form method="post" action="' . route('admin.work.remove') . '" class="save-form">
                                         <input type="hidden" name="choices[]" value="' . $obj->id . '"/>
-                                        <button class="btn btn-link text-decoration-none btn-remove" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Xóa">
+                                        <button class="btn btn-link text-decoration-none btn-remove" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Delete">
                                             <i class="bi bi-trash"></i>
                                         </button>
                                     </form>
@@ -263,10 +263,10 @@ class WorkController extends Controller
                     ->make(true);
             } else {
                 if (isset($request->display) && $request->display == 'list') {
-                    $pageName = 'Quản lý ' . self::NAME;
+                    $pageName = self::NAME . ' management';
                     return view('admin.work_list', compact('pageName'));
                 }
-                $pageName = 'Lịch làm việc';
+                $pageName = 'Work Schedule';
                 $startOfWeek = $request->has('monday')
                     ? Carbon::parse($request->monday)
                     : Carbon::now()->startOfWeek();
@@ -275,7 +275,7 @@ class WorkController extends Controller
                     'works' => function ($work) use ($startOfWeek, $endOfWeek) {
                         $work->whereBetween('sign_checkin', [$startOfWeek, $endOfWeek]);
                     }
-                ])->whereNotIn('id', [1, 2, 3, 519, 27034])
+                ])->whereNotIn('id', [1])
                     ->permission(User::ACCESS_ADMIN)
                     ->where(function ($query) use ($request) {
                         $query->when($request->has('branch_id'), function ($query) use ($request) {
@@ -298,8 +298,8 @@ class WorkController extends Controller
             $request->validate([
                 'work_image' => 'required|string', // Validate base64 string
             ], [
-                'work_image.required' => 'Hệ thống chưa lấy được hình ảnh chấm công.',
-                'work_image.string' => 'Dữ liệu hình ảnh không hợp lệ.',
+                'work_image.required' => 'The system could not get the attendance image.',
+                'work_image.string' => 'Invalid image data.',
             ]);
 
             $work = self::current();
@@ -325,7 +325,7 @@ class WorkController extends Controller
                         ]);
                         $response = [
                             'status' => 'success',
-                            'msg' => 'Checkout thành công! Ca trước của bạn đã được chấm tự động.'
+                            'msg' => 'Checkout successful! Your previous shift has been automatically recorded.'
                         ];
                     } else {
                         $work->update([
@@ -334,7 +334,7 @@ class WorkController extends Controller
                         ]);
                         $response = [
                             'status' => 'success',
-                            'msg' => 'Checkin thành công!',
+                            'msg' => 'Checkin successful!',
                             'work' => $work
                         ];
                     }
@@ -345,20 +345,20 @@ class WorkController extends Controller
                     ]);
                     $response = [
                         'status' => 'success',
-                        'msg' => 'Checkout thành công!'
+                        'msg' => 'Checkout successful!'
                     ];
                 }
             } else {
                 $response = [
                     'status' => 'error',
-                    'msg' => 'Không còn ca làm cần chấm công!'
+                    'msg' => 'No work shift needs to be clocked in!'
                 ];
             }
             return redirect()->back()->with('response', $response);
         } catch (\Throwable $th) {
             $response = array(
                 'status' => 'danger',
-                'msg' => 'Đã có lỗi xảy ra, vui lòng liên hệ nhà phát triển phần mềm để khắc phục!'
+                'msg' => 'An error occurred, please contact the software developer for assistance!'
             );
             return redirect()->back()->with('response', $response);
         }
@@ -372,10 +372,11 @@ class WorkController extends Controller
                 'real_checkin' => 'nullable|date_format:H:i',
                 'real_checkout' => 'nullable|date_format:H:i|after:real_checkin',
             ], [
-                'real_checkout.after' => 'Thời gian chấm ra phải lớn hơn thời gian chấm vào.',
-                'real_checkin.date_format' => 'Thời gian chấm vào không hợp lệ.',
-                'real_checkout.date_format' => 'Thời gian chấm ra không hợp lệ.',
+                'real_checkout.after' => 'Checkout time must be later than check-in time.',
+                'real_checkin.date_format' => 'Invalid check-in time format.',
+                'real_checkout.date_format' => 'Invalid checkout time format.',
             ]);
+
             $work = Work::find($request->id);
             $today = Carbon::parse($work->sign_checkin)->toDateString();
 
@@ -390,10 +391,10 @@ class WorkController extends Controller
 
             $response = array(
                 'status' => 'success',
-                'msg' => 'Đã cập nhật ' . self::NAME . ' ' . $work->code
+                'msg' => self::NAME . ' ' . $work->code . ' has been updated successfully.',
             );
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -424,7 +425,7 @@ class WorkController extends Controller
                         $branch_name = $registered->map(function ($work, $index) {
                             return $work->branch->name; // Thêm index vào tên chi nhánh
                         })->unique()->join(', ');
-                        return response()->json(['errors' => ['has_enough' => ['Ở ' . $branch_name . ' ca làm việc này đã có đủ người đăng ký!']]], 422);
+                        return response()->json(['errors' => ['has_enough' => ['This shift at ' . $branch_name . ' already has enough registered employees.']]], 422);
                     }
                     unset($work_info->allow_self_register); // Loại bỏ trường 'allow_self_register'
                     $shiftFound = collect($work_info)->first(function ($shift) use ($shifts) {
@@ -439,23 +440,23 @@ class WorkController extends Controller
                     ]);
                     $response = array(
                         'status' => 'success',
-                        'msg' => 'Đã đăng ký lịch ' . $shiftFound->shift_name . ' cho ' . User::find($request->user_id)->name
+                        'msg' => 'Successfully registered shift ' . $shiftFound->shift_name . ' for ' . User::find($request->user_id)->name
                     );
                 } else { // Có đăng ký thì xóa
                     $work->delete();
                     $response = array(
                         'status' => 'success',
-                        'msg' => 'Đã hủy đăng ký ' . $work->shift_name . ' cho ' . User::find($request->user_id)->name
+                        'msg' => 'Successfully canceled registration for ' . $work->shift_name . ' for ' . User::find($request->user_id)->name
                     );
                 }
                 return response()->json($response, 200);
             } else {
-                return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+                return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
             }
         } catch (\Throwable $th) {
             $response = array(
                 'status' => 'danger',
-                'msg' => 'Đã có lỗi xảy ra, vui lòng liên hệ nhà phát triển phần mềm để khắc phục!'
+                'msg' => 'An error occurred, please contact the software developer for assistance!'
             );
             return response()->json($response, 200);
         }
@@ -539,23 +540,19 @@ class WorkController extends Controller
     public function remove(Request $request)
     {
         $success = [];
-        // if ($this->user->can(User::DELETE_WORK)) {
         foreach ($request->choices as $key => $id) {
             $obj = Work::find($id);
             $obj->delete();
-            LogController::create("xóa", self::NAME, $obj->id);
+            LogController::create("delete", self::NAME, $obj->id);
             array_push($success, $obj->name);
         }
         if (count($success)) {
-            $msg = 'Đã xóa ' . self::NAME . ' ' . implode(', ', $success);
+            $msg = 'Successfully deleted ' . self::NAME . ' ' . implode(', ', $success);
         }
         $response = array(
             'status' => 'success',
             'msg' => $msg
         );
-        // } else {
-        //     return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
-        // }
         return response()->json($response, 200);
     }
 }

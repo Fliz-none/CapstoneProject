@@ -10,7 +10,6 @@
                     <h5 class="text-uppercase">{{ $pageName }}</h5>
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Bảng tin</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
                         </ol>
                     </nav>
@@ -25,20 +24,20 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_CATEGORY)))
                         <a class="btn btn-info mb-3 block btn-create-category">
                             <i class="bi bi-plus-circle"></i>
-                            Thêm
+                            Add
                         </a>
                     @endif
                     @if (!empty(Auth::user()->can(App\Models\User::UPDATE_CATEGORY)))
                         <button class="btn btn-primary mb-3 btn-sort ms-2" type="button">
                             <i class="bi bi-filter-left"></i>
-                            Sắp xếp
+                            Sort
                         </button>
                     @endif
                     <div class="d-inline-block process-btns d-none">
                         @if (!empty(Auth::user()->can(App\Models\User::DELETE_CATEGORIES)))
                             <a class="btn btn-danger btn-removes mb-3 ms-2" type="button">
                                 <i class="bi bi-trash"></i>
-                                Xoá
+                                Delete
                             </a>
                         @endif
                     </div>
@@ -54,12 +53,12 @@
                                     id="category-table">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Tên</th>
-                                            <th>Mô tả</th>
-                                            <th>Trạng thái</th>
-                                            <th>Ngày tạo</th>
-                                            <th>Thứ tự</th>
+                                            <th>#</th>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Status</th>
+                                            <th>Created At</th>
+                                            <th>Order</th>
                                             <th></th>
                                             <th>
                                                 <input class="form-check-input all-choices" type="checkbox">

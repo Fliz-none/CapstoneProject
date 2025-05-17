@@ -21,7 +21,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedTinyInteger('method')->nullable();
             $table->unsignedDecimal('total', 10, 0)->default(0);
             $table->unsignedDecimal('discount', 10, 0)->default(0);
-            $table->unsignedTinyInteger('status')->comment('0: complete; 1: waiting 2:cancel')->default(1);
+            $table->unsignedTinyInteger('status')->comment('0: Completed; 1: Waiting; 2: Canceled')->default(1);
             $table->text('note')->nullable();
             $table->softDeletes();
             $table->timestamps();

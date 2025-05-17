@@ -12,7 +12,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class LogController extends Controller
 {
-    const NAME = 'nhật ký';
+    const NAME = 'Log';
 
     public function __construct()
     {
@@ -127,7 +127,7 @@ class LogController extends Controller
                     ->rawColumns(['code', 'user_id', 'action', 'type'])
                     ->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName =self::NAME . ' management';
                 return view('admin.logs', compact('pageName'));
             }
         }

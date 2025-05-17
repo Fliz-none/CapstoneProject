@@ -4,17 +4,17 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-info">
-                    <h1 class="modal-title fs-5 text-white" id="transaction-modal-label">Giao dịch</h1>
+                    <h1 class="modal-title fs-5 text-white" id="transaction-modal-label">Transaction</h1>
                     <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group mb-3">
                         <div class="row">
                             <div class="col-4 my-auto form-group">
-                                <label data-bs-toggle="tooltip" data-bs-title="Khách hàng thực hiện giao dịch" for="transaction-customer_id">Khách hàng</label>
+                                <label data-bs-toggle="tooltip" data-bs-title="Customer performing the transaction" for="transaction-customer_id">Customer</label>
                             </div>
                             <div class="col-8">
-                                <select class="form-select select2" id="transaction-customer_id" name="customer_id" data-ajax--url="{{ route('admin.user', ['key' => 'select2']) }}" data-placeholder="Chọn một khách hàng">
+                                <select class="form-select select2" id="transaction-customer_id" name="customer_id" data-ajax--url="{{ route('admin.user', ['key' => 'select2']) }}" data-placeholder="Select a customer">
                                 </select>
                             </div>
                         </div>
@@ -22,11 +22,11 @@
                     <div class="form-group mb-3">
                         <div class="row">
                             <div class="col-4 my-auto form-group">
-                                <label data-bs-toggle="tooltip" data-bs-title="Thu ngân thực hiện giao dịch với khách hàng" for="transaction-cashier_id">Thu ngân</label>
+                                <label data-bs-toggle="tooltip" data-bs-title="Cashier performing the transaction with the customer" for="transaction-cashier_id">Cashier</label>
                             </div>
                             <div class="col-8">
                                 <select class="form-select" id="transaction-cashier_id" name="cashier_id">
-                                    <option selected disabled hidden>Chọn thu ngân</option>
+                                    <option selected disabled hidden>Select a cashier</option>
                                     @foreach (cache()->get('cashiers') as $id => $name)
                                         <option value="{{ $id }}">{{ $name }}</option>
                                     @endforeach
@@ -37,12 +37,12 @@
                     <div class="form-group mb-3">
                         <div class="row">
                             <div class="col-4 my-auto form-group">
-                                <label class="form-label" data-bs-toggle="tooltip" data-bs-title="Hình thức thanh toán của khách" for="transaction-cash">Hình thức</label>
+                                <label class="form-label" data-bs-toggle="tooltip" data-bs-title="Customer's payment method" for="transaction-cash">Payment Method</label>
                             </div>
                             <div class="col-8">
                                 <div class="my-3">
                                     <select class="form-select" id="transaction-payment" name="payment">
-                                        <option value="1">Tiền mặt</option>
+                                        <option value="1">Cash</option>
                                         @php
                                             $settings = cache()->get('settings');
                                             $bankInfos = isset($settings['bank_info']) ? json_decode($settings['bank_info'], true) : [];
@@ -58,14 +58,14 @@
                     <div class="form-group mb-3">
                         <div class="row">
                             <div class="col-4 my-auto form-group">
-                                <label data-bs-toggle="tooltip" data-bs-title="Số tiền mà khách đã thanh toán" for="transaction-amount">Số tiền</label>
+                                <label data-bs-toggle="tooltip" data-bs-title="Amount the customer has paid" for="transaction-amount">Amount</label>
                             </div>
                             <div class="col-8">
                                 <h5>
                                     <div class="input-group">
-                                        <input class="form-control w-50 transaction-amount money" id="transaction-amount" name="amount" type="text" value="0" placeholder="Số tiền thanh toán" onclick="this.select()" inputmode="numeric"
+                                        <input class="form-control w-50 transaction-amount money" id="transaction-amount" name="amount" type="text" value="0" placeholder="Payment amount" onclick="this.select()" inputmode="numeric"
                                             autocomplete="off" required>
-                                        <span class="input-group-text">đ</span>
+                                        <span class="input-group-text">vnđ</span>
                                     </div>
                                 </h5>
                             </div>
@@ -74,7 +74,7 @@
                     <div class="form-group mb-3">
                         <div class="row">
                             <div class="col-4 my-auto">
-                                <label class="form-label" for="transaction-pay">Trạng thái</label>
+                                <label class="form-label" for="transaction-pay">Status</label>
                             </div>
                             <div class="col-8">
                                 <div class="my-3">
@@ -82,11 +82,11 @@
                                         <div class="btn-group">
                                             <input class="btn-check" id="transaction-pay" name="status" type="radio" value="pay" checked>
                                             <label class="btn btn-outline-primary" for="transaction-pay">
-                                                Thu tiền
+                                                Collect
                                             </label>
                                             <input class="btn-check" id="transaction-refund" name="status" type="radio" value="refund">
                                             <label class="btn btn-outline-primary" for="transaction-refund">
-                                                Hoàn tiền
+                                                Refund
                                             </label>
                                         </div>
                                     </div>
@@ -97,10 +97,10 @@
                     <div class="form-group mb-3">
                         <div class="row">
                             <div class="col-4 my-auto">
-                                <label data-bs-toggle="tooltip" data-bs-title="Nội dung hoặc thông tin chi tiết về giao dịch" for="transaction-note">Nội dung</label>
+                                <label data-bs-toggle="tooltip" data-bs-title="Content or detailed information about the transaction" for="transaction-note">Note</label>
                             </div>
                             <div class="col-8">
-                                <input class="form-control" id="transaction-note" name="note" type="text" placeholder="Nhập nội dung thanh toán">
+                                <input class="form-control" id="transaction-note" name="note" type="text" placeholder="Enter payment details">
                             </div>
                         </div>
                     </div>
@@ -110,7 +110,7 @@
                             <div class="d-inline-block form-check">
                                 <input class="form-check-input" id="transaction-send_zns" name="send_zns" type="checkbox">
                                 <label class="form-check-label" for="transaction-send_zns">
-                                    Đồng thời gửi Zalo khách hàng
+                                    Also send Zalo to customer
                                 </label>
                             </div>
                         @endif
@@ -121,13 +121,12 @@
                             <input name="id" type="hidden">
                             <input name="order_id" type="hidden">
                             <button class="btn btn-primary" id="transaction-submit" type="submit">
-                                Lưu
+                                Save
                             </button>
                         @endif
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </form>

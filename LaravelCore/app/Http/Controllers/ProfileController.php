@@ -16,7 +16,7 @@ class ProfileController extends Controller
     
     public function profile()
     {
-        $pageName = 'Tài khoản: ' . Auth::user()->name;
+        $pageName = 'Account ' . Auth::user()->name;
         $settings = Setting::pluck('value', 'key');
         return view('web.profile', compact('pageName', 'settings'));
     }

@@ -29,7 +29,7 @@
                                 <button class="key-btn-dark mt-2 ms-3" type="submit">{{ __('Send') }}</button>
                                 <div class="row mb-0">
                                     <div class="col-12 d-flex justify-content-end pe-2 p-lg-4">
-                                        <span>Đã nhớ mật khẩu? <a href="{{ route('admin.login') }}">{{ __('Login') }}</a>.</span>
+                                        <span>Remember your password? <a href="{{ route('admin.login') }}">{{ __('Login') }}</a>.</span>
                                     </div>
                                 </div>
                             </form>

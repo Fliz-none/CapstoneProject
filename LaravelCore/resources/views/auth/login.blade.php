@@ -14,7 +14,7 @@
                             <div class="row mb-3">
                                 <label class="col-md-4 col-form-label text-md-end" for="email">{{ __('Email Address') }}</label>
                                 <div class="col-md-6">
-                                    <input class="form-control @error('email') is-invalid @enderror" id="email" name="email" type="email" value="{{ old('email') }}" required placeholder="Email đăng nhập" autocomplete="email" autofocus>
+                                    <input class="form-control @error('email') is-invalid @enderror" id="email" name="email" type="email" value="{{ old('email') }}" required placeholder="Email" autocomplete="email" autofocus>
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -25,7 +25,7 @@
                             <div class="row mb-3">
                                 <label class="col-md-4 col-form-label text-md-end" for="password">{{ __('Password') }}</label>
                                 <div class="col-md-6">
-                                    <input class="form-control @error('password') is-invalid @enderror" id="password" name="password" type="password" required placeholder="Mật khẩu" autocomplete="current-password">
+                                    <input class="form-control @error('password') is-invalid @enderror" id="password" name="password" type="password" required placeholder="Password" autocomplete="current-password">
                                     @error('password')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -56,7 +56,7 @@
                                 </div>
                                 <div class="col-12 d-flex justify-content-end pe-2 p-lg-4">
                                     <div class="ms-2">
-                                        <span>Chưa có tài khoản? <a href="{{ route('register') }}"> {{ __('Register') }}</a></span>
+                                        <span>Don't have an account? <a href="{{ route('register') }}"> {{ __('Register') }}</a></span>
                                     </div>
                                 </div>
                             </div>

@@ -30,7 +30,7 @@
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header bg-info">
-                <h1 class="modal-title fs-5 text-white" id="render-product-modal-label">Chọn cột để xuất excel</h1>
+                <h1 class="modal-title fs-5 text-white" id="render-product-modal-label">Select columns to export to Excel</h1>
                 <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -42,10 +42,10 @@
                                     $catalogues = Cache::get('catalogues') ?? '[]';
                                 @endphp
                                 <label class="form-label" for="col_catalogue">
-                                    Chọn một danh mục
+                                    Select a catalogue
                                 </label>
                                 <select class="form-select" id="col_catalogue" name="catalogue" required>
-                                    <option disabled hidden selected>Chọn danh mục</option>
+                                    <option disabled hidden selected>Select catalogue</option>
                                     @foreach ($catalogues as $catalogue)
                                         <option value="{{ $catalogue->id }}">{{ $catalogue->name }}</option>
                                     @endforeach
@@ -56,7 +56,7 @@
                             <div class="form-check p-0">
                                 <input class="form-check-input render-checkbox" id="col_name" name="selected_columns" type="checkbox" value="name">
                                 <label class="form-check-label render-label" for="col_name">
-                                    Tên sản phẩm
+                                    Product name
                                 </label>
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                             <div class="form-check p-0">
                                 <input class="form-check-input render-checkbox" id="col_price" name="selected_columns" type="checkbox" value="price">
                                 <label class="form-check-label render-label" for="col_price">
-                                    Giá
+                                    Price
                                 </label>
                             </div>
                         </div>
@@ -72,7 +72,7 @@
                             <div class="form-check p-0">
                                 <input class="form-check-input render-checkbox" id="col_sum_stock" name="selected_columns" type="checkbox" value="sum_stock">
                                 <label class="form-check-label render-label" for="col_sum_stock">
-                                    Tổng tồn kho
+                                    Total stock
                                 </label>
                             </div>
                         </div>
@@ -80,7 +80,7 @@
                             <div class="form-check p-0">
                                 <input class="form-check-input render-checkbox" id="col_stock_limit" name="selected_columns" type="checkbox" value="stock_limit">
                                 <label class="form-check-label render-label" for="col_stock_limit">
-                                    Ngưỡng hết hàng
+                                    Out of stock threshold
                                 </label>
                             </div>
                         </div>
@@ -88,14 +88,14 @@
                             <div class="form-check p-0">
                                 <input class="form-check-input render-checkbox" id="col_created_at" name="selected_columns" type="checkbox" value="created_at">
                                 <label class="form-check-label render-label" for="col_created_at">
-                                    Ngày tạo
+                                    Creation date
                                 </label>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12 text-end">
-                            <button class="btn btn-primary px-3 fw-bold btn-export-confirm" type="button">Xuất excel</button>
+                            <button class="btn btn-primary px-3 fw-bold btn-export-confirm" type="button">Export Excel</button>
                         </div>
                     </div>
                 </div>

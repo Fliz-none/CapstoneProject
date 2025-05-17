@@ -12,7 +12,6 @@
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav class="breadcrumb-header float-start float-lg-end" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
                         </ol>
                     </nav>
@@ -31,7 +30,7 @@
                             @if (Auth::user()->name)
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <h6 class="mb-0">Tên đầy đủ</h6>
+                                    <h6 class="mb-0">Full name</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
                                     {{ Auth::user()->name }}
@@ -42,7 +41,7 @@
                             @if (Auth::user()->gender)
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <h6 class="mb-0">Giới tính</h6>
+                                    <h6 class="mb-0">Gender</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
                                     {{ Auth::user()->genderStr }}
@@ -68,7 +67,7 @@
                             @if (Auth::user()->phone)
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <h6 class="mb-0">Điện thoại</h6>
+                                    <h6 class="mb-0">Phone</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
                                     {{ Auth::user()->phone }}
@@ -79,7 +78,7 @@
                             @if (Auth::user()->address || Auth::user()->local_id)
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <h6 class="mb-0">Địa chỉ</h6>
+                                    <h6 class="mb-0">Address</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
                                     {{ Auth::user()->fullAddress }}
@@ -90,7 +89,7 @@
                             @if (Auth::user()->birthday)
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <h6 class="mb-0">Ngày sinh</h6>
+                                    <h6 class="mb-0">Date of Birth</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
                                     {{ Carbon\Carbon::parse(Auth::user()->birthday)->format('d/m/Y') }}
@@ -101,7 +100,7 @@
                             @if (Auth::user()->last_login_at)
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <h6 class="mb-0">Lần đăng nhập cuối</h6>
+                                    <h6 class="mb-0">Last login</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
                                     {{ Carbon\Carbon::parse(Auth::user()->last_login_at)->format('d/m/Y H:i:s') }}

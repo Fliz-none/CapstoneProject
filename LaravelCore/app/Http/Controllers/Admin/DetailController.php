@@ -16,7 +16,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class DetailController extends Controller
 {
-    const NAME = 'chi tiết đơn hàng';
+    const NAME = 'Order detail';
 
     public function __construct()
     {
@@ -33,7 +33,7 @@ class DetailController extends Controller
                 default:
                     $detail = Detail::with('_order')->find($request->key);
                     if (!$detail) {
-                        return response()->json(['errors' => ['message' => ['Không tìm thấy chi tiết đơn hàng']]], 422);
+                        return response()->json(['errors' => ['message' => ['Not found!']]], 422);
                     }
                     switch ($request->action) {
                         case 'print':
@@ -111,21 +111,15 @@ class DetailController extends Controller
                     DB::commit();
                 } catch (\Exception $e) {
                     DB::rollBack();
-                    Log::error(
-                        'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                            'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                            'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                            'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                            'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
+                    log_exception($e);
                     Controller::resetAutoIncrement(['imports', 'import_details', 'stocks', 'exports', 'export_details']);
-                    return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
                 }
             }
         }
         return response()->json([
             'status' => 'success',
-            'msg' => 'Đã xóa chi tiết đơn hàng ' . implode(', ', $names),
+            'msg' => 'Deleted ' . self::NAME . ' ' . implode(', ', $names),
         ], 200);
     }
 }

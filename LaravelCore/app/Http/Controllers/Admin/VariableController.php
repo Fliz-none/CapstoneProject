@@ -15,38 +15,38 @@ use Yajra\DataTables\Facades\DataTables;
 
 class VariableController extends Controller
 {
-    const NAME = 'biến thể',
+    const NAME = 'Variable',
         MESSAGES = [
-            'name.required' => 'Tên biến thể' . Controller::NOT_EMPTY,
-            'name.string' => 'Tên biến thể' . Controller::DATA_INVALID,
-            'name.max' => 'Tên biến thể' . Controller::MAX,
-            'status.numeric' => 'Trạng thái' . Controller::DATA_INVALID,
-            'description.string' => 'Mô tả' . Controller::DATA_INVALID,
+            'name.required' => 'Variable name' . Controller::NOT_EMPTY,
+            'name.string' => 'Variable name' . Controller::DATA_INVALID,
+            'name.max' => 'Variable name' . Controller::MAX,
+            'status.numeric' => 'Status' . Controller::DATA_INVALID,
+            'description.string' => 'Description' . Controller::DATA_INVALID,
 
             'stock_limit.required' => Controller::NOT_EMPTY,
             'stock_limit.numeric' => Controller::DATA_INVALID,
-            'variable_id.required' => 'Cần tạo biến thể trước',
-            'variable_id.numeric' => 'Mã biến thể' . Controller::DATA_INVALID,
+            'variable_id.required' => 'Please create a variant first.',
+            'variable_id.numeric' => 'Variant ' . Controller::DATA_INVALID,
 
-            'unit_term.required' => 'Tên đơn vị: ' . Controller::NOT_EMPTY,
-            'unit_term.array' => 'Tên đơn vị: ' . Controller::DATA_INVALID,
-            'unit_term.*.required' => 'Tên đơn vị: ' . Controller::NOT_EMPTY,
-            'unit_term.*.string' => 'Tên đơn vị: ' . Controller::DATA_INVALID,
+            'unit_term.required' => 'Unit name: ' . Controller::NOT_EMPTY,
+            'unit_term.array' => 'Unit name: ' . Controller::DATA_INVALID,
+            'unit_term.*.required' => 'Unit name: ' . Controller::NOT_EMPTY,
+            'unit_term.*.string' => 'Unit name: ' . Controller::DATA_INVALID,
 
-            'unit_barcode.required' => 'Mã vạch: ' . Controller::NOT_EMPTY,
-            'unit_barcode.array' => 'Mã vạch: ' . Controller::DATA_INVALID,
-            'unit_barcode.*.required' => 'Mã vạch: ' . Controller::NOT_EMPTY,
-            'unit_barcode.*.string' => 'Mã vạch: ' . Controller::DATA_INVALID,
+            'unit_barcode.required' => 'Barcode: ' . Controller::NOT_EMPTY,
+            'unit_barcode.array' => 'Barcode: ' . Controller::DATA_INVALID,
+            'unit_barcode.*.required' => 'Barcode: ' . Controller::NOT_EMPTY,
+            'unit_barcode.*.string' => 'Barcode: ' . Controller::DATA_INVALID,
 
-            'unit_price.required' => 'Giá bán: ' . Controller::NOT_EMPTY,
-            'unit_price.array' => 'Giá bán: ' . Controller::DATA_INVALID,
-            'unit_price.*.required' => 'Giá bán: ' . Controller::NOT_EMPTY,
-            'unit_price.*.numeric' => 'Giá bán: ' . Controller::DATA_INVALID,
+            'unit_price.required' => 'Price: ' . Controller::NOT_EMPTY,
+            'unit_price.array' => 'Price: ' . Controller::DATA_INVALID,
+            'unit_price.*.required' => 'Price: ' . Controller::NOT_EMPTY,
+            'unit_price.*.numeric' => 'Price: ' . Controller::DATA_INVALID,
 
-            'unit_rate.required' => 'Tỷ lệ chuyển đổi: ' . Controller::NOT_EMPTY,
-            'unit_rate.array' => 'Tỷ lệ chuyển đổi: ' . Controller::DATA_INVALID,
-            'unit_rate.*.required' => 'Tỷ lệ chuyển đổi: ' . Controller::NOT_EMPTY,
-            'unit_rate.*.numeric' => 'Tỷ lệ chuyển đổi: ' . Controller::DATA_INVALID,
+            'unit_rate.required' => 'Conversion rate: ' . Controller::NOT_EMPTY,
+            'unit_rate.array' => 'Conversion rate: ' . Controller::DATA_INVALID,
+            'unit_rate.*.required' => 'Conversion rate: ' . Controller::NOT_EMPTY,
+            'unit_rate.*.numeric' => 'Conversion rate: ' . Controller::DATA_INVALID,
         ];
 
     public function __construct()
@@ -163,12 +163,12 @@ class VariableController extends Controller
                     });
                     $count = array_count_values($barcode);
                     if ($count[$value] > 1) {
-                        $fail('Barcode ' . $value . ' bị trùng, hãy sửa lại.');
+                        $fail('Barcode ' . $value . ' is duplicated. Please try another.');
                     } else {
                         $checkAvailable = Unit::where('barcode', $value)
-                        ->whereNull('deleted_at')->exists();
+                            ->whereNull('deleted_at')->exists();
                         if ($checkAvailable) {
-                            $fail('Barcode ' . $attribute . ' đã được sử dụng.');
+                            $fail('Barcode ' . $attribute . ' is already in use.');
                         }
                     }
                 },
@@ -180,10 +180,10 @@ class VariableController extends Controller
                 'array',
                 function ($attribute, $value, $fail) {
                     if (!in_array("1", $value, true)) {
-                        $fail('Tỷ lệ quy đổi phải có một và chỉ một giá trị là 1');
+                        $fail('There must be one and only one conversion rate equal to 1.');
                     }
                     if (count(array_unique($value)) !== count($value)) {
-                        $fail('Các giá trị quy đổi không được trùng nhau');
+                        $fail('Conversion rates must not be duplicated.');
                     }
                 }
             ],
@@ -202,7 +202,7 @@ class VariableController extends Controller
                     'status' => $request->has('status'),
                 ]);
                 if ($variable) {
-                    LogController::create('tạo', self::NAME, $variable->id);
+                    LogController::create('create', self::NAME, $variable->id);
                     $variable->assignAttributes($request->input('attributes'));
                     foreach ($request->unit_term as $key => $term) {
                         $unit = Unit::create([
@@ -212,7 +212,7 @@ class VariableController extends Controller
                             'rate' => $request->unit_rate[$key],
                             'price' => $request->unit_price[$key],
                         ]);
-                        LogController::create('tạo', 'đơn vị', $unit->id);
+                        LogController::create('create', 'unit', $unit->id);
                         $unit->barcode = $request->unit_barcode[$key] ? $request->unit_barcode[$key] : $unit->_variable->_product->code . $unit->id;
                         $unit->save();
                     }
@@ -221,21 +221,16 @@ class VariableController extends Controller
                 DB::commit();
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Đã tạo ' . self::NAME . ' ' . $variable->name
+                    'msg' => 'Created ' . self::NAME . ' ' . $variable->name
                 );
             } catch (\Exception $e) {
                 DB::rollBack();
-                Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
+                log_exception($e);
                 Controller::resetAutoIncrement(['variables', 'units']);
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -259,14 +254,14 @@ class VariableController extends Controller
                     });
                     $count = array_count_values($barcode);
                     if ($count[$value] > 1) {
-                        $fail('Barcode ' . $value . ' bị trùng, hãy sửa lại.');
+                        $fail('Barcode ' . $value . ' is duplicated. Please correct it.');
                     } else {
                         preg_match('/barcode\.(\d+)/', $attribute, $matches);
                         $index = $matches[1];
                         $checkAvailable = Unit::where('barcode', $value)
-                        ->whereNull('deleted_at')->where('id', '!=', $request->unit_id[$index])->exists();
+                            ->whereNull('deleted_at')->where('id', '!=', $request->unit_id[$index])->exists();
                         if ($checkAvailable) {
-                            $fail('Barcode ' . $attribute . ' bị trùng với sản phẩm khác.');
+                            $fail('Barcode ' . $attribute . ' is already in use.');
                         }
                     }
                 }
@@ -278,10 +273,10 @@ class VariableController extends Controller
                 'array',
                 function ($attribute, $value, $fail) {
                     if (!in_array("1", $value, true)) {
-                        $fail('Tỷ lệ quy đổi phải có một và chỉ một giá trị là 1');
+                        $fail('The conversion rate must have one and only one value equal to 1');
                     }
                     if (count(array_unique($value)) !== count($value)) {
-                        $fail('Các giá trị quy đổi không được trùng nhau');
+                        $fail('Conversion rates must not be duplicated.');
                     }
                 }
             ],
@@ -301,7 +296,7 @@ class VariableController extends Controller
                             'stock_limit' => $request->stock_limit,
                             'status' => $request->has('status'),
                         ]);
-                        LogController::create('sửa', self::NAME, $variable->id);
+                        LogController::create('update', self::NAME, $variable->id);
 
                         $variable->syncAttributes($request->input('attributes'));
                         foreach ($request->unit_id as $key => $id) {
@@ -313,40 +308,35 @@ class VariableController extends Controller
                             $unit->save();
                             $unit->barcode = $request->unit_barcode[$key] ? $request->unit_barcode[$key] : $variable->_product->code . $unit->id;
                             $unit->save();
-                            LogController::create($id ? 'sửa' : 'tạo', 'đơn vị', $unit->id);
+                            LogController::create($id ? 'update' : 'create', 'unit', $unit->id);
                         }
 
                         DB::commit();
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Đã cập nhật ' . self::NAME . ' ' . $variable->name
+                            'msg' => 'Updated ' . self::NAME . ' ' . $variable->name
                         );
                     } else {
                         DB::rollBack();
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                            'msg' => 'An error occurred. Please reload the page and try again!'
                         );
                     }
                 } catch (\Exception $e) {
                     DB::rollBack();
-                    Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
+                    log_exception($e);
                     Controller::resetAutoIncrement(['variables', 'units']);
-                    return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                    'msg' => 'An error occurred. Please reload the page and try again!'
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -390,25 +380,20 @@ class VariableController extends Controller
                 } else {
                     $obj->delete();
                 }
-                LogController::create("xóa", self::NAME, $obj->id);
+                LogController::create("delete", self::NAME, $obj->id);
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Đã xóa thành công ' . self::NAME . ' ' . $obj->name . '!'
+                    'msg' => 'Successfully deleted ' . self::NAME . ' ' . $obj->name . '!'
                 );
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();
-                Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
+                log_exception($e);
                 Controller::resetAutoIncrement(['variables', 'units', 'medicines', 'dosages']);
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }

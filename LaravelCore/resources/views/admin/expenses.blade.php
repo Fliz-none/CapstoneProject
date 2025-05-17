@@ -10,7 +10,6 @@
                     <h5 class="text-uppercase">{{ $pageName }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Bảng tin</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
                         </ol>
                     </nav>
@@ -25,14 +24,14 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_EXPENSE)))
                         <a class="btn btn-info mb-3 block btn-create-expense">
                             <i class="bi bi-plus-circle"></i>
-                            Thêm
+                            Add
                         </a>
                     @endif
                     <div class="d-inline-block process-btns d-none">
                         @if (!empty(Auth::user()->can(App\Models\User::DELETE_EXPENSES)))
                             <a class="btn btn-danger btn-removes mb-3 ms-2" type="button">
                                 <i class="bi bi-trash"></i>
-                                Xoá
+                                Delete
                             </a>
                         @endif
                     </div>
@@ -41,7 +40,7 @@
                     @if (Auth::user()->branches->count())
                         <select class="form-control form-control-lg form-control-plaintext bg-transparent text-end"
                             name="expenses-branch" required autocomplete="off">
-                            <option selected hidden disabled>Chi nhánh của bạn</option>
+                            <option selected hidden disabled>Your branch</option>
                             @foreach (Auth::user()->branches as $branch)
                                 <option value="{{ $branch->id }}"
                                     {{ isset($_GET['branch_id']) && $_GET['branch_id'] == $branch->id ? 'selected' : '' }}>
@@ -60,13 +59,13 @@
                                 <table class="table table-hover table-bordered table-striped" id="expense-table">
                                     <thead>
                                         <tr>
-                                            <th>Mã</th>
-                                            <th>Thời gian</th>
-                                            <th>Hình ảnh</th>
-                                            <th>Ghi chú</th>
-                                            <th>Người tạo phiếu</th>
-                                            <th>Người nhận</th>
-                                            <th>Số tiền</th>
+                                            <th>Code</th>
+                                            <th>Time</th>
+                                            <th>Image</th>
+                                            <th>Note</th>
+                                            <th>Created By</th>
+                                            <th>Received By</th>
+                                            <th>Amount</th>
                                             <th></th>
                                             <th>
                                                 <input class="form-check-input all-choices" type="checkbox">

@@ -12,25 +12,25 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ExpenseController extends Controller
 {
-    const NAME = 'phiếu chi',
+    const NAME = 'Expense',
         MESSAGES = [
-            'avatar.image' => 'Tệp tải lên phải là hình ảnh.',
-            'avatar.max' => 'Ảnh cho không được vượt quá 3MB.',
+            'avatar.image' => Controller::DATA_INVALID,
+            'avatar.max' => 'The image may not be greater than 3 MB.',
 
-            'receiver_id.required' => 'Vui lòng chọn người nhận.',
-            'receiver_id.numeric' => 'Người nhận không hợp lệ.',
-            'receiver_id.exists' => 'Người nhận không tồn tại.',
+            'receiver_id.required' => 'Please select a receiver.',
+            'receiver_id.numeric' => Controller::DATA_INVALID,
+            'receiver_id.exists' => 'Receiver does not exist.',
 
-            'payment.required' => 'Vui lòng chọn phương thức thanh toán.',
-            'payment.numeric' => 'Phương thức thanh toán không hợp lệ.',
-            'payment.between' => 'Phương thức thanh toán không hợp lệ.',
+            'payment.required' => 'Please select a payment method.',
+            'payment.numeric' => Controller::DATA_INVALID,
+            'payment.between' => Controller::DATA_INVALID,
 
-            'amount.required' => 'Vui lòng nhập số tiền.',
-            'amount.numeric' => 'Số tiền phải là một số.',
-            'amount.min' => 'Số tiền phải lớn hơn hoặc bằng 0.',
-            'amount.max' => 'Số tiền của phiếu quá lớn.',
-            'note.required' => 'Vui lòng nhập ghi chú',
-            'note.max' => 'Tối thiểu 255 kí tự',
+            'amount.required' => 'Please enter an amount.',
+            'amount.numeric' => 'The amount must be a number.',
+            'amount.min' => 'The amount must be greater than or equal to 0.',
+            'amount.max' => 'The amount of the voucher is too large.',
+            'note.required' => 'Please enter a note',
+            'note.max' => 'Minimum 255 characters',
 
         ];
     /**
@@ -123,7 +123,7 @@ class ExpenseController extends Controller
                                 $str = $obj->user->fullName;
                             }
                         } else {
-                            $str = 'Không có';
+                            $str = 'N/A';
                         }
                         if($obj->branch_id) {
                             if($can_update_branch) {
@@ -161,7 +161,7 @@ class ExpenseController extends Controller
                                 return $obj->receiver->fullName;
                             }
                         } else {
-                            return 'Không có';
+                            return 'N/A';
                         }
                     })
                     ->filterColumn('receiver', function ($query, $keyword) {
@@ -203,7 +203,7 @@ class ExpenseController extends Controller
                     ->rawColumns(['checkboxes', 'code', 'note', 'amount', 'avatar','status', 'user', 'receiver', 'action'])
                     ->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = self::NAME . ' management';
                 return view('admin.expenses', compact('pageName'));
             }
         }
@@ -243,23 +243,17 @@ class ExpenseController extends Controller
                     Expense::find($expense->id)->update(['avatar' => $filename]);
                 }
 
-                LogController::create("tạo", self::NAME, $expense->id);
+                LogController::create("create", self::NAME, $expense->id);
                 $response = [
                     'status' => 'success',
-                    'msg' => 'Đã tạo ' . self::NAME . ' ' . $expense->code,
+                    'msg' => 'Created ' . self::NAME . ' ' . $expense->code,
                 ];
             } catch (\Exception $e) {
-                Log::error(
-                    'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                );
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                log_exception($e);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -279,7 +273,7 @@ class ExpenseController extends Controller
             if ($request->has('id')) {
                 try {
                     if (!$this->user->can(User::APPROVE_EXPENSE) && $request->has('status')) {
-                        return response()->json(['errors' => ['role' => ['Bạn không thể điều chỉnh phiếu chi đã được duyệt!']]], 422);
+                        return response()->json(['errors' => ['role' => ['You do not have permission or this expense has been approved!']]], 422);
                     }
                     $expense = Expense::find($request->id);
                     if ($expense) {
@@ -299,35 +293,29 @@ class ExpenseController extends Controller
                             $expense->update(['avatar' => $filename]);
                         }
 
-                        LogController::create("sửa", self::NAME, $expense->id);
+                        LogController::create("update", self::NAME, $expense->id);
                         $response = [
                             'status' => 'success',
-                            'msg' => 'Đã cập nhật ' . self::NAME . ' ' . $expense->code,
+                            'msg' => 'Updated ' . self::NAME . ' ' . $expense->code,
                         ];
                     } else {
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                            'msg' => 'An error occurred, please reload the page and try again!'
                         );
                     }
                 } catch (\Exception $e) {
-                    Log::error(
-                        'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                            'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                            'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                            'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                            'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
-                    return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                    log_exception($e);
+                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                    'msg' => 'An error occurred, please reload the page and try again!'
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -339,11 +327,11 @@ class ExpenseController extends Controller
             $expense = Expense::find($id);
             $expense->delete();
             array_push($names, $expense->name);
-            LogController::create("xóa", self::NAME, $expense->id);
+            LogController::create("delete", self::NAME, $expense->id);
         }
         return response()->json([
             'status' => 'success',
-            'msg' => 'Đã xóa ' . self::NAME . ' ' . $expense->code,
+            'msg' => 'Deleted ' . self::NAME . ' ' . $expense->code,
         ], 200);
     }
 }

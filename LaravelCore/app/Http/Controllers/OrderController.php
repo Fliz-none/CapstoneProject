@@ -10,7 +10,7 @@ class OrderController extends Controller
 {
     public function orders()
     {
-        $pageName = 'Đơn hàng của: ' . Auth::user()->name;
+        $pageName = 'Orders of ' . Auth::user()->name;
         $settings = Setting::pluck('value', 'key');
         return view('web.orders', compact('pageName', 'options'));
     }

@@ -80,7 +80,7 @@ class ImportDetailController extends Controller
                         return $obj->_import->_user->fullName;
                     }
                 } else {
-                    return 'Không có';
+                    return 'N/A';
                 }
             })
             ->filterColumn('user', function ($query, $keyword) {
@@ -118,8 +118,8 @@ class ImportDetailController extends Controller
                         return $obj->_import->_export->code;
                     }
                 } else {
-                    return 'Không có';
-                }
+                    return 'N/A';
+                }                                         
             })
             ->filterColumn('supplier', function ($query, $keyword) {
                 $query->whereHas('_import', function ($query) use ($keyword) {
@@ -164,13 +164,13 @@ class ImportDetailController extends Controller
         foreach ($choices as $key => $id) {
             $obj = ImportDetail::find($id);
             if (!$obj) {
-                return response()->json(['errors' => ['message' => ['Không tìm thấy nội dung nhập hàng này']]], 422);
+                return response()->json(['errors' => ['message' => ['Cannot find import detail ' . $id]]], 422);
             }
             if ($obj->stock->export_details->count()) {
-                return response()->json(['errors' => ['message' => ['Mặt hàng này đã xuất bán nên không thể điều chỉnh']]], 422);
+                return response()->json(['errors' => ['message' => ['This item has been sold and cannot be modified']]], 422);
             }
             if ($obj->export_detail_id) {
-                return response()->json(['errors' => ['message' => ['Không thể điều chỉnh phiếu nhập kho nội bộ. Hãy thử điều chỉnh phiếu xuất kho']]], 422);
+                return response()->json(['errors' => ['message' => ['Cannot modify internal warehouse receipt. Please try modifying export receipt']]], 422);
             }
             DB::beginTransaction();
             try {
@@ -189,19 +189,14 @@ class ImportDetailController extends Controller
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();
-                Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                );
+                log_exception($e);
                 Controller::resetAutoIncrement('import_details', 'stocks');
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         }
         return response()->json([
             'status' => 'success',
-            'msg' => 'Đã xóa tồn kho ' . implode(', ', $names),
+            'msg' => 'Deleted stock ' . implode(', ', $names),
         ], 200);
     }
 }

@@ -121,33 +121,33 @@
             @php
                 $settings = cache()->get('settings') ?? '[]';
             @endphp
-            <h4 class="fw-bold">Các sản phẩm sắp hết hạn sử dụng
-                {{ isset($settings['expired_notification_frequency']) ? $settings['expired_notification_frequency'] . ' ngày tới' : '' }}
+            <h4 class="fw-bold">Products Expiring 
+                {{ isset($settings['expired_notification_frequency']) ? 'in the next ' . $settings['expired_notification_frequency'] . ' days' : '' }}
             </h4>
             <table>
                 <thead>
                     <tr>
-                        <th>Mã tồn kho</th>
-                        <th>Tên sản phẩm</th>
-                        <th>Số lượng</th>
-                        <th>Ngày hết hạn</th>
+                        <th>Stock Code</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Expiration Date</th>
                     </tr>
                 </thead>
                 <tbody>
                     @if ($data)
                         @foreach ($data as $stock)
                             <tr>
-                                <td data-label="Mã tồn kho">{{ $stock->code }}</td>
-                                <td data-label="Tên sản phẩm">{{ $stock->product_name }}</td>
-                                <td data-label="Số lượng">
+                                <td data-label="Stock Code">{{ $stock->code }}</td>
+                                <td data-label="Product Name">{{ $stock->product_name }}</td>
+                                <td data-label="Quantity">
                                     {{ $stock->import_detail->_variable->convertUnit($stock->quantity) }}</td>
-                                <td data-label="Ngày hết hạn">
+                                <td data-label="Expiration Date">
                                     {{ \Carbon\Carbon::parse($stock->expired)->format('d/m/Y') }}</td>
                             </tr>
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="4" style="text-align: center;">Không có dữ liệu.</td>
+                            <td colspan="4" style="text-align: center;">No data available.</td>
                         </tr>
                     @endif
                 </tbody>
@@ -158,10 +158,10 @@
                 <span class="fw-bold">Hotline:</span>
             </p>
             <p>
-                <span class="fw-bold">Địa chỉ:</span>
+                <span class="fw-bold">Address:</span>
             </p>
             <p>
-                &copy; {{ \Carbon\Carbon::now()->format('YYYY') }}
+                &copy; {{ \Carbon\Carbon::now()->format('Y') }}
             </p>
         </div>
     </div>

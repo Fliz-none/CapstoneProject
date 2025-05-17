@@ -10,7 +10,6 @@
                     <h5 class="text-uppercase">{{ $pageName }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Bảng tin</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
                         </ol>
                     </nav>
@@ -25,42 +24,42 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_PRODUCT)))
                         <a class="btn btn-info mb-3 block" href="{{ route('admin.product', ['key' => 'new']) }}">
                             <i class="bi bi-plus-circle"></i>
-                            Thêm
+                            Add
                         </a>
                         <a class="btn btn-success ms-2 mb-3 block btn-create-product">
                             <i class="bi bi-plus-circle"></i>
-                            Thêm nhanh
+                            Quick Add
                         </a>
                     @endif
                     @if (!empty(Auth::user()->can(App\Models\User::UPDATE_PRODUCT)))
                         <button class="btn btn-primary mb-3 btn-sort ms-2" type="button">
                             <i class="bi bi-filter-left"></i>
-                            Sắp xếp
+                            Sort
                         </button>
                     @endif
                     <div class="d-inline-block process-btns d-none">
                         <a class="btn btn-primary btn-barcode-product mb-3 ms-2" type="button">
                             <i class="bi bi-upc-scan"></i>
-                            Mã vạch
+                            Barcode
                         </a>
                         @if (!empty(Auth::user()->can(App\Models\User::UPDATE_PRODUCT)))
                             <button class="btn mb-3 btn-add-catalogues-product ms-2 btn-outline-primary" type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-blockquote-left" viewBox="0 0 16 16">
                                     <path d="M2.5 3a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1zm5 3a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-5 3a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1zm3-5.5v1.5h2v1H5.5v2h-1v-2H2.5v-1.2h2.2v-1.5h1z" />
-                                </svg>                                                                    
-                                Thêm danh mục
+                                </svg>
+                                Add category
                             </button>
                             <button class="btn mb-3 btn-remove-catalogues-product ms-2 btn-outline-danger" type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-blockquote-left" viewBox="0 0 16 16">
                                     <path d="M2.5 3a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1zm5 3a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-5 3a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1zM2 7.6h3v0.8H2v-0.8z" />
                                 </svg>
-                                Xóa danh mục
+                                Delete category
                             </button>
                         @endif
                         @if (!empty(Auth::user()->can(App\Models\User::DELETE_PRODUCTS)))
                             <a class="btn btn-danger btn-removes mb-3 ms-2" type="button">
                                 <i class="bi bi-trash"></i>
-                                Xoá
+                                Delete
                             </a>
                         @endif
                     </div>
@@ -70,7 +69,7 @@
                         <form action="" method="post">
                             <button class="btn k-btn-info mb-3 btn-refill-product" type="button">
                                 <i class="bi bi-box-arrow-down"></i>
-                                Nhập từ excel
+                                Import from Excel
                             </button>
                             <input class="d-none" id="refill-file" name="refill_file" type="file" accept=".xlsx, .xls">
                         </form>
@@ -78,7 +77,7 @@
                     @if (!empty(Auth::user()->can(App\Models\User::READ_PRODUCTS)))
                         <button class="btn btn-warning mb-3 ms-2 btn-render-product" type="button">
                             <i class="bi bi-box-arrow-in-up"></i>
-                            Xuất ra excel
+                            Export to Excel
                         </button>
                     @endif
                 </div>
@@ -92,13 +91,13 @@
                                 <table class="table table-striped table-bordered key-table" id="products-datatable">
                                     <thead>
                                         <tr>
-                                            <th>Mã</th>
-                                            <th>Ảnh</th>
-                                            <th>Tên sản phẩm</th>
-                                            <th>Danh mục</th>
-                                            <th>Các biến thể</th>
-                                            <th>Trạng thái</th>
-                                            <th>STT</th>
+                                            <th>Code</th>
+                                            <th>Image</th>
+                                            <th>Product Name</th>
+                                            <th>Category</th>
+                                            <th>Variants</th>
+                                            <th>Status</th>
+                                            <th>Order</th>
                                             <th></th>
                                             <th>
                                                 <input class="form-check-input all-choices" type="checkbox">
@@ -154,12 +153,12 @@
                         console.log(xhr, status, error);
                         if (xhr.status == 422) {
                             const errors = xhr.responseJSON.errors;
-                            pushToastify(errors?.catalogue_id?.[0] || errors?.columns?.[0] || 'Lỗi không xác định. Vui lòng kiểm tra lại.', 'danger');
+                            pushToastify(errors?.catalogue_id?.[0] || errors?.columns?.[0] || 'An unknown error occurred. Please try again.', 'danger');
                         } else {
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Đã có lỗi xảy ra',
-                                text: 'Xin hãy thử lại.',
+                                title: 'An error occurred',
+                                text: 'Please try again.',
                             });
                         }
                     }
@@ -167,7 +166,7 @@
             });
 
             function extractTableData(elm) {
-                // Lấy tất cả các tiêu đề cột từ thead
+                // Get all column headers from thead
                 let headers = [],
                     data = [];
                 elm.find('thead th').each(function() {
@@ -196,7 +195,7 @@
                             };
                         });
 
-                    // Thiết lập độ rộng cho cột
+                    // Set column widths
                     ws['!cols'] = columnWidths;
 
                     Object.keys(data[0]).forEach((columnName, colIndex) => {
@@ -207,15 +206,15 @@
                         }
                     });
 
-                    // Tạo và tải file Excel
+                    // Create and download Excel file
                     const wb = XLSX.utils.book_new();
                     XLSX.utils.book_append_sheet(wb, ws, "mainSheet");
                     XLSX.writeFile(wb, fileName);
                 } else {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Đã có lỗi xảy ra',
-                        text: 'Dữ liệu không đúng, xin hãy thử lại sau.',
+                        title: 'An error occurred',
+                        text: 'The data is invalid, please try again later.',
                     });
                 }
             }
@@ -268,13 +267,13 @@
                                 resetForm(form);
                                 $(".btn-remove-catalogues-product")
                                     .prop("disabled", false)
-                                    .html(`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-blockquote-left" viewBox="0 0 16 16"><path d="M2.5 3a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1zm5 3a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-5 3a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1zM2 7.6h3v0.8H2v-0.8z" /></svg> Xóa danh mục`)
+                                    .html(`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-blockquote-left" viewBox="0 0 16 16"><path d="M2.5 3a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1zm5 3a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-5 3a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1zM2 7.6h3v0.8H2v-0.8z" /></svg> Delete category`)
                                     .parent()
                                     .addClass("d-none");
                             })
                             .fail(function () {
                                 $(".btn-remove-catalogues-product").prop("disabled", false)
-                                .html('<span class="text-white""><i class="bi bi-exclamation-circle-fill mt-1"></i> Thử lại</span>');
+                                .html('<span class="text-white""><i class="bi bi-exclamation-circle-fill mt-1"></i> Try again</span>');
                             });
                     }
                 });

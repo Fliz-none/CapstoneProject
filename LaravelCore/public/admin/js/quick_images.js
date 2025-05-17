@@ -21,36 +21,36 @@ $(document).ready(function () {
     if(dropArea && imageInput) {
         dropArea.addEventListener('drop', handleDrop, false);
         imageInput.addEventListener('change', handleFiles, false);
-    
+
         function preventDefaults(e) {
             e.preventDefault();
             e.stopPropagation();
         }
-    
+
         function showDropArea() {
             dropArea.style.display = 'block';
         }
-    
+
         function hideDropArea() {
             setTimeout(() => {
                 dropArea.style.display = 'none';
             }, 10000);
         }
-    
+
         function handleDrop(e) {
             const dt = e.dataTransfer;
             const files = dt.files;
             handleFiles({ target: { files } });
             hideDropArea();
         }
-    
+
         function handleFiles(event) {
             const files = event.target.files;
             if (files.length > 0) {
                 let totalFiles = files.length;
                 let processedFiles = 0;
                 let uploadedFiles = 0;
-    
+
                 Array.from(files).forEach(file => {
                     new Compressor(file, {
                         quality: 0.8,
@@ -72,17 +72,17 @@ $(document).ready(function () {
                         },
                     });
                 });
-    
+
                 function updateProgress(index, totalFiles, progress) {
                     const percentComplete = Math.round(((index + progress) / totalFiles) * 100);
                     $('#quick_images-progress-bar').width(percentComplete + '%');
                     $('#quick_images-progress-bar').attr('aria-valuenow', percentComplete);
                 }
-    
+
                 function uploadImage(file, totalFiles) {
                     const formData = new FormData();
                     formData.append('image', file);
-    
+
                     $.ajax({
                         url: config.routes.uploadImage,
                         method: 'POST',
@@ -124,7 +124,7 @@ $(document).ready(function () {
                         error: function (err) {
                             console.error('Upload failed:', err);
                             Toastify({
-                                text: 'Upload thất bại! Hãy thử lại',
+                                text: 'Upload failed! Please try again.',
                                 duration: 3000,
                                 close: true,
                                 gravity: "top",

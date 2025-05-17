@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    const NAME = 'bảng tin';
+    const NAME = 'Dashboard';
 
     public function __construct()
     {
@@ -38,12 +38,18 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $pageName = 'Bảng tin';
+        if (!$this->user->can(User::READ_DASHBOARD)) {
+            abort(403);
+        }
+        $pageName = self::NAME;
         return view('admin.dashboard', compact('pageName'));
     }
 
     public function analytics(Request $request)
     {
+        if (!$this->user->can(User::READ_DASHBOARD)) {
+            abort(403);
+        }
         $result = [];
         $range = json_decode($request->range);
         $orders = Order::whereBetween('orders.created_at', $range)->get();
@@ -104,7 +110,7 @@ class DashboardController extends Controller
             ->join('units', 'units.id', '=', 'import_details.unit_id')
             ->sum(DB::raw('details.quantity * (import_details.price / units.rate)'));
 
-        
+
         //Lợi nhuận
         $result['allProfits'] = $result['allRevenue'] - $result['productCost'];
         $result['totalOrderDiscount'] = $orders->sum(function ($order) {
@@ -132,7 +138,7 @@ class DashboardController extends Controller
         $result['allCustomers'] = $customers->count();
         $result['oldCustomers'] = $customers->where('created_at', '<', $range[0])->count();
         $result['newCustomers'] = $result['allCustomers'] - $result['oldCustomers'];
-       
+
 
         //Sản phẩm
         $result['allProducts'] = Product::where('status', '>', 0)->count();
@@ -254,7 +260,7 @@ class DashboardController extends Controller
                 // Trả về kết quả
                 $result = $users->map(function ($user) {
                     return [
-                        'name' => '<a class="cursor-pointer btn-update-user text-primary fw-bold" data-id="' . $user['id'] . '">' .$user['name']  . '</a>', // Tên người dùng
+                        'name' => '<a class="cursor-pointer btn-update-user text-primary fw-bold" data-id="' . $user['id'] . '">' . $user['name']  . '</a>', // Tên người dùng
                         'total' => number_format($user['debt']), // Công nợ, định dạng số có 2 chữ số thập phân
                     ];
                 });
@@ -397,7 +403,7 @@ class DashboardController extends Controller
                 break;
         }
         return DataTables::of($result)
-        ->rawColumns(['name'])
-        ->make(true);
+            ->rawColumns(['name'])
+            ->make(true);
     }
 }

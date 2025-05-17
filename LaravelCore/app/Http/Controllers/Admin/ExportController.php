@@ -19,7 +19,7 @@ use Illuminate\Support\Str;
 
 class ExportController extends Controller
 {
-    const NAME = 'xuất hàng',
+    const NAME = 'Export',
         RULES = [
             'note' => ['required', 'string'],
             'date' => ['required', 'date_format:Y-m-d'],
@@ -37,31 +37,31 @@ class ExportController extends Controller
             'notes.*' => ['nullable', 'string'],
         ],
         MESSAGES = [
-            'note.required' => 'Nội dung xuất hàng: ' . Controller::NOT_EMPTY,
-            'note.string' => 'Nội dung xuất hàng: ' . Controller::DATA_INVALID,
-            'date.required' => 'Ngày xuất hàng: ' . Controller::NOT_EMPTY,
-            'date.date_format' => 'Ngày xuất hàng: ' . Controller::DATA_INVALID,
-            'receiver_id.required' => 'Người nhận hàng xuất: ' . Controller::NOT_EMPTY,
-            'receiver_id.numeric' => 'Người nhận hàng xuất: ' . Controller::DATA_INVALID,
-            'stock_ids.required' => 'Hàng hóa: ' . Controller::ONE_LEAST,
-            'stock_ids.array' => 'Hàng hóa: ' . Controller::ONE_LEAST,
-            'stock_ids.min' => 'Hàng hóa: ' . Controller::ONE_LEAST,
-            'stock_ids.*.required' => 'Hàng hóa: ' . Controller::NOT_EMPTY,
-            'stock_ids.*.numeric' => 'Hàng hóa: ' . Controller::NOT_EMPTY,
-            'unit_ids.array' => 'Đơn vị tính: ' . Controller::ONE_LEAST,
-            'unit_ids.min' => 'Đơn vị tính: ' . Controller::ONE_LEAST,
-            'unit_ids.*.required' => 'Đơn vị tính: ' . Controller::NOT_EMPTY,
-            'unit_ids.*.numeric' => 'Đơn vị tính: ' . Controller::NOT_EMPTY,
-            'rates.array' => 'Mã đơn vị tính: ' . Controller::ONE_LEAST,
-            'rates.min' => 'Mã đơn vị tính: ' . Controller::ONE_LEAST,
-            'rates.*.required' => 'Mã đơn vị tính: ' . Controller::NOT_EMPTY,
-            'rates.*.numeric' => 'Mã đơn vị tính: ' . Controller::NOT_EMPTY,
-            'quantities' => 'Số lượng hàng hóa: ' . Controller::DATA_INVALID,
-            'quantities.*.required' => 'Số lượng hàng hóa: ' . Controller::NOT_EMPTY,
-            'quantities.*.numeric' => 'Số lượng hàng hóa: ' . Controller::DATA_INVALID,
-            'quantities.*.min' => 'Số lượng hàng hóa: Không thể âm!',
-            'notes' => 'Lý do xuất hàng: ' . Controller::DATA_INVALID,
-            'notes.*.numeric' => 'Lý do xuất hàng: ' . Controller::DATA_INVALID,
+            'note.required' => 'Content: ' . Controller::NOT_EMPTY,
+            'note.string' => 'Content: ' . Controller::DATA_INVALID,
+            'date.required' => 'Date: ' . Controller::NOT_EMPTY,
+            'date.date_format' => 'Date: ' . Controller::DATA_INVALID,
+            'receiver_id.required' => 'Receiver: ' . Controller::NOT_EMPTY,
+            'receiver_id.numeric' => 'Receiver: ' . Controller::DATA_INVALID,
+            'stock_ids.required' => 'Stock: ' . Controller::ONE_LEAST,
+            'stock_ids.array' => 'Stock: ' . Controller::ONE_LEAST,
+            'stock_ids.min' => 'Stock: ' . Controller::ONE_LEAST,
+            'stock_ids.*.required' => 'Stock: ' . Controller::NOT_EMPTY,
+            'stock_ids.*.numeric' => 'Stock: ' . Controller::NOT_EMPTY,
+            'unit_ids.array' => 'Unit: ' . Controller::ONE_LEAST,
+            'unit_ids.min' => 'Unit: ' . Controller::ONE_LEAST,
+            'unit_ids.*.required' => 'Unit: ' . Controller::NOT_EMPTY,
+            'unit_ids.*.numeric' => 'Unit: ' . Controller::NOT_EMPTY,
+            'rates.array' => 'Rate: ' . Controller::ONE_LEAST,
+            'rates.min' => 'Rate: ' . Controller::ONE_LEAST,
+            'rates.*.required' => 'Rate: ' . Controller::NOT_EMPTY,
+            'rates.*.numeric' => 'Rate: ' . Controller::NOT_EMPTY,
+            'quantities' => 'Quantity: ' . Controller::DATA_INVALID,
+            'quantities.*.required' => 'Quantity: ' . Controller::NOT_EMPTY,
+            'quantities.*.numeric' => 'Quantity: ' . Controller::DATA_INVALID,
+            'quantities.*.min' => 'Quantity: Can not be less than 0!',
+            'notes' => 'Reason: ' . Controller::DATA_INVALID,
+            'notes.*.numeric' => 'Reason: ' . Controller::DATA_INVALID,
         ];
 
     public function __construct()
@@ -198,11 +198,11 @@ class ExportController extends Controller
                     })
                     ->addColumn('type', function ($obj) {
                         if ($obj->order_id) {
-                            return '<span class="badge bg-success text-white">Xuất bán hàng</span>';
+                            return '<span class="badge bg-success text-white">For sale</span>';
                         } else if ($obj->import) {
-                            return '<span class="badge bg-primary text-white">Xuất nội bộ</span>';
+                            return '<span class="badge bg-primary text-white">Internal Export</span>';
                         } else {
-                            return '<span class="badge bg-danger text-white">Xuất bỏ</span>';
+                            return '<span class="badge bg-danger text-white">Discarded</span>';
                         }
                     })
                     ->filterColumn('type', function ($query, $keyword) {
@@ -257,7 +257,7 @@ class ExportController extends Controller
                     $stock_id = $request->stock_id ?? '';
                     return view('admin.templates.previews.export_detail', compact('export_details', 'stock_id'));
                 }
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = self::NAME . ' management';
                 return view('admin.exports', compact('pageName'));
             }
         }
@@ -283,7 +283,7 @@ class ExportController extends Controller
                         $import = Import::create([
                             'warehouse_id' => $request->to_warehouse_id,
                             'export_id' => $export->id,
-                            'note' => 'Nhập từ ' . $export->code,
+                            'note' => 'Import from ' . $export->code,
                             'created_at' => $export->created_at,
                             'status' => 0,
                         ]);
@@ -332,25 +332,19 @@ class ExportController extends Controller
                 }
 
                 DB::commit();
-                LogController::create('tạo', self::NAME, $export->id);
+                LogController::create('create', self::NAME, $export->id);
                 $response = [
                     'status' => 'success',
-                    'msg' => 'Đã tạo xuất hàng ' . $export->note,
+                    'msg' => 'Created ' . $export->note,
                 ];
             } catch (\Exception $e) {
                 DB::rollBack();
-                Log::error(
-                    'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                    'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                    'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                    'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                    'Chi tiết lỗi: ' . $e->getTraceAsString()
-                );
+                log_exception($e);
                 Controller::resetAutoIncrement(['exports', 'imports', 'export_details', 'import_details', 'stocks']);
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -365,10 +359,10 @@ class ExportController extends Controller
                     $export = Export::find($request->id);
                     if ($export) {
                         if ($export->import && $export->import->status == 1) {
-                            return response()->json(['errors' => ['import_confirmed' => ['Kho tiếp nhận xác nhận nhập kho thì không thể điều chỉnh phiếu xuất kho nữa']]], 422);
+                            return response()->json(['errors' => ['import_confirmed' => ['Once the receiving warehouse has confirmed the goods receipt, the delivery note can no longer be modified.']]], 422);
                         }
                         if ($export->order_id) {
-                            return response()->json(['errors' => ['export_order' => ['Xuất kho bán hàng không thể điều chỉnh. Hãy điều chỉnh trên hóa đơn']]], 422);
+                            return response()->json(['errors' => ['export_order' => ['Export for an order cannot be modified. Please just modify on the invoice.']]], 422);
                         }
                         $export = Export::updateOrCreate([
                             'id' => $request->id
@@ -443,38 +437,32 @@ class ExportController extends Controller
                         }
 
                         DB::commit();
-                        LogController::create('sửa', self::NAME, $export->id);
+                        LogController::create('update', self::NAME, $export->id);
                         $response = [
                             'status' => 'success',
-                            'msg' => 'Đã sửa xuất hàng ' . $export->note,
+                            'msg' => 'Updated export order ' . $export->note,
                         ];
                     } else {
                         DB::rollBack();
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                            'msg' => 'An error occurred, please reload the page and try again!'
                         );
                     }
                 } catch (\Exception $e) {
                     DB::rollBack();
-                    Log::error(
-                        'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
+                    log_exception($e);
                     Controller::resetAutoIncrement(['exports', 'imports', 'export_details', 'import_details', 'stocks']);
-                    return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                    'msg' => 'An error occurred, please reload the page and try again!'
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -485,13 +473,13 @@ class ExportController extends Controller
         foreach ($request->choices as $key => $id) {
             $obj = Export::find($id);
             if (!$obj) {
-                return response()->json(['errors' => ['message' => ['Không tìm thấy phiếu xuất hàng ' . $id . '']]], 422);
+                return response()->json(['errors' => ['message' => ['Cannot find this export']]], 422);
             }
             if ($obj->order_id) {
-                return response()->json(['errors' => ['message' => ['Không thể xóa phiếu xuất bán hàng. Hãy thử xóa đơn hàng']]], 422);
+                return response()->json(['errors' => ['message' => ['Cannot delete this export. Please delete the order instead']]], 422);
             }
             if ($obj->import && $obj->import->status) {
-                return response()->json(['errors' => ['message' => ['Bên nhận đã xác nhận nhập hàng thì không thể xóa phiếu xuất hàng']]], 422);
+                return response()->json(['errors' => ['message' => ['Once the receiving warehouse has confirmed the goods receipt, this export cannot be deleted']]], 422);
             }
             DB::beginTransaction();
             try {
@@ -537,20 +525,14 @@ class ExportController extends Controller
                 array_push($names, $obj->code);
             } catch (\Exception $e) {
                 DB::rollBack();
-                Log::error(
-                    'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                    'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                    'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                    'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                    'Chi tiết lỗi: ' . $e->getTraceAsString()
-                );
+                log_exception($e);
                 Controller::resetAutoIncrement(['exports', 'export_details', 'imports', 'import_details', 'stocks']);
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         }
         return response()->json([
             'status' => 'success',
-            'msg' => 'Đã xóa xuất hàng ' . implode(', ', $names),
+            'msg' => 'Deleted export ' . implode(', ', $names),
         ], 200);
     }
 }

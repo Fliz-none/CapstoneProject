@@ -88,7 +88,7 @@ class ExportDetailController extends Controller
                             return $obj->_export->_user->fullName;
                         }
                     } else {
-                        return 'Không có';
+                        return 'N/A';
                     }
                 })
                 ->filterColumn('user', function ($query, $keyword) {
@@ -106,7 +106,7 @@ class ExportDetailController extends Controller
                             return $obj->_export->_user->fullName;
                         }
                     } else {
-                        return 'Không có';
+                        return 'N/A';
                     }
                 })
                 ->filterColumn('receiver', function ($query, $keyword) {
@@ -150,13 +150,13 @@ class ExportDetailController extends Controller
         foreach ($request->choices as $key => $id) {
             $obj = ExportDetail::find($id);
             if (!$obj) {
-                return response()->json(['errors' => ['message' => ['Không tìm thấy nội dung xuất hàng này']]], 422);
+                return response()->json(['errors' => ['message' => ['Cannot find this export detail']]], 422);
             }
             if ($obj->detail_id) {
-                return response()->json(['errors' => ['message' => ['Không thể điều chỉnh phiếu xuất bán']]], 422);
+                return response()->json(['errors' => ['message' => ['Cannot modify this export detail']]], 422);
             }
             if ($obj->import_detail && $obj->import_detail->_import->status) {
-                return response()->json(['errors' => ['message' => ['Bên nhận đã xác nhận nhập hàng thì không thể điều chỉnh phiếu xuất hàng']]], 422);
+                return response()->json(['errors' => ['message' => ['Once the receiving warehouse has confirmed the goods receipt, this export detail cannot be deleted']]], 422);
             }
             DB::beginTransaction();
             try {
@@ -184,18 +184,13 @@ class ExportDetailController extends Controller
                 DB::commit();
                 return response()->json([
                     'status' => 'success',
-                    'msg' => 'Đã xóa chi tiết xuất hàng ' . implode(', ', $names),
+                    'msg' => 'Deleted export detail ' . implode(', ', $names),
                 ], 200);
             } catch (\Exception $e) {
                 DB::rollBack();
-                Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                );
+                log_exception($e);
                 Controller::resetAutoIncrement(['imports', 'import_details', 'stocks']);
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         }
     }

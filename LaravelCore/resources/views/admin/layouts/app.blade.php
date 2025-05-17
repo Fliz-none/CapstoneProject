@@ -77,7 +77,7 @@
         $(document).ready(function() {
             $(window).on('offline', function() {
                 $('.loading').removeClass('d-none');
-                Swal.fire("Thông báo!", 'Bạn bị mất kết nối internet', "info");
+                Swal.fire("Alert!", 'You are offline', "info");
             });
             // Bắt sự kiện khi có mạng trở lại
             $(window).on('online', function() {
@@ -143,7 +143,7 @@
     <div class="d-none" id="print-wrapper"></div>
     <div class="d-none" id="render-wrapper"></div>
     <div class="loading d-none">
-        <div class="spinner card">Đang xử lý...</div>
+        <div class="spinner card">Loading...</div>
     </div>
 </body>
 <script script src="{{ asset('admin/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
@@ -204,13 +204,13 @@
         },
         datatable: {
             lang: {
-                "sProcessing": "Đang xử lý...",
-                "sLengthMenu": "_MENU_ dòng / trang",
-                "sZeroRecords": "Không có nội dung.",
-                "sInfo": "Từ _START_ đến _END_ của _TOTAL_ mục",
-                "sInfoEmpty": "Không có mục nào",
-                "sInfoFiltered": "(được lọc từ _MAX_ mục)",
-                'searchPlaceholder': "Tìm kiếm dữ liệu",
+                "sProcessing": "Processing...",
+                "sLengthMenu": "_MENU_ rows / page",
+                "sZeroRecords": "No content available.",
+                "sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
+                "sInfoEmpty": "No entries found",
+                "sInfoFiltered": "(filtered from _MAX_ total entries)",
+                'searchPlaceholder': "Search data",
                 "sInfoPostFix": "",
                 "sSearch": "",
                 "sUrl": "",
@@ -316,19 +316,19 @@
         },
         sweetAlert: {
             confirm: {
-                title: "Lưu ý!",
-                text: "Hãy xác nhận trước khi tiếp tục?",
+                title: "Attention!",
+                text: "Please confirm before proceeding?",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "var(--bs-danger)",
                 cancelButtonColor: "var(--bs-primary)",
-                confirmButtonText: "Xác nhận",
-                cancelButtonText: "Quay lại",
+                confirmButtonText: "Confirm",
+                cancelButtonText: "Back",
                 reverseButtons: false
             },
             delay: {
-                title: "Vẫn đang hoạt động...",
-                text: "Thao tác của bạn cần nhiều thời gian hơn để xử lý. Xin hãy kiên nhẫn!",
+                title: "Still processing...",
+                text: "Your action is taking longer to process. Please be patient!",
                 allowOutsideClick: false,
                 allowEscapeKey: false,
                 showConfirmButton: false,
@@ -394,7 +394,7 @@
                     availableStock = true
                     return false;
                 } else {
-                    pushToastify("Gói tồn kho không đủ hàng, vui lòng chọn gói khác bổ sung.", 'danger')
+                    pushToastify("The inventory package does not have enough stock. Please select another package to supplement.", 'danger')
                 }
             }
         })
@@ -407,7 +407,7 @@
                 availableStock = true
             } else {
                 card.remove();
-                pushToastify("Gói tồn kho không đủ hàng, vui lòng chọn gói khác bổ sung.", 'danger')
+                pushToastify("The inventory package does not have enough stock. Please select another package to supplement.", 'danger')
             }
         }
         if (!availableUnit && !availableStock) {
@@ -425,7 +425,7 @@
         resetForm(form)
         form.find('[name=status]').prop('checked', true);
         form.attr('action', `{{ route('admin.category.create') }}`)
-        form.find('.modal').modal('show').find('.modal-title').text('Chuyên mục mới')
+        form.find('.modal').modal('show').find('.modal-title').text('New category')
     })
 
     $(document).on('click', '.btn-update-category', function(e) {
@@ -466,7 +466,7 @@
         }
         form.find('[name=status]').prop('checked', true);
         form.attr('action', `{{ route('admin.user.create') }}`)
-        form.find('.modal').modal('show').find('.modal-title').text('Tài khoản mới')
+        form.find('.modal').modal('show').find('.modal-title').text('New user account')
     })
 
     $(document).on('click', '.btn-update-user', function(e) {
@@ -546,7 +546,7 @@
         resetForm(form)
         $.get(`{{ route('admin.user') }}/${id}`).done(function(user) {
             form.attr('action', `{{ route('admin.user.update.role') }}`);
-            form.find('#user_role-modal-label').text('Thiết lập vai trò cho ' + user.name)
+            form.find('#user_role-modal-label').text('Set role for ' + user.name)
             $.each(user.roles, function(i, role) {
                 $('input[name="role_id[]"][value="' + role.id + '"]').prop('checked', true);
             });
@@ -585,7 +585,7 @@
         resetForm(form)
         form.find('[name=status]').prop('checked', true);
         form.attr('action', `{{ route('admin.warehouse.create') }}`)
-        form.find('.modal').modal('show').find('.modal-title').text('Kho hàng mới')
+        form.find('.modal').modal('show').find('.modal-title').text('New warehouse')
     })
 
     $(document).on('click', '.btn-update-warehouse', function(e) {
@@ -626,7 +626,7 @@
         resetForm(form)
         form.find(`[name='status']`).prop('checked', true)
         form.attr('action', `{{ route('admin.branch.create') }}`)
-        form.find('.modal').modal('show').find('.modal-title').text('Chi nhánh mới')
+        form.find('.modal').modal('show').find('.modal-title').text('New branch')
     })
 
     $(document).on('click', '.btn-update-branch', function(e) {
@@ -663,7 +663,7 @@
         form.find('#import-stocks').empty()
         form.attr('action', `{{ route('admin.import.create') }}`)
         form.find('.btn-print.print-import').addClass('d-none').removeAttr('data-id')
-        form.find('.modal').modal('show').find('.modal-title').text('Nhập hàng mới')
+        form.find('.modal').modal('show').find('.modal-title').text('New import')
     })
 
     $(document).on('click', '.btn-select-variable', function() {
@@ -708,9 +708,9 @@
                         <button type="button" class="btn btn-outline-primary rounded-circle mt-1 btn-inc"><i class="bi bi-plus"></i></button>
                     </div>
                 </td>
-                <td><input type="text" name="prices[]" class="form-control form-control-plaintext border-bottom fs-5 money text-end" list="unit_prices-${unit.id}" value="0" onclick="this.select()" placeholder="Giá nhập" inputmode="numeric" required></td>
-                <td><input type="text" name="lots[]" class="form-control form-control-plaintext border-bottom fs-5" onclick="this.select()" placeholder="Lô hàng"></td>
-                <td><input type="date" name="expireds[]" class="form-control form-control-plaintext border-bottom fs-5" min="{{ date('Y-m-d') }}" inputmode="numeric" placeholder="Hạn sử dụng"></td>
+                <td><input type="text" name="prices[]" class="form-control form-control-plaintext border-bottom fs-5 money text-end" list="unit_prices-${unit.id}" value="0" onclick="this.select()" placeholder="Import price" inputmode="numeric" required></td>
+                <td><input type="text" name="lots[]" class="form-control form-control-plaintext border-bottom fs-5" onclick="this.select()" placeholder="Lot"></td>
+                <td><input type="date" name="expireds[]" class="form-control form-control-plaintext border-bottom fs-5" min="{{ date('Y-m-d') }}" inputmode="numeric" placeholder="Expiration date"></td>
                 <td>
                     <datalist id="unit_prices-${unit.id}">
                         ${ Object.values(unit.import_prices).map(price => `<option>${number_format(price)}</option>`).join('') }
@@ -718,13 +718,14 @@
                     <input type="hidden" name="import_detail_ids[]" />
                     <input type="hidden" name="stock_ids[]"/>
                     <button type="submit" class="btn btn-link px-0 btn-remove-detail import">
-                        <i class="bi bi-trash" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Xóa"></i>
+                        <i class="bi bi-trash" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Delete"></i>
                     </button>
                 </td>
             </tr>`
         $('#import-stocks').append(str)
         totalImport()
     }
+    //''''''''''''''''''''''''''''''''''''''''''''
 
     $(document).on('change', `.import_detail-unit_id[name='unit_ids[]']`, function() {
         const newUnit = parseInt($(this).val()),
@@ -813,13 +814,13 @@
             <td>
                 <div class="input-group quantity-group">
                     <button type="button" class="btn btn-outline-primary rounded-circle mt-1 btn-dec"><i class="bi bi-dash"></i></button>
-                    <input type="text" name="quantities[]" class="form-control-plaintext fs-5 text-center" onclick="this.select()" placeholder="Số" value="${number_format(detail.quantity)}" inputmode="numeric" required/>
+                    <input type="text" name="quantities[]" class="form-control-plaintext fs-5 text-center" onclick="this.select()" placeholder="Quantity" value="${number_format(detail.quantity)}" inputmode="numeric" required/>
                     <button type="button" class="btn btn-outline-primary rounded-circle mt-1 btn-inc"><i class="bi bi-plus"></i></button>
                 </div>
             </td>
-            <td><input type="text" name="prices[]" class="form-control form-control-plaintext border-bottom fs-5 money text-end" list="unit_prices-${detail.unit_id}" value="${detail.price}" onclick="this.select()" placeholder="Giá nhập" inputmode="numeric" required></td>
-            <td><input type="text" name="lots[]" class="form-control form-control-plaintext border-bottom fs-5" value="${detail.stock.lot ? detail.stock.lot : ''}" onclick="this.select()" placeholder="Lô hàng"></td>
-            <td><input type="date" name="expireds[]" class="form-control form-control-plaintext border-bottom fs-5" value="${detail.stock.expired != null ? detail.stock.expired : ''}" inputmode="numeric" placeholder="Hạn sử dụng"></td>
+            <td><input type="text" name="prices[]" class="form-control form-control-plaintext border-bottom fs-5 money text-end" list="unit_prices-${detail.unit_id}" value="${detail.price}" onclick="this.select()" placeholder="Import Price" inputmode="numeric" required></td>
+            <td><input type="text" name="lots[]" class="form-control form-control-plaintext border-bottom fs-5" value="${detail.stock.lot ? detail.stock.lot : ''}" onclick="this.select()" placeholder="Lot Number"></td>
+            <td><input type="date" name="expireds[]" class="form-control form-control-plaintext border-bottom fs-5" value="${detail.stock.expired != null ? detail.stock.expired : ''}" inputmode="numeric" placeholder="Expiration Date"></td>
             <td>
                 <datalist id="unit_prices-${detail.unit_id}">
                     ${ Object.values(detail.import_prices).map(price => `<option>${number_format(price)}</option>`).join('') }
@@ -852,7 +853,7 @@
     // $('.load_datatable_modal').on('hidden.bs.modal', function() {
     //     $('#import_detail-table').DataTable().destroy();
     //     $('#import_detail-table thead tr').not(':first').remove();
-    //     $('#import_detail-table tbody').empty(); 
+    //     $('#import_detail-table tbody').empty();
     // });
 
     $(document).on('click', '.btn-view-export_detail', function() {
@@ -911,14 +912,14 @@
         const btn = $(this)
         if ($(this).hasClass('is-invalid')) {
             Swal.fire({
-                title: 'Lưu ý!',
-                html: "Phát hiện việc nhập số lượng không hợp lệ gần đây.<br>Bạn có muốn kiểm tra lại không?",
+                title: 'Warning!',
+                html: "Invalid quantity entries have been detected recently.<br>Would you like to review them?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Xác nhận',
-                cancelButtonText: 'Kiểm tra lại',
+                confirmButtonText: 'Confirm',
+                cancelButtonText: 'Review',
                 allowOutsideClick: false,
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -941,7 +942,7 @@
         $('[name=status][value=1]').prop('checked', true)
         form.find(`[name='date']`).val(moment().format('YYYY-MM-DD'))
         form.find('.btn-print.print-export').addClass('d-none').removeAttr('data-id')
-        form.find('.modal').modal('show').find('.modal-title').text('Xuất hàng mới')
+        form.find('.modal').modal('show').find('.modal-title').text('New export')
     }
 
     function addCardToExport(stock) {
@@ -965,9 +966,9 @@
                             </a>
                         </p>
                         <div class="badge bg-light-info">${stock.productSku}</div>
-                        ${stock.stockExpired == null || stock.stockExpired == '' ? '' : `<div class="badge bg-light-info">HSD ${moment(stock.stockExpired).format('DD/MM/YYYY')}</div>`}
+                        ${stock.stockExpired == null || stock.stockExpired == '' ? '' : `<div class="badge bg-light-info">EXP ${moment(stock.stockExpired).format('DD/MM/YYYY')}</div>`}
                         <div class="badge bg-light-info">
-                            Tồn kho ${stock.stockConvertQuantity}
+                            Available stock ${stock.stockConvertQuantity}
                             <input type="hidden" class="export_detail-stock_quantity" name="stock_quantities[]" value="${stock.stockQuantity}"/>
                         </div>
                     </div>
@@ -986,7 +987,7 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <input type="text" name="notes[]" class="form-control form-control-lg form-control-plaintext export_detail-note" placeholder="Ghi chú món hàng"/>
+                        <input type="text" name="notes[]" class="form-control form-control-lg form-control-plaintext export_detail-note" placeholder="Item Note"/>
                     </div>
                 </div>
                 <div class="dropstart btn-group position-absolute top-0 end-0">
@@ -998,7 +999,7 @@
                         <li>
                             <input type="hidden" class="export_detail-id" name="ids[]" value="">
                             <a class="dropdown-item btn btn-remove-detail remove-card">
-                                Xóa khỏi đơn xuất
+                                Remove from export order
                             </a>
                         </li>
                     </ul>
@@ -1064,7 +1065,7 @@
                             </a>
                         </p>
                         <div class="badge bg-light-info">${export_detail._stock.import_detail._variable._product.sku}</div>
-                        ${export_detail.expired == null || export_detail.expired == '' ? '' : `<div class="badge bg-light-info">HSD ${moment(export_detail.expired).format('DD/MM/YYYY')}</div>`}
+                        ${export_detail.expired == null || export_detail.expired == '' ? '' : `<div class="badge bg-light-info">EXP ${moment(export_detail.expired).format('DD/MM/YYYY')}</div>`}
                         <div class="badge bg-light-info">
                             Tồn kho ${export_detail._stock.convertQuantity}
                             <input type="hidden" class="export_detail-stock_quantity" name="stock_quantities[]" value="${export_detail._stock.quantity + export_detail.totalExportQuantity}"/>
@@ -1087,7 +1088,7 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <input type="text" name="notes[]" class="form-control form-control-lg form-control-plaintext export_detail-note" placeholder="Ghi chú món hàng" value="${export_detail.note != null ? export_detail.note : ''}"/>
+                        <input type="text" name="notes[]" class="form-control form-control-lg form-control-plaintext export_detail-note" placeholder="Item note" value="${export_detail.note != null ? export_detail.note : ''}"/>
                     </div>
                 </div>
                 <div class="dropstart btn-group position-absolute top-0 end-0">
@@ -1095,12 +1096,12 @@
                         <i class="bi bi-three-dots-vertical"></i>
                     </button>
                     <ul class="dropdown-menu shadow-lg p-2" style="z-index: 9999">
-                        <li><a class="dropdown-item btn-history-detail_stock" data-variable-id="${export_detail._stock.variable_id}" href="#">Lịch sử bán hàng</a></li>
+                        <li><a class="dropdown-item btn-history-detail_stock" data-variable-id="${export_detail._stock.variable_id}" href="#">Sales History</a></li>
                         <hr class="dropdown-divider">
                         <li>
                             <input type="hidden" class="export_detail-id" name="ids[]" value="${export_detail.id}">
                             <a class="dropdown-item btn btn-remove-detail remove-card" data-id="${export_detail.id}" data-url="{{ getPath(route('admin.export_detail.remove')) }}">
-                                Xóa khỏi đơn xuất
+                                Remove from export order
                             </a>
                         </li>
                     </ul>
@@ -1137,7 +1138,7 @@
         form.find(`[name='branch_name']`).val($('nav.navbar .user-name small').text())
         form.attr('action', `{{ route('admin.order.create') }}`)
         $('[name=status][value=1]').prop('checked', true)
-        $('#order-modal').modal('show').find('.modal-title').text('Đơn hàng mới')
+        $('#order-modal').modal('show').find('.modal-title').text('New order')
     })
 
     function addCardToOrder(stock) {
@@ -1161,9 +1162,9 @@
                             </a>
                         </p>
                         <div class="badge bg-light-info">${stock.productSku}</div>
-                        ${stock.stockExpired == null || stock.stockExpired == '' ? '' : `<div class="badge bg-light-info">HSD ${moment(stock.stockExpired).format('DD/MM/YYYY')}</div>`}
+                        ${stock.stockExpired == null || stock.stockExpired == '' ? '' : `<div class="badge bg-light-info">EXP ${moment(stock.stockExpired).format('DD/MM/YYYY')}</div>`}
                         <div class="badge bg-light-info">
-                            Tồn kho ${stock.stockConvertQuantity}
+                            Available stock ${stock.stockConvertQuantity}
                             <input type="hidden" class="order_detail-stock_quantity" name="stock_quantities[]" value="${stock.stockQuantity}"/>
                         </div>
                     </div>
@@ -1172,7 +1173,7 @@
                             <div class="col-7 col-md-4 d-flex justify-content-between position-relative">
                                 <input class="order_detail-price" name="prices[]" type="hidden" value="${stock.productUnit.price}">
                                 <span class="position-absolute top-100 start-50 mt-2 translate-middle badge bg-danger d-none"></span>
-                                <input class="form-control form-control-plaintext form-control-lg order_detail-discounted_price text-end money" name="discounted_price[]" onclick="this.select()" type="text" value="${stock.productUnit.price}" inputmode="numeric" placeholder="Giá bán">
+                                <input class="form-control form-control-plaintext form-control-lg order_detail-discounted_price text-end money" name="discounted_price[]" onclick="this.select()" type="text" value="${stock.productUnit.price}" inputmode="numeric" placeholder="Price">
                                 <input class="order_detail-discount" name="discounts[]" type="hidden" value="0">
                                 <button type="button" class="btn btn-link rounded-pill btn-price-order_detail"><i class="bi bi-info-circle"></i></button>
                             </div>
@@ -1201,14 +1202,14 @@
                         <i class="bi bi-three-dots-vertical"></i>
                     </button>
                     <ul class="dropdown-menu shadow-lg p-2" style="z-index: 9999">
-                        <li><a class="dropdown-item btn-history-detail_stock" data-variable-id="${stock.variableId}" href="#">Lịch sử bán hàng</a></li>
-                        <li><a class="dropdown-item btn-note-detail_stock" data-variable-id="${stock.variableId}" href="#">Ghi chú món hàng</a></li>
+                        <li><a class="dropdown-item btn-history-detail_stock" data-variable-id="${stock.variableId}" href="#">Sales History</a></li>
+                        <li><a class="dropdown-item btn-note-detail_stock" data-variable-id="${stock.variableId}" href="#">Item Note</a></li>
                         <hr class="dropdown-divider" />
                         <li>
                             <input type="hidden" class="order_detail-id" name="ids[]">
                             <input type="hidden" class="order_detail-export_id" name="export_ids[]">
                             <a class="dropdown-item btn btn-remove-detail remove-card">
-                                Xóa khỏi đơn hàng
+                                Remove from order
                             </a>
                         </li>
                     </ul>
@@ -1280,14 +1281,14 @@
                 form.find('.btn[type=submit]:last-child').addClass('d-none')
             }
             totalOrder()
-            form.find('.modal').modal('show').find('.modal-title').text('Đơn hàng ' + obj.code)
+            form.find('.modal').modal('show').find('.modal-title').text('Order ' + obj.code)
         })
     })
 
     function htmlOrderDetail(detail) {
         let className = '', number = '', discountedPrice = ''
         console.log(detail);
-        
+
         if (detail.discount == null || detail.discount == 0) {
             className = 'd-none bg-danger'
             number = 0
@@ -1320,9 +1321,9 @@
                             </a> -->
                         </p>
                         <div class="badge bg-light-info">${detail._stock.import_detail._variable._product.sku}</div>
-                        ${detail._stock.expired != null ? '<div class="badge bg-light-info">HSD ' + moment(detail._stock.expired).format('DD/MM/YYYY') + '</div>' : ''}
+                        ${detail._stock.expired != null ? '<div class="badge bg-light-info">EXP ' + moment(detail._stock.expired).format('DD/MM/YYYY') + '</div>' : ''}
                         <div class="badge bg-light-info">
-                            Tồn kho ${detail._stock.quantity}
+                            Available stock ${detail._stock.quantity}
                             <input type="hidden" class="order_detail-stock_quantity" name="stock_quantities[]" value="${parseInt(detail.totalSaleQuantity) + parseInt(detail._stock.quantity)}"/>
                         </div>
                     </div>
@@ -1331,7 +1332,7 @@
                             <div class="col-7 col-md-4 d-flex justify-content-between position-relative">
                                 <input class="order_detail-price" name="prices[]" type="hidden" value="${detail.price}">
                                 <span class="position-absolute top-100 start-50 mt-2 translate-middle badge ${className}">${number}</span>
-                                <input class="form-control form-control-plaintext form-control-lg order_detail-discounted_price text-end money" name="discounted_price[]" onclick="this.select()" type="text" value="${discountedPrice}" inputmode="numeric" placeholder="Giá bán">
+                                <input class="form-control form-control-plaintext form-control-lg order_detail-discounted_price text-end money" name="discounted_price[]" onclick="this.select()" type="text" value="${discountedPrice}" inputmode="numeric" placeholder="Price">
                                 <input class="order_detail-discount" name="discounts[]" type="hidden" value="${detail.discount}">
                                 <button type="button" class="btn btn-link rounded-pill btn-price-order_detail"><i class="bi bi-info-circle"></i></button>
                             </div>
@@ -1362,14 +1363,14 @@
                         <i class="bi bi-three-dots-vertical"></i>
                     </button>
                     <ul class="dropdown-menu shadow-lg p-2" style="z-index: 9999">
-                        <li><a class="dropdown-item btn-history-detail_stock" data-variable-id="${stock.variableId}" href="#">Lịch sử bán hàng</a></li>
-                        <li><a class="dropdown-item btn-note-detail_stock" data-variable-id="${stock.variableId}" href="#">Ghi chú món hàng</a></li>
+                        <li><a class="dropdown-item btn-history-detail_stock" data-variable-id="${stock.variableId}" href="#">Sales History</a></li>
+                        <li><a class="dropdown-item btn-note-detail_stock" data-variable-id="${stock.variableId}" href="#">Item Note</a></li>
                         <hr class="dropdown-divider" />
                         <li>
                             <input type="hidden" class="order_detail-id" name="ids[]" value="${detail.id}">
                             <input type="hidden" class="order_detail-export_id" name="export_ids[]" value="${detail.export_detail != null ? detail.export_detail.export_id : ''}">
                             <a class="dropdown-item btn btn-remove-detail remove-card" data-id="${detail.id}" data-url="{{ getPath(route('admin.detail.remove')) }}">
-                                Xóa khỏi đơn hàng
+                                Remove from order
                             </a>
                         </li>
                     </ul>
@@ -1383,21 +1384,21 @@
         var card = $(this).closest('.order-detail, .order-services');
 
         Swal.fire({
-            title: 'Ghi chú món hàng',
+             title: 'Item Note',
             input: 'textarea',
-            inputLabel: 'Nhập ghi chú',
+            inputLabel: 'Enter note',
             inputValue: card.find('.order_detail-note').val(),
-            inputPlaceholder: 'Nhập ghi chú ở đây...',
+            inputPlaceholder: 'Enter your note here...',
             inputAttributes: {
-                'aria-label': 'Nhập ghi chú ở đây'
+                'aria-label': 'Enter your note here'
             },
             showCancelButton: true,
-            confirmButtonText: 'Lưu',
-            cancelButtonText: 'Hủy'
+        confirmButtonText: 'Save',
+        cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.isConfirmed) {
                 var note = result.value;
-                card.find('.order_detail-note').val(note).prev().text('Ghi chú: ' + note);
+                card.find('.order_detail-note').val(note).prev().text('Note: ' + note);
             }
         });
     });
@@ -1409,12 +1410,12 @@
             badge = $(this).parent().find('.badge')
 
         Swal.fire({
-            title: 'Giảm giá hàng hóa',
+            title: 'Product Discount',
             html: `
-            <input id="order_detail-amount" class="form-control form-control-lg mb-3 text-end" onclick="this.select()" placeholder="Nhập số tiền hoặc phần trăm">`,
+            <input id="order_detail-amount" class="form-control form-control-lg mb-3 text-end" onclick="this.select()" placeholder="Enter discount (amount or %)">`,
             showCancelButton: true,
-            confirmButtonText: 'Lưu',
-            cancelButtonText: 'Hủy',
+            confirmButtonText: 'Save',
+            cancelButtonText: 'Cancle',
             focusConfirm: false,
             didOpen: () => {
                 detailAmount = Swal.getPopup().querySelector('#order_detail-amount');
@@ -1430,7 +1431,7 @@
                 const amount = parseInt(detailAmount.value)
                 // Kiểm tra xem cả hai trường đều được nhập và trường số tiền chỉ chứa giá trị số
                 if (!amount || isNaN(parseFloat(amount)) || amount < 0) {
-                    Swal.showValidationMessage(`Dữ liệu không hợp lệ!`);
+                    Swal.showValidationMessage(`Invalid data!`);
                 } else {
                     let d = 0,
                         price = parseInt(inputPrice.val())
@@ -1489,10 +1490,10 @@
                 return loopUnit == thisUnit && loopStock == thisStock;
             }).length
         if (countCheck > 1 && !card.hasClass('service')) {
-            pushToastify("Đã có đơn vị tính này trong hàng khác của đơn hàng", 'danger')
+            pushToastify("This unit of measure already exists in another item of the order.", 'danger')
             card.find(`[name='unit_ids[]']`).val(currentUnit)
         } else if (!validateQuantity(card)) {
-            pushToastify("Gói tồn kho không đủ hàng, vui lòng chọn gói khác bổ sung.", 'danger')
+            pushToastify("The inventory package does not have enough stock. Please select another package to supplement.", 'danger')
             $('#export-form .btn-submit-export').addClass('is-invalid')
         } else {
             card.closest('.order-receipt').length ? totalOrder() : null
@@ -1562,10 +1563,10 @@
         if (!isNaN(d) && d != 0) {
             if (d <= 100) {
                 discount = d / 100 * total
-                discountInput.parent().prev().html('Giảm giá<br/>phần trăm')
+                discountInput.parent().prev().html('Discount<br/>percentage')
             } else {
                 discount = d
-                discountInput.parent().prev().html('Giảm giá<br/>tiền mặt')
+                discountInput.parent().prev().html('Discount<br/>amount')
             }
         }
 
@@ -1651,13 +1652,13 @@
                         form.find('[name=status][value=pay]').prop('checked', true)
                         note += 'Thanh toán'
                     }
-                    form.find('.modal-title').text('Thêm giao dịch')
+                    form.find('.modal-title').text('Add transaction')
                     form.find('[name=amount]').val(Math.abs(order.total - order.paid))
                     form.find(`[name='order_id']`).val(order_id)
                     form.find('[name=status]').closest('.form-group').removeClass('d-none')
-                    form.find('[name=note]').val(note + ' đơn hàng ' + order_id)
+                    form.find('[name=note]').val(note + ' order ' + order_id)
                 } else {
-                    pushToastify('Không tìm thấy đơn hàng', 'danger')
+                    pushToastify('Order not found', 'danger')
                 }
             });
         } else {
@@ -1674,13 +1675,13 @@
             }
             form.find('[name=status][value=pay]').prop('checked', true).closest('.form-group').addClass(
                 'd-none')
-            form.find('[name=note]').val('Thanh toán công nợ')
+            form.find('[name=note]').val('Debt payment')
         }
         form.find('.btn-print.print-transaction').addClass('d-none').removeAttr('data-id')
         form.find('.send-zns-btns').empty()
         form.find('[name=cashier_id]').val(`{{ Auth::id() }}`)
         form.attr('action', `{{ route('admin.transaction.create') }}`)
-        form.find('.modal').modal('show').find('.modal-title').text('Giao dịch mới')
+        form.find('.modal').modal('show').find('.modal-title').text('New transaction')
     })
 
     $(document).on('click', '.btn-update-transaction', function() {
@@ -1698,7 +1699,7 @@
                 });
             }
             form.find(`[name='id']`).val(id);
-            form.find('.modal-title').text('Giao dịch ' + transaction.code)
+            form.find('.modal-title').text('Transaction ' + transaction.code)
             form.find(`[name='order_id']`).val(transaction.order_id);
             form.find(`[name='cashier_id']`).val(transaction.cashier_id)
             if (transaction.amount < 0) {
@@ -1709,17 +1710,14 @@
             form.find(`[name='amount']`).val(Math.abs(transaction.amount))
             form.find(`[name='note']`).val(transaction.note)
             form.find(`[name='payment']`).val(transaction.payment)
-            form.find(`[name='status'][value = '${transaction.amount > 0 ? 1 : 0}']`).prop('checked',
-                true)
-            form.find('.btn-print.print-transaction').removeClass('d-none').attr('data-id', transaction
-                .id)
+            form.find(`[name='status'][value = '${transaction.amount > 0 ? 1 : 0}']`).prop('checked', true)
+            form.find('.btn-print.print-transaction').removeClass('d-none').attr('data-id', transaction.id)
             if (transaction.deleted_at != null) {
                 form.find('.btn[type=submit]:last-child').addClass('d-none')
             }
             form.find('.send-zns-btns').html(transaction.customer_id ?
-                `<a class="btn btn-outline-info btn-send-zns send-transaction" data-id="${transaction.id}" data-url="{{ getPath(route('admin.transaction.send_zns')) }}" data-phone="${transaction._customer.phone}">Gửi Zalo KH</a>` :
-                '')
-            form.find('.modal').modal('show').find('.modal-title').text('Giao dịch ' + transaction.code)
+                `<a class="btn btn-outline-info btn-send-zns send-transaction" data-id="${transaction.id}" data-url="{{ getPath(route('admin.transaction.send_zns')) }}" data-phone="${transaction._customer.phone}">Send Zalo to Customer</a>` : '')
+            form.find('.modal').modal('show').find('.modal-title').text('Transaction ' + transaction.code)
         })
     })
 
@@ -1730,12 +1728,12 @@
         user_scores.val(original_scores.val())
         order_discount.val(0)
         Swal.fire({
-            title: 'Đổi điểm giảm giá',
+            title: 'Redeem Discount Points',
             html: `
-            <input id="convert-scores" class="form-control form-control-lg mb-3 text-end" onclick="this.select()" placeholder="Nhập số điểm cần đổi">`,
+            <input id="convert-scores" class="form-control form-control-lg mb-3 text-end" onclick="this.select()" placeholder="Enter the number of points to redeem">`,
             showCancelButton: true,
-            confirmButtonText: 'Lưu',
-            cancelButtonText: 'Hủy',
+            confirmButtonText: 'Save',
+            cancelButtonText: 'Cancle',
             focusConfirm: false,
             didOpen: () => {
                 convert_scores = Swal.getPopup().querySelector('#convert-scores');
@@ -1751,11 +1749,11 @@
                 const scores = parseInt(convert_scores.value)
                 // Kiểm tra xem cả hai trường đều được nhập và trường số tiền chỉ chứa giá trị số
                 if (scores === "" || isNaN(parseFloat(scores)) || scores < 0) {
-                    Swal.showValidationMessage(`Dữ liệu không hợp lệ!`);
+                    Swal.showValidationMessage(`Invalid data!`);
                 } else if (scores > user_scores.val()) {
-                    Swal.showValidationMessage(`Số điểm quy đổi phải ít hơn số điểm hiện có`);
+                    Swal.showValidationMessage(`Redeemable points must not exceed your current balance.`);
                 } else if (parseFloat(scores) % 1000 != 0) {
-                    Swal.showValidationMessage(`Số điểm phải chia hết cho 1000`);
+                    Swal.showValidationMessage(`"Points must be divisible by 1000`);
                 } else {
                     user_scores.val(user_scores.val() - scores)
                     user_scores.prev().find('span').text(number_format(parseInt(original_scores
@@ -1771,43 +1769,41 @@
         if (!id) return;
         $.get(`{{ route('admin.user') }}/${id}/suggestions`, function(suggest) {
             let str =
-                `<span class="badge bg-secondary me-2 mb-2">Tài khoản từ ${moment(suggest.created_at).format('DD/MM/YYYY')}</span>`
+                `<span class="badge bg-secondary me-2 mb-2">Account since ${moment(suggest.created_at).format('DD/MM/YYYY')}</span>`
             if (suggest.countOrders) {
-                str +=
-                    `<span class="badge bg-secondary me-2 mb-2">Đã mua hàng <span class="text-white fw-bold fs-5">${number_format(suggest.countOrders)}</span> lần</span>`
+                str +=`<span class="badge bg-secondary me-2 mb-2">Purchased <span class="text-white fw-bold fs-5">${number_format(suggest.countOrders)}</span> times</span>`
                 if (suggest.countPayments) {
-                    str +=
-                        `<span class="badge bg-secondary me-2 mb-2">Số lượt thanh toán trung bình trên mỗi đơn hàng là <span class="text-white fw-bold fs-5">${number_format(suggest.countPayments)} lần</span></span>`
+                    str +=`<span class="badge bg-secondary me-2 mb-2">Average number of payments per order: <span class="text-white fw-bold fs-5">${number_format(suggest.countPayments)} times</span></span>`
                 }
             } else {
-                str += `<span class="badge bg-secondary me-2 mb-2">Chưa mua hàng lần nào</span>`
+                str += `<span class="badge bg-secondary me-2 mb-2">No purchases yet</span>`
             }
             if (suggest.scores) {
                 if (suggest.scores > 1000) {
                     str +=
-                        `<span class="badge bg-success btn-convert-scores cursor-pointer me-2 mb-2">Đang có <span class="text-white fw-bold fs-5">${number_format(suggest.scores)}</span> điểm</span>
-                    <input type="hidden" name="scores" value="${suggest.scores}"><input type="hidden" name="original_scores" value="${suggest.scores}">`
+                        `<span class="badge bg-success btn-convert-scores cursor-pointer me-2 mb-2">Currently has <span class="text-white fw-bold fs-5">${number_format(suggest.scores)}</span> points</span>
+                        <input type="hidden" name="scores" value="${suggest.scores}">
+                        <input type="hidden" name="original_scores" value="${suggest.scores}">`
                 } else {
-                    str +=
-                        `<span class="badge bg-secondary me-2 mb-2">Đang có <span class="text-white fw-bold fs-5">${number_format(suggest.scores)}</span> điểm</span>`
+                    str += `<span class="badge bg-secondary me-2 mb-2">Currently has <span class="text-white fw-bold fs-5">${number_format(suggest.scores)}</span> points</span>`
                 }
             }
             if (suggest.debt) {
                 $format = suggest.debt > 0 ? {
                     'color': 'danger',
                     'sign': '-',
-                    'string': 'Đang nợ'
+                    'string': 'In debt '
                 } : {
                     'color': 'success',
                     'sign': '+',
-                    'string': 'Đang có'
+                    'string': 'Has '
                 }
                 str +=
-                    `<span class="badge bg-${$format['color']} me-2 mb-2">${$format['string']} <span class="text-white fw-bold fs-5">${$format['sign']}${number_format(Math.abs(suggest.debt))}đ</span></span>`
+                    `<span class="badge bg-${$format['color']} me-2 mb-2">${$format['string']} <span class="text-white fw-bold fs-5">${$format['sign']}${number_format(Math.abs(suggest.debt))}VND</span></span>`
             }
             if (suggest.averagePaymentDelay) {
                 str +=
-                    `<span class="badge bg-secondary me-2 mb-2">Công nợ trung bình <span class="text-white fw-bold fs-5">${number_format(suggest.averagePaymentDelay)} </span> ngày</span>`
+                    `<span class="badge bg-secondary me-2 mb-2">Average debt age: <span class="text-white fw-bold fs-5">${number_format(suggest.averagePaymentDelay)}</span> days</span>`
             }
             $('.customer-suggestions').html(str)
             $('.customer-information').val(suggest.name + (suggest.phone ? ' - ' + suggest.phone : ''))
@@ -1989,16 +1985,15 @@
                     const totalOrder = json.totalOrder;
                     const totalAmount = json.totalAmount;
                     const transactionRemain = totalAmount - totalOrder;
-                    $('.order-sum').text(number_format(totalOrder) + 'đ');
-                    $('.transaction-sum').text(number_format(totalAmount) + 'đ');
+                    $('.order-sum').text(number_format(totalOrder) + 'VND');
+                    $('.transaction-sum').text(number_format(totalAmount) + 'VND');
                     $('.transaction-remain')
                         .html(transactionRemain < 0 ?
-                            `<span class="text-danger">${number_format(transactionRemain) + 'đ'}</span>` :
+                            `<span class="text-danger">${number_format(transactionRemain) + 'VND'}</span>` :
                             transactionRemain > 0 ?
-                            `<span class="text-success">${number_format(transactionRemain) + 'đ'}</span>` :
-                            number_format(transactionRemain) + 'đ')
-                        .prev().text(transactionRemain < 0 ? `Còn thiếu` : transactionRemain > 0 ?
-                            `Còn thừa` : `Trả đủ`)
+                            `<span class="text-success">${number_format(transactionRemain) + 'VND'}</span>` :
+                            number_format(transactionRemain) + 'VND')
+                        .prev().text(transactionRemain < 0 ? `Underpaid` : transactionRemain > 0 ? `Overpaid` : `Paid in full`)
                     return json.data;
                 }
             },
@@ -2135,15 +2130,11 @@
             length: 7
         }, (_, i) => monday.clone().add(i, 'days'));
         let html = `<tr class="tr-head">
-                        <th style="min-width: 210px">Tên</th>
+                        <th style="min-width: 210px">Name</th>
                         ${days.map((day, index) => {
                             const dayName = day.format('ddd');
                             const date = day.format('DD/MM/YYYY');
-                            const dayClass = index === 5
-                                    ? 'text-success'
-                                    : index === 6
-                                        ? 'text-danger'
-                                        : '';
+                            const dayClass = index === 5 ? 'text-success': index === 6 ? 'text-danger' : '';
                             return `<th class="text-center ${dayClass}">${dayName}<br><span class="fw-normal ${dayClass}">${date}</span></th>`;
                         }).join('')}
                     </tr>`;

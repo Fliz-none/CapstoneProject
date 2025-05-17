@@ -5,7 +5,7 @@
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header bg-info">
-                    <h1 class="modal-title fs-5" id="image-label">Cập nhật hình ảnh</h1>
+                    <h1 class="modal-title fs-5" id="image-label">Update Image</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -17,23 +17,23 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="form-group">
-                                <label for="image-name" data-bs-toggle="tooltip" data-bs-title="Tên của hình ảnh">Tên file</label>
-                                <input type="text" class="form-control" name="name" id="image-name" placeholder="Nhập tên file" autocomplete="off">
+                                <label for="image-name" data-bs-toggle="tooltip" data-bs-title="Name of the image">File Name</label>
+                                <input type="text" class="form-control" name="name" id="image-name" placeholder="Enter file name" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label for="image-alt" data-bs-toggle="tooltip" data-bs-title="Dùng để mô tả nội dung khi nó không thể hiển thị do lỗi tải trang">Thay thế</label>
-                                <input type="text" class="form-control" name="alt" id="image-alt" placeholder="Nhập nội dung thay thế (hỗ trợ SEO)" autocomplete="off">
+                                <label for="image-alt" data-bs-toggle="tooltip" data-bs-title="Used to describe content when image fails to load">Alt Text</label>
+                                <input type="text" class="form-control" name="alt" id="image-alt" placeholder="Enter alternative text (SEO support)" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label for="image-caption" data-bs-toggle="tooltip" data-bs-title="Dòng văn bản hoặc chú thích đi kèm với hình ảnh">Mô tả</label>
-                                <textarea class="form-control" name="caption" id="image-caption" rows="10" placeholder="Nhập mô tả hình ảnh" autocomplete="off"></textarea>
+                                <label for="image-caption" data-bs-toggle="tooltip" data-bs-title="Text or caption accompanying the image">Description</label>
+                                <textarea class="form-control" name="caption" id="image-caption" rows="10" placeholder="Enter image description" autocomplete="off"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-end">
                     <input type="hidden" name="id" id="image-id">
-                    <button type="submit" class="btn btn-primary">Lưu</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </div>

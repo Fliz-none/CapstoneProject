@@ -5,7 +5,6 @@ use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\CatalogueController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\DebtController;
 use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\ExportController;
 use App\Http\Controllers\Admin\ExportDetailController;
@@ -89,10 +88,6 @@ Route::group(['prefix' => 'quantri'], function () {
         Route::post('update', [TransactionController::class, 'update'])->name('admin.transaction.update');
         Route::post('send-zns', [TransactionController::class, 'send_zns'])->name('admin.transaction.send_zns');
         Route::post('remove', [TransactionController::class, 'remove'])->name('admin.transaction.remove');
-    });
-
-    Route::group(['prefix' => 'debt'], function () {
-        Route::get('{key?}', [DebtController::class, 'index'])->name('admin.debt');
     });
 
     Route::group(['prefix' => 'user'], function () {

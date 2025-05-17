@@ -13,7 +13,7 @@ class NoSequentialCharactersRule implements Rule
 
     public function message()
     {
-        return 'Mật khẩu không được có 3 ký tự liên tục trên bảng chữ cái hoặc chữ số.';
+        return 'The password must not contain 3 consecutive characters in the alphabet or digits.';
     }
 
     private function hasSequentialChars($string)

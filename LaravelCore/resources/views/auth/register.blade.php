@@ -14,7 +14,7 @@
                             <div class="row mb-3">
                                 <label class="col-md-4 col-form-label text-md-end" for="name">{{ __('Name') }}</label>
                                 <div class="col-md-6">
-                                    <input class="form-control @error('name') is-invalid @enderror" id="name" name="name" type="text" value="{{ old('name') }}" required autofocus placeholder="Tên đầy đủ">
+                                    <input class="form-control @error('name') is-invalid @enderror" id="name" name="name" type="text" value="{{ old('name') }}" required autofocus placeholder="Name">
                                     @error('name')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -25,7 +25,7 @@
                             <div class="row mb-3">
                                 <label class="col-md-4 col-form-label text-md-end" for="phone">{{ __('Phone') }}</label>
                                 <div class="col-md-6">
-                                    <input class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" type="text" value="{{ old('phone') }}" required autocomplete="on" inputmode="numeric" placeholder="Điện thoại">
+                                    <input class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" type="text" value="{{ old('phone') }}" required autocomplete="on" inputmode="numeric" placeholder="Phone number">
                                     @error('phone')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -36,7 +36,7 @@
                             <div class="row mb-3">
                                 <label class="col-md-4 col-form-label text-md-end" for="address">{{ __('Address') }}</label>
                                 <div class="col-md-6">
-                                    <input class="form-control @error('address') is-invalid @enderror" id="address" name="address" type="text" value="{{ old('address') }}" autocomplete="on" placeholder="Địa chỉ">
+                                    <input class="form-control @error('address') is-invalid @enderror" id="address" name="address" type="text" value="{{ old('address') }}" autocomplete="on" placeholder="Address">
                                     @error('address')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -86,7 +86,7 @@
                             <div class="row mb-3">
                                 <label class="col-md-4 col-form-label text-md-end" for="email">{{ __('Email Address') }}</label>
                                 <div class="col-md-6">
-                                    <input class="form-control @error('email') is-invalid @enderror" id="email" name="email" type="email" value="{{ old('email') }}" required autocomplete="on" placeholder="Địa chỉ email">
+                                    <input class="form-control @error('email') is-invalid @enderror" id="email" name="email" type="email" value="{{ old('email') }}" required autocomplete="on" placeholder="Email address">
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -97,7 +97,7 @@
                             <div class="row mb-3">
                                 <label class="col-md-4 col-form-label text-md-end" for="password">{{ __('Password') }}</label>
                                 <div class="col-md-6">
-                                    <input class="form-control @error('password') is-invalid @enderror" id="password" name="password" type="password" require placeholder="Mật khẩu">
+                                    <input class="form-control @error('password') is-invalid @enderror" id="password" name="password" type="password" require placeholder="Password">
                                     @error('password')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -108,7 +108,7 @@
                             <div class="row mb-3">
                                 <label class="col-md-4 col-form-label text-md-end" for="password-confirm">{{ __('Confirm Password') }}</label>
                                 <div class="col-md-6">
-                                    <input class="form-control" id="password-confirm" name="password_confirmation" type="password" required placeholder="Xác nhận lại mật khẩu">
+                                    <input class="form-control" id="password-confirm" name="password_confirmation" type="password" required placeholder="Confirm password">
                                 </div>
                             </div>
                             <div class="row mb-0">
@@ -119,7 +119,7 @@
                                 </div>
                                 <div class="col-12 d-flex justify-content-end pe-2 p-lg-4">
                                     <div class="ms-2">
-                                        <span>Đã có tài khoản? <a href="{{ route('login') }}"> {{ __('Login') }}</a></span>
+                                        <span>Already have an account? <a href="{{ route('login') }}"> {{ __('Login') }}</a></span>
                                     </div>
                                 </div>
                             </div>

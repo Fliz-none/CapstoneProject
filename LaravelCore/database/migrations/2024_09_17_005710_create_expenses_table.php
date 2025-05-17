@@ -18,7 +18,7 @@ class CreateExpensesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('receiver_id');
             $table->unsignedBigInteger('branch_id')->nullable();
-            $table->unsignedTinyInteger('payment')->comment('1: tiền mặt, 2: chuyển khoản')->default(1);
+           $table->unsignedTinyInteger('payment')->comment('1: Cash; 2: Bank Transfer')->default(1);
             $table->unsignedDecimal('amount',10,0);
             $table->string('avatar')->nullable();
             $table->string('group')->nullable();

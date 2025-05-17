@@ -12,7 +12,6 @@
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav class="breadcrumb-header float-start float-lg-end" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
                         </ol>
                     </nav>
@@ -39,10 +38,10 @@
                             <div class="card-body">
                                 <div class="row align-items-center mb-4">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Nhập mật khẩu hiện tại của tài khoản phần mềm này">Mật khẩu hiện tại</h6>
+                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Please enter your current password for this account">Current password</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input class="form-control @error('current_password') is-invalid @enderror" id="profile-current-password" name="current_password" type="password" placeholder="Mật khẩu hiện tại của bạn">
+                                        <input class="form-control @error('current_password') is-invalid @enderror" id="profile-current-password" name="current_password" type="password" placeholder="Your current password" autocomplete="current-password">
                                         @error('current_password')
                                             <span class="invalid-feedback d-block" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -52,10 +51,10 @@
                                 </div>
                                 <div class="row align-items-center mb-4">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Nhập mật khẩu mới (không được trùng mật khẩu hiện tại, có ít nhất 8 ký tự, 1 chữ Hoa, 1 chữ thường, 1 chữ số và 1 ký tự đặc biệt, thứ tự không được liên tục quá 3 ký tự)">Nhập mật khẩu mới</h6>
+                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Please enter a new password (must not match the current password, at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character, and no more than 3 consecutive characters)">New password</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input class="form-control @error('password') is-invalid @enderror" name="password" type="password" autocomplete="new-password" placeholder="Mật khẩu mới">
+                                        <input class="form-control @error('password') is-invalid @enderror" name="password" type="password" autocomplete="new-password" placeholder="New password">
                                         @error('password')
                                             <span class="invalid-feedback d-block" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -65,10 +64,10 @@
                                 </div>
                                 <div class="row align-items-center mb-4">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Nhập lại mật khẩu mới để xác nhận bạn không nhập sai ở trên">Xác nhận mật khẩu</h6>
+                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Please re-enter the new password to confirm you didn't make a mistake above">Confirm password</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input class="form-control @error('password') is-invalid @enderror" name="password_confirmation" type="password" autocomplete="new-password" placeholder="Nhập lại mật khẩu mới">
+                                        <input class="form-control @error('password') is-invalid @enderror" name="password_confirmation" type="password" autocomplete="new-password" placeholder="Confirm new password">
                                         @error('password_confirmation')
                                             <span class="invalid-feedback d-block" role="alert">
                                                 <strong>{{ $message }}</strong>

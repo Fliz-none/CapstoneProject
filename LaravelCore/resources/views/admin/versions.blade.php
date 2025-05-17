@@ -10,7 +10,6 @@
                     <h5 class="text-uppercase">{{ $pageName }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Bảng tin</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
                         </ol>
                     </nav>
@@ -25,7 +24,7 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_VERSION)))
                         <a class="btn k-btn-info mb-3 block btn-create-version">
                             <i class="bi bi-plus-circle"></i>
-                            Thêm
+                            Add
                         </a>
                     @endif
                 </div>
@@ -39,11 +38,11 @@
                                 <table class="table table-striped table-bordered key-table" id="version-table">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Phiên bản</th>
-                                            <th>Mô tả</th>
-                                            <th>Người cập nhật</th>
-                                            <th>Ngày cập nhật</th>
+                                            <th>#</th>
+                                            <th>Version</th>
+                                            <th>Description</th>
+                                            <th>Updated By</th>
+                                            <th>Updated At</th>
                                             <th></th>
                                         </tr>
                                     </thead>

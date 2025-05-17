@@ -118,7 +118,7 @@ class StockController extends Controller
                                                     <p class="badge bg-light-secondary mb-0">' . $obj->import_detail->_variable->_product->sku . '</p>
                                                     <div class="row">
                                                         <div class="col-auto">
-                                                            <p class="card-text mb-0">&nbsp;&nbsp;Tồn kho: ' . $stockQuantity . '</p>
+                                                            <p class="card-text mb-0">&nbsp;&nbsp;Inventory stock: ' . $stockQuantity . '</p>
                                                         </div>
                                                         ' . ($obj->expired ? '<div class="col-auto">
                                                             <p class="card-text mb-0">&nbsp;&nbsp;HSD: ' . Carbon::parse($obj->expired)->format('d/m/Y') . '</p>
@@ -174,7 +174,7 @@ class StockController extends Controller
                         ->map(function ($obj) {
                             return [
                                 'id' => $obj->id,
-                                'text' => $obj->productName() . ' (TỒN: ' . $obj->import_detail->_variable->convertUnit($obj->quantity) . ($obj->expired ? ' - HSD: ' . Carbon::parse($obj->expired)->format('d/m/Y') : '') . ')'
+                                'text' => $obj->productName() . ' (QuantityQuantity: ' . $obj->import_detail->_variable->convertUnit($obj->quantity) . ($obj->expired ? ' - Expired: ' . Carbon::parse($obj->expired)->format('d/m/Y') : '') . ')'
                             ];
                         });
                     break;
@@ -238,7 +238,7 @@ class StockController extends Controller
                                         <td>' . $sum_export . '</td>
                                         <td>' . $sum_stock_after . '</td>
                                         <td>
-                                            <input type="text" class="form-control form-control-plaintext" placeholder="Nhập số" name="real_stock[' . $variable->id . '][quantity]">
+                                            <input type="text" class="form-control form-control-plaintext" placeholder="Enter quantity" name="real_stock[' . $variable->id . '][quantity]">
                                             <input type="hidden" name="real_stock[' . $variable->id . '][variable_id]" value="' . $variable->id . '">
                                         </td>
                                         <td>' . $variable->stock_limit . ' ' . optional($variable->units->firstWhere('rate', 1))->term . '</td>
@@ -346,7 +346,7 @@ class StockController extends Controller
                             ->orderBy('products.name', $order);
                     })
                     ->addColumn('avatar', function ($obj) {
-                        return '<img src="' . $obj->import_detail->_variable->_product->avatarUrl . '" class="thumb cursor-pointer object-fit-cover" alt="Ảnh ' . $obj->import_detail->_variable->_product->name . '" width="60px" height="60px">';
+                        return '<img src="' . $obj->import_detail->_variable->_product->avatarUrl . '" class="thumb cursor-pointer object-fit-cover" alt="Image ' . $obj->import_detail->_variable->_product->name . '" width="60px" height="60px">';
                     })
                     ->editColumn('quantity', function ($obj) {
                         return $obj->import_detail->_variable->convertUnit($obj->quantity);
@@ -368,9 +368,9 @@ class StockController extends Controller
                     })
                     ->addColumn('import', function ($obj) use ($can_read_import, $can_read_warehouses) {
                         if ($can_read_import) {
-                            $import_btn = '<a class="btn btn-link text-decoration-none text-start btn-update-import" data-id="' . $obj->import_detail->import_id . '">Nhập hàng số ' . $obj->import_detail->import_id . '</a>';
+                            $import_btn = '<a class="btn btn-link text-decoration-none text-start btn-update-import" data-id="' . $obj->import_detail->import_id . '">Import code ' . $obj->import_detail->import_id . '</a>';
                         } else {
-                            $import_btn = 'Nhập hàng số ' . $obj->import_detail->import_id;
+                            $import_btn = 'Import code ' . $obj->import_detail->import_id;
                         }
                         if ($can_read_warehouses) {
                             $warehouse_btn = '<a class="btn btn-link text-decoration-none text-start btn-update-warehouse" data-id="' . $obj->import_detail->_import->warehouse_id . '">' . $obj->import_detail->_import->_warehouse->name . '</a>';
@@ -439,7 +439,7 @@ class StockController extends Controller
                                     </button>
                                 </form>';
                             return '<a class="btn btn-link text-decoration-none btn-view-stock-detail" data-id="' . $obj->id . '">
-                                        <i class="bi bi-eye" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Xem lịch sử xuất"></i>
+                                        <i class="bi bi-eye" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View export history"></i>
                                     </a>';
                         }
                     })
@@ -458,7 +458,7 @@ class StockController extends Controller
                     $variable_id = $request->variable_id ?? null;
                     return view('admin.templates.previews.stock', compact('variables', 'variable_id', 'warehouse_id'));
                 } else {
-                    $pageName = 'Quản lý tồn kho';
+                    $pageName = 'Stock management';
                     return view('admin.stocks', compact('pageName'));
                 }
             }
@@ -471,14 +471,14 @@ class StockController extends Controller
             'real_stock.*.quantity' => 'nullable|numeric|min:0',
             'real_stock.*.variable_id' => 'required|numeric|exists:variables,id',
         ], [
-            'real_stock.*.quantity.numeric' => 'Số lượng bạn nhập không hợp lệ.',
-            'real_stock.*.quantity.min' => 'Số lượng phải lớn hơn 0.',
-            'real_stock.*.variable_id.required' => 'Dữ liệu không hợp lệ.',
-            'real_stock.*.variable_id.numeric' => 'Dữ liệu không hợp lệ.',
-            'real_stock.*.variable_id.exists' => 'Đã có lỗi xảy ra vui lòng F5 và thử lại.',
+            'real_stock.*.quantity.numeric' => 'The quantity you entered is not valid.',
+            'real_stock.*.quantity.min' => 'The quantity must be greater than 0.',
+            'real_stock.*.variable_id.required' => 'Invalid data.',
+            'real_stock.*.variable_id.numeric' => 'Invalid data.',
+            'real_stock.*.variable_id.exists' => 'An error occurred please refresh and try again.',
         ]);
         if (!$this->user->can(User::CREATE_IMPORT) && !$this->user->can(User::CREATE_EXPORT)) {
-            return response()->json(['errors' => ['role' => ['Chưa được cấp quyền để thực hiện thao tác này!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         DB::beginTransaction();
         try {
@@ -509,7 +509,7 @@ class StockController extends Controller
                     $import = Import::create([
                         'user_id' => $this->user->id,
                         'warehouse_id' => $request->warehouse_id,
-                        'note' => 'Nhập đồng bộ kho ' . Carbon::now()->format('d/m/Y'),
+                        'note' => 'Sync stock ' . Carbon::now()->format('d/m/Y'),
                         'created_at' => $range[1],
                         'status' => 0,
                     ]);
@@ -531,7 +531,7 @@ class StockController extends Controller
                                 'created_at' => $range[1],
                             ]);
                         }
-                        LogController::create('tạo', 'phiếu nhập', $import->id);
+                        LogController::create('create', 'import', $import->id);
                     }
                 } elseif ($diff > 0) { // Tạo phiếu xuat
                     $stocks = Stock::whereHas('_import_detail', function ($query) use ($variable, $range, $request) {
@@ -547,7 +547,7 @@ class StockController extends Controller
                         'date' => $range[1],
                         'user_id' => $this->user->id,
                         'receiver_id' => $this->user->id,
-                        'note' => 'Xuất đồng bộ kho ' . Carbon::now()->format('d/m/Y'),
+                        'note' => 'Sync stock ' . Carbon::now()->format('d/m/Y'),
                         'status' => 0,
                         'created_at' => $range[1],
                     ]);
@@ -561,7 +561,7 @@ class StockController extends Controller
                                 'stock_id' => $stock->id,
                                 'unit_id' => $unit->id,
                                 'quantity' => $reduce,
-                                'note' => 'Xuất đồng bộ kho ' . Carbon::now()->format('d/m/Y'),
+                                'note' => 'Sync stock ' . Carbon::now()->format('d/m/Y'),
                                 'created_at' => $range[1],
                             ]);
                             if ($export_detail) {
@@ -573,26 +573,20 @@ class StockController extends Controller
                             }
                         }
                     }
-                    LogController::create('tạo', 'phiếu xuất', $export->id);
+                    LogController::create('create', 'export', $export->id);
                 }
             }
             DB::commit();
             $response = [
                 'status' => 'success',
-                'msg' => 'Đã đồng bộ kho thành công',
+                'msg' => 'Sync stock successfully',
             ];
             return response()->json($response, 200);
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error(
-                'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                'Chi tiết lỗi: ' . $e->getTraceAsString()
-            );
+            log_exception($e);
             Controller::resetAutoIncrement(['exports', 'imports', 'export_details', 'import_details', 'stocks']);
-            return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+            return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
         }
     }
 
@@ -649,22 +643,22 @@ class StockController extends Controller
     static function pushExhaustedNoti($stock, $variable)
     {
         $warehouse = $stock->import_detail->_import->_warehouse;
-        $txt = $variable->sumStocks() ? ' chỉ còn ' . $variable->sumStocks() . ' ' . optional($variable->_units->where('rate', 1)->first())->term : ' đã hết hàng ';
+        $txt = $variable->sumStocks() ? ' only ' . $variable->sumStocks() . ' ' . optional($variable->_units->where('rate', 1)->first())->term : ' out of stock ';
         $str = '<div class="row">
-                    <a class="d-flex align-items-center fw-bold text-start text-primary py-2" href="' . route('admin.stock', ['variable_id' => $variable->id, 'warehouse_id' => $warehouse->id]) . '">
-                        <div class="col-2 px-0 d-flex justify-content-center">
-                            <div class="notification-icon bg-danger">
-                                <i class="bi bi-house-exclamation-fill"></i>
-                            </div>
+                <a class="d-flex align-items-center fw-bold text-start text-primary py-2" href="' . route('admin.stock', ['variable_id' => $variable->id, 'warehouse_id' => $warehouse->id]) . '">
+                    <div class="col-2 px-0 d-flex justify-content-center">
+                        <div class="notification-icon bg-danger">
+                            <i class="bi bi-house-exclamation-fill"></i>
                         </div>
-                        <div class="col-10">
-                            <div class="notification-text text-wrap">
-                                <p class="notification-title fw-bold text-danger">Hết hàng trong kho</p>
-                                <small class="notification-subtitle text-danger">' . $stock->productName() . $txt . ' trong kho ' . $warehouse->name . '</small>
-                            </div>
+                    </div>
+                    <div class="col-10">
+                        <div class="notification-text text-wrap">
+                            <p class="notification-title fw-bold text-danger">Out of stock in warehouse</p>
+                            <small class="notification-subtitle text-danger">' . $stock->productName() . $txt . ' in warehouse ' . $warehouse->name . '</small>
                         </div>
-                    </a>
-                </div>';
+                    </div>
+                </a>
+            </div>';
         $noti = NotificationController::create(cleanStr($str));
         if ($noti) {
             NotificationController::push($noti, $warehouse->users);

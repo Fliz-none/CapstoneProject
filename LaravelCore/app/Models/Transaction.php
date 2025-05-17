@@ -73,9 +73,9 @@ class Transaction extends Model
     public function getFullAmountAttribute()
     {
         if ($this->amount > 0) {
-            $result = '<a class="text-success" data-bs-toggle="tooltip" data-bs-title="' . $this->statusStr . '">+' . number_format($this->amount) . 'đ</a>';
+            $result = '<a class="text-success" data-bs-toggle="tooltip" data-bs-title="' . $this->statusStr . '">+' . number_format($this->amount) . 'VND</a>';
         } elseif ($this->amount < 0) {
-            $result = '<a class="text-danger" data-bs-toggle="tooltip" data-bs-title="' . $this->statusStr . '">' . number_format($this->amount) . 'đ</a>';
+            $result = '<a class="text-danger" data-bs-toggle="tooltip" data-bs-title="' . $this->statusStr . '">' . number_format($this->amount) . 'VND</a>';
         } else {
             $result = number_format($this->amount);
         }

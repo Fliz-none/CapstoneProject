@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class UnitController extends Controller
 {
-    const NAME = 'đơn vị tính';
+    const NAME = 'Unit';
 
     public function __construct()
     {
@@ -153,15 +153,15 @@ class UnitController extends Controller
             $obj = Unit::find($id);
             if ($obj->rate != 1) {
                 $obj->delete();
-                LogController::create("xóa", self::NAME, $obj->id);
+                LogController::create("delete", self::NAME, $obj->id);
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Đã xóa thành công ' . self::NAME . ' ' . $obj->term . '!'
+                    'msg' => 'Deleted ' . self::NAME . ' ' . $obj->term . ' successfully!'
                 );
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'Phải có ít nhất một đơn vị tính có tỷ lệ quy đổi là 1!'
+                    'msg' => 'At least one unit must have a conversion rate of 1!'
                 );
             }
         }

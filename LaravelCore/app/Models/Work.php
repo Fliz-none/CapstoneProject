@@ -76,10 +76,10 @@ class Work extends Model
         $interval = CarbonInterval::seconds($differenceInSeconds)->cascade();
 
         if ($differenceInSeconds > 0) {
-            $seconds = $differenceInSeconds < 60 ? $differenceInSeconds . ' giây' : '';
-            return '<br><span class="badge bg-danger">Trễ ' . ($interval->hours ? $interval->hours . ' giờ ' : '') . ($interval->minutes ? $interval->minutes . ' phút' : '') . $seconds . '</span>';
+            $seconds = $differenceInSeconds < 60 ? $differenceInSeconds . ' sencond' : '';
+            return '<br><span class="badge bg-danger">Late by ' . ($interval->hours ? $interval->hours . ' hour(s) ' : '') . ($interval->minutes ? $interval->minutes . ' minute(s)' : '') . $seconds . '</span>';
         } else {
-            return '<br><span class="badge bg-primary">Đúng giờ</span>';
+            return '<br><span class="badge bg-primary">On time</span>';
         }
     }
     public function gap_checkout()

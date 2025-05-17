@@ -10,7 +10,6 @@
                     <h5 class="text-uppercase">{{ $pageName }}</h5>
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Bảng tin</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
                         </ol>
                     </nav>
@@ -25,14 +24,14 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_EXPORT)))
                         <a class="btn btn-info mb-3 block btn-create-export">
                             <i class="bi bi-plus-circle"></i>
-                            Thêm
+                            Add
                         </a>
                     @endif
                     <div class="d-inline-block process-btns d-none">
                         @if (!empty(Auth::user()->can(App\Models\User::DELETE_EXPORTS)))
                             <a class="btn btn-danger btn-removes mb-3 ms-2" type="button">
                                 <i class="bi bi-trash"></i>
-                                Xoá
+                                Delete
                             </a>
                         @endif
                     </div>
@@ -42,7 +41,7 @@
                         <select
                             class="form-control form-control-lg form-control-plaintext bg-transparent text-end list-warehouses"
                             required autocomplete="off">
-                            <option selected hidden disabled>Kho hàng của bạn</option>
+                            <option selected hidden disabled>Your warehouse</option>
                             @foreach (Auth::user()->warehouses as $warehouse)
                                 <option value="{{ $warehouse->id }}"
                                     {{ isset($_GET['warehouse_id']) && $_GET['warehouse_id'] == $warehouse->id ? 'selected' : '' }}>
@@ -60,12 +59,12 @@
                                 <table class="table table-striped table-bordered key-table" id="export-table">
                                     <thead>
                                         <tr>
-                                            <th>Mã</th>
-                                            <th>Nội dung</th>
-                                            <th>Người xuất</th>
-                                            <th>Người nhận</th>
-                                            <th>Hình thức</th>
-                                            <th>Trạng thái</th>
+                                            <th>Code</th>
+                                            <th>Content</th>
+                                            <th>Created By</th>
+                                            <th>Received By</th>
+                                            <th>Type</th>
+                                            <th>Status</th>
                                             <th></th>
                                             <th>
                                                 <input class="form-check-input all-choices" type="checkbox">

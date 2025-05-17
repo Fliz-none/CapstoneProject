@@ -4,7 +4,7 @@
         <div class="modal-dialog modal-dialog-scrollable modal-fullscreen order-receipt">
             <div class="modal-content">
                 <div class="modal-header bg-info">
-                    <h1 class="modal-title fs-5 text-white" id="order-modal-label">Đơn hàng</h1>
+                    <h1 class="modal-title fs-5 text-white" id="order-modal-label">Order</h1>
                     <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -17,7 +17,7 @@
                                             <div class="dropdown ajax-search">
                                                 <div class="form-group mb-0 has-icon-left">
                                                     <div class="position-relative search-form">
-                                                        <input class="form-control form-control-lg search-input" data-url="{{ route('admin.stock') }}?key=search" type="text" autocomplete="off" placeholder="Chọn một sản phẩm">
+                                                        <input class="form-control form-control-lg search-input" data-url="{{ route('admin.stock') }}?key=search" type="text" autocomplete="off" placeholder="Select a product">
                                                         <div class="form-control-icon">
                                                             <i class="bi bi-search"></i>
                                                         </div>
@@ -37,14 +37,14 @@
                                 <div class="card-header">
                                     <div class="row">
                                         <div class="col-9">
-                                            <h5 class="text-secondary">Các giao dịch</h5>
+                                            <h5 class="text-secondary">Transactions</h5>
                                         </div>
                                         <div class="col-3">
                                             @if (Auth::user()->can(App\Models\User::CREATE_TRANSACTION))
                                                 <div class="d-grid gap-2">
                                                     <div class="btn-group btn-group-lg">
                                                         <button class="btn btn-outline-primary btn-create-transaction pay">
-                                                            <i class="bi bi-plus-circle"></i> Thêm thanh toán
+                                                            <i class="bi bi-plus-circle"></i> Add Payment
                                                         </button>
                                                     </div>
                                                 </div>
@@ -57,12 +57,12 @@
                                         <table class="table table-striped table-wide table-bordered key-table" id="transactions-datatable">
                                             <thead>
                                                 <tr>
-                                                    <th>Mã</th>
-                                                    <th>Nội dung</th>
-                                                    <th class="text-center">Hình thức</th>
-                                                    <th>Khách hàng</th>
-                                                    <th>Thu ngân</th>
-                                                    <th class="text-end">Số tiền</th>
+                                                    <th>Code</th>
+                                                    <th>Description</th>
+                                                    <th class="text-center">Method</th>
+                                                    <th>Customer</th>
+                                                    <th>Cashier</th>
+                                                    <th class="text-end">Amount</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -70,12 +70,12 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <td class="text-end" colspan="5">Tổng giá trị đơn hàng</td>
+                                                    <td class="text-end" colspan="5">Total order value</td>
                                                     <td class="text-end order-sum"></td>
                                                     <td></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="text-end" colspan="5">Tổng số tiền đã thanh toán</td>
+                                                    <td class="text-end" colspan="5">Total amount paid</td>
                                                     <td class="text-end transaction-sum"></td>
                                                     <td></td>
                                                 </tr>
@@ -103,15 +103,15 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Khách hàng mua hàng" for="order-customer_id">
-                                            Khách hàng&nbsp;
+                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Customer who purchased" for="order-customer_id">
+                                            Customer&nbsp;
                                             <a class="btn btn-link btn-create-user rounded-pill p-0" type="button">
                                                 <i class="bi bi-plus-circle"></i>
                                             </a>
                                         </label>
                                         <div class="col-sm-8">
                                             <select class="form-control-plaintext form-control select2 order-customer_id" id="order-customer_id" name="customer_id" data-ajax--url="{{ route('admin.user', ['key' => 'select2']) }}"
-                                                data-placeholder="Chọn khách hàng (F4)" autocomplete="off">
+                                                data-placeholder="Select customer (F4)" autocomplete="off">
                                             </select>
                                         </div>
                                     </div>
@@ -121,56 +121,56 @@
                                         <div class="d-grid gap-2">
                                             <div class="btn-group" role="group">
                                                 <input class="btn-check" id="order-status-waiting" name="status" type="radio" value="1">
-                                                <label class="btn btn-outline-primary" for="order-status-waiting">Mới đặt</label>
+                                                <label class="btn btn-outline-primary" for="order-status-waiting">New</label>
                                                 <input class="btn-check" id="order-status-processing" name="status" type="radio" value="2">
-                                                <label class="btn btn-outline-info" for="order-status-processing">Đang xử lý</label>
+                                                <label class="btn btn-outline-info" for="order-status-processing">Processing</label>
                                                 <input class="btn-check" id="order-status-done" name="status" type="radio" value="3">
-                                                <label class="btn btn-outline-success" for="order-status-done">Hoàn thành</label>
+                                                <label class="btn btn-outline-success" for="order-status-done">Completed</label>
                                                 <input class="btn-check" id="order-status-cancel" name="status" type="radio" value="0">
-                                                <label class="btn btn-outline-danger" for="order-status-cancel">Bị hủy</label>
+                                                <label class="btn btn-outline-danger" for="order-status-cancel">Canceled</label>
                                             </div>
                                         </div>
                                     </div>
                                     <hr />
                                     <div class="row mb-3 row-total">
-                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Tổng giá số món hàng" for="order-total">Tổng <span class="order-count px-1">0</span>
-                                            món</label>
+                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Total quantity of items" for="order-total">Total <span class="order-count px-1">0</span>
+                                            items</label>
                                         <div class="col-sm-8">
-                                            <input class="form-control-lg bg-white text-end form-control bg-white money order-total" id="order-total" name="total" type="text" value="0" placeholder="Tổng tiền đơn hàng"
+                                            <input class="form-control-lg bg-white text-end form-control bg-white money order-total" id="order-total" name="total" type="text" value="0" placeholder="Order total amount"
                                                 autocomplete="off" readonly>
                                         </div>
                                     </div>
                                     <div class="row row-discount">
-                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Giảm giá sản phẩm (giá trị bé hơn hoặc bằng 100 sẽ giảm theo % giá trị đơn hàng)"
-                                            for="order-discount">Giảm giá</label>
+                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Product discount (value less or equal to 100 will be treated as % discount on the order total)" 
+                                            for="order-discount">Discount</label>
                                         <div class="col-sm-8">
                                             <input class="form-control-lg text-end form-control bg-white money order-discount" id="order-discount" name="discount" type="text" value="0" onclick="this.select()"
-                                                placeholder="Số tiền hoặc phần trăm" autocomplete="off">
+                                                placeholder="Amount or percentage" autocomplete="off">
                                         </div>
                                     </div>
                                     <hr />
                                     <div class="row mb-3 row-summary">
-                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Số tiền khách cần phải thanh toán" for="order-summary">Phải thanh toán</label>
+                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Amount the customer has to pay" for="order-summary">Amount Due</label>
                                         <div class="col-sm-8">
-                                            <input class="form-control-lg text-end form-control bg-white money order-summary" id="order-summary" name="summary" type="text" value="0" placeholder="Số tiền" autocomplete="off" readonly>
+                                            <input class="form-control-lg text-end form-control bg-white money order-summary" id="order-summary" name="summary" type="text" value="0" placeholder="Amount" autocomplete="off" readonly>
                                         </div>
                                     </div>
                                     <div class="order-payments" id="order-payments">
                                     </div>
                                     <div class="row mb-3 row-change d-none">
-                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Số tiền mà khách đã thanh toán" for="order-paid">Đã thanh toán</label>
+                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Amount the customer has already paid" for="order-paid">Paid</label>
                                         <div class="col-sm-8">
-                                            <input class="form-control-lg text-end form-control bg-white money order-paid" id="order-paid" name="change" type="text" value="0" placeholder="Số tiền" autocomplete="off" readonly>
+                                            <input class="form-control-lg text-end form-control bg-white money order-paid" id="order-paid" name="change" type="text" value="0" placeholder="Amount" autocomplete="off" readonly>
                                         </div>
                                     </div>
                                     <div class="row mb-3 row-due d-none">
-                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Tiền thừa còn lại của khách" for="order-due">Còn lại</label>
+                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Customer's remaining balance" for="order-due">Due</label>
                                         <div class="col-sm-8">
-                                            <input class="form-control-lg text-end form-control bg-white money order-due" id="order-due" name="due" type="text" value="0" placeholder="Số tiền" autocomplete="off" readonly>
+                                            <input class="form-control-lg text-end form-control bg-white money order-due" id="order-due" name="due" type="text" value="0" placeholder="Amount" autocomplete="off" readonly>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <textarea class="form-control" id="order-note" name="note" rows="2" placeholder="Ghi chú đơn hàng"></textarea>
+                                        <textarea class="form-control" id="order-note" name="note" rows="2" placeholder="Order notes"></textarea>
                                     </div>
                                     <div class="form-group mb-0">
                                         @if (!empty(Auth::user()->hasAnyPermission(App\Models\User::UPDATE_ORDER, App\Models\User::CREATE_ORDER)))
@@ -181,10 +181,10 @@
                                                         <i class="bi bi-printer-fill"></i>
                                                     </button>
                                                     <ul class="dropdown-menu">
-                                                        <li><a class="dropdown-item cursor-pointer btn-print print-order" data-id="" data-url="{{ getPath(route('admin.order')) }}" data-template="a5">Khổ A5</a></li>
-                                                        <li><a class="dropdown-item cursor-pointer btn-print print-order" data-id="" data-url="{{ getPath(route('admin.order')) }}" data-template="c80">Khổ 80mm</a></li>
+                                                        <li><a class="dropdown-item cursor-pointer btn-print print-order" data-id="" data-url="{{ getPath(route('admin.order')) }}" data-template="a5">A5 size</a></li>
+                                                        <li><a class="dropdown-item cursor-pointer btn-print print-order" data-id="" data-url="{{ getPath(route('admin.order')) }}" data-template="c80">80mm size</a></li>
                                                     </ul>
-                                                    <button class="btn btn-lg btn-info w-75 btn-submit" type="submit">Lưu</button>
+                                                    <button class="btn btn-lg btn-info w-75 btn-submit" type="submit">Save</button>
                                                 </div>
                                             </div>
                                         @endif

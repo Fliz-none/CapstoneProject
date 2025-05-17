@@ -13,7 +13,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class CategoryController extends Controller
 {
-    const NAME = 'chuyên mục',
+    const NAME = 'Category',
         RULES = [
             'name' => ['required', 'string', 'min:2', 'max:125'],
             'note' => ['nullable', 'string', 'min:2', 'max:320']
@@ -99,7 +99,7 @@ class CategoryController extends Controller
                     ->setTotalRecords($objs->count())
                     ->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = self::NAME . ' management';
                 return view('admin.categories', compact('pageName'));
             }
         }
@@ -118,7 +118,7 @@ class CategoryController extends Controller
                 Category::find($ids[$index])->update(['sort' => $index + 1]);
             }
         }
-        return response()->json(['msg' => 'Thứ tự đã được cập nhật thành công']);
+        return response()->json(['msg' => 'The sort order has been updated successfully!'], 200);
     }
 
     public function create(Request $request)
@@ -133,23 +133,18 @@ class CategoryController extends Controller
                     'status' => $request->has('status'),
                 ]);
 
-                LogController::create('tạo', self::NAME, $category->id);
+                LogController::create('create', self::NAME, $category->id);
                 cache()->forget('categories');
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Đã tạo ' . self::NAME . ' ' . $category->name
+                    'msg' => 'Created ' . self::NAME . ' ' . $category->name
                 );
             } catch (\Exception $e) {
-                Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                log_exception($e);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['branch_id' => ['Tài khoản chưa được thiết lập chi nhánh']]], 422);
+            return response()->json(['errors' => ['error' => ['You do not have permission!']]], 403);
         }
         return response()->json($response, 200);
     }
@@ -169,35 +164,30 @@ class CategoryController extends Controller
                             'status' => $request->has('status'),
                         ]);
 
-                        LogController::create('sửa', self::NAME, $category->id);
+                        LogController::create('update', self::NAME, $category->id);
                         cache()->forget('categories');
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Đã cập nhật ' . $category->name
+                            'msg' => 'Updated ' . self::NAME . ' ' . $category->name
                         );
                     } else {
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                            'msg' => 'An error occurred, please reload the page and try again!'
                         );
                     }
                 } catch (\Exception $e) {
-                    Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
-                    return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                    log_exception($e);
+                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                    'msg' => 'An error occurred, please reload the page and try again!'
                 );
             }
         } else {
-            return response()->json(['errors' => ['branch_id' => ['Tài khoản chưa được thiết lập chi nhánh']]], 422);
+            return response()->json(['errors' => ['error' => ['You do not have permission!']]], 403);
         }
         return response()->json($response, 200);
     }
@@ -214,24 +204,24 @@ class CategoryController extends Controller
                 if ($obj->canRemove()) {
                     $obj->delete();
                     cache()->forget('categories');
-                    LogController::create("xóa", self::NAME, $obj->id);
+                    LogController::create("delete", self::NAME, $obj->id);
                     array_push($success, $obj->name);
                 } else {
                     array_push($fail, $obj->name);
                 }
             }
             if (count($success)) {
-                $msg = 'Đã xóa ' . self::NAME . ' ' . implode(', ', $success) . '. ';
+                $msg = 'Deleted ' . self::NAME . ' ' . implode(', ', $success) . '. ';
             }
             if (count($fail)) {
-                $msg .= implode(', ', $fail) . ' đang sử dụng, không thể xóa!';
+                $msg .= implode(', ', $fail) . ' is being used, can not be deleted!';
             }
             $response = array(
                 'status' => 'success',
                 'msg' => $msg
             );
         } else {
-            return response()->json(['errors' => ['branch_id' => ['Tài khoản chưa được thiết lập chi nhánh']]], 422);
+            return response()->json(['errors' => ['error' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }

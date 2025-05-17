@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 class LocalController extends Controller
 {
-    const NAME = 'Địa phương',
+    const NAME = 'Local',
         RULES = [
             'city' => ['required', 'string', 'min:2', 'max:125'],
             'district' => ['required', 'string', 'min:2', 'max:125'],
@@ -114,7 +114,7 @@ class LocalController extends Controller
                     ->rawColumns(['checkboxes', 'city', 'district', 'action'])
                     ->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = self::NAME . ' management';
                 return view('admin.locals', compact('pageName'));
             }
         }
@@ -126,7 +126,7 @@ class LocalController extends Controller
         foreach ($sort as $index => $id) {
             Local::where('id', $id)->update(['sort' => $index + 1]);
         }
-        return response()->json(['msg' => 'Thứ tự đã được cập nhật thành công']);
+        return response()->json(['msg' => 'The sort order has been updated!'], 200);
     }
 
     public function create(Request $request)
@@ -139,22 +139,17 @@ class LocalController extends Controller
                     'district' => $request->district,
                 ]);
 
-                LogController::create('tạo', self::NAME, $local->id);
+                LogController::create('create', self::NAME, $local->id);
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Đã tạo ' . self::NAME . ': ' . $local->city . ' ' . $local->district
+                    'msg' => 'Created ' . self::NAME . ': ' . $local->city . ' ' . $local->district
                 );
             } catch (\Exception $e) {
-                Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                log_exception($e);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -172,34 +167,29 @@ class LocalController extends Controller
                             'district' => $request->district,
                         ]);
 
-                        LogController::create('sửa', self::NAME, $local->id);
+                        LogController::create('update', self::NAME, $local->id);
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Đã cập nhật ' . self::NAME . ': ' . $local->city . ' ' . $local->district
+                            'msg' => 'Updated ' . self::NAME . ': ' . $local->city . ' ' . $local->district
                         );
                     } else {
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                            'msg' => 'An error occurred, please reload the page and try again!'
                         );
                     }
                 } catch (\Exception $e) {
-                    Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
-                    return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                    log_exception($e);
+                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                    'msg' => 'An error occurred, please reload the page and try again!'
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -210,12 +200,12 @@ class LocalController extends Controller
         foreach ($request->choices as $key => $id) {
             $obj = Local::find($id);
             $obj->delete();
-            LogController::create("xóa", self::NAME, $obj->id);
+            LogController::create("delete", self::NAME, $obj->id);
             array_push($msg, $obj->city . ' ' . $obj->district);
         }
         $response = array(
             'status' => 'success',
-            'msg' => 'Đã xóa ' . self::NAME . ' ' . implode(', ', $msg)
+            'msg' => 'Deleted ' . self::NAME . ' ' . implode(', ', $msg)
         );
         return  response()->json($response, 200);
     }

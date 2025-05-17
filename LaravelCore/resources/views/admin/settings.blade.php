@@ -12,8 +12,6 @@
                 <div class="col-12 col-md-4 col-lg-6 order-md-2 order-first">
                     <nav class="breadcrumb-header float-start float-lg-end" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a>
-                            </li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
                         </ol>
                     </nav>
@@ -41,22 +39,22 @@
                     <ul class="nav nav-pills mb-3">
                         <li class="nav-item">
                             <a class="nav-link{!! Request::path() === 'quantri/setting/general' ? ' active" aria-current="page' : '' !!}" href="{{ route('admin.setting', ['key' => 'general']) }}">
-                                Cài đặt hệ thống
+                                General settings
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link{!! Request::path() === 'quantri/setting/shop' ? ' active" aria-current="page' : '' !!}" href="{{ route('admin.setting', ['key' => 'shop']) }}">
-                                Cài đặt bán hàng
+                                Shop settings
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link{!! Request::path() === 'quantri/setting/website' ? ' active" aria-current="page' : '' !!}" href="{{ route('admin.setting', ['key' => 'website']) }}">
-                                Cài đặt website
+                                Website settings
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link{!! Request::path() === 'quantri/setting/work' ? ' active" aria-current="page' : '' !!}" href="{{ route('admin.setting', ['key' => 'work']) }}">
-                                Cài đặt ca làm việc
+                                Work shift settings
                             </a>
                         </li>
                     </ul>
@@ -96,41 +94,41 @@
                 if ($('.bank-accounts').children().length > 1) {
                     $('.bank-accounts').children().last().remove();
                 } else {
-                    pushToastify('Phải có ít nhất một tài khoản', 'danger')
+                    pushToastify('Please add at least one bank account', 'danger')
                 }
             })
             $(document).on('click', '.btn-add-bank-account', function() {
                 let number_accounts = $('.bank-accounts').children().length;
                 let str = `<div class="bank-account"><hr>
                                 <div class="mb-3 row">
-                                    <label class="col-sm-4 col-form-label" for="bank_id-${number_accounts}">Ngân hàng<br />
-                                        <small class="form-text text-muted" id="bank_id-help-${number_accounts}"> Dùng xuất mã QR thanh toán theo đơn hàng</small>
+                                    <label class="col-sm-4 col-form-label" for="bank_id-${number_accounts}">Bank<br />
+                                        <small class="form-text text-muted" id="bank_id-help-${number_accounts}"> Used for generating QR codes for order payments.</small>
                                     </label>
                                     <div class="col-sm-8">
                                         <div class="d-none bank-names-hidden"></div>
-                                        <select name="bank_ids[${number_accounts}]" id="bank_id-${number_accounts}" class="bank-selected form-select @error('bank_ids.${number_accounts}') is-invalid @enderror"> <option selected disabled hidden>Vui lòng chọn một ngân hàng</option> @foreach ($banks['data'] as $bank)     @if ($bank['transferSupported'] == 1)         <option data-bank_name="{{ $bank['short_name'] }}" value="{{ $bank['bin'] }}">             {{ $bank['short_name'] }} - {{ $bank['name'] }}         </option>     @endif @endforeach
+                                        <select name="bank_ids[${number_accounts}]" id="bank_id-${number_accounts}" class="bank-selected form-select @error('bank_ids.${number_accounts}') is-invalid @enderror"> <option selected disabled hidden>Please select a bank</option> @foreach ($banks['data'] as $bank)     @if ($bank['transferSupported'] == 1)         <option data-bank_name="{{ $bank['short_name'] }}" value="{{ $bank['bin'] }}">             {{ $bank['short_name'] }} - {{ $bank['name'] }}         </option>     @endif @endforeach
                                         </select>
-                                        @error('bank_ids.${number_accounts}') <span class="invalid-feedback d-block" role="alert">     <strong>{{ $message }}</strong> </span>
+                                        @error('bank_ids.${number_accounts}') <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong> </span>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
-                                    <label class="col-sm-4 col-form-label" for="bank_account-${number_accounts}">Tên tài khoản<br />
-                                        <small class="form-text text-muted" id="bank_account-help-${number_accounts}">Dùng xuất mã QR thanh toán theo đơn hàng</small>
+                                    <label class="col-sm-4 col-form-label" for="bank_account-${number_accounts}">Account name<br />
+                                        <small class="form-text text-muted" id="bank_account-help-${number_accounts}">Used for generating QR codes for order payments.</small>
                                     </label>
                                     <div class="col-sm-8">
                                         <input class="form-control @error('bank_accounts.${number_accounts}') is-invalid @enderror" id="bank_account-${number_accounts}" name="bank_accounts[${number_accounts}]" type="text">
-                                        @error('bank_accounts.${number_accounts}') <span class="invalid-feedback d-block" role="alert">     <strong>{{ $message }}</strong> </span>
+                                        @error('bank_accounts.${number_accounts}') <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong> </span>
                                         @enderror
                                     </div>
                                 </div>
                                 <div class="mb-3 row">
-                                    <label class="col-sm-4 col-form-label" for="bank_number-${number_accounts}">Số tài khoản<br />
-                                        <small class="form-text text-muted" id="bank_number-help-${number_accounts}">Dùng xuất mã QR thanh toán theo đơn hàng</small>
+                                    <label class="col-sm-4 col-form-label" for="bank_number-${number_accounts}">Account number<br />
+                                        <small class="form-text text-muted" id="bank_number-help-${number_accounts}">Used for generating QR codes for order payments.</small>
                                     </label>
                                     <div class="col-sm-8">
                                         <input class="form-control @error('bank_numbers.${number_accounts}') is-invalid @enderror" id="bank_number-${number_accounts}" name="bank_numbers[${number_accounts}]" type="text">
-                                        @error('bank_numbers.${number_accounts}') <span class="invalid-feedback d-block" role="alert">     <strong>{{ $message }}</strong> </span>
+                                        @error('bank_numbers.${number_accounts}') <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong> </span>
                                         @enderror
                                     </div>
                                 </div>
@@ -150,7 +148,7 @@
                 $(this).val(value);
             }).on('blur', '#expired_notification_frequency-preview', function() {
                 let value = $(this).val().replace(/[^0-9]/g, '');
-                $(this).val(value ? `Mỗi ${value} ngày` : '');
+                $(this).val(value ? `Every ${value} days` : '');
                 $('input[name="expired_notification_frequency"]').val(value);
             });
 
@@ -174,24 +172,24 @@
                 const index = $('.work-shift').length;
                 var newRow = `
                     <tr class="work-shift">
-                        <td><input class="form-control form-control-plaintext w-auto" name="shift_name[${index}]" type="text" placeholder="Tên ca"></td>
+                        <td><input class="form-control form-control-plaintext w-auto" name="shift_name[${index}]" type="text" placeholder="Shift name"></td>
                         <td><input class="form-control-plaintext" name="sign_checkin[${index}]" type="time"></td>
                         <td><input class="form-control-plaintext" name="sign_checkout[${index}]" type="time"></td>
-                        <td><input class="form-control form-control-plaintext w-auto" name="staff_number[${index}]" type="text" placeholder="Số nhân viên trong 1 ca"></td>
+                        <td><input class="form-control form-control-plaintext w-auto" name="staff_number[${index}]" type="text" placeholder="Number of staff in shift"></td>
                         <td>
                             <button class="btn btn-link text-decoration-none btn-remove-shift cursor-pointer" type="button">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </td>
                     </tr>`;
-                alertWarning('Nhấn lưu để xác nhận thiết lập này.');
+                alertWarning('Please save to confirm this setting.');
                 !$('.work-shift').length ? $('.table-shift tbody').html(newRow) : $('.table-shift tbody').append(newRow);
             });
 
             $(document).on('click', '.btn-remove-shift', function() {
                 $(this).closest('tr').remove(); // Xóa dòng khi nhấn nút xóa
-                !$('.work-shift').length ? $('.table-shift tbody').html(`<tr class="text-center fst-italic text-primary"><th colspan="5"><h6 class="pt-2">Chưa có ca làm việc</h6></th></tr>`) : '';
-                alertWarning('Nhấn lưu để xác nhận thiết lập này.');
+                !$('.work-shift').length ? $('.table-shift tbody').html(`<tr class="text-center fst-italic text-primary"><th colspan="5"><h6 class="pt-2">There is no shift.</h6></th></tr>`) : '';
+                alertWarning('Please save to confirm this setting.');
                 resetShiftIndexes();
             });
 
@@ -208,7 +206,7 @@
             let index = $('.expense-group-item').length;
             let newExpenseField = `
                 <div class="mb-3 row expense-group-item">
-                        <input class="form-control" name="expense_group[]" type="text" placeholder="Nhập nội dung phiếu chi">
+                        <input class="form-control" name="expense_group[]" type="text" placeholder="Enter expense item">
                 </div>
             `;
             $('.expense-group-container').append(newExpenseField);
@@ -218,10 +216,9 @@
             if ($('.expense-group-item').length > 1) {
                 $('.expense-group-item').last().remove();
             } else {
-                pushToastify('Phải có ít nhất một phiếu chi.', 'danger');
+                pushToastify('Please add at least one expense item.', 'danger');
             }
         });
-
 
     </script>
 @endpush

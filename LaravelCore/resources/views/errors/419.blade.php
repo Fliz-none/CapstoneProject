@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="refresh" content="2;url={{ route('admin.dashboard') }}">
-    <title>419 | Truy vấn hết hạn</title>
+    <title>419 - Page Expired</title>
     <style>
         html,
         body {
@@ -218,9 +218,9 @@
         <div class="dimples"></div>
         <div class="mouth"></div>
     </div>
-    <h1>419 | Truy vấn hết hạn</h1>
-    <p>Bạn đã rất nhanh tay, nhưng hệ thống này không thiết kế để cho những thao tác quá nhanh như vậy.</p>
-    <div class="btn">Về trang chủ</div>
+    <h1>419 - Page Expired</h1>
+    <p>You were very quick, but this system is not designed for such rapid actions.</p>
+    <div class="btn">Back to home</div>
 </body>
 
 </html>

@@ -61,7 +61,7 @@ class CatalogueController extends Controller
                                 'id' => $obj->id,
                                 'text' => $obj->name
                             ];
-                        })->push(['id' => 0, 'text' => 'Không có danh mục cha']);
+                        })->push(['id' => 0, 'text' => 'Do not choose']);
                     break;
                 case 'tree':
                     $catalogues = $objs->whereNull('parent_id')->with('children')->get();
@@ -124,7 +124,7 @@ class CatalogueController extends Controller
                         $query->orderBy('status', $order);
                     })
                     ->addColumn('parent', function ($obj) {
-                        return $obj->_parent ? $obj->_parent->name : 'Không có';
+                        return $obj->_parent ? $obj->_parent->name : 'N/A';
                     })
                     ->filterColumn('parent', function ($query, $keyword) {
                         $query->whereHas('parent', function ($parentQuery) use ($keyword) {
@@ -147,7 +147,7 @@ class CatalogueController extends Controller
                     ->setTotalRecords($objs->count())
                     ->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = self::NAME . ' management';
                 return view('admin.catalogues', compact('pageName'));
             }
         }
@@ -166,7 +166,7 @@ class CatalogueController extends Controller
                 Catalogue::find($ids[$index])->update(['sort' => $index + 1]);
             }
         }
-        return response()->json(['msg' => 'Thứ tự đã được cập nhật thành công']);
+        return response()->json(['msg' => 'The sort order has been updated successfully!'], 200);
     }
 
     public function create(Request $request)
@@ -189,23 +189,18 @@ class CatalogueController extends Controller
                     'avatar' => $request->avatar,
                 ]);
 
-                LogController::create('tạo', self::NAME, $catalogue->id);
+                LogController::create('create', self::NAME, $catalogue->id);
                 cache()->forget('catalogues');
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Đã tạo ' . self::NAME . ' ' . $catalogue->name
+                    'msg' => 'Created ' . self::NAME . ' ' . $catalogue->name
                 );
             } catch (\Exception $e) {
-                Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                );
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                log_exception($e);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 403);
         }
         return response()->json($response, 200);
     }
@@ -217,7 +212,7 @@ class CatalogueController extends Controller
             'note' => ['nullable', 'string', 'min:2', 'max:320'],
             'parent_id' => ['nullable', 'numeric', function ($attribute, $value, $fail) use ($request) {
                 if ($request->has('id') && $value > $request->id) {
-                    $fail('Danh mục cha phải được tạo trước danh mục con');
+                    $fail('The parent category must be created before the child category');
                 }
             }],
             'avatar' => ['nullable', 'string'],
@@ -239,29 +234,24 @@ class CatalogueController extends Controller
                     } else {
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                            'msg' => 'An error occurred, please reload the page and try again!'
                         );
                     }
 
-                    LogController::create('sửa', self::NAME, $catalogue->id);
+                    LogController::create('update', self::NAME, $catalogue->id);
                     cache()->forget('catalogues');
                     $response = array(
                         'status' => 'success',
-                        'msg' => 'Đã cập nhật ' . $catalogue->name
+                        'msg' => 'Updated ' . self::NAME . ' ' . $catalogue->name
                     );
                 } catch (\Exception $e) {
-                    Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                            'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                            'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                            'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                            'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
-                    return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                    log_exception($e);
+                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
                 }
             } else {
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 403);
         }
         return response()->json($response, 200);
     }
@@ -274,11 +264,11 @@ class CatalogueController extends Controller
             $obj->delete();
             cache()->forget('catalogues');
             array_push($msg, $obj->name);
-            LogController::create("xóa", self::NAME, $obj->id);
+            LogController::create("delete", self::NAME, $obj->id);
         }
         $response = array(
             'status' => 'success',
-            'msg' => 'Đã xóa ' . self::NAME . ' ' . implode(', ', $msg)
+            'msg' => 'Deleted ' . self::NAME . ' ' . implode(', ', $msg)
         );
         return  response()->json($response, 200);
     }

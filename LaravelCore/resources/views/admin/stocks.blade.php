@@ -10,7 +10,6 @@
                     <h5 class="text-uppercase">{{ $pageName }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Bảng tin</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
                         </ol>
                     </nav>
@@ -24,17 +23,17 @@
                 <div class="col-12 col-lg-10">
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_IMPORT)))
                         <a class="btn btn-info mb-3 block btn-create-import" type="button">
-                            <i class="bi bi-box-arrow-in-right"></i> Nhập hàng
+                            <i class="bi bi-box-arrow-in-right"></i> Import
                         </a>
                     @endif
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_EXPORT)))
                         <a class="btn btn-info mb-3 block btn-create-export">
-                            <i class="bi bi-box-arrow-left"></i> Xuất hàng
+                            <i class="bi bi-box-arrow-left"></i> Export
                         </a>
                     @endif
                     @if (!empty(Auth::user()->can(App\Models\User::PRINT_STOCK)))
                         <a class="btn btn-info mb-3 block btn-render-stock">
-                            <i class="bi bi-card-checklist"></i> Kết xuất kho
+                            <i class="bi bi-card-checklist"></i> Inventory export
                         </a>
                     @endif
                 </div>
@@ -42,7 +41,7 @@
                     @if (Auth::user()->warehouses->count())
                         <select
                             class="form-control form-control-lg form-control-plaintext bg-transparent text-end list-warehouses" required autocomplete="off">
-                            <option selected hidden disabled>Kho hàng của bạn</option>
+                            <option selected hidden disabled>Your warehouses</option>
                             @foreach (Auth::user()->warehouses as $warehouse)
                                 <option value="{{ $warehouse->id }}" {{ isset($_GET['warehouse_id']) && $_GET['warehouse_id'] == $warehouse->id ? 'selected' : '' }}>
                                     {{ $warehouse->name }}</option>
@@ -59,14 +58,14 @@
                                 <table class="table table-striped table-bordered key-table" id="stock-table">
                                     <thead>
                                         <tr>
-                                            <th>Mã</th>
-                                            <th>Ảnh</th>
-                                            <th>Tên hàng</th>
-                                            <th>Số lượng</th>
-                                            <th>Giá nhập</th>
-                                            <th>Phiếu nhập</th>
-                                            <th>Lô hàng</th>
-                                            <th>Hạn sử dụng</th>
+                                            <th>Code</th>
+                                            <th>Image</th>
+                                            <th>Product Name</th>
+                                            <th>Quantity</th>
+                                            <th>Import Price</th>
+                                            <th>Import Receipt</th>
+                                            <th>Lot</th>
+                                            <th>Expiration Date</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -164,7 +163,7 @@
                 });
                 form.attr('action', `{{ route('admin.stock.sync') }}`)
                 form.find('.btn-sync-stock').attr('disabled', false)
-                form.find('.table-render-stock tbody').html('<tr><td class="text-center" colspan="88">Chọn danh mục và kho hàng cần liệt kê</td></tr>')
+                form.find('.table-render-stock tbody').html('<tr><td class="text-center" colspan="88">Select the category and warehouse to list stock</td></tr>')
                 form.find('.modal').modal('show')
             })
 
@@ -211,7 +210,7 @@
                 ],
                 language: config.datatable.lang,
             });
-            $('#detail-form').find('.modal').modal('show').find('#detail-modal-label').text('Lịch sử xuất hàng')
+            $('#detail-form').find('.modal').modal('show').find('#detail-modal-label').text('Export history')
         })
 
         $(document).on('click', '.btn-print-stock', function(e) {

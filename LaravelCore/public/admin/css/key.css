@@ -110,7 +110,7 @@ input.money {
 /* END AJAX SEARCH */
 
 .tab-pane .order-details::before {
-    content: "Hãy tìm kiếm hàng hóa thêm vào đơn hàng";
+    content: "Please search for products to add to the order";
     width: 90%;
     position: absolute;
     top: 30px;
@@ -219,7 +219,7 @@ input.money {
 }
 
 .avt::after {
-    content: "Đổi avatar";
+    content: "Change avatar";
     position: absolute;
     width: 100%;
     height: 100%;
@@ -750,7 +750,7 @@ label.select-avatar.dragging {
 }
 
 label.select-image::before {
-    content: "Chọn ảnh chính";
+    content: "Choose image";
     position: absolute;
     width: 90%;
     height: 90%;

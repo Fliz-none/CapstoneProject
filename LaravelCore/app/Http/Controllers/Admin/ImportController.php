@@ -16,51 +16,51 @@ use Yajra\DataTables\DataTables;
 
 class ImportController extends Controller
 {
-    const MESSAGES = [
-        'note.required' => 'Nội dung nhập hàng: ' . Controller::NOT_EMPTY,
-        'note.min' => 'Nội dung nhập hàng: ' . Controller::MIN,
-        'note.max' => 'Nội dung nhập hàng: ' . Controller::MAX,
-        'warehouse_id.required' => 'Kho nhập: ' . Controller::NOT_EMPTY,
-        'warehouse_id.numeric' => 'Kho nhập: ' . Controller::DATA_INVALID,
-        'supplier_id.required' => 'Nhà cung cấp: ' . Controller::NOT_EMPTY,
-        'supplier_id.numeric' => 'Nhà cung cấp: ' . Controller::DATA_INVALID,
-        'status.required' => 'Nội dung nhập hàng: ' . Controller::NOT_EMPTY,
-        'status.string' => 'Nội dung nhập hàng: ' . Controller::DATA_INVALID,
-        'status.max' => 'Nội dung nhập hàng: ' . Controller::MAX,
+    const NAME = 'Import', MESSAGES = [
+        'note.required' => 'Content: ' . Controller::NOT_EMPTY,
+        'note.min' => 'Content: ' . Controller::MIN,
+        'note.max' => 'Content: ' . Controller::MAX,
+        'warehouse_id.required' => 'Warehouse: ' . Controller::NOT_EMPTY,
+        'warehouse_id.numeric' => 'Warehouse: ' . Controller::DATA_INVALID,
+        'supplier_id.required' => 'Supplier: ' . Controller::NOT_EMPTY,
+        'supplier_id.numeric' => 'Supplier: ' . Controller::DATA_INVALID,
+        'status.required' => 'Content: ' . Controller::NOT_EMPTY,
+        'status.string' => 'Content: ' . Controller::DATA_INVALID,
+        'status.max' => 'Content: ' . Controller::MAX,
 
-        'variable_ids.required' => 'Sản phẩm: ' . Controller::NOT_EMPTY,
-        'variable_ids.array' => 'Sản phẩm: ' . Controller::DATA_INVALID,
-        'variable_ids.*.required' => 'Sản phẩm: ' . Controller::NOT_EMPTY,
-        'variable_ids.*.numeric' => 'Sản phẩm: ' . Controller::DATA_INVALID,
+        'variable_ids.required' => 'Product: ' . Controller::NOT_EMPTY,
+        'variable_ids.array' => 'Product: ' . Controller::DATA_INVALID,
+        'variable_ids.*.required' => 'Product: ' . Controller::NOT_EMPTY,
+        'variable_ids.*.numeric' => 'Product: ' . Controller::DATA_INVALID,
         'unit_ids.required' => '' . Controller::NOT_EMPTY,
         'unit_ids.array' => '' . Controller::DATA_INVALID,
         'unit_ids.*.required' => '' . Controller::NOT_EMPTY,
         'unit_ids.*.numeric' => '' . Controller::DATA_INVALID,
-        'current_unit_ids.required' => 'Đơn vị tính: ' . Controller::NOT_EMPTY,
-        'current_unit_ids.array' => 'Đơn vị tính: ' . Controller::DATA_INVALID,
-        'current_unit_ids.*.required' => 'Đơn vị tính: ' . Controller::NOT_EMPTY,
-        'current_unit_ids.*.numeric' => 'Đơn vị tính: ' . Controller::DATA_INVALID,
-        'quantities.required' => 'Số lượng nhập: ' . Controller::NOT_EMPTY,
-        'quantities.array' => 'Số lượng nhập: ' . Controller::DATA_INVALID,
-        'quantities.*.required' => 'Số lượng nhập: ' . Controller::NOT_EMPTY,
-        'quantities.*.numeric' => 'Số lượng nhập: ' . Controller::DATA_INVALID,
-        'prices.required' => 'Giá nhập: ' . Controller::NOT_EMPTY,
-        'prices.array' => 'Giá nhập: ' . Controller::DATA_INVALID,
-        'prices.*.required' => 'Giá nhập: ' . Controller::NOT_EMPTY,
-        'prices.*.numeric' => 'Giá nhập: ' . Controller::DATA_INVALID,
-        'lots.required' => 'Lô hàng: ' . Controller::NOT_EMPTY,
-        'lots.array' => 'Lô hàng: ' . Controller::DATA_INVALID,
-        'lots.*.string' => 'Lô hàng: ' . Controller::DATA_INVALID,
-        'lots.*.max' => 'Lô hàng: ' . Controller::MAX,
-        'expireds.required' => 'Hạn sử dụng: ' . Controller::NOT_EMPTY,
-        'expireds.array' => 'Hạn sử dụng: ' . Controller::DATA_INVALID,
-        'expireds.*.date_format' => 'Hạn sử dụng: ',
-        'import_detail_ids.required' => Controller::DATA_INVALID,
-        'import_detail_ids.array' => Controller::DATA_INVALID,
-        'import_detail_ids.*.numeric' => Controller::DATA_INVALID,
-        'stock_ids.required' => Controller::DATA_INVALID,
-        'stock_ids.array' => Controller::DATA_INVALID,
-        'stock_ids.*.numeric' => Controller::DATA_INVALID,
+        'current_unit_ids.required' => 'Unit: ' . Controller::NOT_EMPTY,
+        'current_unit_ids.array' => 'Unit: ' . Controller::DATA_INVALID,
+        'current_unit_ids.*.required' => 'Unit: ' . Controller::NOT_EMPTY,
+        'current_unit_ids.*.numeric' => 'Unit: ' . Controller::DATA_INVALID,
+        'quantities.required' => 'Quantity: ' . Controller::NOT_EMPTY,
+        'quantities.array' => 'Quantity: ' . Controller::DATA_INVALID,
+        'quantities.*.required' => 'Quantity: ' . Controller::NOT_EMPTY,
+        'quantities.*.numeric' => 'Quantity: ' . Controller::DATA_INVALID,
+        'prices.required' => 'Price: ' . Controller::NOT_EMPTY,
+        'prices.array' => 'Price: ' . Controller::DATA_INVALID,
+        'prices.*.required' => 'Price: ' . Controller::NOT_EMPTY,
+        'prices.*.numeric' => 'Price: ' . Controller::DATA_INVALID,
+        'lots.required' => 'Lot: ' . Controller::NOT_EMPTY,
+        'lots.array' => 'Lot: ' . Controller::DATA_INVALID,
+        'lots.*.string' => 'Lot: ' . Controller::DATA_INVALID,
+        'lots.*.max' => 'Lot: ' . Controller::MAX,
+        'expireds.required' => 'Expired: ' . Controller::NOT_EMPTY,
+        'expireds.array' => 'Expired: ' . Controller::DATA_INVALID,
+        'expireds.*.date_format' => 'Expired: ',
+        'import_detail_ids.required' => 'Import Detail: ' . Controller::DATA_INVALID,
+        'import_detail_ids.array' => 'Import Detail: ' . Controller::DATA_INVALID,
+        'import_detail_ids.*.numeric' => 'Import Detail: ' . Controller::DATA_INVALID,
+        'stock_ids.required' => 'Stock: ' . Controller::DATA_INVALID,
+        'stock_ids.array' => 'Stock: ' . Controller::DATA_INVALID,
+        'stock_ids.*.numeric' => 'Stock: ' . Controller::DATA_INVALID,
     ];
 
     /**
@@ -170,7 +170,7 @@ class ImportController extends Controller
                                 return $obj->_user->fullName;
                             }
                         } else {
-                            return 'Không có';
+                            return 'N/A';
                         }
                     })
                     ->filterColumn('user', function ($query, $keyword) {
@@ -212,7 +212,7 @@ class ImportController extends Controller
                                 return $obj->_export->code;
                             }
                         } else {
-                            return 'Không có';
+                            return 'N/A';
                         }
                     })
                     ->filterColumn('supplier', function ($query, $keyword) {
@@ -228,13 +228,13 @@ class ImportController extends Controller
                         }
                     })
                     ->filterColumn('status', function ($query, $keyword) {
-                        $query->when(str_contains('dangban', $keyword), function ($query) {
+                        $query->when(str_contains('sale', $keyword), function ($query) {
                             $query->whereStatus(1)->whereHas('import_details.stock.export_details');
                         });
-                        $query->when(str_contains('danhap', $keyword), function ($query) {
+                        $query->when(str_contains('imported', $keyword), function ($query) {
                             $query->whereStatus(1)->whereDoesntHave('import_details.stock.export_details');
                         });
-                        $query->when(str_contains('chohang', $keyword), function ($query) {
+                        $query->when(str_contains('waiting', $keyword), function ($query) {
                             $query->whereStatus(0);
                         });
                     })
@@ -263,7 +263,7 @@ class ImportController extends Controller
                     })->where('variable_id', $request->variable_id)->get();
                     return view('admin.templates.previews.import_detail', compact('import_details'));
                 }
-                $pageName = 'Quản lý nhập hàng';
+                $pageName = self::NAME . ' management';
                 return view('admin.imports', compact('pageName'));
             }
         }
@@ -288,7 +288,7 @@ class ImportController extends Controller
                 'array',
                 function ($attribute, $value, $fail) {
                     if (in_array("0", $value, true)) {
-                        $fail('Số lượng nhập kho phải lớn hơn 0');
+                        $fail('Quantity must be greater than 0');
                     }
                 }
             ],
@@ -338,27 +338,21 @@ class ImportController extends Controller
                     }
 
                     DB::commit();
-                    LogController::create('tạo', 'nhập hàng', $import->id);
+                    LogController::create('create', self::NAME, $import->id);
                     $response = [
                         'status' => 'success',
-                        'msg' => 'Đã tạo nhập hàng ' . $import->note,
+                        'msg' => 'Created ' . $import->note,
                     ];
                     return response()->json($response, 200);
                 }
             } catch (\Exception $e) {
                 DB::rollBack();
-                Log::error(
-                    'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                    'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                    'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                    'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                    'Chi tiết lỗi: ' . $e->getTraceAsString()
-                );
+                log_exception($e);
                 Controller::resetAutoIncrement(['imports', 'import_details', 'stocks']);
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
     }
 
@@ -381,7 +375,7 @@ class ImportController extends Controller
                 'array',
                 function ($attribute, $value, $fail) {
                     if (in_array("0", $value, true)) {
-                        $fail('Số lượng nhập kho phải lớn hơn 0');
+                        $fail('Quantity must be greater than 0');
                     }
                 }
             ],
@@ -427,7 +421,7 @@ class ImportController extends Controller
                             DB::commit();
                             $response = [
                                 'status' => 'success',
-                                'msg' => 'Đã điều chỉnh phiếu nhập hàng ' . $old->code . '. Chỉ điều chỉnh được người nhập và trạng thái',
+                                'msg' => 'Updated ' . $old->code . '. Just update the the updated user and status',
                             ];
                             return response()->json($response, 200);
                         }
@@ -468,15 +462,15 @@ class ImportController extends Controller
                                 Controller::resetAutoIncrement(['imports', 'import_details', 'stocks']);
                                 $response = array(
                                     'status' => 'error',
-                                    'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                                    'msg' => 'An error occurred, please reload the page and try again!'
                                 );
                             }
 
                             DB::commit();
-                            LogController::create('sửa', 'nhập hàng', $old->id);
+                            LogController::create('update', self::NAME, $old->id);
                             $response = [
                                 'status' => 'success',
-                                'msg' => 'Đã sửa nhập hàng ' . $old->code,
+                                'msg' => 'Updated ' . $old->code,
                             ];
                             return response()->json($response, 200);
                         } else {
@@ -484,33 +478,27 @@ class ImportController extends Controller
                             Controller::resetAutoIncrement(['imports', 'import_details', 'stocks']);
                             $response = array(
                                 'status' => 'error',
-                                'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                                'msg' => 'An error occurred, please reload the page and try again!'
                             );
                         }
                     } else {
                         DB::rollBack();
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                            'msg' => 'An error occurred, please reload the page and try again!'
                         );
                     }
                 } catch (\Exception $e) {
                     DB::rollBack();
-                    Log::error(
-                        'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
+                    log_exception($e);
                     Controller::resetAutoIncrement(['imports', 'import_details', 'stocks']);
-                    return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
                 }
             } else {
-                return response()->json(['errors' => ['mission_id' => ['Đã có lỗi xảy ra. Hãy kiểm tra và thử lại']]], 422);
+                return response()->json(['errors' => ['mission_id' => ['An error occurred']]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role_import' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role_import' => ['You do not have permission!']]], 422);
         }
     }
 
@@ -520,13 +508,13 @@ class ImportController extends Controller
         foreach ($request->choices as $key => $id) {
             $obj = Import::find($id);
             if (!$obj) {
-                return response()->json(['errors' => ['message' => ['Không thể xóa phiếu nhập hàng số ' . $id]]], 422);
+                return response()->json(['errors' => ['message' => ['Cannot find import with ID ' . $id]]], 422);
             }
             if ($obj->checkLoss()) {
-                return response()->json(['errors' => ['message' => ['Hàng trong phiếu đã xuất bán thì không thể xóa phiếu']]], 422);
+                return response()->json(['errors' => ['message' => ['Goods in the invoice have been sold, cannot delete invoice']]], 422);
             }
             if ($obj->export_id) {
-                return response()->json(['errors' => ['message' => ['Không thể xóa phiếu nhập kho nội bộ. Hãy thử xóa phiếu xuất kho']]], 422);
+                return response()->json(['errors' => ['message' => ['Cannot delete internal warehouse receipt. Please try deleting export receipt']]], 422);
             }
             DB::beginTransaction();
             try {
@@ -554,20 +542,14 @@ class ImportController extends Controller
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();
-                Log::error(
-                    'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                    'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                    'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                    'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                    'Chi tiết lỗi: ' . $e->getTraceAsString()
-                );
+                log_exception($e);
                 Controller::resetAutoIncrement(['imports', 'import_details', 'stocks']);
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         }
         $response = array(
             'status' => 'success',
-            'msg' => 'Đã xóa nhập hàng ' . implode(', ', $names)
+            'msg' => 'Deleted ' . implode(', ', $names)
         );
         return response()->json($response, 200);
     }

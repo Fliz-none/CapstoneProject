@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="export_detail-label">Chi tiết nhập kho</h5>
+                <h5 class="modal-title" id="export_detail-label">Warehouse Export Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -10,12 +10,12 @@
                     <table class="table table-striped table-bordered key-table" id="export_detail-table">
                         <thead>
                             <tr>
-                                <th>Mã</th>
-                                <th>Nội dung</th>
-                                <th>Người xuất</th>
-                                <th>Người nhận</th>
-                                <th>Biến thể</th>
-                                <th>Số lượng</th>
+                                <th>Code</th>
+                                <th>Description</th>
+                                <th>Exporter</th>
+                                <th>Receiver</th>
+                                <th>Variant</th>
+                                <th>Quantity</th>
                             </tr>
                         </thead>
                         <tbody></tbody>

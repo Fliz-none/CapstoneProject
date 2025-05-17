@@ -105,7 +105,6 @@ class ShopController extends Controller
                 break;
 
             case 'review':
-                return Review::with('children')->where('product_id', $request->key)->get();
                 break;
 
             default:

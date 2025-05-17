@@ -12,12 +12,10 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Services\Zalo;
-use Illuminate\Support\Facades\Cache;
 
 class TransactionController extends Controller
 {
-    const NAME = 'giao dịch';
+    const NAME = 'Transaction';
     const RULES = [
         'note' => ['required', 'string', 'min:2', 'max:125'],
         'customer_id' => ['required_without:order_id', 'numeric'],
@@ -32,7 +30,7 @@ class TransactionController extends Controller
         'note.string' => Controller::DATA_INVALID,
         'note.min' => Controller::MIN,
         'note.max' => Controller::MAX,
-        'customer_id.required_without' => 'Vui lòng chọn một khách hàng',
+        'customer_id.required_without' => 'Please select a customer',
         'cashier_id.required' => Controller::NOT_EMPTY,
         'payment.required' => Controller::NOT_EMPTY,
         'amount.required' => Controller::NOT_EMPTY,
@@ -152,7 +150,7 @@ class TransactionController extends Controller
                     })
                     ->addColumn('order', function ($obj) {
                         if (!empty($this->user->can(User::READ_ORDER))) {
-                            return '<a class="btn btn-link text-decoration-none text-start btn-preview preview-order" data-url="' . getPath(route('admin.order')) . '" data-id="' . $obj->order_id . '">Đơn hàng ' . $obj->order_id . '</a>';
+                            return '<a class="btn btn-link text-decoration-none text-start btn-preview preview-order" data-url="' . getPath(route('admin.order')) . '" data-id="' . $obj->order_id . '">Order ' . $obj->order_id . '</a>';
                         } else {
                             return $obj->order_id;
                         }
@@ -171,7 +169,7 @@ class TransactionController extends Controller
                                 return $obj->_customer->fullName;
                             }
                         } else {
-                            return 'Không có';
+                            return 'N/A';
                         }
                     })
                     ->filterColumn('customer', function ($query, $keyword) {
@@ -200,7 +198,7 @@ class TransactionController extends Controller
                             $order_day = Carbon::parse($obj->_order->created_at)->startOfDay();
                             $result = $obj->fullAmount . '<br>
                             <input type="hidden" data-date="' . $obj->created_at->format('d/m/Y') . '" data-payment="' . $obj->payment . '" value="' . $obj->amount . '">
-                            <small>' . ($transaction_day->eq($order_day) ? 'Mua hàng' : 'Trả nợ') . '</small>';
+                            <small>' . ($transaction_day->eq($order_day) ? 'Purchase' : 'Debt payment') . '</small>';
                         } else {
                             $result = '';
                         }
@@ -215,7 +213,7 @@ class TransactionController extends Controller
                             $order_day = Carbon::parse($obj->_order->created_at)->startOfDay();
                             $result = $obj->fullAmount . '<br>
                             <input type="hidden" data-date="' . $obj->created_at->format('d/m/Y') . '" data-payment="' . $obj->payment . '" value="' . $obj->amount . '">
-                            <small>' . ($transaction_day->eq($order_day) ? 'Mua hàng' : 'Trả nợ') . '</small>';
+                            <small>' . ($transaction_day->eq($order_day) ? 'Purchase' : 'Debt payment') . '</small>';
                         } else {
                             $result = '';
                         }
@@ -228,10 +226,10 @@ class TransactionController extends Controller
                         return $obj->statusStr;
                     })
                     ->filterColumn('status', function ($query, $keyword) {
-                        $query->when(str_contains('thanhtoan', $keyword), function ($query) {
+                        $query->when(str_contains('payment', $keyword), function ($query) {
                             $query->where('amount', '>=', 0);
                         });
-                        $query->when(str_contains('hoantien', $keyword), function ($query) {
+                        $query->when(str_contains('transfer', $keyword), function ($query) {
                             $query->where('amount', '<', 0);
                         });
                     })
@@ -254,7 +252,7 @@ class TransactionController extends Controller
                     ->setTotalRecords($objs->count())
                     ->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME . ' thanh toán';
+                $pageName = self::NAME . ' management';
                 return view('admin.transactions', compact('pageName'));
             }
         }
@@ -279,22 +277,16 @@ class TransactionController extends Controller
                     ]);
                     $transaction->order->sync_scores($transaction->amount);
 
-                    LogController::create('tạo', self::NAME, $transaction->id);
+                    LogController::create('create', self::NAME, $transaction->id);
                     $response = array(
                         'status' => 'success',
-                        'msg' => 'Đã thêm giao dịch ' . $transaction->id
+                        'msg' => 'Transaction added successfully: ' . $transaction->id
                     );
                     DB::commit();
                 } catch (\Exception $e) {
                     DB::rollBack();
-                    Log::error(
-                        'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                            'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                            'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                            'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                            'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
-                    return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                    log_exception($e);
+                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
                 }
             } else {
                 DB::beginTransaction();
@@ -326,28 +318,22 @@ class TransactionController extends Controller
 
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Đã thanh toán cho các đơn hàng ' . implode(', ', $ids)
+                            'msg' => 'Payment completed for orders ' . implode(', ', $ids)
                         );
                         DB::commit();
                     } else {
-                        return response()->json(['errors' => ['role' => ['Người dùng không tồn tại!']]], 422);
+                        return response()->json(['errors' => ['role' => ['User does not exist!']]], 422);
                     }
                 } catch (\Exception $e) {
                     DB::rollBack();
-                    Log::error(
-                        'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                            'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                            'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                            'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                            'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
+                    log_exception($e);
                     Controller::resetAutoIncrement(['transactions']);
-                    return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
                 }
             }
             return response()->json($response, 200);
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
     }
 
@@ -357,6 +343,7 @@ class TransactionController extends Controller
         if (!empty($this->user->can(User::UPDATE_TRANSACTION))) {
             if ($request->has('id')) {
                 try {
+                    DB::beginTransaction();
                     $status = $request->status == 'pay' ? 1 : -1;
                     $transaction = Transaction::find($request->id);
                     $transaction->order->sync_scores($request->amount * $status - $transaction->amount);
@@ -370,33 +357,31 @@ class TransactionController extends Controller
                             'note' => $request->note,
                         ]);
 
-                        LogController::create('sửa', self::NAME, $transaction->id);
+                        LogController::create('update', self::NAME, $transaction->id);
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Đã cập nhật giao dịch ' . $transaction->id
+                            'msg' => 'Transaction updated successfully: ' . $transaction->id
                         );
+                        DB::commit();
                     } else {
+                        DB::rollBack();
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                            'msg' => 'An error occurred, please reload the page and try again!'
                         );
                     }
                 } catch (\Exception $e) {
-                    Log::error(
-                        'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                            'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                            'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                            'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                            'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
-                    return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                    DB::rollBack();
+                    log_exception($e);
+                    Controller::resetAutoIncrement(['transactions']);
+                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
                 }
                 return response()->json($response, 200);
             } else {
-                return response()->json(['errors' => ['role' => ['Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!']]], 422);
+                return response()->json(['errors' => ['role' => ['An error occurred, please reload the page and try again!']]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
     }
 
@@ -408,19 +393,19 @@ class TransactionController extends Controller
                 $obj = Transaction::with('order')->find($id);
                 $obj->order->sync_scores($obj->amount * -1);
                 $obj->delete();
-                LogController::create("xóa", self::NAME, $obj->id);
+                LogController::create("delete", self::NAME, $obj->id);
                 array_push($success, $obj->name);
             }
             $msg = '';
             if (count($success)) {
-                $msg .= 'Đã xóa ' . self::NAME . ' ' . implode(', ', $success) . '. ';
+                $msg .= 'Deleted ' . self::NAME . ' ' . implode(', ', $success) . '. ';
             }
             $response = array(
                 'status' => 'success',
                 'msg' => $msg
             );
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }

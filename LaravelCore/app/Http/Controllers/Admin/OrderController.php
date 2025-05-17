@@ -20,7 +20,7 @@ use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
-    const NAME = 'đơn hàng';
+    const NAME = 'Order';
 
     public function __construct()
     {
@@ -105,7 +105,7 @@ class OrderController extends Controller
                         $color = $obj->total > $obj->paid ? 'danger' : ($obj->total < $obj->paid ? 'success' : 'primary');
                         if ($can_update_order) {
                             $code = '<a class="btn btn-link text-decoration-none text-' . $color . ' fw-bold p-0 btn-update-order" data-id="' . $obj->id . '">' . $obj->code . '</a> ';
-                            $code .= $obj->discount || $obj->details->where('discount', '!=', 0)->count() ? '<small><i class="bi bi-info-circle text-danger" data-bs-toggle="tooltip" data-bs-title="Đơn hàng có điều chỉnh giá"></i></small>' : '';
+                            $code .= $obj->discount || $obj->details->where('discount', '!=', 0)->count() ? '<small><i class="bi bi-info-circle text-danger" data-bs-toggle="tooltip" data-bs-title="Order with price adjustment"></i></small>' : '';
                         } else {
                             if ($can_read_order) {
                                 $code =  '<a class="btn btn-link text-decoration-none text-' . $color . ' btn-preview preview-order fw-bold p-0" data-id="' . $obj->id . '" data-url="' . getPath(route('admin.order')) . '">' . $obj->code . '</a>';
@@ -122,12 +122,12 @@ class OrderController extends Controller
                             $query->when($date['year'], function ($query) use ($date) {
                                 $query->whereYear('orders.created_at', $date['year']);
                             })
-                            ->when($date['month'], function ($query) use ($date) {
-                                $query->whereMonth('orders.created_at', $date['month']);
-                            })
-                            ->when($date['day'], function ($query) use ($date) {
-                                $query->whereDay('orders.created_at', $date['day']);
-                            });
+                                ->when($date['month'], function ($query) use ($date) {
+                                    $query->whereMonth('orders.created_at', $date['month']);
+                                })
+                                ->when($date['day'], function ($query) use ($date) {
+                                    $query->whereDay('orders.created_at', $date['day']);
+                                });
                         }, function ($query) use ($keyword) {
                             $numericKeyword = ltrim(preg_replace('/[^0-9]/', '', $keyword), '0');
                             if (!empty($numericKeyword)) {
@@ -145,7 +145,7 @@ class OrderController extends Controller
                             }
                             return '<span class="fw-bold">' . $obj->_customer->name . '</span>';
                         } else {
-                            return '<span class="px-3">Vô danh</span>';
+                            return '<span class="px-3">Unknown</span>';
                         }
                     })
                     ->filterColumn('customer', function ($query, $keyword) {
@@ -190,13 +190,13 @@ class OrderController extends Controller
                     ->addColumn('paid', function ($obj) {
                         if ($obj->total > $obj->paid) {
                             $color = 'error';
-                            $minus = 'Thiếu ' . number_format($obj->total - $obj->paid);
+                            $minus = 'Short ' . number_format($obj->total - $obj->paid);
                         } elseif ($obj->total < $obj->paid) {
                             $color = 'success';
-                            $minus = 'Thừa ' . number_format($obj->paid - $obj->total);
+                            $minus = 'Excess ' . number_format($obj->paid - $obj->total);
                         } else {
                             $color = 'primary';
-                            $minus = 'Thu đủ';
+                            $minus = 'Paid in full';
                         }
                         return '<div class="row justify-content-end">
                             <div class="col-6 border-end text-' . $color . '"><a data-bs-toggle="tooltip" data-bs-title="' . $minus . '">' . number_format($obj->paid) . '</a></div>
@@ -214,10 +214,10 @@ class OrderController extends Controller
                     })
                     ->filterColumn('status', function ($query, $keyword) {
                         $statusMap = [
-                            'hoàn thành' => 3,
-                            'đang xử lý' => 2,
-                            'hàng đợi' => 1,
-                            'bị hủy' => 0,
+                            'completed' => 3,
+                            'processing' => 2,
+                            'queued' => 1,
+                            'cancelled' => 0,
                         ];
                         if (isset($statusMap[Str::lower($keyword)])) {
                             $query->where('status', $statusMap[Str::lower($keyword)]);
@@ -264,7 +264,7 @@ class OrderController extends Controller
                     ->setTotalRecords($objs->count())
                     ->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = self::NAME . ' management';
                 return view('admin.orders', compact('pageName'));
             }
         }
@@ -301,52 +301,53 @@ class OrderController extends Controller
             'transaction_amounts.*' => ['required', 'numeric'],
         ];
         $messages = [
-            //Đơn hàng
-            'customer_id.numeric' => 'Khách hàng: ' . Controller::DATA_INVALID,
-            'discount.numeric' => 'Giảm giá đơn hàng: ' . Controller::DATA_INVALID,
-            'note.string' => 'Ghi chú đơn hàng: ' . Controller::DATA_INVALID,
-            'note.max' => 'Ghi chú đơn hàng: ' . Controller::MAX,
-            'id.numeric' => 'Mã đơn hàng: ' . Controller::DATA_INVALID,
+            // Order
+            'customer_id.numeric' => 'Customer: ' . Controller::DATA_INVALID,
+            'discount.numeric' => 'Order discount: ' . Controller::DATA_INVALID,
+            'note.string' => 'Order note: ' . Controller::DATA_INVALID,
+            'note.max' => 'Order note: ' . Controller::MAX,
+            'id.numeric' => 'Order: ' . Controller::DATA_INVALID,
 
-            //Chi tiết đơn hàng
-            'unit_ids.required' => 'Mã đơn vị tính: ' . Controller::ONE_LEAST,
-            'unit_ids.array' => 'Mã đơn vị tính: ' . Controller::DATA_INVALID,
-            'prices.required' => 'Đơn giá hàng hóa: ' . Controller::ONE_LEAST,
-            'prices.array' => 'Đơn giá hàng hóa: ' . Controller::DATA_INVALID,
-            'discounts.required' => 'Giảm giá hàng hóa: ' . Controller::ONE_LEAST,
-            'discounts.array' => 'Giảm giá hàng hóa: ' . Controller::DATA_INVALID,
-            'quantities.required' => 'Số lượng hàng hóa: ' . Controller::ONE_LEAST,
-            'quantities.array' => 'Số lượng hàng hóa: ' . Controller::DATA_INVALID,
-            'rates.required' => 'Đơn vị tính hàng hóa: ' . Controller::ONE_LEAST,
-            'rates.array' => 'Đơn vị tính hàng hóa: ' . Controller::DATA_INVALID,
-            'notes.array' => 'Ghi chú hàng hóa: ' . Controller::DATA_INVALID,
-            'ids.required' => 'Mã chi tiết đơn hàng: ' . Controller::ONE_LEAST,
-            'ids.array' => 'Mã chi tiết đơn hàng: ' . Controller::DATA_INVALID,
+            // Order Details
+            'unit_ids.required' => 'Unit: ' . Controller::ONE_LEAST,
+            'unit_ids.array' => 'Unit: ' . Controller::DATA_INVALID,
+            'prices.required' => 'Product price: ' . Controller::ONE_LEAST,
+            'prices.array' => 'Product price: ' . Controller::DATA_INVALID,
+            'discounts.required' => 'Product discount: ' . Controller::ONE_LEAST,
+            'discounts.array' => 'Product discount: ' . Controller::DATA_INVALID,
+            'quantities.required' => 'Product quantity: ' . Controller::ONE_LEAST,
+            'quantities.array' => 'Product quantity: ' . Controller::DATA_INVALID,
+            'rates.required' => 'Unit rate: ' . Controller::ONE_LEAST,
+            'rates.array' => 'Unit rate: ' . Controller::DATA_INVALID,
+            'notes.array' => 'Product note: ' . Controller::DATA_INVALID,
+            'ids.required' => 'Order detail: ' . Controller::ONE_LEAST,
+            'ids.array' => 'Order detail: ' . Controller::DATA_INVALID,
 
-            'unit_ids.*.required' => 'Mã đơn vị tính: ' . Controller::DATA_INVALID,
-            'unit_ids.*.numeric' => 'Mã đơn vị tính: ' . Controller::DATA_INVALID,
-            'prices.*.required' => 'Đơn giá hàng hóa: ' . Controller::DATA_INVALID,
-            'prices.*.numeric' => 'Đơn giá hàng hóa: ' . Controller::DATA_INVALID,
-            'discounts.*.numeric' => 'Giảm giá hàng hóa: ' . Controller::DATA_INVALID,
-            'quantities.*.required' => 'Số lượng hàng hóa: ' . Controller::DATA_INVALID,
-            'quantities.*.numeric' => 'Số lượng hàng hóa: ' . Controller::DATA_INVALID,
-            'quantities.*.min' => 'Số lượng hàng hóa: Không thể âm!',
-            'rates.*.required' => 'Đơn vị tính hàng hóa: ' . Controller::DATA_INVALID,
-            'rates.*.numeric' => 'Đơn vị tính hàng hóa: ' . Controller::DATA_INVALID,
-            'notes.*.string' => 'Ghi chú hàng hóa: ' . Controller::DATA_INVALID,
-            'ids.*.numeric' => 'Mã chi tiết đơn hàng: ' . Controller::DATA_INVALID,
+            'unit_ids.*.required' => 'Unit: ' . Controller::DATA_INVALID,
+            'unit_ids.*.numeric' => 'Unit: ' . Controller::DATA_INVALID,
+            'prices.*.required' => 'Product price: ' . Controller::DATA_INVALID,
+            'prices.*.numeric' => 'Product price: ' . Controller::DATA_INVALID,
+            'discounts.*.numeric' => 'Product discount: ' . Controller::DATA_INVALID,
+            'quantities.*.required' => 'Product quantity: ' . Controller::DATA_INVALID,
+            'quantities.*.numeric' => 'Product quantity: ' . Controller::DATA_INVALID,
+            'quantities.*.min' => 'Product quantity: Cannot be negative!',
+            'rates.*.required' => 'Unit rate: ' . Controller::DATA_INVALID,
+            'rates.*.numeric' => 'Unit rate: ' . Controller::DATA_INVALID,
+            'notes.*.string' => 'Product note: ' . Controller::DATA_INVALID,
+            'ids.*.numeric' => 'Order detail: ' . Controller::DATA_INVALID,
 
-            //Thanh toán
-            'transaction_payments.array' => 'Hình thức thanh toán: ' . Controller::DATA_INVALID,
-            'transaction_amounts.array' => 'Số tiền thanh toán: ' . Controller::DATA_INVALID,
-            'transaction_refund.array' => 'Trạng thái hoàn tiền: ' . Controller::DATA_INVALID,
+            // Payment
+            'transaction_payments.array' => 'Payment method: ' . Controller::DATA_INVALID,
+            'transaction_amounts.array' => 'Payment amount: ' . Controller::DATA_INVALID,
+            'transaction_refund.array' => 'Refund status: ' . Controller::DATA_INVALID,
 
-            'transaction_payments.*.required' => 'Hình thức thanh toán: ' . Controller::NOT_EMPTY,
-            'transaction_refund.*.required' => 'Trạng thái hoàn tiền: ' . Controller::NOT_EMPTY,
-            'transaction_refund.*.numeric' => 'Trạng thái hoàn tiền: ' . Controller::DATA_INVALID,
-            'transaction_amounts.*.required' => 'Số tiền thanh toán: ' . Controller::NOT_EMPTY,
-            'transaction_amounts.*.numeric' => 'Số tiền thanh toán: ' . Controller::DATA_INVALID,
+            'transaction_payments.*.required' => 'Payment method: ' . Controller::NOT_EMPTY,
+            'transaction_refund.*.required' => 'Refund status: ' . Controller::NOT_EMPTY,
+            'transaction_refund.*.numeric' => 'Refund status: ' . Controller::DATA_INVALID,
+            'transaction_amounts.*.required' => 'Payment amount: ' . Controller::NOT_EMPTY,
+            'transaction_amounts.*.numeric' => 'Payment amount: ' . Controller::DATA_INVALID,
         ];
+
         $request->validate($rules, $messages);
 
         // if (getPath(request()->headers->get('referer')) === '/quantri/order/new') {
@@ -365,12 +366,12 @@ class OrderController extends Controller
         // }
 
         if (!$request->filled('customer_id') && !$request->filled('id') && !$request->has('transaction_payments')) {
-            return response()->json(['errors' => ['role' => ['Hãy chọn một khách hàng để lưu công nợ!']]], 422);
+            return response()->json(['errors' => ['role' => ['Please select a customer to save the order!']]], 422);
         }
         if (!empty($this->user->can(User::CREATE_ORDER))) {
             if ($this->user->branch) {
                 if (!$request->has('id') && !$request->has('transaction_payments') && !$request->has('customer_id')) {
-                    return response()->json(['errors' => ['customer_required' => ['Khách hàng: Vui lòng chọn một khách hàng để lưu công nợ!']]], 422);
+                    return response()->json(['errors' => ['customer_required' => ['Customer: Please select a customer to save the order!']]], 422);
                 }
                 DB::beginTransaction();
                 try {
@@ -392,7 +393,7 @@ class OrderController extends Controller
                             'receiver_id' => Auth::id(),
                             'order_id' => $order->id,
                             'status' => 1,
-                            'note' => 'Xuất theo đơn ' . $order->code,
+                            'note' => 'Export for ' . $order->code,
                             'date' => date('Y-m-d'),
                         ]);
 
@@ -416,7 +417,7 @@ class OrderController extends Controller
                                         'detail_id' => $detail->id,
                                         'unit_id' => $unit->id,
                                         'quantity' => $request->quantities[$i],
-                                        'note' => 'Xuất theo đơn ' . $order->code
+                                        'note' => 'Export for ' . $order->code
                                     ]);
                                     if ($export_detail) {
                                         $stock = $export_detail->_stock;
@@ -452,38 +453,32 @@ class OrderController extends Controller
                                 'payment' => 1,
                                 'amount' => $request->change * -1,
                                 'date' => Carbon::now(),
-                                'note' => 'Tiền thừa đơn hàng ' . $order->code,
+                                'note' => 'Remaining money for order ' . $order->code,
                             ]);
                         }
                         $order->sync_scores($order->paid);
 
-                        LogController::create('tạo', self::NAME, $order->id);
+                        LogController::create('create', self::NAME, $order->id);
                         $response = array(
                             'id' => $order->id,
                             'status' => 'success',
-                            'msg' => 'Đã tạo ' . self::NAME . ' ' . $order->code
+                            'msg' => 'Created ' . self::NAME . ' ' . $order->code
                         );
                         DB::commit();
                     } else {
-                        return response()->json(['errors' => ['role' => ['Đã có lỗi xảy ra. Vui lòng thử lại sau!']]], 422);
+                        return response()->json(['errors' => ['role' => ['An error occurred! Please reload the page and try again!']]], 422);
                     }
                 } catch (\Exception $e) {
                     DB::rollBack();
-                    Log::error(
-                        'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                            'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                            'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                            'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                            'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
+                    log_exception($e);
                     Controller::resetAutoIncrement(['orders', 'details', 'imports', 'import_details', 'stocks', 'transactions']);
-                    return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
                 }
             } else {
-                return response()->json(['errors' => ['branch_id' => ['Tài khoản chưa được thiết lập chi nhánh']]], 422);
+                return response()->json(['errors' => ['branch_id' => ['Account has not been set up with a branch']]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -521,61 +516,62 @@ class OrderController extends Controller
             'transaction_amounts.*' => ['required', 'numeric'],
         ];
         $messages = [
-            //Đơn hàng
-            'customer_id.numeric' => 'Khách hàng: ' . Controller::DATA_INVALID,
-            'discount.numeric' => 'Giảm giá đơn hàng: ' . Controller::DATA_INVALID,
-            'note.string' => 'Ghi chú đơn hàng: ' . Controller::DATA_INVALID,
-            'note.max' => 'Ghi chú đơn hàng: ' . Controller::MAX,
-            'id.numeric' => 'Mã đơn hàng: ' . Controller::DATA_INVALID,
+            // Order
+            'customer_id.numeric' => 'Customer: ' . Controller::DATA_INVALID,
+            'discount.numeric' => 'Order discount: ' . Controller::DATA_INVALID,
+            'note.string' => 'Order note: ' . Controller::DATA_INVALID,
+            'note.max' => 'Order note: ' . Controller::MAX,
+            'id.numeric' => 'Order: ' . Controller::DATA_INVALID,
 
-            //Chi tiết đơn hàng
-            'stock_ids.required' => 'Hàng hóa: ' . Controller::ONE_LEAST,
-            'stock_ids.array' => 'Hàng hóa: ' . Controller::DATA_INVALID,
-            'unit_ids.required' => 'Mã đơn vị tính: ' . Controller::ONE_LEAST,
-            'unit_ids.array' => 'Mã đơn vị tính: ' . Controller::DATA_INVALID,
-            'prices.required' => 'Đơn giá hàng hóa: ' . Controller::ONE_LEAST,
-            'prices.array' => 'Đơn giá hàng hóa: ' . Controller::DATA_INVALID,
-            'discounts.required' => 'Giảm giá hàng hóa: ' . Controller::ONE_LEAST,
-            'discounts.array' => 'Giảm giá hàng hóa: ' . Controller::DATA_INVALID,
-            'quantities.required' => 'Số lượng hàng hóa: ' . Controller::ONE_LEAST,
-            'quantities.array' => 'Số lượng hàng hóa: ' . Controller::DATA_INVALID,
-            'rates.required' => 'Đơn vị tính hàng hóa: ' . Controller::ONE_LEAST,
-            'rates.array' => 'Đơn vị tính hàng hóa: ' . Controller::DATA_INVALID,
-            'notes.array' => 'Ghi chú hàng hóa: ' . Controller::DATA_INVALID,
-            'ids.required' => 'Mã chi tiết đơn hàng: ' . Controller::ONE_LEAST,
-            'ids.array' => 'Mã chi tiết đơn hàng: ' . Controller::DATA_INVALID,
+            // Order Details
+            'stock_ids.required' => 'Product: ' . Controller::ONE_LEAST,
+            'stock_ids.array' => 'Product: ' . Controller::DATA_INVALID,
+            'unit_ids.required' => 'Unit: ' . Controller::ONE_LEAST,
+            'unit_ids.array' => 'Unit: ' . Controller::DATA_INVALID,
+            'prices.required' => 'Product price: ' . Controller::ONE_LEAST,
+            'prices.array' => 'Product price: ' . Controller::DATA_INVALID,
+            'discounts.required' => 'Product discount: ' . Controller::ONE_LEAST,
+            'discounts.array' => 'Product discount: ' . Controller::DATA_INVALID,
+            'quantities.required' => 'Product quantity: ' . Controller::ONE_LEAST,
+            'quantities.array' => 'Product quantity: ' . Controller::DATA_INVALID,
+            'rates.required' => 'Product unit rate: ' . Controller::ONE_LEAST,
+            'rates.array' => 'Product unit rate: ' . Controller::DATA_INVALID,
+            'notes.array' => 'Product note: ' . Controller::DATA_INVALID,
+            'ids.required' => 'Order detail: ' . Controller::ONE_LEAST,
+            'ids.array' => 'Order detail: ' . Controller::DATA_INVALID,
 
-            'stock_ids.*.required' => 'Hàng hóa: ' . Controller::DATA_INVALID,
-            'stock_ids.*.numeric' => 'Hàng hóa: ' . Controller::DATA_INVALID,
-            'unit_ids.*.required' => 'Mã đơn vị tính: ' . Controller::DATA_INVALID,
-            'unit_ids.*.numeric' => 'Mã đơn vị tính: ' . Controller::DATA_INVALID,
-            'prices.*.required' => 'Đơn giá hàng hóa: ' . Controller::DATA_INVALID,
-            'prices.*.numeric' => 'Đơn giá hàng hóa: ' . Controller::DATA_INVALID,
-            'discounts.*.numeric' => 'Giảm giá hàng hóa: ' . Controller::DATA_INVALID,
-            'quantities.*.required' => 'Số lượng hàng hóa: ' . Controller::DATA_INVALID,
-            'quantities.*.numeric' => 'Số lượng hàng hóa: ' . Controller::DATA_INVALID,
-            'quantities.*.min' => 'Số lượng hàng hóa: Không thể âm!',
-            'rates.*.required' => 'Đơn vị tính hàng hóa: ' . Controller::DATA_INVALID,
-            'rates.*.numeric' => 'Đơn vị tính hàng hóa: ' . Controller::DATA_INVALID,
-            'notes.*.string' => 'Ghi chú hàng hóa: ' . Controller::DATA_INVALID,
-            'ids.*.numeric' => 'Mã chi tiết đơn hàng: ' . Controller::DATA_INVALID,
+            'stock_ids.*.required' => 'Product: ' . Controller::DATA_INVALID,
+            'stock_ids.*.numeric' => 'Product: ' . Controller::DATA_INVALID,
+            'unit_ids.*.required' => 'Unit: ' . Controller::DATA_INVALID,
+            'unit_ids.*.numeric' => 'Unit: ' . Controller::DATA_INVALID,
+            'prices.*.required' => 'Product price: ' . Controller::DATA_INVALID,
+            'prices.*.numeric' => 'Product price: ' . Controller::DATA_INVALID,
+            'discounts.*.numeric' => 'Product discount: ' . Controller::DATA_INVALID,
+            'quantities.*.required' => 'Product quantity: ' . Controller::DATA_INVALID,
+            'quantities.*.numeric' => 'Product quantity: ' . Controller::DATA_INVALID,
+            'quantities.*.min' => 'Product quantity: Cannot be negative!',
+            'rates.*.required' => 'Product unit rate: ' . Controller::DATA_INVALID,
+            'rates.*.numeric' => 'Product unit rate: ' . Controller::DATA_INVALID,
+            'notes.*.string' => 'Product note: ' . Controller::DATA_INVALID,
+            'ids.*.numeric' => 'Order detail: ' . Controller::DATA_INVALID,
 
-            //Thanh toán
-            'transaction_payments.array' => 'Hình thức thanh toán: ' . Controller::DATA_INVALID,
-            'transaction_amounts.array' => 'Số tiền thanh toán: ' . Controller::DATA_INVALID,
-            'transaction_refund.array' => 'Trạng thái hoàn tiền: ' . Controller::DATA_INVALID,
+            // Payment
+            'transaction_payments.array' => 'Payment method: ' . Controller::DATA_INVALID,
+            'transaction_amounts.array' => 'Payment amount: ' . Controller::DATA_INVALID,
+            'transaction_refund.array' => 'Refund status: ' . Controller::DATA_INVALID,
 
-            'transaction_payments.*.required' => 'Hình thức thanh toán: ' . Controller::NOT_EMPTY,
-            'transaction_refund.*.required' => 'Trạng thái hoàn tiền: ' . Controller::NOT_EMPTY,
-            'transaction_refund.*.numeric' => 'Trạng thái hoàn tiền: ' . Controller::DATA_INVALID,
-            'transaction_amounts.*.required' => 'Số tiền thanh toán: ' . Controller::NOT_EMPTY,
-            'transaction_amounts.*.numeric' => 'Số tiền thanh toán: ' . Controller::DATA_INVALID,
+            'transaction_payments.*.required' => 'Payment method: ' . Controller::NOT_EMPTY,
+            'transaction_refund.*.required' => 'Refund status: ' . Controller::NOT_EMPTY,
+            'transaction_refund.*.numeric' => 'Refund status: ' . Controller::DATA_INVALID,
+            'transaction_amounts.*.required' => 'Payment amount: ' . Controller::NOT_EMPTY,
+            'transaction_amounts.*.numeric' => 'Payment amount: ' . Controller::DATA_INVALID,
         ];
+
         $request->validate($rules, $messages);
         if (!empty($this->user->can(User::UPDATE_ORDER))) {
             if ($request->has('id')) {
                 if (!$request->has('id') && !$request->has('transaction_payments') && !$request->has('customer_id')) {
-                    return response()->json(['errors' => ['customer_required' => ['Khách hàng: Vui lòng chọn một khách hàng để lưu công nợ!']]], 422);
+                    return response()->json(['errors' => ['customer_required' => ['Customer: Please select a customer to save order!']]], 422);
                 }
                 DB::beginTransaction();
                 try {
@@ -598,7 +594,7 @@ class OrderController extends Controller
                                     'receiver_id' => Auth::id(),
                                     'order_id' => $order->id,
                                     'status' => 1,
-                                    'note' => 'Xuất theo đơn ' . $order->code,
+                                    'note' => 'Export for ' . $order->code,
                                     'date' => date('Y-m-d'),
                                 ]);
                             }
@@ -624,7 +620,7 @@ class OrderController extends Controller
                                         'receiver_id' => Auth::id(),
                                         'order_id' => $order->id,
                                         'status' => 1,
-                                        'note' => 'Xuất theo đơn ' . $order->code,
+                                        'note' => 'Export for ' . $order->code,
                                         'date' => date('Y-m-d'),
                                     ]);
                                     $export_id = $export->id;
@@ -638,7 +634,7 @@ class OrderController extends Controller
                                     'detail_id' => $detail->id,
                                     'unit_id' => $unit->id,
                                     'quantity' => $request->quantities[$i],
-                                    'note' => 'Xuất theo đơn ' . $order->id
+                                    'note' => 'Export for ' . $order->id
                                 ]);
                                 if ($export_detail) {
                                     $old_quantity = $old ? $old->quantity : 0;
@@ -668,40 +664,34 @@ class OrderController extends Controller
                             }
                         }
                         $order->update(['total' => $order->total()]);
-                        LogController::create('sửa', self::NAME, $order->id);
+                        LogController::create('update', self::NAME, $order->id);
                         $response = array(
                             'id' => $order->id,
                             'status' => 'success',
-                            'msg' => 'Đã cập nhật ' . self::NAME . ' ' . $order->code
+                            'msg' => 'Updated ' . self::NAME . ' ' . $order->code
                         );
                         DB::commit();
                     } else {
                         DB::rollBack();
                         $response = [
                             'status' => 'error',
-                            'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!',
+                            'msg' => 'An error occurred, please try again!',
                         ];
                     }
                 } catch (\Exception $e) {
                     DB::rollBack();
-                    Log::error(
-                        'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                            'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                            'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                            'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                            'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
+                    log_exception($e);
                     Controller::resetAutoIncrement(['orders', 'details', 'imports', 'import_details', 'stocks']);
-                    return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e]]], 422);
+                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e]]], 422);
                 }
             } else {
                 $response = [
                     'status' => 'error',
-                    'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!',
+                    'msg' => 'An error occurred, please try again!',
                 ];
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -739,23 +729,17 @@ class OrderController extends Controller
                     array_push($orders, $obj->code);
                 } catch (\Exception $e) {
                     DB::rollBack();
-                    Log::error(
-                        'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                            'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                            'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                            'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                            'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
+                    log_exception($e);
                     Controller::resetAutoIncrement(['imports', 'import_details', 'stocks', 'exports', 'export_details']);
-                    return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
                 }
             } else {
-                return response()->json(['errors' => ['message' => ['Không thể xóa đơn hàng đã hoàn thành']]], 422);
+                return response()->json(['errors' => ['message' => ['Cannot delete completed order']]], 422);
             }
         }
         $response = array(
             'status' => 'success',
-            'msg' => 'Đã xóa đơn hàng ' . implode(', ', $orders)
+            'msg' => 'Deleted order ' . implode(', ', $orders)
         );
         return  response()->json($response, 200);
     }

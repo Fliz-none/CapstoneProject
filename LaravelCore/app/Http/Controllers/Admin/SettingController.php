@@ -14,7 +14,7 @@ use Session;
 
 class SettingController extends Controller
 {
-    const NAME = 'Cài đặt';
+    const NAME = 'Setting';
 
     public function __construct()
     {
@@ -53,101 +53,26 @@ class SettingController extends Controller
         cache()->forget('settings');
     }
 
-    public function updateZalo(Request $request)
-    {
-        $rules = [
-            'zalo_oa_id' => 'nullable|string|max:255',
-            'zalo_app_id' => 'nullable|string|max:255',
-            'zalo_app_secret' => 'nullable|string|max:255',
-            'zalo_access_token' => 'nullable|string',
-            'zalo_refresh_token' => 'nullable|string',
-            'zalo_transaction_template' => 'nullable|string|max:255',
-            'zalo_booking_template' => 'nullable|string|max:255',
-            'zalo_report_template' => 'nullable|string|max:255',
-            'zalo_comeout_template' => 'nullable|string|max:255',
-        ];
-        $request->validate($rules);
-        try {
-            $this->updateSetting('has_zalo', $request->has_zalo);
-            $this->updateSetting('zalo_oa_id', $request->zalo_oa_id);
-            $this->updateSetting('zalo_app_id', $request->zalo_app_id);
-            $this->updateSetting('zalo_app_secret', $request->zalo_app_secret);
-            $this->updateSetting('zalo_access_token', $request->zalo_access_token);
-            $this->updateSetting('zalo_refresh_token', $request->zalo_refresh_token);
-            $this->updateSetting('zalo_transaction_template', $request->zalo_transaction_template);
-            $this->updateSetting('zalo_booking_template', $request->zalo_booking_template);
-            $this->updateSetting('zalo_report_template', $request->zalo_report_template);
-            $this->updateSetting('zalo_comeout_template', $request->zalo_comeout_template);
-            cache()->forget('settings');
-            $response = [
-                'status' => 'success',
-                'msg' => 'Cập nhật thông tin Zalo thành công!'
-            ];
-        } catch (\Throwable $e) {
-            Log::error(
-                'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                    'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                    'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                    'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                    'Chi tiết lỗi: ' . $e->getTraceAsString()
-            );
-            $response = [
-                'status' => 'error',
-                'msg' => 'Đã có lỗi xảy ra.' . $e . ' Vui lòng thử lại sau!'
-            ];
-        }
-        return redirect()->back()->with('response', $response);
-    }
-
-    public function updateSymptom_Disease(Request $request)
-    {
-        try {
-            $this->updateSetting('autosave_info_disease', $request->autosave_info_disease);
-            $this->updateSetting('autosave_info_symptom', $request->autosave_info_symptom);
-            cache()->forget('settings');
-            $response = [
-                'status' => 'success',
-                'msg' => 'Cập nhật tự động lưu bệnh và triệu chứng thành công!'
-            ];
-        } catch (\Throwable $e) {
-            Log::error(
-                'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                    'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                    'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                    'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                    'Chi tiết lỗi: ' . $e->getTraceAsString()
-            );
-            $response = [
-                'status' => 'error',
-                'msg' => 'Đã có lỗi xảy ra. Vui lòng thử lại sau!'
-            ];
-        }
-        return redirect()->back()->with('response', $response);
-    }
-
     public function updatePrint(Request $request)
     {
         try {
             $this->updateSetting('print_order_bank_a5', $request->print_order_bank_a5);
             $this->updateSetting('print_order_bank_c80', $request->print_order_bank_c80);
             cache()->forget('settings');
+
             $response = [
                 'status' => 'success',
-                'msg' => 'Cập nhật giấy in hóa đơn thành công!'
+                'msg' => 'Invoice print settings updated successfully!'
             ];
         } catch (\Throwable $e) {
-            Log::error(
-                'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                    'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                    'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                    'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                    'Chi tiết lỗi: ' . $e->getTraceAsString()
-            );
+            log_exception($e);
+
             $response = [
                 'status' => 'error',
-                'msg' => 'Đã có lỗi xảy ra. Vui lòng thử lại sau!'
+                'msg' => 'An error occurred. Please try again later!'
             ];
         }
+
         return redirect()->back()->with('response', $response);
     }
 
@@ -163,34 +88,27 @@ class SettingController extends Controller
 
             $response = [
                 'status' => 'success',
-                'msg' => 'Cập nhật hình ảnh thành công'
+                'msg' => 'Images updated successfully'
             ];
         } catch (\Throwable $e) {
-            Log::error(
-                'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                    'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                    'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                    'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                    'Chi tiết lỗi: ' . $e->getTraceAsString()
-            );
+            log_exception($e);
             $response = [
                 'status' => 'error',
-                'msg' => 'Đã có lỗi xảy ra. Vui lòng thử lại sau!'
+                'msg' => 'An error occurred. Please try again later!'
             ];
         }
         return redirect()->back()->with('response', $response);
     }
-
     public static function setEnv(array $values)
     {
-        $envFile = app()->environmentFilePath();
-        $str = file_get_contents($envFile);
+        $envFile = app()->environmentFilePath(); // Get the path to the .env file
+        $str = file_get_contents($envFile); // Read the content of the .env file
+
         if (count($values) > 0) {
             foreach ($values as $envKey => $envValue) {
                 $keyPosition = strpos($str, "{$envKey}=");
                 $endOfLinePosition = strpos($str, "\n", $keyPosition);
                 $oldLine = substr($str, $keyPosition, $endOfLinePosition - $keyPosition);
-                // If key does not exist, add it
                 if (!$keyPosition || !$endOfLinePosition || !$oldLine) {
                     $str .= "{$envKey}='{$envValue}'\n";
                 } else {
@@ -203,6 +121,7 @@ class SettingController extends Controller
         if (!file_put_contents($envFile, $str)) {
             return false;
         }
+
         return true;
     }
 
@@ -222,19 +141,13 @@ class SettingController extends Controller
             $this->updateSetting('expired_notification_frequency', $request->expired_notification_frequency);
             $response = [
                 'status' => 'success',
-                'msg' => 'Đã lưu thiết lập gửi mail'
+                'msg' => 'Mail settings saved successfully!'
             ];
         } catch (\Throwable $e) {
-            Log::error(
-                'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                    'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                    'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                    'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                    'Chi tiết lỗi: ' . $e->getTraceAsString()
-            );
+            log_exception(($e));
             $response = [
                 'status' => 'error',
-                'msg' => 'Đã có lỗi xảy ra. Vui lòng thử lại sau!'
+                'msg' => 'An error occurred. Please try again later!'
             ];
         }
         return redirect()->back()->with('response', $response);
@@ -259,25 +172,17 @@ class SettingController extends Controller
             cache()->forget('settings');
             $response = [
                 'status' => 'success',
-                'msg' => 'Đã lưu cài đặt đường dẫn mạng xã hội'
+                'msg' => 'Social media links have been saved successfully.'
             ];
         } catch (\Throwable $e) {
-            Log::error(
-                'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                    'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                    'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                    'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                    'Chi tiết lỗi: ' . $e->getTraceAsString()
-            );
+            log_exception($e);
             $response = [
                 'status' => 'error',
-                'msg' => 'Đã có lỗi xảy ra. Vui lòng thử lại sau!'
+                'msg' => 'An error occurred. Please try again later.'
             ];
         }
         return redirect()->back()->with('response', $response);
     }
-
-
 
     public function updateExpense(Request $request)
     {
@@ -285,11 +190,11 @@ class SettingController extends Controller
             'expense_group' => 'required|array',
             'expense_group.*' => 'required|string|max:255',
         ], [
-            'expense_group.required' => 'Danh sách phiếu chi không được để trống.',
-            'expense_group.array' => 'Danh sách phiếu chi không hợp lệ.',
-            'expense_group.*.required' => 'Vui lòng nhập nội dung phiếu chi.',
-            'expense_group.*.string' => 'Nội dung phiếu chi phải là chuỗi ký tự.',
-            'expense_group.*.max' => 'Nội dung phiếu chi không được vượt quá 255 ký tự.',
+            'expense_group.required' => 'The expense list must not be empty.',
+            'expense_group.array' => 'The expense list format is invalid.',
+            'expense_group.*.required' => 'Please enter the expense description.',
+            'expense_group.*.string' => 'The expense description must be a string.',
+            'expense_group.*.max' => 'The expense description must not exceed 255 characters.',
         ]);
 
         try {
@@ -299,51 +204,15 @@ class SettingController extends Controller
 
             return redirect()->back()->with('response', [
                 'status' => 'success',
-                'msg' => 'Đã lưu danh sách phiếu chi thành công.',
+                'msg' => 'Expense group list saved successfully.',
             ]);
         } catch (\Throwable $e) {
-            Log::error('Error saving expense groups: ' . $e->getMessage());
-
+            log_exception($e);
             return redirect()->back()->with('response', [
                 'status' => 'error',
-                'msg' => 'Đã có lỗi xảy ra. Vui lòng thử lại!',
+                'msg' => 'An error occurred. Please try again!',
             ]);
         }
-    }
-
-
-
-    public function updateShop(Request $request)
-    {
-        $request->validate([
-            'inventory_manage' => 'required|numeric',
-            'scores_rate_exchange' => 'required|numeric',
-        ], [
-            'inventory_manage.required' => 'Vui lòng chọn một dịch vụ khám mặc định.',
-            'scores_rate_exchange.numeric' => 'Dịch vụ khám mặc định: Dữ liệu không hợp lệ.',
-        ]);
-        try {
-            $this->updateSetting('inventory_manage', $request->inventory_manage);
-            $this->updateSetting('scores_rate_exchange', $request->scores_rate_exchange);
-            cache()->forget('settings');
-            $response = [
-                'status' => 'success',
-                'msg' => 'Đã lưu cài đặt cửa hàng'
-            ];
-        } catch (\Throwable $e) {
-            Log::error(
-                'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                    'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                    'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                    'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                    'Chi tiết lỗi: ' . $e->getTraceAsString()
-            );
-            $response = [
-                'status' => 'error',
-                'msg' => 'Đã có lỗi xảy ra. Vui lòng thử lại sau!'
-            ];
-        }
-        return redirect()->back()->with('response', $response);
     }
 
     public function updatePay(Request $request)
@@ -356,20 +225,21 @@ class SettingController extends Controller
             'bank_accounts.*' => 'required|string|max:255',
             'bank_numbers.*' => 'required|numeric',
         ], [
-            'bank_ids.required' => 'Vui lòng chọn ít nhất một ngân hàng.',
-            'bank_ids.array' => 'Danh sách ngân hàng không hợp lệ.',
-            'bank_numbers.required' => 'Vui lòng nhập ít nhất một số tài khoản.',
-            'bank_numbers.array' => 'Danh sách số tài khoản không hợp lệ.',
-            'bank_accounts.required' => 'Vui lòng nhập ít nhất một tên tài khoản.',
-            'bank_accounts.array' => 'Danh sách tên tài khoản không hợp lệ.',
+            'bank_ids.required' => 'Please select at least one bank.',
+            'bank_ids.array' => 'Invalid bank list format.',
+            'bank_numbers.required' => 'Please enter at least one bank account number.',
+            'bank_numbers.array' => 'Invalid bank account number list format.',
+            'bank_accounts.required' => 'Please enter at least one account holder name.',
+            'bank_accounts.array' => 'Invalid account holder name list format.',
 
-            'bank_ids.*.required' => 'Vui lòng chọn một ngân hàng.',
-            'bank_accounts.*.required' => 'Vui lòng nhập tên tài khoản.',
-            'bank_accounts.*.string' => 'Tên tài khoản phải là chuỗi ký tự.',
-            'bank_accounts.*.max' => 'Tên tài khoản không được vượt quá 255 ký tự.',
-            'bank_numbers.*.required' => 'Vui lòng nhập số tài khoản.',
-            'bank_numbers.*.numeric' => 'Số tài khoản phải là số.',
+            'bank_ids.*.required' => 'Please select a bank.',
+            'bank_accounts.*.required' => 'Please enter the account holder name.',
+            'bank_accounts.*.string' => 'The account holder name must be a string.',
+            'bank_accounts.*.max' => 'The account holder name must not exceed 255 characters.',
+            'bank_numbers.*.required' => 'Please enter the bank account number.',
+            'bank_numbers.*.numeric' => 'The bank account number must be numeric.',
         ]);
+
         try {
             $accounts = [];
             foreach ($request->bank_ids as $i => $value) {
@@ -380,28 +250,24 @@ class SettingController extends Controller
                     'bank_number' => $request->bank_numbers[$i],
                 ];
             }
+
             $this->updateSetting('bank_info', json_encode($accounts));
             cache()->forget('settings');
+
             $response = [
                 'status' => 'success',
-                'msg' => 'Đã lưu cài đặt thanh toán'
+                'msg' => 'Payment settings saved successfully.',
             ];
         } catch (\Throwable $e) {
-            Log::error(
-                'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                    'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                    'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                    'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                    'Chi tiết lỗi: ' . $e->getTraceAsString()
-            );
+            log_exception($e);
             $response = [
                 'status' => 'error',
-                'msg' => 'Đã có lỗi xảy ra. Vui lòng thử lại sau!'
+                'msg' => 'An error occurred. Please try again later.',
             ];
         }
+
         return redirect()->back()->with('response', $response);
     }
-
 
 
     public function updateWork(Request $request)
@@ -412,7 +278,7 @@ class SettingController extends Controller
                 'array',
                 function ($attribute, $value, $fail) {
                     if (count($value) !== count(array_unique($value))) {
-                        $fail('Tên ca không được trùng lặp!');
+                        $fail('Shift names must be unique!');
                     }
                 },
             ],
@@ -425,41 +291,45 @@ class SettingController extends Controller
             'sign_checkout.*' => 'required|date_format:H:i|after:sign_checkin.*',
             'staff_number.*' => 'required|integer|min:1',
         ], [
-            'shift_name.required' => 'Vui lòng thiết lập ít nhất một ca',
-            'sign_checkin.required' => 'Vui lòng thiết lập ít nhất một ca',
-            'sign_checkout.required' => 'Vui lòng thiết lập ít nhất một ca',
-            'staff_number.required' => 'Vui lòng thiết lập ít nhất một ca',
+            'shift_name.required' => 'Please set at least one shift.',
+            'sign_checkin.required' => 'Please set at least one shift.',
+            'sign_checkout.required' => 'Please set at least one shift.',
+            'staff_number.required' => 'Please set at least one shift.',
 
-            'shift_name.*.required' => 'Vui lòng nhập tên ca làm việc.',
-            'shift_name.*.string' => 'Tên ca làm việc không hợp lệ.',
-            'shift_name.*.min' => 'Tên ca làm việc không được để trống.',
+            'shift_name.*.required' => 'Please enter a shift name.',
+            'shift_name.*.string' => 'Invalid shift name.',
+            'shift_name.*.min' => 'Shift name cannot be empty.',
 
-            'sign_checkin.*.required' => 'Vui lòng chọn giờ vào.',
-            'sign_checkout.*.required' => 'Vui lòng chọn giờ ra.',
-            'sign_checkin.*.date_format' => 'Giờ vào không hợp lệ.',
-            'sign_checkout.*.date_format' => 'Giờ ra không hợp lệ.',
-            'sign_checkout.*.after' => 'Giờ ra phải sau giờ vào.',
+            'sign_checkin.*.required' => 'Please select a check-in time.',
+            'sign_checkout.*.required' => 'Please select a check-out time.',
+            'sign_checkin.*.date_format' => 'Invalid check-in time format.',
+            'sign_checkout.*.date_format' => 'Invalid check-out time format.',
+            'sign_checkout.*.after' => 'Check-out time must be after check-in time.',
 
-            'staff_number.*.required' => 'Vui lòng nhập số nhân viên.',
-            'staff_number.*.integer' => 'Số nhân viên phải là số nguyên.',
-            'staff_number.*.min' => 'Số nhân viên phải lớn hơn hoặc bằng 1.',
+            'staff_number.*.required' => 'Please enter the number of staff.',
+            'staff_number.*.integer' => 'Number of staff must be an integer.',
+            'staff_number.*.min' => 'Number of staff must be at least 1.',
         ]);
+
         try {
             $work_settings = json_decode(cache()->get('settings')['work_info'], true);
             unset($work_settings["allow_self_register"]);
-            // Lấy thời gian từ Thứ 2 đến Chủ Nhật tuần sau
+
+            // Get the period from next Monday to next Sunday
             $next_monday = Carbon::now()->next(Carbon::MONDAY)->startOfDay();
             $next_sunday = $next_monday->copy()->addDays(6)->endOfDay();
-            $works = Work::whereBetween('sign_checkin', [$next_monday, $next_sunday])
-                ->get();
+            $works = Work::whereBetween('sign_checkin', [$next_monday, $next_sunday])->get();
+
             $has_conflict = false;
 
             foreach ($work_settings as $shift) {
                 $shift_checkin = $shift['sign_checkin'];
                 $shift_checkout = $shift['sign_checkout'];
+
                 foreach ($works as $work) {
                     $workCheckin = Carbon::parse($work->sign_checkin)->format('H:i');
                     $workCheckout = Carbon::parse($work->sign_checkout)->format('H:i');
+
                     if ($workCheckin === $shift_checkin || $workCheckout === $shift_checkout) {
                         $has_conflict = true;
                         break 2;
@@ -470,7 +340,7 @@ class SettingController extends Controller
             if ($has_conflict) {
                 $response = [
                     'status' => 'error',
-                    'msg' => 'Đã có nhân viên đăng ký ca làm! Không thể thay đổi thiết lập này.'
+                    'msg' => 'Some employees have already registered for these shifts! Cannot update the settings.',
                 ];
                 return redirect()->back()->with('response', $response);
             }
@@ -484,25 +354,22 @@ class SettingController extends Controller
                     'staff_number' => $request->staff_number[$i],
                 ];
             }
+
             $this->updateSetting('work_info', json_encode($work_info));
             cache()->forget('settings');
+
             $response = [
                 'status' => 'success',
-                'msg' => 'Đã lưu cài đặt ca làm việc'
+                'msg' => 'Work shift settings saved successfully.',
             ];
         } catch (\Throwable $e) {
-            Log::error(
-                'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                    'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                    'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                    'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                    'Chi tiết lỗi: ' . $e->getTraceAsString()
-            );
+            log_exception($e);
             $response = [
                 'status' => 'error',
-                'msg' => 'Đã có lỗi xảy ra. Vui lòng thử lại sau!'
+                'msg' => 'An error occurred. Please try again later.',
             ];
         }
+
         return redirect()->back()->with('response', $response);
     }
 }

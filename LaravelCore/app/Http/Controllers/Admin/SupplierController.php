@@ -13,22 +13,22 @@ use Yajra\DataTables\Facades\DataTables;
 
 class SupplierController extends Controller
 {
-    const NAME = 'nhà cung cấp',
+    const NAME = 'Supplier',
         MESSAGES = [
             'name.required' => Controller::NOT_EMPTY,
             'name.string' => Controller::DATA_INVALID,
             'name.max' => Controller::MAX,
             'phone.required' => Controller::NOT_EMPTY,
             'phone.numeric' => Controller::DATA_INVALID,
-            'phone.digits' => 'Số điện thoại phải có 10 số!',
+            'phone.digits' => 'Please enter a valid phone number.',
             'phone.regex' => Controller::DATA_INVALID,
-            'phone.unique' => 'Số điện thoại không khả dụng!',
+            'phone.unique' => 'This phone number is already in use.',
             'email.required' => Controller::NOT_EMPTY,
             'email.string' => Controller::DATA_INVALID,
             'email.min' => Controller::MIN,
             'email.max' => Controller::MAX,
             'email.email' => Controller::DATA_INVALID,
-            'email.unique' => 'Email không khả dụng!',
+            'email.unique' => 'This email is invalid or already in use.',
             'address.required' => Controller::NOT_EMPTY,
             'address.string' => Controller::DATA_INVALID,
             'address.min' => Controller::MIN,
@@ -143,7 +143,7 @@ class SupplierController extends Controller
                     ->rawColumns(['checkboxes', 'code', 'address', 'status', 'action'])
                     ->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = self::NAME . ' management';
                 return view('admin.suppliers', compact('pageName'));
             }
         }
@@ -172,22 +172,17 @@ class SupplierController extends Controller
                     'note' => $request->note
                 ]);
 
-                LogController::create('tạo', self::NAME, $supplier->id);
+                LogController::create('create', self::NAME, $supplier->id);
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Đã tạo ' . self::NAME . ' ' . $supplier->name
+                    'msg' => 'Created ' . self::NAME . ' ' . $supplier->name
                 );
             } catch (\Exception $e) {
-                Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                log_exception($e);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -218,34 +213,29 @@ class SupplierController extends Controller
                             'status' => $request->has('status'),
                         ]);
 
-                        LogController::create('sửa', self::NAME, $supplier->id);
+                        LogController::create('update', self::NAME, $supplier->id);
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Đã cập nhật ' . self::NAME . ' ' . $supplier->name
+                            'msg' => 'Updated ' . self::NAME . ' ' . $supplier->name
                         );
                     } else {
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                            'msg' => 'An error occurred, please reload the page and try again!'
                         );
                     }
                 } catch (\Exception $e) {
-                    Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
-                    return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                    log_exception($e);
+                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                    'msg' => 'An error occurred, please reload the page and try again!'
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -259,7 +249,7 @@ class SupplierController extends Controller
                 $obj = Supplier::find($id);
                 if (!count($obj->imports)) {
                     $obj->delete();
-                    LogController::create("xóa", self::NAME, $obj->id);
+                    LogController::create("delete", self::NAME, $obj->id);
                     array_push($success, $obj->name);
                 } else {
                     array_push($fail, $obj->name);
@@ -267,17 +257,17 @@ class SupplierController extends Controller
             }
             $msg = '';
             if (count($success)) {
-                $msg .= 'Đã xóa ' . self::NAME . ' ' . implode(', ', $success) . '. ';
+                $msg .= 'Deleted ' . self::NAME . ' ' . implode(', ', $success) . '. ';
             }
             if (count($fail)) {
-                $msg .= implode(', ', $fail) . ' đang sử dụng, không thể xóa!';
+                $msg .= implode(', ', $fail) . ' are in use, cannot delete!';
             }
             $response = array(
                 'status' => 'success',
                 'msg' => $msg
             );
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }

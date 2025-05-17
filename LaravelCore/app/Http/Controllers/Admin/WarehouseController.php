@@ -13,7 +13,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class WarehouseController extends Controller
 {
-    const NAME = 'kho hàng',
+    const NAME = 'Warehouse',
         RULES = [
             'name' => ['required', 'string', 'min:2', 'max:125'],
             'branch_id' => ['nullable', 'numeric',],
@@ -71,10 +71,10 @@ class WarehouseController extends Controller
                                 'text' => $obj->name
                             ];
                         })
-                        ->push([
+                        ->prepend([
                             'id' => '',
-                            'text' => 'Không chọn kho hàng'
-                        ]);
+                            'text' => 'Do not choose!'
+                        ])->toArray();
                     break;
                 default:
                     $obj = $objs->with('_branch')->find($request->key);
@@ -132,7 +132,7 @@ class WarehouseController extends Controller
                                 $branch = $obj->_branch->fullName;
                             }
                         } else {
-                            $branch = 'Không có';
+                            $branch = 'N/A';
                         }
                         return $branch;
                     })

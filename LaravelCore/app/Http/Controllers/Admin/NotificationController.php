@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 
 class NotificationController extends Controller
 {
-    const NAME = 'thông báo';
+    const NAME = 'notification';
     public function __construct()
     {
         parent::__construct();
@@ -33,7 +33,7 @@ class NotificationController extends Controller
         } else {
             if ($request->ajax()) {
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = self::NAME . ' management'; 
                 return view('admin.notifications', compact('pageName'));
             }
         }
@@ -47,8 +47,8 @@ class NotificationController extends Controller
             ]);
             return $noti;
         } catch (\Throwable $e) {
-            Log::error('Có lỗi xảy ra: ' . $e->getMessage());
-            Log::error('Chi tiết lỗi:', ['exception' => $e]);
+            log_exception($e);
+            return null;
         }
     }
 
@@ -74,7 +74,7 @@ class NotificationController extends Controller
         $notis = $this->user->notifications()->wherePivot('status', 0)->select('notifications.*')->orderBy('id', 'DESC')->get();
         $response = [
             'status' => 'success',
-            'msg' => 'Đã tắt thông báo',
+            'msg' => 'Notification turned off!',
             'template' => view('admin.includes.notifications', compact('notis'))->render()
         ];
         return response()->json($response, 200);

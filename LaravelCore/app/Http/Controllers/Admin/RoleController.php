@@ -15,7 +15,7 @@ use Illuminate\Validation\Rule;
 
 class RoleController extends Controller
 {
-    const NAME = 'chức vụ';
+    const NAME = 'Role';
     /**
      * Create a new controller instance.
      *
@@ -89,12 +89,12 @@ class RoleController extends Controller
                     ->editColumn('permissions', function ($obj) {
                         return $obj->permissions->count() ? implode(' ', json_decode($obj->permissions->take(15)->map(function ($permission) {
                             return '<span class="badge bg-primary">' . $permission->name . '</span>';
-                        }))) . ' và còn nhiều quyền khác' : 'Chưa được cấp quyền';
+                        }))) . ' and ' . $obj->permissions->count() - 15 . ' more' : 'No permissions assigned';
                     })
                     ->rawColumns(['name', 'permissions', 'action'])
                     ->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = self::NAME . ' management';
                 return view('admin.roles', compact('pageName'));
             }
         }
@@ -106,16 +106,16 @@ class RoleController extends Controller
             'name' => ['required', 'string', 'min: 3', 'max:125', 
             function ($attribute, $value, $fail) use ($request) {
                 if(Role::where('name', $value)->count()){
-                    $fail('Vai trò này đã được tạo trước đó');
+                    $fail('This role has already been created.');
                 }
             }],
         ];
         $messages = [
-            'name.unique' => 'Tên này đã tồn tại.',
-            'name.required' => 'Thông tin này không thể trống.',
-            'name.string' => 'Thông tin không hợp lệ.',
-            'name.min' => 'Tối thiểu 3 kí tự',
-            'name.max' => 'Tối đa 125 kí tự.',
+            'name.unique' => 'This role name has already been created.',
+            'name.required' => 'Name cannot be empty.',
+            'name.string' => 'Invalid name.',
+            'name.min' => 'Minimum 3 characters',
+            'name.max' => 'Maximum 125 characters.',
         ];
         $request->validate($rules, $messages);
 
@@ -139,24 +139,19 @@ class RoleController extends Controller
                 cache()->forget('cashiers');
 
                 DB::commit();
-                LogController::create('tạo', self::NAME, $role->id);
+                LogController::create('create', self::NAME, $role->id);
                 $response = [
                     'status' => 'success',
-                    'msg' => 'Đã tạo ' . self::NAME . ' ' . $role->name,
+                    'msg' => 'Created ' . self::NAME . ' ' . $role->name,
                 ];
             } catch (\Exception $e) {
                 DB::rollBack();
-                Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
+                log_exception($e);
                 Controller::resetAutoIncrement(['roles', 'permissions']);
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -167,16 +162,16 @@ class RoleController extends Controller
             'name' => ['required', 'string', 'min: 3', 'max:125', 
             function ($attribute, $value, $fail) use ($request) {
                 if(Role::where('name', $value)->where('id', '!=', $request->id)->count()){
-                    $fail('Vai trò này đã được tạo trước đó');
+                    $fail('This role has already been created.');
                 }
             }],
         ];
         $messages = [
-            'name.required' => 'Thông tin này không thể trống.',
-            'name.string' => 'Thông tin không hợp lệ.',
-            'name.min' => 'Tối thiểu 3 kí tự',
-            'name.max' => 'Tối đa 125 kí tự.',
-            'name.unique' => 'Chức vụ đã được tạo.',
+            'name.required' => 'Name cannot be empty.',
+            'name.string' => 'Invalid name.',
+            'name.min' => 'Minimum 3 characters',
+            'name.max' => 'Maximum 125 characters.',
+            'name.unique' => 'This role has already been created.',
         ];
 
         $request->validate($rules, $messages);
@@ -208,34 +203,29 @@ class RoleController extends Controller
                         cache()->forget('dealers');
                         cache()->forget('cashiers');
 
-                        LogController::create('sửa', self::NAME, $role->id);
+                        LogController::create('update', self::NAME, $role->id);
                         DB::commit();
                         $response = [
                             'status' => 'success',
-                            'msg' => 'Đã sửa ' . self::NAME . ' ' . $role->name,
+                            'msg' => 'Updated ' . self::NAME . ' ' . $role->name,
                         ];
                     } else {
                         DB::rollBack();
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                            'msg' => 'An error occurred, please reload the page and try again!'
                         );
                     }
                 } catch (\Exception $e) {
                     DB::rollBack();
-                    Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
+                    log_exception($e);
                     Controller::resetAutoIncrement(['roles', 'permissions']);
-                    return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
                 }
             } else {
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -247,12 +237,12 @@ class RoleController extends Controller
             $role = Role::find($id);
             $role->delete();
             array_push($names, $role->name);
-            LogController::create("xóa", "nhóm quyền", $role->id);
+            LogController::create("delete", "role", $role->id);
         }
         cache()->forget('roles');
         return response()->json([
             'status' => 'success',
-            'msg' => 'Đã xóa ' . self::NAME . ' ' . $role->name,
+            'msg' => 'Deleted ' . self::NAME . ' ' . implode(', ', $names),
         ], 200);
     }
 }

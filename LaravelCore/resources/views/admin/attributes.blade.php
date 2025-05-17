@@ -10,7 +10,6 @@
                     <h5 class="text-uppercase">{{ $pageName }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Bảng tin</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
                         </ol>
                     </nav>
@@ -25,14 +24,14 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_ATTRIBUTE)))
                         <a class="btn btn-info mb-3 block btn-create-attribute">
                             <i class="bi bi-plus-circle"></i>
-                            Thêm
+                            Add
                         </a>
                     @endif
                     <div class="d-inline-block process-btns d-none">
                         @if (!empty(Auth::user()->can(App\Models\User::DELETE_ATTRIBUTES)))
                             <a class="btn btn-danger btn-removes mb-3 ms-2" type="button">
                                 <i class="bi bi-trash"></i>
-                                Xoá
+                                Delete
                             </a>
                         @endif
                     </div>
@@ -47,9 +46,9 @@
                                 <table class="table table-hover table-bordered key-table" id="attribute-table">
                                     <thead>
                                         <tr>
-                                            <th>Mã</th>
-                                            <th>Tên</th>
-                                            <th>Giá trị</th>
+                                            <th>Code</th>
+                                            <th>Name</th>
+                                            <th>Value</th>
                                             <th></th>
                                             <th>
                                                 <input class="form-check-input all-choices" type="checkbox">

@@ -1,51 +1,53 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 if (!function_exists('numberToWords')) {
     function numberToWords($number)
     {
-        $hyphen = ' ';
-        $conjunction = ' ';
-        $separator = ' ';
-        $negative = 'âm ';
-        $decimal = ' phẩy ';
+        $hyphen = '-';
+        $conjunction = ' and ';
+        $separator = ', ';
+        $negative = 'negative ';
+        $decimal = ' point ';
         $dictionary = [
-            0 => 'không',
-            1 => 'một',
-            2 => 'hai',
-            3 => 'ba',
-            4 => 'bốn',
-            5 => 'năm',
-            6 => 'sáu',
-            7 => 'bảy',
-            8 => 'tám',
-            9 => 'chín',
-            10 => 'mười',
-            11 => 'mười một',
-            12 => 'mười hai',
-            13 => 'mười ba',
-            14 => 'mười bốn',
-            15 => 'mười lăm',
-            16 => 'mười sáu',
-            17 => 'mười bảy',
-            18 => 'mười tám',
-            19 => 'mười chín',
-            20 => 'hai mươi',
-            30 => 'ba mươi',
-            40 => 'bốn mươi',
-            50 => 'năm mươi',
-            60 => 'sáu mươi',
-            70 => 'bảy mươi',
-            80 => 'tám mươi',
-            90 => 'chín mươi',
-            100 => 'trăm',
-            1000 => 'nghìn',
-            1000000 => 'triệu',
-            1000000000 => 'tỷ',
-            1000000000000 => 'nghìn tỷ',
-            1000000000000000 => 'triệu tỷ',
-            1000000000000000000 => 'tỷ tỷ'
+            0 => 'zero',
+            1 => 'one',
+            2 => 'two',
+            3 => 'three',
+            4 => 'four',
+            5 => 'five',
+            6 => 'six',
+            7 => 'seven',
+            8 => 'eight',
+            9 => 'nine',
+            10 => 'ten',
+            11 => 'eleven',
+            12 => 'twelve',
+            13 => 'thirteen',
+            14 => 'fourteen',
+            15 => 'fifteen',
+            16 => 'sixteen',
+            17 => 'seventeen',
+            18 => 'eighteen',
+            19 => 'nineteen',
+            20 => 'twenty',
+            30 => 'thirty',
+            40 => 'forty',
+            50 => 'fifty',
+            60 => 'sixty',
+            70 => 'seventy',
+            80 => 'eighty',
+            90 => 'ninety',
+            100 => 'hundred',
+            1000 => 'thousand',
+            1000000 => 'million',
+            1000000000 => 'billion',
+            1000000000000 => 'trillion',
+            1000000000000000 => 'quadrillion',
+            1000000000000000000 => 'quintillion'
         ];
 
         if (!is_numeric($number)) {
@@ -75,7 +77,7 @@ if (!function_exists('numberToWords')) {
                 }
                 break;
             case $number < 1000:
-                $hundreds = $number / 100;
+                $hundreds = (int)($number / 100);
                 $remainder = $number % 100;
                 $string = $dictionary[$hundreds] . ' ' . $dictionary[100];
                 if ($remainder) {
@@ -188,5 +190,17 @@ if (!function_exists('parseDate')) {
         }
 
         return ['year' => $year, 'month' => $month, 'day' => $day];
+    }
+}
+
+if (!function_exists('log_exception')) {
+    function log_exception($e)
+    {
+        Log::error('An error occurred: ' . $e->getMessage() . ';' . PHP_EOL .
+                'Request URL: "' . request()->fullUrl() . '";' . PHP_EOL .
+                'Received Data: ' . json_encode(request()->all()) . ';' . PHP_EOL .
+                'User ID: ' . (Auth::check() ? Auth::id() : 'Guest') . ';' . PHP_EOL .
+                'Error Details: ' . $e->getTraceAsString()
+        );
     }
 }

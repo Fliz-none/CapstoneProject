@@ -13,20 +13,20 @@ use Yajra\DataTables\Facades\DataTables;
 
 class AttributeController extends Controller
 {
-    const NAME = 'thuộc tính',
+    const NAME = 'Attribute',
         RULES = [
             'key' => ['required', 'string', 'min: 3', 'max:125'],
             'value' => ['required', 'string', 'min: 3', 'max:125'],
         ],
         MESSAGES = [
-            'key.required' => 'Thông tin này không thể trống.',
-            'key.string' => 'Dữ liệu không hợp lệ',
-            'key.min' => 'Tối thiểu từ 3 ký tự',
-            'key.max' => 'Tối đa 125 ký tự',
-            'value.required' => 'Thông tin này không thể trống.',
-            'value.string' => 'Dữ liệu không hợp lệ',
-            'value.min' => 'Tối thiểu từ 3 ký tự',
-            'value.max' => 'Tối đa 125 ký tự',
+            'key.required' => Controller::NOT_EMPTY,
+            'key.string' => Controller::DATA_INVALID,
+            'key.min' => Controller::MIN,
+            'key.max' => Controller::MAX,
+            'value.required' => Controller::NOT_EMPTY,
+            'value.string' => Controller::DATA_INVALID,
+            'value.min' => Controller::MIN,
+            'value.max' => Controller::MAX,
         ];
 
     public function __construct()
@@ -89,7 +89,7 @@ class AttributeController extends Controller
                     ->rawColumns(['checkboxes', 'name', 'action'])
                     ->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = self::NAME . ' management';
                 return view('admin.attributes', compact('pageName'));
             }
         }
@@ -114,21 +114,16 @@ class AttributeController extends Controller
                 cache()->forget('attributes');
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Đã tạo ' . self::NAME
+                    'msg' => 'Created ' . self::NAME
                 );
             } catch (\Exception $e) {
                 DB::rollBack();
                 Controller::resetAutoIncrement(['attributes', 'logs']);
-                Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                log_exception($e);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 403);
         }
         return response()->json($response, 200);
     }
@@ -147,34 +142,30 @@ class AttributeController extends Controller
                         ]);
 
                         cache()->forget('attributes');
-                        LogController::create('sửa', self::NAME, $attribute->id);
+                        LogController::create('update', self::NAME, $attribute->id);
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Đã cập nhật ' . $attribute->key
+                            'msg' => 'Updated ' . $attribute->key
                         );
                     } else {
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                            'msg' => 'An error occurred, please reload the page and try again!'
                         );
                     }
                 } catch (\Exception $e) {
-                    Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
-                    return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                    Controller::resetAutoIncrement(['attributes', 'logs']);
+                    log_exception($e);
+                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                    'msg' => 'An error occurred, please reload the page and try again!'
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 403);
         }
         return response()->json($response, 200);
     }
@@ -187,10 +178,10 @@ class AttributeController extends Controller
             $obj->delete();
             array_push($msg, $obj->key . ': ' . $obj->value);
         }
-        LogController::create("xóa", self::NAME, $obj->id);
+        LogController::create("delete", self::NAME, $obj->id);
         $response = array(
             'status' => 'success',
-            'msg' => 'Đã xóa ' . self::NAME . ' ' . implode(', ', $msg)
+            'msg' => 'Deleted ' . self::NAME . ' ' . implode(', ', $msg)
         );
         return response()->json($response, 200);
     }

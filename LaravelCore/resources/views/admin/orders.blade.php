@@ -10,7 +10,6 @@
                     <h5 class="text-uppercase">{{ $pageName }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Bảng tin</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
                         </ol>
                     </nav>
@@ -23,14 +22,14 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_ORDER)))
                         <a class="btn btn-info mb-3 btn-create-order">
                             <i class="bi bi-plus-circle"></i>
-                            Thêm
+                            Add 
                         </a>
                     @endif
                     <div class="d-inline-block process-btns d-none">
                         @if (!empty(Auth::user()->can(App\Models\User::DELETE_ORDERS)))
                             <a class="btn btn-danger btn-removes mb-3 ms-2" type="button">
                                 <i class="bi bi-trash"></i>
-                                Xoá
+                                Delete
                             </a>
                         @endif
                     </div>
@@ -40,7 +39,7 @@
                         <select
                             class="form-control form-control-lg form-control-plaintext bg-transparent text-end list-branches"
                             required autocomplete="off">
-                            <option selected hidden disabled>Chi nhánh của bạn</option>
+                            <option selected hidden disabled>Your branch</option>
                             @foreach (Auth::user()->branches as $branch)
                                 <option value="{{ $branch->id }}"
                                     {{ isset($_GET['branch_id']) && $_GET['branch_id'] == $branch->id ? 'selected' : '' }}>
@@ -59,12 +58,12 @@
                                 <table class="table table-striped table-bordered key-table" id="order-table">
                                     <thead>
                                         <tr>
-                                            <th>Mã</th>
-                                            <th>Khách hàng</th>
-                                            <th>Thanh toán</th>
-                                            <th>Người bán</th>
-                                            <th>Chi nhánh</th>
-                                            <th>Trạng thái</th>
+                                            <th>Code</th>
+                                            <th>Customer</th>
+                                            <th>Payment</th>
+                                            <th>Seller</th>
+                                            <th>Branch</th>
+                                            <th>Status</th>
                                             <th></th>
                                             <th>
                                                 <input class="form-check-input all-choices" type="checkbox">

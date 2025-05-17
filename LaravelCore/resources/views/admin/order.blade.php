@@ -10,7 +10,7 @@
                     <div class="position-relative search-form">
                         <input class="form-control form-control-lg search-input" id="order-search-input"
                             data-url="{{ route('admin.stock') }}?key=search" type="text" autocomplete="off"
-                            placeholder="Tìm kiếm hàng hóa (F3)">
+                            placeholder="Search products (F3)">
                         <div class="form-control-icon">
                             <i class="bi bi-search"></i>
                         </div>
@@ -42,7 +42,7 @@
             const nextCount = $('.order-tab').length + 1
             if (nextCount > 5) {
                 Toastify({
-                    text: "Tối đa có thể tạo 5 đơn hàng cùng lúc",
+                    text: "You can create up to 5 orders at the same time.",
                     duration: 3000,
                     close: true,
                     gravity: "top",
@@ -64,7 +64,7 @@
                                     <div class="card-body p-3">
                                         <div class="form-group has-icon-left mb-0">
                                             <div class="position-relative">
-                                                <textarea class="form-control form-control-lg border border-0" id="order-${nextCount}-note" name="note" rows="1" placeholder="Ghi chú cho đơn hàng"></textarea>
+                                                <textarea class="form-control form-control-lg border border-0" id="order-${nextCount}-note" name="note" rows="1" placeholder="Note"></textarea>
                                                 <div class="form-control-icon">
                                                     <i class="bi bi-pen"></i>
                                                 </div>
@@ -77,20 +77,20 @@
                                 <div class="card h-100">
                                     <div class="card-body d-flex flex-column">
                                         <div class="row">
-                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-created_at">Ngày bán</label>
+                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-created_at">Created At</label>
                                             <div class="col-sm-8">
                                                 <input class="form-control-plaintext text-end order-created_at" id="order-${nextCount}-created_at" name="created_at" type="datetime-local" max="{{ date('Y-m-d') }}" inputmode="numeric" autocomplete="off" required>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-customer_id">
-                                                Khách hàng&nbsp;
+                                                Customer&nbsp;
                                                 <a class="btn btn-link btn-create-user rounded-pill p-0" type="button">
                                                     <i class="bi bi-plus-circle"></i>
                                                 </a>
                                             </label>
                                             <div class="col-sm-8">
-                                                <select class="form-control-plaintext form-control select2 order-customer_id" id="order-${nextCount}-customer_id" name="customer_id" data-ajax--url="{{ route('admin.user', ['key' => 'select2']) }}" data-placeholder="Chọn khách hàng (F4)" required autocomplete="off">
+                                                <select class="form-control-plaintext form-control select2 order-customer_id" id="order-${nextCount}-customer_id" name="customer_id" data-ajax--url="{{ route('admin.user', ['key' => 'select2']) }}" data-placeholder="Search customers (F4)" required autocomplete="off">
                                                 </select>
                                             </div>
                                         </div>
@@ -98,36 +98,36 @@
                                         </div>
                                         <hr />
                                         <div class="row mb-3 row-total">
-                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-total" data-bs-toggle="tooltip" data-bs-title="Tổng giá trị hàng hóa trong đơn hàng">Tổng <span class="order-count px-1">0</span> món&nbsp;</label>
+                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-total" data-bs-toggle="tooltip" data-bs-title="Total value of goods in the order">Total <span class="order-count px-1">0</span> items&nbsp;</label>
                                             <div class="col-sm-8">
-                                                <input class="form-control-lg bg-white text-end form-control bg-white money order-total" id="order-${nextCount}-total" name="total" type="text" value="0" placeholder="Tổng tiền đơn hàng" autocomplete="off" readonly>
+                                                <input class="form-control-lg bg-white text-end form-control bg-white money order-total" id="order-${nextCount}-total" name="total" type="text" value="0" placeholder="Total money of the order" autocomplete="off" readonly>
                                             </div>
                                         </div>
                                         <div class="row row-discount">
-                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-discount" data-bs-toggle="tooltip" data-bs-title="Giá trên tổng đơn hàng (số tiền hoặc phần trăm)">Giảm giá</label>
+                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-discount" data-bs-toggle="tooltip" data-bs-title="Price on total order (Amount or Percentage)">Discount</label>
                                             <div class="col-sm-8">
-                                                <input class="form-control-lg text-end form-control bg-white money order-discount" id="order-${nextCount}-discount" name="discount" type="text" value="0" onclick="this.select()" placeholder="Số tiền hoặc phần trăm" autocomplete="off">
+                                                <input class="form-control-lg text-end form-control bg-white money order-discount" id="order-${nextCount}-discount" name="discount" type="text" value="0" onclick="this.select()" placeholder="Amount or Percentage" autocomplete="off">
                                             </div>
                                         </div>
                                         <hr />
                                         <div class="row mb-3 row-summary">
-                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-summary" data-bs-toggle="tooltip" data-bs-title="Số tiền khách hàng phải thanh toán">Phải thanh toán</label>
+                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-summary" data-bs-toggle="tooltip" data-bs-title="Amount due">Amount due</label>
                                             <div class="col-sm-8">
-                                                <input class="form-control-lg text-end form-control bg-white money order-summary" id="order-${nextCount}-summary" name="summary" type="text" value="0" placeholder="Số tiền" autocomplete="off" readonly>
+                                                <input class="form-control-lg text-end form-control bg-white money order-summary" id="order-${nextCount}-summary" name="summary" type="text" value="0" placeholder="Amount" autocomplete="off" readonly>
                                             </div>
                                         </div>
                                         <div class="order-payments" id="order-${nextCount}-payments">
                                         </div>
                                         <div class="row mb-3 row-change d-none">
-                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-change" data-bs-toggle="tooltip" data-bs-title="Tiền thừa trả lại khách hàng (bằng tiền mặt)">Tiền thừa</label>
+                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-change" data-bs-toggle="tooltip" data-bs-title="Change returned to customer (in cash)">Change</label>
                                             <div class="col-sm-8">
-                                                <input class="form-control-lg text-end form-control bg-white money order-change" id="order-${nextCount}-change" name="change" type="text" value="0" placeholder="Số tiền" autocomplete="off" readonly>
+                                                <input class="form-control-lg text-end form-control bg-white money order-change" id="order-${nextCount}-change" name="change" type="text" value="0" placeholder="Amount" autocomplete="off" readonly>
                                             </div>
                                         </div>
                                         <div class="row mb-3 row-due d-none">
-                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-due" data-bs-toggle="tooltip" data-bs-title="Số tiền còn lại chưa thanh toán">Còn thiếu</label>
+                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-due" data-bs-toggle="tooltip" data-bs-title="Amount remaining to be paid">Remaining balance</label>
                                             <div class="col-sm-8">
-                                                <input class="form-control-lg text-end form-control bg-white money order-due" id="order-${nextCount}-due" name="due" type="text" value="0" placeholder="Số tiền" autocomplete="off" readonly>
+                                                <input class="form-control-lg text-end form-control bg-white money order-due" id="order-${nextCount}-due" name="due" type="text" value="0" placeholder="Amount" autocomplete="off" readonly>
                                             </div>
                                         </div>
                                         <div class="form-group mb-3 mt-auto p-2 bg-light rounded-3 money-suggestion">
@@ -135,18 +135,18 @@
                                         <div class="form-group mb-3">
                                             <div class="btn-group btn-group-lg dropup" role="group">
                                                 <input class="btn-check order-payment" id="order-${nextCount}-payment-1" type="radio" value="1" autocomplete="off" name="payment">
-                                                <label class="btn btn-outline-info" for="order-${nextCount}-payment-1">Tiền mặt</label>
+                                                <label class="btn btn-outline-info" for="order-${nextCount}-payment-1">Cash</label>
                                                 <input class="btn-check order-payment" id="order-${nextCount}-payment-2" type="radio" value="2" autocomplete="off" name="payment">
-                                                <label class="btn btn-outline-info" for="order-${nextCount}-payment-2">Chuyển khoản</label>
+                                                <label class="btn btn-outline-info" for="order-${nextCount}-payment-2">Bank Transfer</label>
                                                 <input class="btn-check order-payment" id="order-${nextCount}-payment-3" type="radio" value="3" autocomplete="off" name="payment">
-                                                <label class="btn btn-outline-info" for="order-${nextCount}-payment-3">Thẻ</label>
+                                                <label class="btn btn-outline-info" for="order-${nextCount}-payment-3">Card</label>
                                                 <button class="btn btn-outline-info order-payment dropdown-toggle dropdown-toggle-split" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     <i class="bi bi-plus-circle"></i>
                                                 </button>
                                                 <div class="dropdown-menu" style="">
-                                                    <a class="dropdown-item btn-create-payment fw-bold fs-5" data-value="3">Quẹt thẻ</a>
-                                                    <a class="dropdown-item btn-create-payment fw-bold fs-5" data-value="2">Chuyển khoản</a>
-                                                    <a class="dropdown-item btn-create-payment fw-bold fs-5" data-value="1">Tiền mặt</a>
+                                                    <a class="dropdown-item btn-create-payment fw-bold fs-5" data-value="3">Swipe Card</a>
+                                                    <a class="dropdown-item btn-create-payment fw-bold fs-5" data-value="2">Bank Transfer</a>
+                                                    <a class="dropdown-item btn-create-payment fw-bold fs-5" data-value="1">Cash</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -155,7 +155,7 @@
                                                 @if (!empty(Auth::user()->hasAnyPermission(App\Models\User::UPDATE_ORDER, App\Models\User::CREATE_ORDER)))
                                                     <input name="status" type="hidden" value="3">
                                                     <input name="id" type="hidden">
-                                                    <button class="btn btn-lg btn-info btn-submit" type="submit">Lưu</button>
+                                                    <button class="btn btn-lg btn-info btn-submit" type="submit">Save</button>
                                                 @endif
                                             </div>
                                         </div>
@@ -168,9 +168,9 @@
             $(this).parent().before(`
                 <li class="nav-item position-relative" role="presentation">
                     <a class="nav-link btn-lg order-tab pe-5" id="order-${nextCount}-tab" data-bs-toggle="tab" href="#order-${nextCount}" role="tab" aria-controls="order-${nextCount}" aria-selected="false">
-                        Đơn hàng ${nextCount}
+                        Order ${nextCount}
                     </a>
-                    <button type="button" class="btn btn-light-primary btn-close-tab opacity-50 px-2 py-0 me-2 position-absolute end-0 top-50 translate-middle-y" data-index="${nextCount}">&times;</close>
+                    <button type="button" class="btn btn-light-primary btn-close-tab opacity-50 px-2 py-0 me-2 position-absolute end-0 top-50 translate-middle-y" data-index="${nextCount}">&times;</button>
                 </li>`)
             var newTab = new bootstrap.Tab(document.getElementById(`order-${nextCount}-tab`));
             newTab.show();
@@ -314,7 +314,7 @@
             toggleBalance()
             switch (type) {
                 case '1':
-                    addPayToOrder(1, 'Thu tiền mặt', amount, clear)
+                    addPayToOrder(1, 'Cash payment', amount, clear)
                     $('.money-suggestion').html(suggestPaymentAmounts(amount).map((number) => {
                         return `<button class="btn btn-outline-info btn-suggest-amount cursor-pointer rounded-pill ms-1 mb-1" data-value="${number}" data-clear="${clear}" type="button">${number_format(number)}</button>`
                     }).join(''))
@@ -323,7 +323,7 @@
                     chooseTransfer(clear);
                     break;
                 case '3':
-                    addPayToOrder(0, 'Thanh toán quẹt thẻ', amount, clear);
+                    addPayToOrder(0, 'Swipe card payment', amount, clear);
                     break;
                 default:
                     break;
@@ -345,10 +345,10 @@
                     <select id="payment-select" class="form-select form-control-lg mb-3">
                         ${optionsHtml}
                     </select>
-                    <input id="payment-amount" class="form-control form-control-lg mb-3 money" placeholder="Điền số tiền chuyển khoản" value="${tab.find('input.order-summary').val()}">`,
+                    <input id="payment-amount" class="form-control form-control-lg mb-3 money" placeholder="Amount" value="${tab.find('input.order-summary').val()}">`,
                 showCancelButton: true,
-                confirmButtonText: 'Lưu',
-                cancelButtonText: 'Hủy',
+                confirmButtonText: 'Save',
+                cancelButtonText: 'Cancel',
                 focusConfirm: false,
                 didOpen: () => {
                     paymentType = Swal.getPopup().querySelector('#payment-select');
@@ -375,9 +375,9 @@
                         amount = paymentAmount.value;
                     // Kiểm tra xem cả hai trường đều được nhập và trường số tiền chỉ chứa giá trị số
                     if (!note || !amount || isNaN(parseFloat(amount))) {
-                        Swal.showValidationMessage(`Dữ liệu không hợp lệ!`);
+                        Swal.showValidationMessage(`Data is invalid!`);
                     } else {
-                        addPayToOrder(type, 'Thu qua ' + note, amount, clear);
+                        addPayToOrder(type, 'Through ' + note, amount, clear);
                     }
                 }
             });
@@ -389,7 +389,7 @@
                 count = clear ? 1 : tab.find(`.transaction-refund`).length + 1
             const newRow = `
                 <div class="row mb-3 row-amount">
-                    <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="transaction-${index}${count}-amount" data-bs-toggle="tooltip" data-bs-title="Số tiền khách hàng thanh toán">${note}</label>
+                    <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="transaction-${index}${count}-amount" data-bs-toggle="tooltip" data-bs-title="Amount due">${note}</label>
                     <div class="col-sm-8">
                         <div class="btn-group btn-group-lg">
                             <input type="hidden" name="transaction_refund[]" value="0">
@@ -411,7 +411,7 @@
 
         $(document).on('click', '.btn-suggest-amount', function() {
             const clear = $(this).attr('data-clear') == '1' ? true : false
-            addPayToOrder(1, 'Thu tiền mặt', $(this).attr('data-value'), clear)
+            addPayToOrder(1, 'Cash payment', $(this).attr('data-value'), clear)
         })
 
         $(document).on('change', '.transaction-amount', function() {
@@ -424,18 +424,18 @@
                 value = input.val()
             if ($(this).prop('checked')) {
                 $(this).prev().val(1)
-                if (value.includes('Thu')) {
-                    input.val(value.replace('Thu', 'Chi'));
-                    label.text(value.replace('Thu', 'Chi'));
+                if (value.includes('Income')) {
+                    input.val(value.replace('Income', 'Expense'));
+                    label.text(value.replace('Income', 'Expense'));
                 }
             } else {
                 $(this).prev().val(0)
-                if (value.includes('Chi')) {
-                    input.val(value.replace('Chi', 'Thu'));
-                    label.text(value.replace('Chi', 'Thu'));
+                if (value.includes('Expense')) {
+                    input.val(value.replace('Expense', 'Income'));
+                    label.text(value.replace('Expense', 'Income'));
                 }
             }
-            toggleBalance()
+            toggleBalance();
         })
 
         function toggleBalance() {

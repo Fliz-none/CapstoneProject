@@ -10,7 +10,6 @@
                     <h5 class="text-uppercase">{{ $pageName }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Bảng tin</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
                         </ol>
                     </nav>
@@ -25,7 +24,7 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_ROLE)))
                         <a class="btn btn-info mb-3 block btn-create-role">
                             <i class="bi bi-plus-circle"></i>
-                            Thêm
+                            Add
                         </a>
                     @endif
                 </div>
@@ -37,9 +36,9 @@
                             <table class="table table-hover table-borderless" id="role-table">
                                 <thead>
                                     <tr>
-                                        <th>Mã</th>
-                                        <th>Tên vai trò</th>
-                                        <th>Các quyền</th>
+                                        <th>#</th>
+                                        <th>Role Name</th>
+                                        <th>Permissions</th>
                                         <th></th>
                                     </tr>
                                 </thead>

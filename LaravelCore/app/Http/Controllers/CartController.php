@@ -9,7 +9,7 @@ class CartController extends Controller
 {
     public function cart()
     {
-        $pageName = 'Giỏ hàng';
+        $pageName = 'Cart';
         $settings = Setting::pluck('value', 'key');
         return view('web.cart', compact('pageName', 'settings'));
     }

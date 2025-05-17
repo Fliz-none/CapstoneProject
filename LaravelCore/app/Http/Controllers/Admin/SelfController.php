@@ -14,25 +14,17 @@ use Illuminate\Support\Facades\Log;
 
 class SelfController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-
     public function __construct()
     {
         parent::__construct();
         if ($this->user === null) {
             $this->user = Auth::user();
         }
-        $this->middleware(['admin','auth']);
+        $this->middleware(['admin', 'auth']);
     }
 
     /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * Display user profile or settings page.
      */
     public function index(Request $request)
     {
@@ -40,16 +32,12 @@ class SelfController extends Controller
         switch ($request->key) {
             case 'settings':
                 return view('admin.profile_settings', compact('pageName'));
-                break;
             case 'password':
                 return view('admin.profile_password', compact('pageName'));
-                break;
             case '':
                 return view('admin.profile', compact('pageName'));
-                break;
             default:
                 abort(404);
-                break;
         }
     }
 
@@ -63,18 +51,12 @@ class SelfController extends Controller
             $user->avatar = $filename;
             $user->save();
 
-            $response = array(
+            return response()->json([
                 'status' => 'success',
                 'msg' => __('Successfully updated avatar'),
-            );
-            return response()->json($response, 200);
+            ], 200);
         } catch (\Exception $e) {
-            Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
+            log_exception($e);
             return back()->withErrors($e)->withInput();
         }
     }
@@ -82,47 +64,51 @@ class SelfController extends Controller
     public function change_settings(Request $request)
     {
         $rules = [
-            'password' => ['required', 'min: 8', 'max: 32'],
+            'password' => ['required', 'min:8', 'max:32'],
             'password' => [function ($attribute, $value, $fail) {
                 if (!Hash::check($value, $this->user->password)) {
-                    return $fail(__('Mật khẩu hiện tại không đúng'));
+                    return $fail(__('Current password is incorrect'));
                 }
             }],
-            'name' => ['required', 'string', 'min: 3', 'max:125'],
+            'name' => ['required', 'string', 'min:3', 'max:125'],
             'gender' => ['required', 'in:0,1,2'],
-            'email' => ['required', 'email', 'min: 5', 'max:125', Rule::unique('users')->ignore($request->id)],
+            'email' => ['required', 'email', 'min:5', 'max:125', Rule::unique('users')->ignore($request->id)],
             'phone' => ['required', 'numeric', 'digits:10', 'regex:/^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/', Rule::unique('users')->ignore($request->id)],
             'address' => ['string', 'max:191']
         ];
+
         $messages = [
-            'name.required' => 'Thông tin này không thể trống.',
-            'name.string' => 'Thông tin không hợp lệ.',
-            'name.min' => 'Tối thiểu 3 kí tự',
-            'name.max' => 'Tối đa 125 kí tự.',
+            'name.required' => 'This field is required.',
+            'name.string' => 'Invalid format.',
+            'name.min' => 'Minimum 3 characters.',
+            'name.max' => 'Maximum 125 characters.',
 
-            'phone.required' => 'Thông tin này không thể trống.',
-            'phone.numeric' => 'Số điện thoại không đúng.',
-            'phone.digit' => 'Vui lòng nhập đúng số điện thoại',
-            'phone.regex' => 'Vui lòng nhập đúng số điện thoại',
-            'phone.unique' => 'Số điện thoại đã được đăng kí',
+            'phone.required' => 'This field is required.',
+            'phone.numeric' => 'Invalid phone number.',
+            'phone.digit' => 'Please enter a valid phone number.',
+            'phone.regex' => 'Please enter a valid phone number.',
+            'phone.unique' => 'Phone number already in use.',
 
-            'address.string' => 'Thông tin không hợp lệ.',
-            'address.max' => 'Tối đa 191 kí tự.',
+            'address.string' => 'Invalid format.',
+            'address.max' => 'Maximum 191 characters.',
 
-            'gender.required' => 'Không được thiếu thông tin này',
-            'gender.in' => 'Không đúng định dạng',
+            'gender.required' => 'This field is required.',
+            'gender.in' => 'Invalid gender format.',
 
-            'email.required' => 'Thông tin này không thể trống.',
-            'email.email' => 'Vui lòng nhập đúng định dạng email',
-            'email.min' => 'Tối thiểu 5 kí tự',
-            'email.max' => 'Tối đa 125 kí tự.',
-            'email.unique' => 'Email đã tồn tại.',
-            'password.required' => 'Thông tin này không thể trống.',
-            'password.string' => 'Thông tin không hợp lệ.',
-            'password.min' => 'Tối thiểu 8 kí tự',
-            'password.max' => 'Mật khẩu tối đa dưới 32 kí tự',
+            'email.required' => 'This field is required.',
+            'email.email' => 'Please enter a valid email address.',
+            'email.min' => 'Minimum 5 characters.',
+            'email.max' => 'Maximum 125 characters.',
+            'email.unique' => 'Email already exists.',
+
+            'password.required' => 'This field is required.',
+            'password.string' => 'Invalid format.',
+            'password.min' => 'Minimum 8 characters.',
+            'password.max' => 'Maximum 32 characters.',
         ];
+
         $request->validate($rules, $messages);
+
         try {
             $user = User::find($request->id);
             $user->name = $request->name;
@@ -131,12 +117,13 @@ class SelfController extends Controller
             $user->gender = $request->gender;
             $user->address = $request->address;
             $user->save();
-            $response = array(
+
+            return back()->with('response', [
                 'status' => 'success',
                 'msg' => __('Successfully updated profile information'),
-            );
-            return back()->with('response', $response);
+            ]);
         } catch (\Exception $e) {
+            log_exception($e);
             return back()->withErrors($e)->withInput();
         }
     }
@@ -144,10 +131,10 @@ class SelfController extends Controller
     public function change_password(ChangePasswordRequest $request)
     {
         $rules = [
-            'current_password' => ['required', 'min: 8', 'max: 32'],
+            'current_password' => ['required', 'min:8', 'max:32'],
             'current_password' => [function ($attribute, $value, $fail) {
                 if (!Hash::check($value, $this->user->password)) {
-                    return $fail(__('Mật khẩu hiện tại không đúng'));
+                    return $fail(__('Current password is incorrect'));
                 }
             }],
             'password' => ['required', 'min:8', 'max:32', 'different:current_password'],
@@ -155,20 +142,21 @@ class SelfController extends Controller
         ];
 
         $messages = [
-            'current_password.required' => 'Thông tin này không thể trống',
-            'current_password.min' => 'Mật khẩu tối đa 8 ký tự',
-            'current_password.max' => 'Mật khẩu tối đa 32 ký tự',
+            'current_password.required' => 'This field is required.',
+            'current_password.min' => 'Minimum 8 characters.',
+            'current_password.max' => 'Maximum 32 characters.',
 
-            'password.required' => 'Thông tin này không thể trống',
-            'password.min' => 'Tối thiểu 8 kí tự',
-            'password.max' => 'Mật khẩu tối đa dưới 32 kí tự',
-            'password.different' => 'Mật khẩu mới khác với mật khẩu ban đầu',
+            'password.required' => 'This field is required.',
+            'password.min' => 'Minimum 8 characters.',
+            'password.max' => 'Maximum 32 characters.',
+            'password.different' => 'New password must be different from the old one.',
 
-            'password_confirmation.required' => 'Thông tin này không thể trống',
-            'password_confirmation.min' => 'Tối thiểu 8 kí tự',
-            'password_confirmation.max' => 'Mật khẩu tối đa dưới 32 kí tự',
-            'password_confirmation.same' => 'Mật khẩu mới phải trùng khớp với mật bạn đặt'
+            'password_confirmation.required' => 'This field is required.',
+            'password_confirmation.min' => 'Minimum 8 characters.',
+            'password_confirmation.max' => 'Maximum 32 characters.',
+            'password_confirmation.same' => 'Password confirmation does not match.',
         ];
+
         $request->validate($rules, $messages);
 
         try {
@@ -176,18 +164,12 @@ class SelfController extends Controller
             $user->password = Hash::make($request->password);
             $user->save();
 
-            $response = [
+            return back()->with('response', [
                 'status' => 'success',
                 'msg' => __('Successfully updated password.'),
-            ];
-            return back()->with('response', $response);
+            ]);
         } catch (\Exception $e) {
-            Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
+            log_exception($e);
             return back()->withErrors($e)->withInput();
         }
     }
@@ -197,10 +179,12 @@ class SelfController extends Controller
         $rules = [
             'main_branch' => ['required', 'numeric'],
         ];
+
         $messages = [
             'main_branch.required' => Controller::NOT_EMPTY,
             'main_branch.numeric' => Controller::DATA_INVALID,
         ];
+
         $request->validate($rules, $messages);
 
         try {
@@ -208,19 +192,13 @@ class SelfController extends Controller
             $user->main_branch = $request->main_branch;
             $user->save();
 
-            $response = [
+            return response()->json([
                 'main_branch' => $this->user->branch->name,
                 'status' => 'success',
-                'msg' => __('Đã cập nhật chi nhánh mặc định thành công.'),
-            ];
-            return response()->json($response, 200);
+                'msg' => __('Default branch updated successfully.'),
+            ], 200);
         } catch (\Exception $e) {
-            Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
+            log_exception($e);
             return back()->withErrors($e)->withInput();
         }
     }

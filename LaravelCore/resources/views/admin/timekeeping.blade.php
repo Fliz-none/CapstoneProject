@@ -10,7 +10,6 @@
                     <h5 class="text-uppercase">{{ $pageName }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Bảng tin</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
                         </ol>
                     </nav>
@@ -42,7 +41,7 @@
         @if (!$conditions['isCheckoutTime'] && !$conditions['isCheckin'] && $conditions['hasWork'])
             <div class="alert alert-warning alert-dismissible fade show text-white" role="alert">
                 <i class="fa-solid fa-xmark"></i>
-                Chưa đến thời gian thích hợp để checkout
+                Checkout is allowed, but not recommended at this time.
                 <button class="btn-close" data-bs-dismiss="alert" type="button" aria-label="Close"></button>
             </div>
         @endif
@@ -63,8 +62,8 @@
                             @csrf
                             <div class="card-body">
                                 <div class="card-title text-center">
-                                    <h6 class="my-3 text-primary">Xác nhận bạn đang ở <br> {{ Auth::user()->branch->name }}</h6>
-                                    {!! $conditions['isCheckin'] ? '<span class="badge bg-success fs-6 btn-checkin">Chấm công vào</span>' : '<span class="badge bg-info fs-6 btn-checkout">Chấm công ra</span>' !!}
+                                    <h6 class="my-3 text-primary">Confirm you are at <br> {{ Auth::user()->branch->name }}</h6>
+                                    {!! $conditions['isCheckin'] ? '<span class="badge bg-success fs-6 btn-checkin">Check in</span>' : '<span class="badge bg-info fs-6 btn-checkout">Check out</span>' !!}
                                 </div>
                                 <div class="row justify-content-center">
                                     <div class="col-12 work-webcam p-0 d-flex justify-content-center"></div>
@@ -73,8 +72,8 @@
                             </div>
                             <div class="card-footer border-0 text-center d-none">
                                 <input name="work_image" type="hidden">
-                                <button class="btn btn-primary btn-taken-photo" type="button">Chụp hình</button>
-                                <button class="btn btn-primary btn-create-work d-none" type="submit">Xác nhận</button>
+                                <button class="btn btn-primary btn-taken-photo" type="button">Take photo</button>
+                                <button class="btn btn-primary btn-create-work d-none" type="submit">Confirm</button>
                             </div>
                         </form>
                     @else
@@ -82,7 +81,7 @@
                             <div class="work-done-icon">
                                 <i class="bi bi-calendar-check" style="font-size: calc(10rem + 1.5vw);"></i>
                             </div>
-                            <span class="fs-5 text-primary fw-bold">Bạn đã hoàn thành chấm công của hôm nay</span>
+                            <span class="fs-5 text-primary fw-bold">You have completed your timekeeping for today</span>
                         </div>
                     @endif
                 @else
@@ -90,7 +89,7 @@
                         <div class="work-done-icon">
                             <i class="bi bi-phone" style="font-size: calc(10rem + 1.5vw);"></i>
                         </div>
-                        <span class="fs-5 text-primary fw-bold">Vui lòng sử dụng điện thoại để chấm công</span>
+                        <span class="fs-5 text-primary fw-bold">Please use your phone to check in or check out</span>
                     </div>
                 @endif
             </div>
@@ -131,14 +130,14 @@
 
             function showTime(timeBegin) {
                 if (!timeBegin || timeBegin == '') {
-                    $('.work-clock').text(`Bạn đã làm việc được: ...`);
+                    $('.work-clock').text(`You have worked: ...`);
                 } else {
                     var now = moment();
                     var duration = moment.duration(now.diff(moment(timeBegin)));
                     let hours = Math.floor(duration.asHours()).toString().padStart(2, '0'),
                         minutes = duration.minutes().toString().padStart(2, '0'),
                         seconds = duration.seconds().toString().padStart(2, '0');
-                    $('.work-clock').text(`Bạn đã làm việc được: ${hours}:${minutes}:${seconds}`);
+                    $('.work-clock').text(`You have worked: ${hours}:${minutes}:${seconds}`);
                 }
             }
 

@@ -20,7 +20,7 @@ use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
 {
-    const NAME = 'tài khoản';
+    const NAME = 'User';
 
     public function __construct()
     {
@@ -60,7 +60,7 @@ class UserController extends Controller
                                     </li>';
                         })->push('<li class="list-group-item border border-0 pb-0">
                                     <button class="btn btn-link text-decoration-none w-100 btn-create-user" ' . $this->parseQueryStr($request->q) . '>
-                                        Tạo tài khoản mới cho ' . $request->q . '
+                                        Create new user <strong>' . $request->q . '</strong>
                                     </button>
                                 </li>');
                     break;
@@ -84,7 +84,7 @@ class UserController extends Controller
                         })->push('<li class="list-group-item border border-0 pb-0">
                                                     <div class="row p-0 mx-0">
                                                         <div class="col-12 py-3 text-center">
-                                                            Không tìm thấy nhân viên nào khác
+                                                            No other staff members found
                                                         </div>
                                                     </div>
                                                 </li>');
@@ -116,14 +116,13 @@ class UserController extends Controller
                         ->orWhere('email', 'LIKE', '%' . $request->q . '%');
                     })->orderBy('id', 'DESC')
                         ->take(20)->get()->map(function ($obj) {
-                            // dd($obj);
                             $text = $obj->name . ($obj->phone ? ' - ' . $obj->phone : '');
                             return '<li class="list-group-item list-group-item-action border border-0 cursor-pointer btn-select-user" data-id="' . $obj->id . '" data-name="' . $text . '" aria-current="true">
                                             ' . $text . '
                                     </li>';
                         })->push('<li class="list-group-item border border-0">
                                     <button class="btn btn-link text-decoration-none w-100 btn-create-user" ' . $this->parseQueryStr($request->q) . '>
-                                        Tạo khách hàng mới cho ' . $request->q . '
+                                        Create new user for <strong>' . $request->q . '</strong>
                                     </button>
                                 </li>');
                     break;
@@ -240,8 +239,8 @@ class UserController extends Controller
                     })
                     ->filterColumn('status', function ($query, $keyword) {
                         $statusMap = [
-                            'Kích hoạt' => 1,
-                            'Đã khóa' => 0,
+                            'active' => 1,
+                            'inactive' => 0,
                         ];
                         if (isset($statusMap[$keyword])) {
                             $query->where('status', $statusMap[$keyword]);
@@ -251,16 +250,16 @@ class UserController extends Controller
                         $str = '<div class="d-flex justify-content-end">';
                         if ($this->user->can(User::UPDATE_USER)) {
                             $str .= '<a class="btn text-primary btn-update-user_password" data-id="' . $obj->id . '">
-                                <i class="bi bi-key" data-bs-toggle="tooltip" data-bs-title="Đổi mật khẩu"></i>
+                                <i class="bi bi-key" data-bs-toggle="tooltip" data-bs-title="Change Password"></i>
                             </a>
                             <a class="btn text-primary btn-update-user_role" data-id="' . $obj->id . '">
-                                <i class="bi bi-person-lock" data-bs-toggle="tooltip" data-bs-title="Phân quyền"></i>
+                                <i class="bi bi-person-lock" data-bs-toggle="tooltip" data-bs-title="Change Role"></i>
                             </a>';
                         }
                         if ($this->user->can(User::DELETE_USER)) {
                             $str .= '<form method="post" action="' . route('admin.user.remove') . '" class="save-form">
                                     <input type="hidden" name="choices[]" value="' . $obj->id . '"/>
-                                    <button class="btn btn-link text-decoration-none btn-remove" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Xóa">
+                                    <button class="btn btn-link text-decoration-none btn-remove" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Delete">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>';
@@ -271,7 +270,7 @@ class UserController extends Controller
                     ->setTotalRecords($objs->count())
                     ->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = self::NAME . ' management';
                 return view('admin.users', compact('pageName'));
             }
         }
@@ -288,7 +287,7 @@ class UserController extends Controller
                 'regex:/^0[0-9]{9,10}$/',
                 function ($attribute, $value, $fail) use ($request) {
                     if (User::where('phone', $value)->count()) {
-                        $fail('Số điện thoại không được trùng với một tài khoản khác');
+                        $fail('Phone number must not be duplicated with another account');
                     }
                 }
             ],
@@ -302,7 +301,7 @@ class UserController extends Controller
                 'max:125',
                 function ($attribute, $value, $fail) use ($request) {
                     if (User::where('email', $value)->count()) {
-                        $fail('Email không được trùng với một tài khoản khác');
+                        $fail('Email must not be duplicated with another account');
                     }
                 }
             ],
@@ -316,23 +315,22 @@ class UserController extends Controller
             'name.min' => Controller::MIN,
             'name.max' => Controller::MAX,
             'phone.numeric' => Controller::DATA_INVALID,
-            'phone.digits' => 'Số điện thoại phải có 10 số!',
-            'phone.unique' => 'Số điện thoại đã được sử dụng!',
-            'phone.regex' => 'Số điện thoại không đúng định dạng!',
-            'gender.required' => 'Vui lòng chọn giới tính!',
-            'gender.integer' => 'Giới tính: ' . Controller::DATA_INVALID,
-            'gender.between' => 'Giới tính: ' . Controller::DATA_INVALID,
+            'phone.digits' => 'Phone number must have 10 digits!',
+            'phone.unique' => 'Phone number has already been used!',
+            'phone.regex' => 'Phone number is not in the correct format!',
+            'gender.required' => 'Please select a gender!',
+            'gender.integer' => 'Gender: ' . Controller::DATA_INVALID,
+            'gender.between' => 'Gender: ' . Controller::DATA_INVALID,
             'email.required' => Controller::NOT_EMPTY,
             'email.string' => Controller::DATA_INVALID,
             'email.max' => Controller::MAX,
-            'email.min' => 'Tối thiểu phải từ 2 ký tự',
-            'email.unique' => 'Email bạn nhập không khả dụng!',
+            'email.min' => 'Minimum must be 2 characters',
+            'email.unique' => 'Email you entered is not available!',
             'birthday.date' => Controller::DATA_INVALID,
             'birthday.date_format' => Controller::DATA_INVALID,
             'address.string' => Controller::DATA_INVALID,
             'address.min' => Controller::MIN,
             'address.max' => Controller::MAX,
-            // 'role_id.required' => 'Vui lòng chọn 1 vai trò',
             'local_id.numeric' => Controller::DATA_INVALID,
             'note.string' => Controller::DATA_INVALID,
             'note.min' => Controller::MIN,
@@ -361,25 +359,19 @@ class UserController extends Controller
                     $user->update(['avatar' => $filename]);
                 }
 
-                LogController::create('tạo', self::NAME, $user->id);
+                LogController::create('create', self::NAME, $user->id);
                 $response = array(
                     'user' => $user,
                     'status' => 'success',
-                    'msg' => 'Đã tạo ' . self::NAME . ' ' . $user->name
+                    'msg' => 'Created ' . self::NAME . ' ' . $user->name
                 );
                 cache()->forget('users');
             } catch (\Exception $e) {
-                Log::error(
-                    'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                );
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                log_exception($e);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -395,7 +387,7 @@ class UserController extends Controller
                 'regex:/^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/',
                 function ($attribute, $value, $fail) use ($request) {
                     if (User::where('phone', $value)->where('id', '!=', $request->id)->count()) {
-                        $fail('Số điện thoại không được trùng với một tài khoản khác');
+                        $fail('Phone number cannot be duplicated with another account');
                     }
                 }
             ],
@@ -409,7 +401,7 @@ class UserController extends Controller
                 'max:125',
                 function ($attribute, $value, $fail) use ($request) {
                     if (User::where('email', $value)->where('id', '!=', $request->id)->count()) {
-                        $fail('Email không được trùng với một tài khoản khác');
+                        $fail('Email must not be duplicated with another account');
                     }
                 }
             ],
@@ -423,17 +415,17 @@ class UserController extends Controller
             'name.min' => Controller::MIN,
             'name.max' => Controller::MAX,
             'phone.numeric' => Controller::DATA_INVALID,
-            'phone.digits' => 'Số điện thoại phải có 10 số!',
-            'phone.unique' => 'Số điện thoại đã được sử dụng!',
-            'phone.regex' => 'Số điện thoại không đúng định dạng!',
-            'gender.required' => 'Vui lòng chọn giới tính!',
-            'gender.integer' => 'Giới tính: ' . Controller::DATA_INVALID,
-            'gender.between' => 'Giới tính: ' . Controller::DATA_INVALID,
+            'phone.digits' => 'Phone number must have 10 digits!',
+            'phone.unique' => 'Phone number has already been used!',
+            'phone.regex' => 'Phone number is not in the correct format!',
+            'gender.required' => 'Please select a gender!',
+            'gender.integer' => 'Gender: ' . Controller::DATA_INVALID,
+            'gender.between' => 'Gender: ' . Controller::DATA_INVALID,
             'email.required' => Controller::NOT_EMPTY,
             'email.string' => Controller::DATA_INVALID,
             'email.max' => Controller::MAX,
-            'email.min' => 'Tối thiểu phải từ 2 ký tự',
-            'email.unique' => 'Email bạn nhập không khả dụng!',
+            'email.min' => 'Minimum must be 2 characters',
+            'email.unique' => 'Email you entered is not available!',
             'birthday.date' => Controller::DATA_INVALID,
             'birthday.date_format' => Controller::DATA_INVALID,
             'address.string' => Controller::DATA_INVALID,
@@ -471,36 +463,30 @@ class UserController extends Controller
                         }
 
 
-                        LogController::create('sửa', self::NAME, $user->id);
+                        LogController::create('update', self::NAME, $user->id);
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Đã cập nhật ' . $user->name
+                            'msg' => 'Updated ' . $user->name
                         );
                         cache()->forget('users');
                     } else {
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                            'msg' => 'An error occurred, please reload the page and try again!'
                         );
                     }
                 } catch (\Exception $e) {
-                    Log::error(
-                        'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                            'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                            'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                            'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                            'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
-                    return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                    log_exception($e);
+                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                    'msg' => 'An error occurred, please reload the page and try again!'
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -529,10 +515,10 @@ class UserController extends Controller
         cache()->forget('dealers');
         cache()->forget('cashiers');
         $roles = $user->getRoleNames()->implode(', ');
-        LogController::create('cập nhật vai trò ' . $roles, "tài khoản", $user->id);
+        LogController::create('update ' . $roles, self::NAME, $user->id);
         $response = array(
             'status' => 'success',
-            'msg' => 'Đã cập nhật vai trò ' . $roles . ' cho ' . $user->name . '!'
+            'msg' => 'Updated roles ' . $roles . ' for ' . $user->name . '!'
         );
         cache()->forget('users');
         return response()->json($response, 200);
@@ -548,15 +534,15 @@ class UserController extends Controller
 
         $user = User::find($request->id);
         if (!$user) {
-            return back()->withErrors(['user_id' => 'User không tồn tại']);
+            return back()->withErrors(['user_id' => 'User does not exist']);
         }
         $user->password = Hash::make($request->password);
         $user->save();
 
-        LogController::create('cập nhật mật khẩu', "tài khoản", $user->id);
+        LogController::create('update password', "account", $user->id);
         $response = array(
             'status' => 'success',
-            'msg' => 'Đã cập nhật mật khẩu cho ' . $user->name . '!'
+            'msg' => 'Updated password for ' . $user->name . '!'
         );
         return response()->json($response, 200);
     }
@@ -570,32 +556,32 @@ class UserController extends Controller
             foreach ($request->choices as $key => $id) {
                 $obj = User::find($id);
                 if ($obj->id == Auth::id()) {
-                    return response()->json(['errors' => ['role' => ['Bạn không thể tự xóa tài khoản của chính mình!']]], 422);
+                    return response()->json(['errors' => ['role' => ['You cannot delete your own account!']]], 422);
                 }
                 if ($obj->getRoleNames()->contains('Super Admin')) {
-                    return response()->json(['errors' => ['role' => ['Bạn không thể xóa tài khoản này!']]], 422);
+                    return response()->json(['errors' => ['role' => ['You cannot delete this account!']]], 422);
                 }
                 if ($obj->canRemove()) {
                     $obj->delete();
-                    LogController::create("xóa", self::NAME, $obj->id);
+                    LogController::create("delete", self::NAME, $obj->id);
                     array_push($success, $obj->name);
                 } else {
                     array_push($fail, $obj->name);
                 }
             }
             if (count($success)) {
-                $msg = 'Đã xóa ' . self::NAME . ' ' . implode(', ', $success) . '. ';
+                $msg = 'Deleted ' . self::NAME . ' ' . implode(', ', $success) . '. ';
                 cache()->forget('users');
             }
             if (count($fail)) {
-                $msg .= implode(', ', $fail) . ' không thể xóa!';
+                $msg .= implode(', ', $fail) . ' could not be deleted!';
             }
             $response = array(
                 'status' => 'success',
                 'msg' => $msg
             );
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -611,7 +597,7 @@ class UserController extends Controller
             'name' => $imageName,
             'author_id' => $this->user->id
         ]);
-        LogController::create('tạo', self::NAME . ' ' . $image->name, $image->id);
+        LogController::create('create', self::NAME . ' ' . $image->name, $image->id);
     }
 
     static function parseQueryStr($q)

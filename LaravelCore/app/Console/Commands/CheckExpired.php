@@ -80,7 +80,8 @@ class CheckExpired extends Command
                 NotificationController::push($noti, $users);
                 //Gửi email thông báo
                 if (!empty($users)) {
-                    Mail::to($users->pluck('email')->filter())->send(new SendMail('admin.templates.emails.expired_notification', $stocks, 'Thông báo sản phẩm sắp hết hạn tại ' . $warehouse->name));
+                    //Thông báo sản phẩm sắp hết hạn tại kho
+                    Mail::to($users->pluck('email')->filter())->send(new SendMail('admin.templates.emails.expired_notification', $stocks, 'Expiration Alert at ' . $warehouse->name));
                 }
             }
 

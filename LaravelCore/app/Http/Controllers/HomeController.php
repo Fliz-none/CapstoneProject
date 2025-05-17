@@ -23,7 +23,7 @@ class HomeController extends Controller
      */
     public function home()
     {
-        $pageName = 'Trang chủ';
+        $pageName = 'Home';
         $settings = Setting::pluck('value', 'key');
         $products = Product::where('status', '>', 0)
             ->orderBy('sort', 'ASC')
@@ -39,7 +39,7 @@ class HomeController extends Controller
     }
     public function contact()
     {
-        $pageName = 'Liên hệ';
+        $pageName = 'Contact';
         $settings = Setting::pluck('value', 'key');
         return view('web.contact', compact('pageName', 'settings'));
     }

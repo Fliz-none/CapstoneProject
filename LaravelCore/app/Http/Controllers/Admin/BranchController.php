@@ -13,16 +13,16 @@ use Yajra\DataTables\Facades\DataTables;
 
 class BranchController extends Controller
 {
-    const NAME = 'chi nhánh',
+    const NAME = 'Branch',
         MESSAGES = [
             'name.required' => Controller::NOT_EMPTY,
             'name.string' => Controller::DATA_INVALID,
             'name.max' => Controller::MAX,
             'phone.required' => Controller::NOT_EMPTY,
             'phone.numeric' => Controller::DATA_INVALID,
-            'phone.digits' => 'Số điện thoại phải có 10 số!',
+            'phone.digits' => 'The phone does not have enough digits!',
             'phone.regex' => Controller::DATA_INVALID,
-            'phone.unique' => 'Số điện thoại không khả dụng!',
+            'phone.unique' => 'The phone has already been taken!',
             'address.required' => Controller::NOT_EMPTY,
             'address.string' => Controller::DATA_INVALID,
             'address.min' => Controller::MIN,
@@ -65,7 +65,7 @@ class BranchController extends Controller
                         })
                         ->push([
                             'id' => '',
-                            'text' => 'Không chọn chi nhánh'
+                            'text' => 'Do not choose'
                         ]);
                     break;
                 default:
@@ -135,8 +135,8 @@ class BranchController extends Controller
                     })
                     ->filterColumn('status', function ($query, $keyword) {
                         $statusMap = [
-                            'hoatdong' => 1,
-                            'bikhoa' => 0,
+                            'active' => 1,
+                            'blocked' => 0,
                         ];
                         if (isset($statusMap[$keyword])) {
                             $query->where('status', $statusMap[$keyword]);
@@ -157,7 +157,7 @@ class BranchController extends Controller
                     ->rawColumns(['checkboxes', 'code', 'name', 'address', 'status', 'action'])
                     ->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = self::NAME . ' management';
                 return view('admin.branches', compact('pageName'));
             }
         }
@@ -182,24 +182,18 @@ class BranchController extends Controller
                     'status' => $request->has('status'),
                 ]);
 
-                LogController::create('tạo', self::NAME, $branch->id);
+                LogController::create('create', self::NAME, $branch->id);
                 cache()->forget('branches');
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Đã tạo ' . self::NAME . ' ' . $branch->name
+                    'msg' => 'Created ' . self::NAME . ' ' . $branch->name
                 );
             } catch (\Exception $e) {
-                Log::error(
-                    'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                );
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                log_exception($e);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 403);
         }
         return response()->json($response, 200);
     }
@@ -230,32 +224,26 @@ class BranchController extends Controller
                         cache()->forget('branches');
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Đã cập nhật ' . self::NAME . ' ' . $branch->name
+                            'msg' => 'Updated ' . self::NAME . ' ' . $branch->name
                         );
                     } else {
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                            'msg' => 'An error occurred, please reload the page and try again!'
                         );
                     }
                 } catch (\Exception $e) {
-                    Log::error(
-                        'Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                            'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                            'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                            'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                            'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
-                    return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                    log_exception($e);
+                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                    'msg' => 'An error occurred, please reload the page and try again!'
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 403);
         }
         return response()->json($response, 200);
     }
@@ -268,19 +256,19 @@ class BranchController extends Controller
                 $obj = Branch::find($id);
                 $obj->delete();
                 cache()->forget('branches');
-                LogController::create("xóa", self::NAME, $obj->id);
+                LogController::create("delete", self::NAME, $obj->id);
                 array_push($success, $obj->name);
             }
             $msg = '';
             if (count($success)) {
-                $msg .= 'Đã xóa ' . self::NAME . ' ' . implode(', ', $success) . '. ';
+                $msg .= 'Deleted ' . self::NAME . ' ' . implode(', ', $success) . '. ';
             }
             $response = array(
                 'status' => 'success',
                 'msg' => $msg
             );
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 403);
         }
         return response()->json($response, 200);
     }

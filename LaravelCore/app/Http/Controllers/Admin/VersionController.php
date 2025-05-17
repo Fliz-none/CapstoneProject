@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class VersionController extends Controller
 {
-    const NAME = 'phiên bản',
+    const NAME = 'Version',
         RULES = [
             'name' => ['required', 'string', 'min:2', 'max:125'],
             'description' => ['required', 'string'],
@@ -109,14 +109,14 @@ class VersionController extends Controller
                                 return $obj->_user->name;
                             }
                         } else {
-                            return 'Không có';
+                            return 'N/A';
                         }
                     })
                     ->rawColumns(['checkboxes', 'name', 'user', 'description', 'action'])
                     ->setTotalRecords($objs->count())
                     ->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = self::NAME . ' management';
                 return view('admin.versions', compact('pageName'));
             }
         }
@@ -140,8 +140,8 @@ class VersionController extends Controller
                             </div>
                             <div class="col-10">
                                 <div class="notification-text text-wrap">
-                                    <p class="notification-title fw-bold">Thông báo nâng cấp hệ thống</p>
-                                    <small class="notification-subtitle">Hệ thống phần mềm vừa được nâng cấp. Vui lòng click để xem chi tiết</small>
+                                    <p class="notification-title fw-bold">System Upgrade Notice</p>
+                                    <small class="notification-subtitle">The software has just been updated. Click here to view the details.</small>
                                 </div>
                             </div>
                         </a>
@@ -157,10 +157,10 @@ class VersionController extends Controller
             DB::table('notification_user')->insert($data_noti);
             $response = array(
                 'status' => 'success',
-                'msg' => 'Đã tạo ' . self::NAME . ': ' . $version->name
+                'msg' => 'Created ' . self::NAME . ': ' . $version->name
             );
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -180,16 +180,16 @@ class VersionController extends Controller
 
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Đã cập nhật ' . self::NAME . ': ' . $version->name
+                    'msg' => 'Updated ' . self::NAME . ': ' . $version->name
                 );
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                    'msg' => 'An error occurred, please reload the page and try again!'
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -206,7 +206,7 @@ class VersionController extends Controller
         }
         $response = array(
             'status' => 'success',
-            'msg' => 'Đã xóa ' . self::NAME . ' ' . implode(', ', $msg)
+            'msg' => 'Successfully deleted ' . self::NAME . ' ' . implode(', ', $msg)
         );
         return  response()->json($response, 200);
     }

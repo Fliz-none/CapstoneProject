@@ -10,7 +10,6 @@
                     <h5 class="text-uppercase">{{ $pageName }}</h5>
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.home') }}">Bảng tin</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
                         </ol>
                     </nav>
@@ -25,20 +24,20 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_CATALOGUE)))
                         <a class="btn k-btn-info mb-3 block btn-create-catalogue">
                             <i class="bi bi-plus-circle"></i>
-                            Thêm
+                            Add
                         </a>
                     @endif
                     @if (!empty(Auth::user()->can(App\Models\User::UPDATE_CATALOGUE)))
                         <button class="btn btn-primary mb-3 btn-sort ms-2" type="button">
                             <i class="bi bi-filter-left"></i>
-                            Sắp xếp
+                            Sort
                         </button>
                     @endif
                     <div class="d-inline-block process-btns d-none">
                         @if (!empty(Auth::user()->can(App\Models\User::DELETE_CATALOGUES)))
                             <a class="btn btn-danger btn-removes mb-3 ms-2" type="button">
                                 <i class="bi bi-trash"></i>
-                                Xoá
+                                Delete
                             </a>
                         @endif
                     </div>
@@ -53,13 +52,13 @@
                                 <table class="table table-striped table-bordered key-table" id="catalogue-table">
                                     <thead>
                                         <tr>
-                                            <th>Mã</th>
-                                            <th>Ảnh</th>
-                                            <th>Tên</th>
-                                            <th>Mô tả</th>
-                                            <th>Danh mục cha</th>
-                                            <th>Trạng thái</th>
-                                            <th>STT</th>
+                                            <th>Code</th>
+                                            <th>Image</th>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Parent Category</th>
+                                            <th>Status</th>
+                                            <th>Order</th>
                                             <th></th>
                                             <th>
                                                 <input class="form-check-input all-choices" type="checkbox">

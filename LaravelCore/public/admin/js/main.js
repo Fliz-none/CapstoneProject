@@ -259,7 +259,7 @@ $("body").on("shown.bs.modal", ".modal", function () {
 function initLocalSelect(
     dropdownParent,
     tags = true,
-    placeholder = "Nhập thêm hoặc chọn"
+    placeholder = "Type more or choose from the list"
 ) {
     return {
         theme: "bootstrap-5",
@@ -565,7 +565,7 @@ function handleSearch(input) {
                     <li>
                         <div class="row p-0 mx-0">
                             <div class="col-12 py-3 text-center">
-                                Không có kết quả nào phù hợp với tìm kiếm
+                                No matching results found
                             </div>
                         </div>
                     </li>`
@@ -698,7 +698,7 @@ $(".select-avatar").on("drop", function (e) {
         });
         $(this).empty().append(img); // Xóa nội dung cũ và hiển thị ảnh mới
     } else {
-        alert("Vui lòng kéo thả một file ảnh.");
+        alert("Please drag and drop an image file.");
     }
 });
 
@@ -937,7 +937,7 @@ $(document).on("click", ".btn-upload-images", function () {
         // Kiểm tra số lượng hình ảnh có nhỏ hơn 10 không
         $(`input[data-id="${id}"]`).click(); // Nếu nhỏ hơn 10, kích hoạt sự kiện click cho input file tương ứng
     } else {
-        pushToastify("Bạn chỉ có thể thêm tối đa 10 hình ảnh.", "danger"); // Thông báo nếu đã đạt giới hạn
+        pushToastify("Maximum of 10 images allowed.", "danger"); // Thông báo nếu đã đạt giới hạn
     }
 });
 
@@ -957,7 +957,7 @@ $(document).on("change", ".imageInput", function (event) {
     if (files.length > 0) {
         // Kiểm tra tổng số hình ảnh sau khi thêm có vượt quá 10 hay không
         if (currentImages + files.length > 11) {
-            pushToastify("Bạn chỉ có thể thêm tối đa 10 hình ảnh.", "danger"); // Thông báo nếu vượt quá giới hạn
+            pushToastify("Maximum of 10 images allowed.", "danger"); // Thông báo nếu vượt quá giới hạn
             return;
         }
 
@@ -1015,7 +1015,7 @@ $(document).on("change", ".image-array", function (event) {
 
     if (files.length > 0) {
         if (files.length > 10) {
-            pushToastify("Bạn chỉ có thể thêm tối đa 10 hình ảnh.", "danger");
+            pushToastify("Maximum of 10 images allowed.", "danger");
             return;
         }
         gallery.children().not(":first").remove();
@@ -1088,7 +1088,7 @@ function resetForm(frm) {
         .end()
         .find("[type=submit]")
         .prop("disabled", false)
-        .html("Lưu")
+        .html("Save")
         .removeClass("d-none")
         .end()
         .find('[type=hidden]')
@@ -1120,7 +1120,7 @@ $(".save-form").on("submit", function (e) {
     submitForm(form).done(function (response) {
         const btn = form.find("[type=submit]"),
             text = btn.data("text");
-        btn.prop("disabled", false).html(text !== undefined ? text : "Lưu");
+        btn.prop("disabled", false).html(text !== undefined ? text : "Save");
         switch (form.attr("id")) {
             case "user-form":
                 if (response.user) {
@@ -1155,7 +1155,7 @@ $(".save-form").on("submit", function (e) {
                     .text(
                         response.main_branch != null
                             ? response.main_branch.name
-                            : "Không có chi nhánh"
+                            : "No branches found"
                     );
                 break;
             case "booking-form":
@@ -1200,7 +1200,7 @@ function submitForm(frm) {
         .next()
         .remove("span.response");
     let str = `<span class="${btn.text() == "" ? "" : "text-white"
-        }"><i class="bi bi-exclamation-circle-fill mt-1"></i>${btn.text() == "" ? "" : " Thử lại"
+        }"><i class="bi bi-exclamation-circle-fill mt-1"></i>${btn.text() == "" ? "" : " Try again"
         }</span>`;
     btn.prop("disabled", true).html(
         '<span class="spinner-border spinner-border-sm" id="spinner-form" role="status"></span>'
@@ -1235,7 +1235,7 @@ function submitForm(frm) {
                     });
                 }
             } else if (response.status == "danger" || response.status == "error") {
-                Swal.fire("THẤT BẠI!", response.msg, response.status);
+                Swal.fire("FAILED!", response.msg, response.status);
                 $("input.select2-search__field").removeAttr("style");
                 btn.prop("disabled", false).html(str);
             }
@@ -1277,13 +1277,13 @@ function submitForm(frm) {
                             )
                         );
                     } else {
-                        Swal.fire("Thông báo!", error[0], "info");
+                        Swal.fire("Alert!", error[0], "info");
                     }
                 });
             } else {
                 console.log(errors);
 
-                pushToastify("Lỗi không xác định. Vui lòng liên hệ nhà phát triển phần mềm để khắc phục.", 'danger')
+                pushToastify("Unknown error. Please contact the software developer for assistance.", 'danger')
             }
             if (!frm.find(".modal").length) {
                 $(`.select2`).select2(config.select2);
@@ -1325,7 +1325,7 @@ $(document).on("click", ".btn-removes", function () {
                     resetForm(form);
                     $(".btn-removes")
                         .prop("disabled", false)
-                        .html('<i class="bi bi-trash"></i> Xóa')
+                        .html('<i class="bi bi-trash"></i> Delete')
                         .parent()
                         .addClass("d-none");
                 })
@@ -1333,7 +1333,7 @@ $(document).on("click", ".btn-removes", function () {
                     $(".btn-removes")
                         .prop("disabled", false)
                         .html(
-                            '<span class="text-white""><i class="bi bi-exclamation-circle-fill mt-1"></i> Thử lại</span>'
+                            '<span class="text-white""><i class="bi bi-exclamation-circle-fill mt-1"></i> Try again</span>'
                         );
                 });
         }
@@ -1472,7 +1472,7 @@ function initDataTable(tableId, col = "", hiddenCols = "") {
                     if (hiddenCol.includes(index)) {
                         $headerCell.addClass("d-none");
                     } else {
-                        let $input = $("<input>").addClass("form-control form-control-plaintext").attr("placeholder", "Tìm kiếm").on("keyup", function () {
+                        let $input = $("<input>").addClass("form-control form-control-plaintext").attr("placeholder", "Search").on("keyup", function () {
                                 if (column.search() !== this.value) {
                                     column.search(this.value).draw();
                                 }
@@ -1526,7 +1526,7 @@ function initDataTable(tableId, col = "", hiddenCols = "") {
                 if (!isNaN(pageNum) && pageNum >= 0 && pageNum < pageInfo.pages) {
                     table.page(pageNum).draw("page");
                 } else {
-                    pushToastify("Số trang không hợp lệ!", "danger");
+                    pushToastify("Invalid page number!", "danger");
                 }
             }
         })

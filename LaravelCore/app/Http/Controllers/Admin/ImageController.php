@@ -14,7 +14,7 @@ use Illuminate\Support\Str;
 
 class ImageController extends Controller
 {
-    const NAME = 'hình ảnh';
+    const NAME = 'Image';
 
     public function __construct()
     {
@@ -48,7 +48,7 @@ class ImageController extends Controller
                 $images = Image::with('author')->orderBy('id', 'DESC')->get();
                 return DataTables::of($images->toArray())->setTotalRecords($images->count())->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = self::NAME . ' management';
                 return view('admin.images', compact('pageName'));
             }
         }
@@ -68,22 +68,17 @@ class ImageController extends Controller
                 'name' => $imageName,
                 'author_id' => $this->user->id,
             ]);
-            LogController::create('tạo', self::NAME . ' ' . $image->name,  $image->id);
+            LogController::create('create', self::NAME . ' ' . $image->name,  $image->id);
 
             $response = array(
                 'status' => 'success',
-                'msg' => 'Upload thành công!',
+                'msg' => 'Upload successfully!',
             );
 
             return response()->json($response, 200);
         } catch (\Exception $e) {
-            Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
-            return back()->withError($e)->withInput();
+            log_exception($e);
+            return back()->withError($e->getMessage())->withInput();
         }
     }
 
@@ -93,8 +88,8 @@ class ImageController extends Controller
             'name' => 'required|regex:/^[a-zA-Z0-9\-]+$/',
         ];
         $messages = [
-            'name.required' => 'Đừng để trống thông tin này!',
-            'name.regex' => 'Tên chỉ được chứa chữ viết thường, chữ viết hoa, số và ký tự gạch ngang.',
+            'name.required' => Controller::NOT_EMPTY,
+            'name.regex' => 'The name must only contain lowercase letters, uppercase letters, numbers, and hyphens.',
         ];
         $request->validate($rules, $messages);
         try {
@@ -120,27 +115,22 @@ class ImageController extends Controller
                 $image->alt = $request->alt;
                 $image->caption = $request->caption;
                 $image->save();
-                LogController::create('xóa', self::NAME . ' ' . $image->name,  $image->id);
+                LogController::create('delete', self::NAME . ' ' . $image->name,  $image->id);
             } else {
                 $image->delete();
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'Tập tin không còn tồn tại! Dữ liệu về tập tin sẽ được xoá khỏi hệ thống.',
+                    'msg' => 'The file no longer exists! The data about the file will be deleted from the system.',
                 );
             }
             $response = array(
                 'status' => 'success',
-                'msg' => 'Đã cập nhật ' . self::NAME . ' ' . $image->name,
+                'msg' => 'Updated ' . self::NAME . ' ' . $image->name,
             );
             return response()->json($response, 200);
         } catch (\Exception $e) {
-            Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
-            return back()->withError($e)->withInput();
+            log_exception($e);
+            return back()->withError($e->getMessage())->withInput();
         }
     }
 
@@ -154,7 +144,7 @@ class ImageController extends Controller
                 } else {
                     $response = array(
                         'status' => 'error',
-                        'msg' => 'Không thể xóa ' . $id,
+                        'msg' => 'Cannot delete ' . $id,
                     );
                     return response()->json($response, 200);
                     break;
@@ -162,12 +152,12 @@ class ImageController extends Controller
             }
             $response = array(
                 'status' => 'success',
-                'msg' => 'Đã xoá ' . self::NAME . ' ' . implode(', ', $names)
+                'msg' => 'Deleted ' . self::NAME . ' ' . implode(', ', $names)
             );
         } else {
             $response = array(
                 'status' => 'error',
-                'msg' => 'Không thể thực hiện yêu cầu.',
+                'msg' => 'Unable to process the request! Please try again later.',
             );
         }
         return response()->json($response, 200);

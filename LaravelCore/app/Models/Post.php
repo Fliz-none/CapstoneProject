@@ -84,17 +84,18 @@ class Post extends Model
     {
         switch ($this->status) {
             case '2':
-                $name = '<span class="badge bg-success">Nổi bật</span>';
+                $name = '<span class="badge bg-success">Featured</span>';
                 break;
             case '1':
-                $name = '<span class="badge bg-info">Xuất bản</span>';
+                $name = '<span class="badge bg-info">Published</span>';
                 break;
             default:
-                $name = '<span class="badge bg-danger">Không hiển thị</span>';
+                $name = '<span class="badge bg-danger">Hidden</span>';
                 break;
         }
         return $name;
     }
+
 
     public function createdAt()
     {

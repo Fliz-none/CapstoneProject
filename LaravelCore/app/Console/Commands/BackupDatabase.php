@@ -20,7 +20,7 @@ class BackupDatabase extends Command
      *
      * @var string
      */
-    protected $description = 'Backup database và upload lên Google Drive';
+    protected $description = 'Backup database and upload to Google Drive';
 
     /**
      * Create a new command instance.
@@ -71,12 +71,12 @@ class BackupDatabase extends Command
                 fclose($stream);
                 unlink($path);
 
-                $this->info(Carbon::now()->format('d/m/Y') . ': Backup CSDL thành công.');
+                $this->info(Carbon::now()->format('d/m/Y') . ': Successfully backed up database.');
             } else {
-                $this->info(Carbon::now()->format('d/m/Y') . ': Không tìm thấy file backup');
+                $this->info(Carbon::now()->format('d/m/Y') . ': Failed to open backup file.');
             }
         } else {
-            $this->info(Carbon::now()->format('d/m/Y') . ': Backup thất bại');
+            $this->info(Carbon::now()->format('d/m/Y') . ': Failed to backup database.');
         }
 
         return 0;

@@ -4,8 +4,7 @@
             <p>{{ date('Y') }} &copy; {{ Auth::user()->branch ? Auth::user()->branch->name : 'SMS' }}</p>
         </div>
         <div class="float-end">
-            <p>Thiết kế và xây dựng với <span class="text-danger"><i class="bi bi-heart"></i></span>
-                từ <a href="#">H.Đăng</a></p>
+            <p>Designed and built with <span class="text-danger"><i class="bi bi-heart"></i></span> by <a href="#">SMS</a></p>
         </div>
     </div>
 </footer>

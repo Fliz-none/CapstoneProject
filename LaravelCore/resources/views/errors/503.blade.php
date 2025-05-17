@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" type="image/x-icon">
-    <title>Đang cập nhật</title>
+    <title>503 - Service unavailable</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('admin/css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/vendors/bootstrap-icons/bootstrap-icons.css') }}">
@@ -20,9 +20,9 @@
 
         <div class="container">
             <div class="error-text">
-                <h1>503</h1>
-                <h2>Chờ một chút...</h2>
-                <p>Đội ngũ phát triển đang chuẩn bị một thứ gì đó hấp dẫn dành cho bạn. Hãy chờ đón...</p>
+                <h1>503 - Service unavailable</h1>
+                <h2>Please wait a moment...</h2>
+                <p>The development team is preparing something exciting for you. Stay tuned...</p>
             </div>
             <div class="stack-container">
                 <div class="card-container">
