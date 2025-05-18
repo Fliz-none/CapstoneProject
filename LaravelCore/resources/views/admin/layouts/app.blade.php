@@ -138,6 +138,7 @@
             @include('admin.includes.partials.modal_login')
             @include('admin.includes.partials.modal_detail')
             @include('admin.includes.partials.modal_preview')
+            @include('admin.includes.partials.modal_change_branch_user')
         </div>
     </div>
     <div class="d-none" id="print-wrapper"></div>
@@ -574,6 +575,16 @@
         form.find(`[name='id']`).val(id)
         form.find('.modal').modal('show')
     })
+
+    $(document).on('click', '.btn-change-branch', function() {
+        const id = $(this).attr('data-id'),
+            form = $('#branch_user-form');
+        resetForm(form)
+        form.attr('action', `{{ route('admin.user.update.changebranch') }}`)
+        form.find(`[name='id']`).val(id)
+        form.find('.modal').modal('show')
+    })
+
     // =========== END USER ===========
 
     /**

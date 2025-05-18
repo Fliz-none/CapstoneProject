@@ -5,14 +5,16 @@
                 <i class="bi bi-justify fs-3"></i>
             </a>
             @php
-            $user = Auth::user();
+                $user = Auth::user();
                 $notis = $user
                     ->notifications()
                     ->wherePivot('status', 0)
                     ->orderBy('id', 'DESC')
                     ->get();
             @endphp
-            <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" type="button" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                type="button" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -26,11 +28,13 @@
                         <div class="user-menu d-flex align-items-start">
                             <div class="user-name text-end me-3">
                                 <h6 class="mb-0 mt-1 text-gray-600">{{ Auth::user()->name }}</h6>
-                                <small class="text-secondary">{{ Auth::user()->branch ? Auth::user()->branch->name : 'No branches available.' }}</small>
+                                <small
+                                    class="text-secondary">{{ Auth::user()->branch ? Auth::user()->branch->name : 'No branches available.' }}</small>
                             </div>
                             <div class="user-img d-flex align-items-center">
                                 <div class="avatar avatar-md">
-                                    <img src="{{ Auth::user()->avatar ? asset(env('FILE_STORAGE', '/storage')) . '/user/' . Auth::user()->avatar : asset('admin/images/logo/favicon_key.png') }}">
+                                    <img
+                                        src="{{ Auth::user()->avatar ? asset(env('FILE_STORAGE', '/storage')) . '/user/' . Auth::user()->avatar : asset('admin/images/logo/favicon_key.png') }}">
                                 </div>
                             </div>
                         </div>
@@ -50,11 +54,12 @@
                             </a>
                         </li>
                         @if (Auth::user()->branches->count() > 1)
-                            <li><a class="dropdown-item cursor-pointer btn-change-branch">
-                                    <i class="bi bi-git"></i>
-                                    Change Branch
+                            <li>
+                                <a class="dropdown-item cursor-pointer btn-change-branch" data-id="{{ $user->id }}">
+                                    <i class="bi bi-git"></i> Change Branch
                                 </a>
                             </li>
+
                         @endif
                         <li><a class="dropdown-item" href="{{ route('admin.profile', ['key' => 'password']) }}">
                                 <i class="bi bi-shield-lock-fill me-2"></i>

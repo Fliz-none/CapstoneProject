@@ -29,24 +29,24 @@ function j(t, e, o, i) {
         var f = x - p;
         i
             ? ((t.style.height = g * f + "px"),
-                (t.style.paddingTop = y * f + "px"),
-                (t.style.paddingBottom = m * f + "px"),
-                (t.style.marginTop = u * f + "px"),
-                (t.style.marginBottom = h * f + "px"))
+              (t.style.paddingTop = y * f + "px"),
+              (t.style.paddingBottom = m * f + "px"),
+              (t.style.marginTop = u * f + "px"),
+              (t.style.marginBottom = h * f + "px"))
             : ((t.style.height = n - g * f + "px"),
-                (t.style.paddingTop = a - y * f + "px"),
-                (t.style.paddingBottom = s - m * f + "px"),
-                (t.style.marginTop = r - u * f + "px"),
-                (t.style.marginBottom = d - h * f + "px")),
+              (t.style.paddingTop = a - y * f + "px"),
+              (t.style.paddingBottom = s - m * f + "px"),
+              (t.style.marginTop = r - u * f + "px"),
+              (t.style.marginBottom = d - h * f + "px")),
             f >= e
                 ? ((t.style.height = ""),
-                    (t.style.paddingTop = ""),
-                    (t.style.paddingBottom = ""),
-                    (t.style.marginTop = ""),
-                    (t.style.marginBottom = ""),
-                    (t.style.overflow = ""),
-                    i || (t.style.display = "none"),
-                    "function" == typeof o && o())
+                  (t.style.paddingTop = ""),
+                  (t.style.paddingBottom = ""),
+                  (t.style.marginTop = ""),
+                  (t.style.marginBottom = ""),
+                  (t.style.overflow = ""),
+                  i || (t.style.display = "none"),
+                  "function" == typeof o && o())
                 : window.requestAnimationFrame(l);
     });
 }
@@ -383,7 +383,7 @@ function number_format(nStr) {
 function string_to_slug(str) {
     // remove accents
     var from =
-        "àáãảạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệđùúủũụưừứửữựòóỏõọôồốổỗộơờớởỡợìíỉĩịäëïîöüûñçýỳỹỵỷ",
+            "àáãảạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệđùúủũụưừứửữựòóỏõọôồốổỗộơờớởỡợìíỉĩịäëïîöüûñçýỳỹỵỷ",
         to =
             "aaaaaaaaaaaaaaaaaeeeeeeeeeeeduuuuuuuuuuuoooooooooooooooooiiiiiaeiiouuncyyyyy";
     for (var i = 0, l = from.length; i < l; i++) {
@@ -648,8 +648,8 @@ function filterList($input, $list) {
 
     $list.find("li").each(function () {
         var textValue = string_to_slug(
-            $(this).find("label").text().toLowerCase()
-        ),
+                $(this).find("label").text().toLowerCase()
+            ),
             dataKeyword = $(this).attr("data-keyword")
                 ? string_to_slug($(this).attr("data-keyword").toLowerCase())
                 : "";
@@ -1091,11 +1091,12 @@ function resetForm(frm) {
         .html("Save")
         .removeClass("d-none")
         .end()
-        .find('[type=hidden]')
-        .val('').change()
+        .find("[type=hidden]")
+        .val("")
+        .change()
         .end()
-        .find('textarea')
-        .val('')
+        .find("textarea")
+        .val("")
         .end()
         .find("[type=checkbox]")
         .prop("checked", false)
@@ -1134,14 +1135,17 @@ $(".save-form").on("submit", function (e) {
                     $("[name=customer_id]").html(option).trigger({
                         type: "select2:select",
                     });
-                    //Đối với ajax-search
-                    fillCustomer(response.user.id, response.user.name + ' - ' + response.user.phone)
-                    fillListPet(response.user.id)
+                    // //Đối với ajax-search
+                    // fillCustomer(
+                    //     response.user.id,
+                    //     response.user.name + " - " + response.user.phone
+                    // );
+                    // fillListPet(response.user.id);
                 }
                 break;
             case "pet-form":
                 if (response.pet) {
-                    fillListPet(response.pet.customer_id, response.pet.id)
+                    fillListPet(response.pet.customer_id, response.pet.id);
                 }
                 break;
             case "info-service-form":
@@ -1166,23 +1170,26 @@ $(".save-form").on("submit", function (e) {
                     fillData(date + " - " + date);
                 }
                 break;
-            case 'room-form':
-                $('.btn-read-rooms').trigger('click')
+            case "room-form":
+                $(".btn-read-rooms").trigger("click");
                 break;
-            case 'accommodation-form':
-                $('.modal#accommodation-modal').modal('hide')
+            case "accommodation-form":
+                $(".modal#accommodation-modal").modal("hide");
                 break;
-            case 'export-form':
+            case "export-form":
                 const path = window.location.pathname;
-                if (path.startsWith('/quantri/info')) {
+                if (path.startsWith("/quantri/info")) {
                     location.reload();
                 }
                 break;
-            case 'tracking-form':
-                fillTracking(response.obj.accommodation.tracking_groups)
+            case "tracking-form":
+                fillTracking(response.obj.accommodation.tracking_groups);
                 break;
-            case 'render_stock-form':
-                $('.btn-sync-stock').attr('disabled', false);
+            case "render_stock-form":
+                $(".btn-sync-stock").attr("disabled", false);
+                break;
+            case "branch_user-form":
+                location.reload(); 
                 break;
             default:
                 break;
@@ -1199,9 +1206,11 @@ function submitForm(frm) {
         .prop("disabled", false)
         .next()
         .remove("span.response");
-    let str = `<span class="${btn.text() == "" ? "" : "text-white"
-        }"><i class="bi bi-exclamation-circle-fill mt-1"></i>${btn.text() == "" ? "" : " Try again"
-        }</span>`;
+    let str = `<span class="${
+        btn.text() == "" ? "" : "text-white"
+    }"><i class="bi bi-exclamation-circle-fill mt-1"></i>${
+        btn.text() == "" ? "" : " Try again"
+    }</span>`;
     btn.prop("disabled", true).html(
         '<span class="spinner-border spinner-border-sm" id="spinner-form" role="status"></span>'
     );
@@ -1234,7 +1243,10 @@ function submitForm(frm) {
                         $(this).DataTable().ajax.reload(null, false);
                     });
                 }
-            } else if (response.status == "danger" || response.status == "error") {
+            } else if (
+                response.status == "danger" ||
+                response.status == "error"
+            ) {
                 Swal.fire("FAILED!", response.msg, response.status);
                 $("input.select2-search__field").removeAttr("style");
                 btn.prop("disabled", false).html(str);
@@ -1244,7 +1256,10 @@ function submitForm(frm) {
                 $(".local-select").each(function () {
                     if (!$(this).hasClass("select2-hidden-accessible")) {
                         $(this).select2(
-                            initLocalSelect($(this).parent(), $(this).hasClass("tags"), $(this).attr("placeholder")
+                            initLocalSelect(
+                                $(this).parent(),
+                                $(this).hasClass("tags"),
+                                $(this).attr("placeholder")
                             )
                         );
                     }
@@ -1266,7 +1281,11 @@ function submitForm(frm) {
                 $.each(errors.responseJSON.errors, function (i, error) {
                     var el = frm.find('[name="' + i + '"]');
                     if (
-                        el.length && !el.hasClass("d-none") && el.attr("type") != "hidden" && el.attr("type") != "radio" && !el.prop("hidden")
+                        el.length &&
+                        !el.hasClass("d-none") &&
+                        el.attr("type") != "hidden" &&
+                        el.attr("type") != "radio" &&
+                        !el.prop("hidden")
                     ) {
                         el.addClass("is-invalid")
                             .next()
@@ -1283,14 +1302,20 @@ function submitForm(frm) {
             } else {
                 console.log(errors);
 
-                pushToastify("Unknown error. Please contact the software developer for assistance.", 'danger')
+                pushToastify(
+                    "Unknown error. Please contact the software developer for assistance.",
+                    "danger"
+                );
             }
             if (!frm.find(".modal").length) {
                 $(`.select2`).select2(config.select2);
                 $(".local-select").each(function () {
                     if (!$(this).hasClass("select2-hidden-accessible")) {
                         $(this).select2(
-                            initLocalSelect( $(this).parent(), $(this).hasClass("tags"), $(this).attr("placeholder")
+                            initLocalSelect(
+                                $(this).parent(),
+                                $(this).hasClass("tags"),
+                                $(this).attr("placeholder")
                             )
                         );
                     }
@@ -1379,7 +1404,10 @@ $(document).on("click", ".btn-remove-detail", function (e) {
                         .each(function () {
                             const name = $(this).attr("name");
                             if (name) {
-                                const updatedName = name.replace(/\[([0-9]+)\]/,`[${index}]`);
+                                const updatedName = name.replace(
+                                    /\[([0-9]+)\]/,
+                                    `[${index}]`
+                                );
                                 $(this).attr("name", updatedName);
                             }
                         });
@@ -1457,22 +1485,36 @@ function initDataTable(tableId, col = "", hiddenCols = "") {
     const hiddenInputs = col.split(",").map((c) => parseInt(c.trim()) - 1);
     const hiddenCol = hiddenCols.split(",").map((c) => parseInt(c.trim()) - 1);
     table.on("init", function () {
-        if (!$(this).find('thead tr.d-none').length) {
-            $(this).find('thead').append('<tr class="d-none"></tr>').end().find('thead tr:first th').each(function () {
-                $(this).closest('thead').find('tr:nth-child(2)').append(`<th></th>`);
-            });
+        if (!$(this).find("thead tr.d-none").length) {
+            $(this)
+                .find("thead")
+                .append('<tr class="d-none"></tr>')
+                .end()
+                .find("thead tr:first th")
+                .each(function () {
+                    $(this)
+                        .closest("thead")
+                        .find("tr:nth-child(2)")
+                        .append(`<th></th>`);
+                });
         }
         table.columns().every(function (index) {
             const column = this;
             if (!hiddenInputs.includes(index)) {
                 const $headerRow = $(`#${tableId} thead tr:nth-child(2)`);
-                const $headerCell = $headerRow.length > 0 ? $headerRow.find("th").eq(index) : null;
+                const $headerCell =
+                    $headerRow.length > 0
+                        ? $headerRow.find("th").eq(index)
+                        : null;
 
                 if ($headerCell) {
                     if (hiddenCol.includes(index)) {
                         $headerCell.addClass("d-none");
                     } else {
-                        let $input = $("<input>").addClass("form-control form-control-plaintext").attr("placeholder", "Search").on("keyup", function () {
+                        let $input = $("<input>")
+                            .addClass("form-control form-control-plaintext")
+                            .attr("placeholder", "Search")
+                            .on("keyup", function () {
                                 if (column.search() !== this.value) {
                                     column.search(this.value).draw();
                                 }
@@ -1484,7 +1526,11 @@ function initDataTable(tableId, col = "", hiddenCols = "") {
         });
         $(`#${tableId}_wrapper`).find(".btn-clear-state").remove();
         $(`#${tableId}_wrapper`).find(".btn-advanced-search").remove();
-        $(`#${tableId}_wrapper`).find(".dataTables_paginate").parent().find("input").remove();
+        $(`#${tableId}_wrapper`)
+            .find(".dataTables_paginate")
+            .parent()
+            .find("input")
+            .remove();
 
         // Thêm icon slide để hiển thị các cột tìm kiếm chi tiết và reset lại trạng thái của bảng
         $(`#${tableId}_wrapper`).find(".dataTables_filter").append(`
@@ -1496,40 +1542,55 @@ function initDataTable(tableId, col = "", hiddenCols = "") {
             </button>
         `);
 
-        $(document).on('click', `#${tableId}_wrapper .btn-clear-state`, function () {
-            table.state.clear();
-            table.search('')
-            table.columns().search('').draw();
-            table.ajax.reload();
-        });
-
-        $(`#${tableId}_wrapper .btn-advanced-search`).off("click").on("click", function (e) {
-            e.preventDefault();
-            const searchColumnRow = $(`#${tableId} thead tr:nth-child(2)`);
-            searchColumnRow.toggleClass('d-none')
-        });
-
-
-        // Thêm ô input nhập số trang để chuyển trang
-        $(`#${tableId}_wrapper`).find(".dataTables_paginate").parent().addClass("d-flex justify-content-end").prepend(`
-            <div>
-                <input style="width: 55px; margin-top: 2px; height: 36px" type="text" class="form-control input-paging me-2" min="1"/>
-            </div>`
+        $(document).on(
+            "click",
+            `#${tableId}_wrapper .btn-clear-state`,
+            function () {
+                table.state.clear();
+                table.search("");
+                table.columns().search("").draw();
+                table.ajax.reload();
+            }
         );
 
-        // Xử lý sự kiện nhập số trang
-         $(`#${tableId}_wrapper`).find(".dataTables_paginate").parent().find("input").on("keydown", function (e) {
-            if (e.key === "Enter") {
+        $(`#${tableId}_wrapper .btn-advanced-search`)
+            .off("click")
+            .on("click", function (e) {
                 e.preventDefault();
-                const pageNum = parseInt($(this).val(), 10) - 1;
-                const pageInfo = table.page.info();
-                if (!isNaN(pageNum) && pageNum >= 0 && pageNum < pageInfo.pages) {
-                    table.page(pageNum).draw("page");
-                } else {
-                    pushToastify("Invalid page number!", "danger");
+                const searchColumnRow = $(`#${tableId} thead tr:nth-child(2)`);
+                searchColumnRow.toggleClass("d-none");
+            });
+
+        // Thêm ô input nhập số trang để chuyển trang
+        $(`#${tableId}_wrapper`)
+            .find(".dataTables_paginate")
+            .parent()
+            .addClass("d-flex justify-content-end").prepend(`
+            <div>
+                <input style="width: 55px; margin-top: 2px; height: 36px" type="text" class="form-control input-paging me-2" min="1"/>
+            </div>`);
+
+        // Xử lý sự kiện nhập số trang
+        $(`#${tableId}_wrapper`)
+            .find(".dataTables_paginate")
+            .parent()
+            .find("input")
+            .on("keydown", function (e) {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                    const pageNum = parseInt($(this).val(), 10) - 1;
+                    const pageInfo = table.page.info();
+                    if (
+                        !isNaN(pageNum) &&
+                        pageNum >= 0 &&
+                        pageNum < pageInfo.pages
+                    ) {
+                        table.page(pageNum).draw("page");
+                    } else {
+                        pushToastify("Invalid page number!", "danger");
+                    }
                 }
-            }
-        })
+            });
     });
 }
 // End xứ lý.

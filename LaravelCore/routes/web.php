@@ -96,6 +96,7 @@ Route::group(['prefix' => 'quantri'], function () {
         Route::post('update', [UserController::class, 'update'])->name('admin.user.update');
         Route::post('update/role', [UserController::class, 'updateRole'])->name('admin.user.update.role');
         Route::post('update/password', [UserController::class, 'updatePassword'])->name('admin.user.update.password');
+        Route::post('update/changebranch', [UserController::class, 'changeBranch'])->name('admin.user.update.changebranch');
         Route::post('remove', [UserController::class, 'remove'])->name('admin.user.remove');
         Route::post('/changepassword', [UserController::class, 'changePassword'])->name('admin.user.changepassword');
     });

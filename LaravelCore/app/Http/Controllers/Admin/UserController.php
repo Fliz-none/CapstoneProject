@@ -110,10 +110,10 @@ class UserController extends Controller
                 case 'search':
                     $result = $objs->where(function ($query) use ($request) {
                         $query
-                        ->where('id', 'LIKE', '' . $request->q . '%')
-                        ->orWhere('name', 'LIKE', '%' . $request->q . '%')
-                        ->orWhere('phone', 'LIKE', '%' . $request->q . '%')
-                        ->orWhere('email', 'LIKE', '%' . $request->q . '%');
+                            ->where('id', 'LIKE', '' . $request->q . '%')
+                            ->orWhere('name', 'LIKE', '%' . $request->q . '%')
+                            ->orWhere('phone', 'LIKE', '%' . $request->q . '%')
+                            ->orWhere('email', 'LIKE', '%' . $request->q . '%');
                     })->orderBy('id', 'DESC')
                         ->take(20)->get()->map(function ($obj) {
                             $text = $obj->name . ($obj->phone ? ' - ' . $obj->phone : '');
@@ -531,7 +531,6 @@ class UserController extends Controller
             'password' => ['required'],
         ];
         $request->validate($rules);
-
         $user = User::find($request->id);
         if (!$user) {
             return back()->withErrors(['user_id' => 'User does not exist']);
@@ -546,6 +545,28 @@ class UserController extends Controller
         );
         return response()->json($response, 200);
     }
+
+    public function changeBranch(Request $request)
+    {
+
+        $user = User::find($request->id);
+        if (!$user) {
+            return back()->withErrors(['user_id' => 'User does not exist']);
+        }
+
+        $user->main_branch = $request->branches_user; 
+        $user->save();
+
+        LogController::create('update main_branch', "account", $user->id); 
+
+        $response = [
+            'status' => 'success',
+            'msg' => 'Updated main branch for ' . $user->name . '!'
+        ];
+
+        return response()->json($response, 200);
+    }
+
 
     public function remove(Request $request)
     {
