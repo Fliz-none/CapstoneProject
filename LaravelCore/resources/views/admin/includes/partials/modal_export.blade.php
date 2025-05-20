@@ -69,7 +69,7 @@
                                     <div class="d-grid gap-2">
                                         <div class="btn-group btn-group-lg" role="group">
                                             <input class="btn-check" id="export-status-waiting" name="status" type="radio" value="0">
-                                            <label class="btn btn-outline-danger" for="export-status-waiting">Pending</label>
+                                            <label class="btn btn-outline-danger" for="export-status-waiting">Waiting</label>
                                             <input class="btn-check" id="export-status-exported" name="status" type="radio" value="1">
                                             <label class="btn btn-outline-success" for="export-status-exported">Exported</label>
                                         </div>

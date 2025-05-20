@@ -39,7 +39,7 @@
                                                     <th style="width: 57%">Product</th>
                                                     <th class="text-center" style="width: 8%">Unit</th>
                                                     <th class="text-center" style="width: 12%">Qty</th>
-                                                    <th style="width: 10%">Import Price</th>
+                                                    <th style="width: 10%">Price</th>
                                                     <th style="width: 13%">Batch</th>
                                                     <th style="width: 6%">Expiry</th>
                                                     <th></th>
@@ -59,7 +59,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="import-note">Note</label>
-                                <textarea class="form-control form-control-lg" id="import-note" name="note" rows="1" placeholder="Import document"></textarea>
+                                <textarea class="form-control form-control-lg" id="import-note" name="note" rows="1" placeholder="Note"></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="import-summary">Total Import Value</label>

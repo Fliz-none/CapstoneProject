@@ -157,7 +157,7 @@ class WarehouseController extends Controller
                     ->rawColumns(['checkboxes', 'code', 'name', 'branch', 'status', 'action'])
                     ->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = self::NAME . ' management';
                 return view('admin.warehouses', compact('pageName'));
             }
         }
@@ -169,7 +169,7 @@ class WarehouseController extends Controller
         foreach ($sort as $index => $id) {
             Warehouse::where('id', $id)->update(['sort' => $index + 1]);
         }
-        return response()->json(['msg' => 'Thứ tự đã được cập nhật thành công']);
+       return response()->json(['msg' => 'The order has been successfully updated.']);
     }
 
     public function create(Request $request)
@@ -185,23 +185,18 @@ class WarehouseController extends Controller
                     'status' => $request->status,
                 ]);
 
-                LogController::create('xóa', self::NAME, $warehouse->id);
+                LogController::create('createcreate', self::NAME, $warehouse->id);
                 cache()->forget('warehouses');
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Đã tạo ' . self::NAME . ' ' . $warehouse->name
+                    'msg' => 'Created ' . self::NAME . ' ' . $warehouse->name
                 );
             } catch (\Exception $e) {
-                Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
-                return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                log_exception($e);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -222,35 +217,30 @@ class WarehouseController extends Controller
                             'status' => $request->status,
                         ]);
 
-                        LogController::create('sửa', self::NAME, $warehouse->id);
+                        LogController::create('update', self::NAME, $warehouse->id);
                         cache()->forget('warehouses');
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Đã cập nhật ' . $warehouse->name
+                            'msg' => 'Updated ' . self::NAME . ' ' . $warehouse->name
                         );
                     } else {
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                            'msg' => 'An error occurred, please reload the page and try again!'
                         );
                     }
                 } catch (\Exception $e) {
-                    Log::error('Có lỗi xảy ra: ' . $e->getMessage() . ';' . PHP_EOL .
-                        'URL truy vấn: "' . request()->fullUrl() . '";' . PHP_EOL .
-                        'Dữ liệu nhận được: ' . json_encode(request()->all()) . ';' . PHP_EOL .
-                        'User ID: ' . (Auth::check() ? Auth::id() : 'Khách') . ';' . PHP_EOL .
-                        'Chi tiết lỗi: ' . $e->getTraceAsString()
-                    );
-                    return response()->json(['errors' => ['error' => ['Đã xảy ra lỗi: ' . $e->getMessage()]]], 422);
+                    log_exception($e);
+                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                    'msg' => 'An error occurred, please reload the page and try again!'
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+           return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -267,24 +257,24 @@ class WarehouseController extends Controller
                 if ($obj->canRemove()) {
                     $obj->delete();
                     cache()->forget('warehouses');
-                    LogController::create("xóa", self::NAME, $obj->id);
+                    LogController::create("delete", self::NAME, $obj->id);
                     array_push($success, $obj->name);
                 } else {
                     array_push($fail, $obj->name);
                 }
             }
             if (count($success)) {
-                $msg = 'Đã xóa ' . self::NAME . ' ' . implode(', ', $success) . '. ';
+                 $msg .= 'Deleted ' . self::NAME . ' ' . implode(', ', $success) . '. ';
             }
             if (count($fail)) {
-                $msg .= implode(', ', $fail) . ', không thể xóa!';
+               $msg .= implode(', ', $fail) . ' are in use, cannot delete!';
             }
             $response = array(
                 'status' => 'success',
                 'msg' => $msg
             );
         } else {
-            return response()->json(['errors' => ['role' => ['Thao tác chưa được cấp quyền!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
