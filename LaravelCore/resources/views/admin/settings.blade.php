@@ -182,24 +182,14 @@
                             </button>
                         </td>
                     </tr>`;
-                alertWarning('Please save to confirm this setting.');
                 !$('.work-shift').length ? $('.table-shift tbody').html(newRow) : $('.table-shift tbody').append(newRow);
             });
 
             $(document).on('click', '.btn-remove-shift', function() {
                 $(this).closest('tr').remove(); // Xóa dòng khi nhấn nút xóa
                 !$('.work-shift').length ? $('.table-shift tbody').html(`<tr class="text-center fst-italic text-primary"><th colspan="5"><h6 class="pt-2">There is no shift.</h6></th></tr>`) : '';
-                alertWarning('Please save to confirm this setting.');
                 resetShiftIndexes();
             });
-
-            function alertWarning(message) {
-                $('.page-heading').after(`
-                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <i class="fa-solid fa-xmark"></i>${message}
-                        <button class="btn-close" data-bs-dismiss="alert" type="button" aria-label="Close"></button>
-                    </div>`);
-            }
         })
 
         $(document).on('click', '.btn-add-expense', function () {

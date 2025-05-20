@@ -32,10 +32,18 @@ class SettingController extends Controller
      */
     public function index(Request $request)
     {
-        $pageName = self::NAME;
-        $settings = cache()->get('settings');
-        $banks = Http::get('https://api.vietqr.io/v2/banks')->json();
-        return view('admin.settings', compact('pageName', 'settings', 'banks'));
+        try {
+            $pageName = self::NAME;
+            $settings = cache()->get('settings');
+            $banks = Http::get('https://api.vietqr.io/v2/banks')->json();
+            return view('admin.settings', compact('pageName', 'settings', 'banks'));
+        } catch (\Throwable $e) {
+            log_exception($e);
+            return redirect()->back()->with('response', [
+                'status' => 'error',
+                'msg' => 'An error occurred. Please check your internet connection!'
+            ]);
+        }
     }
 
     public function updateSetting($key, $value)
@@ -101,28 +109,33 @@ class SettingController extends Controller
     }
     public static function setEnv(array $values)
     {
-        $envFile = app()->environmentFilePath(); // Get the path to the .env file
-        $str = file_get_contents($envFile); // Read the content of the .env file
+        try {
+            $envFile = app()->environmentFilePath(); // Get the path to the .env file
+            $str = file_get_contents($envFile); // Read the content of the .env file
 
-        if (count($values) > 0) {
-            foreach ($values as $envKey => $envValue) {
-                $keyPosition = strpos($str, "{$envKey}=");
-                $endOfLinePosition = strpos($str, "\n", $keyPosition);
-                $oldLine = substr($str, $keyPosition, $endOfLinePosition - $keyPosition);
-                if (!$keyPosition || !$endOfLinePosition || !$oldLine) {
-                    $str .= "{$envKey}='{$envValue}'\n";
-                } else {
-                    $str = str_replace($oldLine, "{$envKey}='{$envValue}'", $str);
+            if (count($values) > 0) {
+                foreach ($values as $envKey => $envValue) {
+                    $keyPosition = strpos($str, "{$envKey}=");
+                    $endOfLinePosition = strpos($str, "\n", $keyPosition);
+                    $oldLine = substr($str, $keyPosition, $endOfLinePosition - $keyPosition);
+                    if (!$keyPosition || !$endOfLinePosition || !$oldLine) {
+                        $str .= "{$envKey}='{$envValue}'\n";
+                    } else {
+                        $str = str_replace($oldLine, "{$envKey}='{$envValue}'", $str);
+                    }
                 }
             }
-        }
-        $str = substr($str, 0, -1);
-        $str .= "\n";
-        if (!file_put_contents($envFile, $str)) {
+            $str = substr($str, 0, -1);
+            $str .= "\n";
+            if (!file_put_contents($envFile, $str)) {
+                return false;
+            }
+
+            return true;
+        } catch (\Throwable $e) {
+            log_exception($e);
             return false;
         }
-
-        return true;
     }
 
     public function updateEmail(Request $request)
@@ -312,9 +325,7 @@ class SettingController extends Controller
         ]);
 
         try {
-            $work_settings = json_decode(cache()->get('settings')['work_info'], true);
-            unset($work_settings["allow_self_register"]);
-
+            $work_settings = json_decode(cache()->get('settings')['work_info'] ?? '[]', true);
             // Get the period from next Monday to next Sunday
             $next_monday = Carbon::now()->next(Carbon::MONDAY)->startOfDay();
             $next_sunday = $next_monday->copy()->addDays(6)->endOfDay();
@@ -344,8 +355,7 @@ class SettingController extends Controller
                 ];
                 return redirect()->back()->with('response', $response);
             }
-
-            $work_info["allow_self_register"] = $request->has('allow_self_register');
+            $work_info = [];
             foreach ($request->shift_name as $i => $value) {
                 $work_info[] = [
                     'shift_name' => $value,
@@ -354,7 +364,8 @@ class SettingController extends Controller
                     'staff_number' => $request->staff_number[$i],
                 ];
             }
-
+            $this->updateSetting('require_attendance_on_company_wifi', $request->has('require_attendance_on_company_wifi'));
+            $this->updateSetting('allow_self_register', $request->has('allow_self_register'));
             $this->updateSetting('work_info', json_encode($work_info));
             cache()->forget('settings');
 

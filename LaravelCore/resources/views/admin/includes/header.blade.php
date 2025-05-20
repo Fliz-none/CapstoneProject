@@ -68,8 +68,9 @@
                             </a>
                         </li>
                         @php
-                            $work_info = json_decode(cache()->get('settings')['work_info']) ?? '';
-                            $allow_self_register = $work_info->allow_self_register ?? 1;
+                            $settings = cache()->get('settings');
+                            $work_info = json_decode($settings['work_info']) ?? '';
+                            $allow_self_register = $settings['allow_self_register'] ?? 1;
                         @endphp
                         @if ($allow_self_register)
                             <li class="submenu-item">

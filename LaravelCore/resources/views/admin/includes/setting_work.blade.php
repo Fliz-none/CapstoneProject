@@ -6,12 +6,6 @@
             <button class="btn btn-primary" type="submit">Save</button>
         </div>
         <div class="card-body">
-            <div class="form-check form-check-inline mb-3">
-                <input class="form-check-input form-check-info" id="allow_self_register-checkbox" name="allow_self_register" type="checkbox" {{ old('allow_self_register', json_decode($settings['work_info'])->allow_self_register) ? 'checked' : '' }}>
-                <label class="form-check-label" for="allow_self_register-checkbox">
-                    Allow employees to self-register shifts
-                </label>
-            </div>
             <div class="table-responsive">
                 <table class="table table-hover table-striped table-shift">
                     <thead>
@@ -28,7 +22,12 @@
                             $works = collect(old('shift_name', []))
                                 ->zip(old('sign_checkin', []), old('sign_checkout', []), old('staff_number', []))
                                 ->map(function ($item, $key) {
-                                    return (object) ['shift_name' => $item[0], 'sign_checkin' => $item[1], 'sign_checkout' => $item[2], 'staff_number' => $item[3]];
+                                    return (object) [
+                                        'shift_name' => $item[0],
+                                        'sign_checkin' => $item[1],
+                                        'sign_checkout' => $item[2],
+                                        'staff_number' => $item[3],
+                                    ];
                                 })
                                 ->toArray();
                             if (empty($works)) {
@@ -39,28 +38,40 @@
                             @foreach ($works as $i => $work)
                                 @if (is_numeric($i))
                                     <tr class="work-shift">
-                                        <td><input class="form-control form-control-plaintext w-auto @error("shift_name.$i") is-invalid @enderror" name="shift_name[{{ $i }}]" type="text" value="{{ $work->shift_name }}">
+                                        <td><input
+                                                class="form-control form-control-plaintext w-auto @error("shift_name.$i") is-invalid @enderror"
+                                                name="shift_name[{{ $i }}]" type="text"
+                                                value="{{ $work->shift_name }}">
                                             @error("shift_name.$i")
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </td>
-                                        <td><input class="form-control-plaintext" name="sign_checkin[{{ $i }}]" type="time" value="{{ $work->sign_checkin }}">
+                                        <td><input class="form-control-plaintext"
+                                                name="sign_checkin[{{ $i }}]" type="time"
+                                                value="{{ $work->sign_checkin }}">
                                             @error("sign_checkin.$i")
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </td>
-                                        <td><input class="form-control-plaintext" name="sign_checkout[{{ $i }}]" type="time" value="{{ $work->sign_checkout }}">
+                                        <td><input class="form-control-plaintext"
+                                                name="sign_checkout[{{ $i }}]" type="time"
+                                                value="{{ $work->sign_checkout }}">
                                             @error("sign_checkout.$i")
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </td>
-                                        <td><input class="form-control form-control-plaintext w-auto @error("staff_number.$i") is-invalid @enderror" name="staff_number[{{ $i }}]" type="text" value="{{ $work->staff_number }}">
+                                        <td><input
+                                                class="form-control form-control-plaintext w-auto @error("staff_number.$i") is-invalid @enderror"
+                                                name="staff_number[{{ $i }}]" type="text"
+                                                value="{{ $work->staff_number }}">
                                             @error("staff_number.$i")
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </td>
                                         <td>
-                                            <button class="btn btn-link text-decoration-none btn-remove-shift cursor-pointer" type="button">
+                                            <button
+                                                class="btn btn-link text-decoration-none btn-remove-shift cursor-pointer"
+                                                type="button">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </td>
@@ -78,6 +89,39 @@
                 </table>
             </div>
             <button class="btn btn-info btn-add-shift" type="button"><i class="bi bi-plus"></i></button>
+        </div>
+        <hr>
+        <div class="card-body">
+            <div class="mb-3 row">
+                <label class="col-sm-4 col-form-label" for="allow_self_register">
+                    Allow employees to self-register shifts<br />
+                    <small class="form-text text-muted">If disabled, only admin can register shifts for employees</small>
+                </label>
+                <div class="col-sm-2">
+                    <input name="allow_self_register" type="hidden" value="0">
+                    <input class="form-check-input @error('allow_self_register') is-invalid @enderror" id="allow_self_register" name="allow_self_register" type="checkbox" value="1"
+                        {{ isset($settings['allow_self_register']) && $settings['allow_self_register'] == 1 ? 'checked' : '' }}>
+                    @error('allow_self_register')
+                        <span class="invalid-feedback d-block" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+                <label class="col-sm-4 col-form-label" for="require_attendance_on_company_wifi">
+                    Require attendance on company Wi-Fi<br />
+                    <small class="form-text text-muted">If enabled, employees will be required to check in and check out on company Wi-Fi</small>
+                </label>
+                <div class="col-sm-2">
+                    <input name="require_attendance_on_company_wifi" type="hidden" value="0">
+                    <input class="form-check-input @error('require_attendance_on_company_wifi') is-invalid @enderror" id="require_attendance_on_company_wifi" name="require_attendance_on_company_wifi" type="checkbox" value="1"
+                        {{ isset($settings['require_attendance_on_company_wifi']) && $settings['require_attendance_on_company_wifi'] == 1 ? 'checked' : '' }}>
+                    @error('require_attendance_on_company_wifi')
+                        <span class="invalid-feedback d-block" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+            </div>
         </div>
     </form>
 </div>

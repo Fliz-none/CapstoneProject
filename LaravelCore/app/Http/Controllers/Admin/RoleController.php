@@ -87,9 +87,9 @@ class RoleController extends Controller
                         }
                     })
                     ->editColumn('permissions', function ($obj) {
-                        return $obj->permissions->count() ? implode(' ', json_decode($obj->permissions->take(15)->map(function ($permission) {
+                        return count($obj->permissions) ? implode(' ', json_decode($obj->permissions->take(15)->map(function ($permission) {
                             return '<span class="badge bg-primary">' . $permission->name . '</span>';
-                        }))) . ' and ' . $obj->permissions->count() - 15 . ' more' : 'No permissions assigned';
+                        }))) . ' and ' . (count($obj->permissions) - 15) . ' more permissions' : 'No permissions assigned';
                     })
                     ->rawColumns(['name', 'permissions', 'action'])
                     ->make(true);

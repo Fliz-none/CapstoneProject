@@ -9,11 +9,11 @@
                 </div>
                 <div class="modal-body">
                     <div class="row mb-3">
-                        <div class="col-md-4">
-                            <label class="col-form-label text-md-end" data-bs-toggle="tooltip" data-bs-title="Name used to identify the user's permissions and responsibilities in the system" for="role-name">Role Name</label>
+                        <div class="col-md-3">
+                            <label class="col-form-label text-md-end fw-bold fs-5" data-bs-toggle="tooltip" data-bs-title="Name used to identify the user's permissions and responsibilities in the system" for="role-name">Role name</label>
                         </div>
-                        <div class="col-md-8">
-                            <input class="form-control" id="role-name" name="name" type="text" required autocomplete="off">
+                        <div class="col-md-9">
+                            <input class="form-control" id="role-name" name="name" type="text" required autocomplete="off" placeholder="Please enter role name" value="">
                         </div>
                     </div>
                     <div class="row">

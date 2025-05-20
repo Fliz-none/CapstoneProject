@@ -19,6 +19,7 @@ class CreateBranchesTable extends Migration
             $table->string('phone');
             $table->string('address');
             $table->text('note')->nullable();
+            $table->string('ip_address')->nullable();
             $table->unsignedTinyInteger('status')->comment('0:block; 1:active')->default(1);
             $table->softDeletes();
             $table->timestamps();

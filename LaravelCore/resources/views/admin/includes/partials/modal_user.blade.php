@@ -228,7 +228,6 @@
                         <tbody>
                             @php
                                 $work_info = json_decode(cache()->get('settings')['work_info']) ?? [];
-                                unset($work_info->allow_self_register); // Remove 'allow_self_register' field
                                 $user = Auth::user();
                             @endphp
                             <tr>
