@@ -1,0 +1,11 @@
+torch
+transformers
+sentence-transformers
+flask
+openai
+nltk
+scikit-learn
+numpy
+evaluate
+mysql-connector-python
+python-dotenv

@@ -1,3 +1,5 @@
+# LaravelCore
+
 /vendor/
 node_modules/
 npm-debug.log
@@ -16,7 +18,6 @@ public_html/storage
 public_html/hot
 
 storage/*.key
-.env
 Homestead.yaml
 Homestead.json
 /.vagrant
@@ -28,3 +29,10 @@ Homestead.json
 .env.production
 .phpactor.json
 auth.json
+
+# Chatbot AI
+/venv/
+vocab.pkl
+vector_store.pkl
+answer_vectors.pkl
+/__pycache__/

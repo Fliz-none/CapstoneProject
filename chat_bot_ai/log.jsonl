@@ -1,0 +1,69 @@
+python train.py
+{"input": "shop mở cửa lúc mấy giờ", "output": "bên mình mở cửa từ 8h sáng đến 9h tối mỗi ngày"}
+{"input": "có ship toàn quốc không", "output": "dạ bên em có hỗ trợ giao hàng toàn quốc nha"}
+{"input": "có ship toàn", "output": "dạ sản phẩm vẫn còn hàng ạ"}
+{"input": "có ship hong", "output": "bên mình mở cửa địa điểm"}
+{"input": "có ship hong", "output": "bên mình mở cửa địa điểm"}
+{"input": "shop mở cửa lúc mấy giờ", "output": "bên mình mở cửa có chính sách giá sỉ trợ gói quà với chi phí 10k/sản phẩm"}
+{"input": "shop mở cửa lúc mấy giờ", "output": "bên mình mở cửa có chính sách giá sỉ trợ gói quà với chi phí 10k/sản phẩm"}
+{"input": "tôi muốn đổi hàng", "output": "có thể huỷ đơn hàng trước khi hàng được giao cho đơn vị vận chuyển"}
+{"input": "sản phẩm này còn hàng không", "output": "dạ sản phẩm vẫn còn hàng ạ"}
+{"input": "tôi muốn hoàn tiền", "output": "bạn có thể huỷ đơn hàng trước khi hàng được giao cho đơn vị vận chuyển"}
+{"input": "màu sắc có giống hình không", "output": "sản phẩm này unisex , phù hợp cho cả nam và nữ"}
+{"input": "màu sắc có giống hình không (1)", "output": "sản phẩm có thể chênh lệch nhẹ do ánh sáng và thiết bị hiển thị"}
+{"input": "muốn đổi hàng", "output": "bạn có thể huỷ đơn hàng trước khi hàng được giao cho đơn vị vận chuyển (gợi ý gần nhất)
+bạn có thể hoàn tiền nếu có hóa đơn gốc trong vòng 3 ngày (từ mô hình seq2seq)"}
+{"input": "phí vận chuyển bao nhiêu", "output": "phí ship dao động từ 20k đến 40k tùy khu vực ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-19T18:22:00.666545"}
+{"input": "phí vận chuyển", "output": "dạ có , bên em chấp nhận thanh toán qua momo , zalopay và chuyển khoản", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-19T18:22:16.469788"}
+{"input": "vận chuyển", "output": "hỗ bạn có thể đổi size trong vòng 7 ngày nếu còn tem mác", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-19T18:22:24.899164"}
+{"input": "bao lâu nhận được hàng", "output": "thời gian giao hàng từ 2 đến 5 ngày tùy địa điểm", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-19T18:23:38.504374"}
+{"input": "khi nào nhận được hàng", "output": "thời gian giao hàng từ 2 đến 5 ngày tùy địa điểm", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-19T18:24:01.746144"}
+{"input": "màu sắc thì sao", "output": "thanh toán ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-19T18:31:57.365139"}
+{"input": "hủy đơn hàng", "output": "bạn có thể đổi trả trong vòng 7 ngày nếu sản phẩm còn nguyên tem mác", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-19T18:32:18.395632"}
+{"input": "tôi muốn hủy đơn hàng", "output": "bạn ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-19T18:32:43.205218"}
+{"input": "tôi muốn huỷ đơn hàng", "output": "bạn có thể đổi hàng trong vòng 7 ngày nếu còn tem mác chuyển khi khoản", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-19T18:33:07.686288"}
+{"input": "phí vận chuyển", "output": "dạ có , bên em chấp nhận thanh toán qua momo , zalopay và chuyển khoản", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-19T18:35:27.564503"}
+{"input": "tôi muốn đổi hàng", "output": "bạn có thể đổi hàng trong vòng 7 ngày nếu sản phẩm chưa qua sử dụng", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T19:25:53.402463"}
+{"input": "muốn đổi hàng", "output": "bạn có thể đổi hàng trong vòng 7 ngày nếu sản phẩm chưa qua sử dụng", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T19:26:06.977917"}
+{"input": "đổi hàng", "output": "bạn có thể đổi hàng trong vòng 7 ngày nếu sản phẩm chưa qua sử dụng", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T19:26:17.139135"}
+{"input": "muốn được hoàn tiền", "output": "bạn có thể hoàn tiền nếu có hóa đơn gốc trong vòng 3 ngày", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T19:26:59.336560"}
+{"input": "hoàn tiền", "output": "bạn có thể hoàn tiền nếu có hóa đơn gốc trong vòng 3 ngày", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T19:28:46.922331"}
+{"input": "hoàn t", "output": "sản phẩm được làm từ cotton 100 % , thoáng mát và bền đẹp", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T19:30:21.921588"}
+{"input": "sản phẩm lỗi thì sao shop", "output": "dạ sản phẩm vẫn còn hàng ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T19:30:47.135045"}
+{"input": "sản phẩm mấy giờ", "output": "bên mình mở cửa từ 8h sáng đến 9h tối mỗi ngày", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T19:34:10.979952"}
+{"input": "16mm còn hàng không", "output": "dạ hiện tại chưa hỗ trợ thẻ quà tặng ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T20:50:09.584025"}
+{"input": "16mm còn hàng không", "output": "dạ hiện tại chưa hỗ trợ thẻ quà tặng ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T20:57:20.302806"}
+{"input": "16mm còn hàng không", "output": "dạ hiện tại chưa hỗ trợ thẻ quà tặng ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T20:58:05.723205"}
+{"input": "16mm còn hàng không", "output": "dạ hiện tại chưa hỗ trợ thẻ quà tặng ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T20:59:22.788124"}
+{"input": "16mm còn hàng không", "output": "dạ hiện tại chưa hỗ trợ thẻ quà tặng ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T20:59:50.149997"}
+{"input": "16mm còn hàng không", "output": "dạ hiện tại chưa hỗ trợ thẻ quà tặng ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T21:00:45.196634"}
+{"input": "16mm còn hàng không", "output": "dạ hiện tại chưa hỗ trợ thẻ quà tặng ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T21:01:16.978769"}
+{"input": "16mm còn hàng không", "output": "dạ hiện tại chưa hỗ trợ thẻ quà tặng ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T21:01:27.918532"}
+{"input": "16mm còn hàng không", "output": "dạ hiện tại chưa hỗ trợ thẻ quà tặng ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T21:07:16.265590"}
+{"input": "16mm còn hàng không", "output": "Tổng tồn kho của sản phẩm '16mm':\n- 16mm (Cái): 4.00 cái\n", "method": "inventory_check", "confidence": 1.0, "timestamp": "2025-05-20T21:11:03.541190"}
+{"input": "16mm còn hàng không", "output": "Tổng tồn kho của sản phẩm '16mm':\n- 16mm (Cái): 4.00 cái\n", "method": "inventory_check", "confidence": 1.0, "timestamp": "2025-05-20T21:13:07.201952"}
+{"input": "16mm còn hàng không", "output": "Dạ bên em còn '16mm' ạ", "method": "inventory_check", "confidence": 1.0, "timestamp": "2025-05-20T21:13:43.044045"}
+{"input": "16mm còn hàng không", "output": "Dạ bên em còn 16mm' ạ - Tên sản phẩm : Chuông Rời - Biến thể : 16mm - Đơn vị : Cái - Số lượng : 4.00", "method": "inventory_check", "confidence": 1.0, "timestamp": "2025-05-20T21:15:53.010032"}
+{"input": "Chuông rời còn hàng không", "output": "Dạ bên em còn chuông rời' ạ - Tên sản phẩm : Chuông Rời - Biến thể : 16mm - Đơn vị : Cái - Số lượng : 4.00", "method": "inventory_check", "confidence": 1.0, "timestamp": "2025-05-20T21:16:19.800733"}
+{"input": "Chuông còn hàng không", "output": "Dạ bên em còn chuông' ạ - Tên sản phẩm : Chuông Rời - Biến thể : 16mm - Đơn vị : Cái - Số lượng : 4.00", "method": "inventory_check", "confidence": 1.0, "timestamp": "2025-05-20T21:16:32.237964"}
+{"input": "Chuôn còn hàng không", "output": "Dạ bên em còn chuôn' ạ - Tên sản phẩm : Chuông Rời - Biến thể : 16mm - Đơn vị : Cái - Số lượng : 4.00", "method": "inventory_check", "confidence": 1.0, "timestamp": "2025-05-20T21:16:41.697052"}
+{"input": "C còn hàng không", "output": "Dạ bên em còn c' ạ - Tên sản phẩm : Chuông Rời - Biến thể : 16mm - Đơn vị : Cái - Số lượng : 4.00 - Tên sản phẩm : CATSDO -8L- Cát mèo - Biến thể : chanh - Đơn vị : gói - Số lượng : 2.00", "method": "inventory_check", "confidence": 1.0, "timestamp": "2025-05-20T21:16:58.044780"}
+{"input": "Chuông rời còn hàng không shop", "output": "Trong kho đã hết sản phẩm 'chuông rời  shop' rồi ạ.", "method": "inventory_check", "confidence": 1.0, "timestamp": "2025-05-20T21:27:50.132993"}
+{"input": "Chuông Rời còn hàng không shop", "output": "Trong kho đã hết sản phẩm 'chuông rời  shop' rồi ạ.", "method": "inventory_check", "confidence": 1.0, "timestamp": "2025-05-20T21:28:04.562668"}
+{"input": "Chuông còn hàng không shop", "output": "Trong kho đã hết sản phẩm 'chuông  shop' rồi ạ.", "method": "inventory_check", "confidence": 1.0, "timestamp": "2025-05-20T21:28:33.396153"}
+{"input": "Chuông còn hàng không shop", "output": "Trong kho đã hết sản phẩm 'chuông  shop' rồi ạ.", "method": "inventory_check", "confidence": 1.0, "timestamp": "2025-05-20T21:30:05.816766"}
+{"input": "Chuông roi còn hàng không shop", "output": "Dạ bên em còn chuông roi' ạ - Tên sản phẩm : Chuông Rời - Biến thể : 16mm - Đơn vị : Cái - Số lượng : 4.00", "method": "inventory_check", "confidence": 1.0, "timestamp": "2025-05-20T21:32:41.680675"}
+{"input": "Chuông roi nay la san pham gi vay shop", "output": "phí ship dao động từ 20k đến 40k tùy khu vực ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T21:38:03.713562"}
+{"input": "Chuông roi nay la san pham gi vay shop", "output": "phí ship dao động từ 20k đến 40k tùy khu vực ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T21:45:48.821406"}
+{"input": "Chuông roi nay la sa sdfsdds fsdf dưe n pham gi vay shop", "output": "phí ship dao động từ 20k đến 40k tùy khu vực ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T21:46:30.186618"}
+{"input": "Chuông roi nay la sa sdfsdds fsdf dưe n pham gi vay shop", "output": "phí ship dao động từ 20k đến 40k tùy khu vực ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T21:47:49.605815"}
+{"input": "Chuông roi con khong vay shop", "output": "phí ship dao động từ 20k đến 40k tùy khu vực ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T22:18:15.904185"}
+{"input": "Chuông roi còn hàng không shop", "output": "dạ hiện tại chưa hỗ trợ thẻ quà tặng ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T22:22:57.691648"}
+{"input": "Chuông roi còn hàng không shop", "output": "dạ hiện tại chưa hỗ trợ thẻ quà tặng ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T22:23:17.634996"}
+{"input": "Chuông roi còn hàng không shop", "output": "dạ hiện tại chưa hỗ trợ thẻ quà tặng ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T22:23:19.807073"}
+{"input": "Chuông roi còn hàng không shop", "output": "dạ hiện tại chưa hỗ trợ thẻ quà tặng ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T22:23:38.633026"}
+{"input": "Chuông roi còn hàng không shop", "output": "dạ hiện tại chưa hỗ trợ thẻ quà tặng ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T22:23:40.807206"}
+{"input": "Chuông roi còn hàng không", "output": "dạ hiện tại chưa hỗ trợ thẻ quà tặng ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T22:24:20.235257"}
+{"input": "Chuông roi còn hàng không", "output": "dạ hiện tại chưa hỗ trợ thẻ quà tặng ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T22:24:22.788473"}
+{"input": "Chuông roi còn hàng không", "output": "dạ hiện tại chưa hỗ trợ thẻ quà tặng ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T22:25:53.101270"}
+{"input": "Chuông roi còn hàng không", "output": "dạ hiện tại chưa hỗ trợ thẻ quà tặng ạ", "method": "seq2seq", "confidence": 0.0, "timestamp": "2025-05-20T22:27:46.027503"}

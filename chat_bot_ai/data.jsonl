@@ -1,0 +1,23 @@
+{"input": "tôi muốn đổi hàng", "output": "bạn có thể đổi hàng trong vòng 7 ngày nếu sản phẩm chưa qua sử dụng"}
+{"input": "shop mở cửa lúc mấy giờ", "output": "bên mình mở cửa từ 8h sáng đến 9h tối mỗi ngày"}
+{"input": "tôi muốn hoàn tiền", "output": "bạn có thể hoàn tiền nếu có hóa đơn gốc trong vòng 3 ngày"}
+{"input": "sản phẩm này còn hàng không", "output": "dạ sản phẩm vẫn còn hàng ạ"}
+{"input": "có ship toàn quốc không", "output": "dạ bên em có hỗ trợ giao hàng toàn quốc nha"}
+{"input": "phí vận chuyển bao nhiêu", "output": "phí ship dao động từ 20k đến 40k tùy khu vực ạ"}
+{"input": "bao lâu nhận được hàng", "output": "thời gian giao hàng từ 2 đến 5 ngày tùy địa điểm"}
+{"input": "tôi muốn đổi sang size lớn hơn", "output": "bạn có thể đổi size trong vòng 7 ngày nếu còn tem mác"}
+{"input": "sản phẩm có bảo hành không", "output": "sản phẩm được bảo hành 6 tháng chính hãng"}
+{"input": "shop có chương trình khuyến mãi không", "output": "hiện tại đang có giảm giá 10% cho đơn hàng trên 500k"}
+{"input": "tôi muốn mua số lượng lớn", "output": "bên mình có chính sách giá sỉ cho đơn hàng từ 10 sản phẩm trở lên"}
+{"input": "có hỗ trợ thanh toán qua momo không", "output": "dạ có, bên em chấp nhận thanh toán qua Momo, ZaloPay và chuyển khoản"}
+{"input": "sản phẩm này làm từ chất liệu gì", "output": "sản phẩm được làm từ cotton 100%, thoáng mát và bền đẹp"}
+{"input": "tôi bị giao nhầm hàng", "output": "bạn vui lòng gửi hình ảnh sản phẩm bị giao nhầm để bên mình xử lý nhé"}
+{"input": "shop có chi nhánh ở Hà Nội không", "output": "bên mình hiện chưa có chi nhánh ở Hà Nội ạ"}
+{"input": "thời gian đổi trả là bao lâu", "output": "bạn có thể đổi trả trong vòng 7 ngày nếu sản phẩm còn nguyên tem mác"}
+{"input": "tôi muốn huỷ đơn hàng", "output": "bạn có thể huỷ đơn hàng trước khi hàng được giao cho đơn vị vận chuyển"}
+{"input": "shop có bán thẻ quà tặng không", "output": "dạ hiện tại chưa hỗ trợ thẻ quà tặng ạ"}
+{"input": "sản phẩm này dành cho nam hay nữ", "output": "sản phẩm này unisex, phù hợp cho cả nam và nữ"}
+{"input": "màu sắc có giống hình không", "output": "sản phẩm có thể chênh lệch nhẹ do ánh sáng và thiết bị hiển thị"}
+{"input": "có hỗ trợ gói quà không", "output": "bên mình có hỗ trợ gói quà với chi phí 10k/sản phẩm"}
+{"input": "sản phẩm có sẵn ở cửa hàng không", "output": "bạn vui lòng inbox mẫu và size để mình kiểm tra tồn kho ạ"}
+{"input": "có cần đặt cọc trước không", "output": "đối với đơn hàng giá trị cao, bên mình sẽ yêu cầu đặt cọc trước 30%"}
