@@ -882,6 +882,46 @@
     })
     // =========== END CATEGORY ===========
 
+    /**
+     * PROFILE
+     */
+    $('.btn-change-branch').on('click', function() {
+        Swal.fire({
+            title: 'Select branch',
+            html: `
+            <select id="main_branch" class="form-select" name="main_branch">
+                @foreach (Auth::user()->branches as $branch)
+                    <option value="{{ $branch->id }}"{{ Auth::user()->main_branch == $branch->id ? 'selected' : '' }}>{{ $branch->name }}</option>
+                @endforeach
+            </select>
+        `,
+            showCancelButton: true,
+            confirmButtonText: 'Save',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Gửi AJAX request để lưu dữ liệu
+                $.ajax({
+                    url: "{{ route('admin.profile.change_branch') }}",
+                    type: 'POST',
+                    data: {
+                        main_branch: $('[name=main_branch]').val(),
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        pushToastify(response.msg, response.status)
+                        $('nav.navbar .user-name small').text(response.main_branch)
+                    },
+                    error: function(error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'An error occurred',
+                            text: 'Please try again later!',
+                        });
+                    }
+                });
+            }
+        });
+    });
 
     /**
      * USER PROCESS

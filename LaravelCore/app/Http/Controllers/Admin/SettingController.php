@@ -364,8 +364,8 @@ class SettingController extends Controller
                     'staff_number' => $request->staff_number[$i],
                 ];
             }
-            $this->updateSetting('require_attendance_on_company_wifi', $request->has('require_attendance_on_company_wifi'));
-            $this->updateSetting('allow_self_register', $request->has('allow_self_register'));
+            $this->updateSetting('require_attendance_on_company_wifi', $request->require_attendance_on_company_wifi);
+            $this->updateSetting('allow_self_register', $request->allow_self_register);
             $this->updateSetting('work_info', json_encode($work_info));
             cache()->forget('settings');
 

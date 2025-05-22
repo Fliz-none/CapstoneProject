@@ -1139,14 +1139,6 @@ $(".save-form").on("submit", function (e) {
                     fillListPet(response.user.id)
                 }
                 break;
-            case "pet-form":
-                if (response.pet) {
-                    fillListPet(response.pet.customer_id, response.pet.id)
-                }
-                break;
-            case "info-service-form":
-                reloadIndication(response.objs);
-                break;
             case "login-form":
                 updateCsrfToken(response.token);
                 $("nav.navbar .user-name h6")
@@ -1158,28 +1150,11 @@ $(".save-form").on("submit", function (e) {
                             : "No branches found"
                     );
                 break;
-            case "booking-form":
-                if ($(".calendar").length) {
-                    const date = moment(response.obj.appointment_at).format(
-                        "DD/MM/YYYY"
-                    );
-                    fillData(date + " - " + date);
-                }
-                break;
-            case 'room-form':
-                $('.btn-read-rooms').trigger('click')
-                break;
-            case 'accommodation-form':
-                $('.modal#accommodation-modal').modal('hide')
-                break;
             case 'export-form':
                 const path = window.location.pathname;
                 if (path.startsWith('/quantri/info')) {
                     location.reload();
                 }
-                break;
-            case 'tracking-form':
-                fillTracking(response.obj.accommodation.tracking_groups)
                 break;
             case 'render_stock-form':
                 $('.btn-sync-stock').attr('disabled', false);
