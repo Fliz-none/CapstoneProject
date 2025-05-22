@@ -116,11 +116,14 @@ class Product extends Model
     public function getStatusStrAttribute()
     {
         switch ($this->status) {
-            case '3':
+            case '4':
                 $name = 'Featured';
                 break;
+            case '3':
+                $name = 'Online & Offline';
+                break;
             case '2':
-                $name = 'Visible Online';
+                $name = 'Online Only';
                 break;
             case '1':
                 $name = 'Offline Only';
