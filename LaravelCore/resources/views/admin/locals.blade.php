@@ -21,14 +21,14 @@
         <section class="section">
             <div class="row">
                 <div class="col-12">
-                    @if (!empty(Auth::user()->can(App\Models\User::CREATE_ANIMAL)))
+                    @if (!empty(Auth::user()->can(App\Models\User::CREATE_LOCAL)))
                         <a class="btn k-btn-info mb-3 block btn-create-local">
                             <i class="bi bi-plus-circle"></i>
                             Add
                         </a>
                     @endif
                     <div class="d-inline-block process-btns d-none">
-                        @if (!empty(Auth::user()->can(App\Models\User::DELETE_ANIMALS)))
+                        @if (!empty(Auth::user()->can(App\Models\User::DELETE_LOCALS)))
                             <a class="btn btn-danger btn-removes mb-3 ms-2" type="button">
                                 <i class="bi bi-trash"></i>
                                 Delete
@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="card">
-                @if (!empty(Auth::user()->can(App\Models\User::READ_ANIMALS)))
+                @if (!empty(Auth::user()->can(App\Models\User::READ_LOCALS)))
                     <div class="card-body">
                         <form class="batch-form" method="post">
                             @csrf

@@ -37,7 +37,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Role Name</th>
+                                        <th>Role name</th>
                                         <th>Permissions</th>
                                         <th></th>
                                     </tr>

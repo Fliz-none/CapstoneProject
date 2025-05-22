@@ -65,7 +65,7 @@ class LoginController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
-                'msg' => 'Xác thực dữ liệu thất bại',
+                'msg' => 'Data validation failed.',
                 'errors' => $validator->errors()
             ], 422);
         }
@@ -73,7 +73,7 @@ class LoginController extends Controller
             return response()->json([
                 'token' => csrf_token(),
                 'status' => 'success',
-                'msg' => 'Đăng nhập thành công.'
+                'msg' => 'Login successful.'
             ], 200);
         }
         // Thử đăng nhập
@@ -85,7 +85,7 @@ class LoginController extends Controller
                     'main_branch' => Auth::user()->branch,
                     'token' => csrf_token(),
                     'status' => 'success',
-                    'msg' => 'Đăng nhập thành công.'
+                    'msg' => 'Login successful.'
                 ], 200);
             }
             return redirect()->intended($this->redirectPath());
@@ -95,11 +95,11 @@ class LoginController extends Controller
             // Nếu đăng nhập thất bại
             return response()->json([
                 'status' => 'error',
-                'msg' => 'Đăng nhập thất bại.'
+                'msg' => 'Login failed.'
             ], 401);
         }else{
             return back()->withInput()->withErrors([
-                'password' => 'Thông tin đăng nhập không chính xác.',
+                'password' => 'Invalid login information.',
             ]);
         }
     }
@@ -114,7 +114,7 @@ class LoginController extends Controller
             return response()->json([
                 'token' => csrf_token(),
                 'status' => 'success',
-                'msg' => 'Đăng xuất tài khoản thành công!'
+                'msg' => 'Logout successful.'
             ], 200);
         }
 

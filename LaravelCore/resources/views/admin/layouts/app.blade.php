@@ -19,7 +19,7 @@
 
     {{-- Mô tả của web app --}}
     <meta name="apple-mobile-web-app-description"
-        content="Ứng dụng quản lý vận hành của {{ Auth::user()->branch->name }}">
+        content=" {{ Auth::user()->branch->name }}">
     {{-- Ảnh hiển thị khi thêm vào màn hình Home --}}
     <link href="{{ asset('admin/images/logo/favicon.svg') }}" rel="apple-touch-icon">
 
@@ -415,6 +415,441 @@
         }
     })
 
+    /**
+     * PRODUCT PROCESS
+     */
+    $(document).on('click', '.btn-create-product', function(e) {
+        e.preventDefault();
+        initCreateProduct()
+    })
+
+    function initCreateProduct() {
+        const form = $('#product-form')
+        resetForm(form)
+        form.find(`.card-variables`).addClass('d-none')
+        form.find(`[name='status']`).val(1)
+        form.attr('action', `{{ route('admin.product.create') }}`)
+        form.find('.modal').modal('show').find('.modal-title').text('New product')
+    }
+
+    $(document).on('click', '.btn-update-product', function(e) {
+        e.preventDefault();
+        const id = $(this).attr('data-id');
+        $.get(`{{ route('admin.product') }}/${id}`, function(product) {
+            initUpdateProduct(product)
+        })
+    })
+
+    function initUpdateProduct(product) {
+        const form = $('#product-form')
+        resetForm(form)
+        form.find('[name=id]').val(product.id)
+        form.find('[name=name]').val(product.name)
+        form.find('[name=barcode]').val(product.barcode)
+        form.find('[name=sku]').val(product.sku)
+        form.find('[name=unit]').val(product.unit)
+        form.find('[name=status]').val(product.status)
+        form.find('[name=avatar]').prev().find('img').attr('src', product.avatarUrl)
+        $.each(product.catalogues, function(i, catalogue) {
+            $(`input[type=checkbox][value=${catalogue.id}]`).prop('checked', true)
+        })
+        sortCheckedInput(form)
+        showVariables(product.id)
+        if (product.deleted_at != null) {
+
+            form.find('.btn[type=submit]:last-child').addClass('d-none')
+        }
+        form.attr('action', `{{ route('admin.product.update') }}`).find('.modal').modal('show').find('.modal-title').text(product.name);
+    }
+
+    $(document).on('click', '.btn-create-variable', function(e) {
+        e.preventDefault();
+        const form = $('#variable-form')
+        resetForm(form)
+        $('#variable-units').empty()
+        $('.btn-append-variable').trigger('click')
+        form.find(`[name='status']`).prop('checked', true)
+        form.find(`[name=stock_limit]`).val(0)
+        form.find(`[name='product_id']`).val($(this).attr('data-product'))
+        form.attr('action', `{{ route('admin.variable.create') }}`)
+        form.find('.modal').modal('show').find('.modal-title').text('New variant')
+    })
+
+    $(document).on('click', '.btn-update-variable', function(e) {
+        e.preventDefault();
+        const id = $(this).attr('data-id');
+        $.get(`{{ route('admin.variable') }}/${id}`, function(variable) {
+            initUpdateVariable(variable)
+        })
+    })
+
+    function initUpdateVariable(variable) {
+        const form = $('#variable-form');
+        resetForm(form)
+        form.find('#variable-modal-label').text(variable.name)
+        form.find('[name=id]').val(variable.id)
+        form.find('[name=name]').val(variable.name)
+        form.find('[name=description]').val(variable.description)
+        form.find('[name=stock_limit]').val(variable.stock_limit)
+        form.find(`[name='status']`).prop('checked', variable.status)
+        form.find(`[name='product_id']`).val(variable.product_id)
+        if (variable.deleted_at != null) {
+            form.find('.btn[type=submit]:last-child').addClass('d-none')
+        }
+        $.each(variable.attributes, function(index, attribute) {
+            form.find(`#variable-attribute-${attribute.id}`).prop('checked', true);
+        })
+        form.find('#variable-units').empty()
+        $.each(variable.units, function(index, unit) {
+            form.find('#variable-units').append(`
+            <tr class="variable-unit">
+                <td><input class="form-control" name="unit_barcode[]" type="text" value="${unit.barcode ? unit.barcode : ''}" placeholder="Barcode"></td>
+                <td><input class="form-control" name="unit_term[]" type="text" value="${unit.term}" placeholder="Name" required></td>
+                <td><input class="form-control money" name="unit_price[]" type="text" value="${unit.price}" placeholder="Price" required></td>
+                <td><input class="form-control bg-white" name="unit_rate[]" type="text" value="${unit.rate}" placeholder="Conversion rate" required disabled></td>
+                <td>
+                    <input name="unit_id[]" value="${unit.id}" type="hidden">
+                    <form action="{{ route('admin.unit.remove') }}" method="post" class="save-form">
+                        @csrf
+                        <input type="hidden" name="choices[]" value="${unit.id}"/>
+                        <button class="btn btn-link text-decoration-none btn-remove-unit">
+                            <i class="bi bi-trash3"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>`);
+        })
+        form.attr('action', `{{ route('admin.variable.update') }}`)
+        form.find('.modal').modal('show').find('.modal-title').text(variable.name != null ? variable.name : variable.id)
+    }
+
+    $(document).on('change', '.variable-attribute', function() {
+        $(this).closest('.accordion-body').find('.variable-attribute').not(this).prop('checked', false)
+        const text = $(this).closest('.accordion').find('.variable-attribute:checked').map(function() {
+            return $(this).next().text()
+        }).get().join(' - ')
+        $(this).closest('.modal').find('#variable-name').val(text)
+    })
+
+    $(document).on('click', '.btn-append-unit', function(e) {
+        e.preventDefault();
+        const form = $('#variable-form');
+        const str = `
+                <tr class="variable-unit">
+                    <td><input class="form-control" name="unit_barcode[]" type="text" placeholder="Barcode"></td>
+                    <td><input class="form-control" name="unit_term[]" type="text" placeholder="Name" required></td>
+                    <td><input class="form-control money" name="unit_price[]" type="text" placeholder="Price" required></td>
+                    <td><input class="form-control" name="unit_rate[]" type="text" placeholder="Conversion rate" required></td>
+                    <td>
+                        <input name="unit_id[]" type="hidden">
+                        <form action="{{ route('admin.unit.remove') }}" method="post" class="save-form">
+                            @csrf
+                            <input type="hidden" name="choices[]" value=""/>
+                            <button class="btn btn-link text-decoration-none btn-remove-unit">
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>`
+        form.find('#variable-units').append(str);
+    })
+
+    $(document).on('click', '.btn-remove-unit', function(e) {
+        e.preventDefault();
+        const btn = $(this);
+        if ($('.variable-unit').length > 1) {
+            if (btn.prev().val()) {
+                const form = btn.closest('form');
+                Swal.fire(config.sweetAlert.confirm).then((result) => {
+                    if (result.isConfirmed) {
+                        submitForm(form).done(function(response) {
+                            if (response.status == 'success') {
+                                btn.closest('.variable-unit').remove();
+                            }
+                        })
+                    }
+                });
+            } else {
+                btn.parents('.variable-unit').remove();
+            }
+        } else {
+            pushToastify('At least one unit is required.!', 'danger')
+        }
+    })
+    // =========== END PRODUCT =========
+
+
+    /**
+     * IN BARCODE - MÃ VẠCH
+     */
+    $('body').on('click', '.btn-barcode-product', function() {
+        var form = $(this).closest('section').find('.batch-form'),
+            modal = $('#barcode-modal');
+        var checkedValues = JSON.stringify(form.find('input[name="choices[]"]:checked').map(function() {
+            return $(this).val();
+        }).get());
+        $.get(config.routes.get + '/barcode?ids=' + checkedValues, function(products) {
+            let str = ``
+            $.each(products, function(i, product) {
+                let variables = ``,
+                    units = ``
+                $.each(product.variables, function(j, variable) {
+                    $.each(variable.units, function(k, unit) {
+                        units += `<option value="${ unit.barcode }" data-variable="${ unit.variable_id }" data-price="${ unit.price }" data-term="${ unit.term }" ${j ? 'hidden' : ''}>${ unit.term }</option>`
+                    })
+                    variables += `<option value="${ variable.id }">${ variable.name != null ? variable.name : variable.id }</option>`
+                })
+                str += `
+            <div class="col-12 col-lg-4">
+                <div class="card card-barcode">
+                    <div class="ratio ratio-1x1">
+                        <img src="${ product.avatarUrl }" class="card-img-top object-fit-cover p-1">
+                    </div>
+                    <div class="card-body p-2">
+                    <label class="form-label" for="variable-${i}">Select a variant</label>
+                        <select id="variable-${i}" class="form-control form-control-sm mb-1 barcode-variable" placeholder="Select a variant" autocomplete="off" required>
+                            ${variables}
+                        </select>
+                        <label class="form-label" for="unit-${i}">Select a unit</label>
+                        <select id="unit-${i}" class="form-control form-control-sm mb-1 barcode-unit" placeholder="Select a unit" autocomplete="off" required>
+                            ${units}
+                        </select>
+                        <input type="hidden" class="barcode-product-name" value="${product.name}">
+                        <label class="form-label" for="quantity-${i}">Print quantity</label>
+                        <input class="form-control form-control-sm barcode-quantity" id="quantity-${i}" placeholder="Enter quantity" type="text" value="2" autocomplete="off" inputmode="numeric" required>
+                    </div>
+                </div>
+            </div>`
+            })
+            modal.find('#barcode-products').html(str)
+            modal.modal('show')
+        })
+    })
+
+    $(document).on('click', '.btn-print-barcode', function() {
+        let str = ``
+        $('#barcode-modal').find('.barcode-unit').each(function() {
+            let card = $(this).closest('.card-barcode'),
+                qtt = parseInt(card.find('.barcode-quantity').val()),
+                product = card.find('.barcode-product-name').val(),
+                price = $(this).find(`option[value='${$(this).val()}']`).attr('data-price'),
+                selectVariable = $(this).closest('.card-barcode').find('select.barcode-variable'),
+                variable = selectVariable.find(`option[value='${selectVariable.val()}']`).text(),
+                term = $(this).find(`option[value='${$(this).val()}']`).attr('data-term'),
+                barcode = $(this).val()
+            for (let i = 0; i < qtt; i++) {
+                if (barcode != 'null') {
+                    str += `
+                    <div class="col-6 py-0 m-0 ps-0 pe-2" style="width: 36mm; height: 22mm">
+                        <div class="d-flex align-items-center justify-content-start" style="height: 10.5mm; overflow: hidden;">
+                            <svg id="barcode-${barcode}"></svg>
+                            <input type="hidden" class="barcode-value" value="${barcode}">
+                        </div>
+                        <h6 class="overflow-hidden text-center mb-0 ellipsis-two-lines" style="font-size: 7.5pt">${product}-${variable}-${term}</h6>
+                        <h5 class="fw-bold text-center mb-0" style="font-size: 8pt">${number_format(price)}đ</h5>
+                    </div>`
+                }
+            }
+        })
+        $('#print-wrapper').html(`
+            <div id="print-container" style="color: #000000">
+                <div class="container-fluid print-template">
+                    <div class="row p-0 m-0" style="width: 72mm">
+                        ${str}
+                    </div>
+                </div>
+            </div>`)
+        $('#print-wrapper').find('.barcode-value').each(function() {
+            JsBarcode('#' + $(this).prev().attr('id'), $(this).val(), {
+                format: "CODE128",
+                lineColor: "#000000",
+                fontSize: 32,
+                width: 3,
+                height: 75,
+                margin: 2,
+                textPosition: "top",
+                flat: true,
+                displayValue: true
+            });
+        })
+        printJS({
+            printable: 'print-container',
+            type: 'html',
+            css: [`{{ asset('admin/css/bootstrap.css') }}`, `{{ asset('admin/css/key.css') }}`],
+            targetStyles: ['*'],
+            showModal: false,
+        });
+    })
+
+    $(document).on('change', '.barcode-variable', function() {
+        const id = $(this).val()
+        $(this).closest('.card-barcode').find('.barcode-unit').each(function() {
+            let set = false;
+            $(this).find('option').prop('hidden', false).prop('selected', false).each(function() {
+                if ($(this).attr('data-variable') != id) {
+                    $(this).prop('hidden', true)
+                } else {
+                    if (!set) {
+                        $(this).prop('selected', true)
+                        set = true
+                    }
+                }
+            })
+        })
+    })
+
+    /**
+     * BARCODE ONSCAN
+     */
+    $(document).ready(function() {
+        onScan.attachTo(document, {
+            suffixKeyCodes: [13], // Enter-key expected at the end of a scan
+            reactToPaste: false, // Compatibility to built-in scanners in paste-mode (as opposed to keyboard-mode)
+            onScan: function(sCode, iQty) {
+                // console.log('Barcode scanned: ' + sCode); // Check if this runs
+                $('input:focus').val('')
+                if ($('#product-modal').hasClass('show')) {
+                    $.get(`{{ route('admin.variable') }}/scan?barcode=${sCode}`, function(variable) {
+                        if (variable) {
+                            pushToastify("Barcode already exists!", 'danger')
+                        } else {
+                            let available = true;
+                            $(`[name='barcode[]']`).each(function(i, input) {
+                                if (input.value == sCode) {
+                                    available = false;
+                                    return false;
+                                }
+                            })
+                            if (available) {
+                                $('.btn-append-variable').trigger('click')
+                                $(`[name='barcode[]']`).last().val(sCode)
+                            } else {
+                                pushToastify("Barcode already exists!", 'danger')
+                            }
+                        }
+                    })
+                } else if ($('#import-modal').hasClass('show')) {
+                    let btn = $('.btn-create-stock'),
+                        existVariable = false
+                    btn.prop("disabled", true).html('<span class="spinner-border spinner-border-sm" id="spinner-form" role="status"></span>');
+                    $.get(`{{ route('admin.unit') }}/scan?barcode=${sCode}`, function(unit) {
+                        if (unit) {
+                            $('.import_detail-unit_id').each(function(i, input) {
+                                if (input.value == unit.id) {
+                                    existVariable = true
+                                    let input = $(this).closest('tr').find(`[name='quantities[]']`)
+                                    input.val(parseInt(input.val()) + 1)
+                                    return false
+                                }
+                            })
+                            if (!existVariable) {
+                                htmlImportVariable(unit)
+                            }
+                        } else {
+                            pushToastify("Product not found!", 'danger')
+                        }
+                        btn.prop("disabled", false).html('<i class="bi bi-plus-circle"></i> Add stock');
+                    })
+                } else if ('{{ Request::path() }}' == 'quantri/order/new' || $('#order-modal').hasClass('show') || $('#export-modal').hasClass('show')) {
+                    if ($('#export-modal').hasClass('show')) {
+                        $('#export-search-input').val(sCode).change().focus()
+                    } else {
+                        $.get(`{{ route('admin.stock') }}/scan?barcode=${sCode}&action=export`, function(stocks) {
+                            let scanUnit,
+                                availableStock = false,
+                                tab = $('#order-modal').hasClass('show') ? $('#order-modal') : $('#export-modal').hasClass('show') ? $('#export-modal') : $('.tab-pane.active')
+                            if (stocks.length) {
+                                $.each(stocks, function(index, stock) {
+                                    $.each(stock.import_detail._variable.units, function(index, unit) {
+                                        if (unit.barcode === sCode) {
+                                            scanUnit = unit
+                                        }
+                                    });
+                                });
+                                $.each(stocks, function(i, stock) {
+                                    var nextLoops = true,
+                                        availableUnit = false,
+                                        newCard = {
+                                            stockId: stock.id,
+                                            stockExpired: stock.expired,
+                                            productName: stock.import_detail._variable._product.name + (stock.import_detail._variable.name != undefined ? ' - ' + stock.import_detail._variable.name : ''),
+                                            productSku: stock.import_detail._variable._product.sku,
+                                            stockQuantity: stock.quantity,
+                                            stockConvertQuantity: stock.convertQuantity,
+                                            variableId: stock.import_detail._variable.id,
+                                            productUnit: scanUnit,
+                                            productUnits: stock.import_detail._variable.units
+                                        };
+                                    if (tab.find(`[name='stock_ids[]'][value=${stock.id}]`).length) {
+                                        tab.find(`[name='stock_ids[]'][value=${stock.id}]`).each(function(i, detail) {
+                                            const card = $(this).closest('.detail'),
+                                                unitId = card.find(`[name='unit_ids[]']`).val(),
+                                                orderQuantity = parseInt(card.find(`[name='quantities[]']`).val())
+                                            if (unitId == scanUnit.id) {
+                                                availableUnit = true
+                                                card.find(`[name='quantities[]']`).val(orderQuantity + 1);
+                                                if (validateQuantity(card)) {
+                                                    totalOrder()
+                                                    nextLoops = false
+                                                    availableStock = true
+                                                    return false;
+                                                }
+                                            }
+                                        })
+                                        if (!availableUnit) {
+                                            $('#export-modal').hasClass('show') ? addCardToExport(newCard) : addCardToOrder(newCard)
+                                            let card = tab.find('div.detail').first();
+                                            if (validateQuantity(card)) {
+                                                availableStock = true
+                                                return false
+                                            } else {
+                                                card.remove();
+                                            }
+                                        }
+                                    } else {
+                                        $('#export-modal').hasClass('show') ? addCardToExport(newCard) : addCardToOrder(newCard)
+                                        availableStock = true
+                                        return false
+                                    }
+                                    return nextLoops
+                                })
+                            }
+                            if (!availableStock) {
+                                pushToastify("This product is out of stock in the system.", 'danger')
+                            }
+                        })
+                    }
+                } else {
+                    $('.dataTables_filter').find('input').val(sCode).change().focus()
+                }
+            },
+            onKeyDetect: function(iKeyCode) {
+                // console.log('Pressed: ' + iKeyCode); // Debugging
+            },
+            onKeyProcess: function(sChar, oEvent) {
+                // console.log('Processed character: ' + sChar); // Debugging
+            },
+            onScanError: function(oDebug) {
+                // console.log('Scan error: ', oDebug); // Debugging
+            }
+        });
+
+        // Additional debug: Check if scanner is attached
+        if (onScan.isAttachedTo(document)) {
+            // console.log('Scanner detection attached successfully');
+        } else {
+            // console.log('Scanner detection failed to attach');
+        }
+
+        // Check keydown and keypress events
+        document.addEventListener('keydown', function(event) {
+            // console.log('Keydown event:', event);
+        });
+
+        document.addEventListener('keypress', function(event) {
+            // console.log('Keypress event:', event);
+        });
+    });
 
     /**
      * CATEGORY PROCESS
@@ -704,7 +1139,7 @@
                 <td>
                     <div class="input-group quantity-group">
                         <button type="button" class="btn btn-outline-primary rounded-circle mt-1 btn-dec"><i class="bi bi-dash"></i></button>
-                        <input type="text" name="quantities[]" class="form-control-plaintext import_detail-quantity fs-5 text-center" onclick="this.select()" placeholder="Số" value="1" inputmode="numeric" required/>
+                        <input type="text" name="quantities[]" class="form-control-plaintext import_detail-quantity fs-5 text-center" onclick="this.select()" placeholder="Quantity" value="1" inputmode="numeric" required/>
                         <button type="button" class="btn btn-outline-primary rounded-circle mt-1 btn-inc"><i class="bi bi-plus"></i></button>
                     </div>
                 </td>
@@ -734,7 +1169,7 @@
                 return $(this).val() == newUnit;
             }).length;
         if (count > 1) {
-            pushToastify('Đã có đơn vị tính này trong một hàng khác', 'danger')
+            pushToastify('Already exist this unit in another row', 'danger')
             $(this).val(current.val())
         } else {
             current.val(newUnit)
@@ -1624,7 +2059,7 @@
         fillCustomerSuggestions($(this).val())
     })
     /*==================== END ORDER ====================*/
-
+    
     /**
      *  TRANSACTION PROCESS
      */

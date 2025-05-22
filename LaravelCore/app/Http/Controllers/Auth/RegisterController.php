@@ -45,7 +45,7 @@ class RegisterController extends Controller
     //Admin register
     public function index()
     {
-        $pageName = 'Đăng nhập';
+        $pageName = 'Login';
         $settings = Setting::pluck('value', 'key');
         return view('auth.register', compact('pageName', 'settings'));
     }

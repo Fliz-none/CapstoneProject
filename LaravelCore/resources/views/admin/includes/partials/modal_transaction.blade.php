@@ -106,14 +106,6 @@
                     </div>
                     <hr class="px-5">
                     <div class="mb-3 text-end">
-                        @if (Auth::user()->can(App\Models\User::SEND_ZNS_TRANSACTION))
-                            <div class="d-inline-block form-check">
-                                <input class="form-check-input" id="transaction-send_zns" name="send_zns" type="checkbox">
-                                <label class="form-check-label" for="transaction-send_zns">
-                                    Also send Zalo to customer
-                                </label>
-                            </div>
-                        @endif
                         <button class="btn btn-light btn-print print-transaction" data-url="{{ getPath(route('admin.transaction')) }}" type="button">
                             <i class="bi bi-printer-fill"></i>
                         </button>

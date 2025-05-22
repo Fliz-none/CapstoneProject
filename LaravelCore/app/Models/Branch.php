@@ -19,6 +19,7 @@ class Branch extends Model
         'address',
         'note',
         'status',
+        'ip_address'
     ];
 
     public function users()

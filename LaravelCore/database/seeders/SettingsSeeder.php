@@ -37,8 +37,10 @@ class SettingsSeeder extends Seeder
             ['expired_notification_before', '60'],
             ['inventory_manage', '1'],
             ['allow_negative_stock', '0'],
-            ['work_info', ''],
-            ['scores_rate_exchange ', '1'],
+            ['work_info', '[]'],
+            ['allow_self_register', '1'],
+            ['require_attendance_on_company_wifi', '1'],
+            ['scores_rate_exchange', '1'],
             ['expense_group', '[]'],
         ];
 

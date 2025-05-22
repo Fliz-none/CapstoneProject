@@ -23,7 +23,6 @@
                         <tbody>
                             @php
                                 $work_info = json_decode(cache()->get('settings')['work_info']);
-                                unset($work_info->allow_self_register); // Remove the 'allow_self_register' field
                             @endphp
                             @foreach ($users as $user)
                                 <tr>

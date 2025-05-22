@@ -3,7 +3,7 @@
         <div class="sidebar-header">
             <div class="d-flex justify-content-between">
                 <div class="logo">
-                    <a href="{{ route('home') }}"><img src="{{ cache()->get('logo_horizon') ?? '' }}" srcset="" alt="Logo" style="width: 100%; height: auto;</a>
+                    <a href="{{ route('home') }}"><img src="{{ cache()->get('logo_horizon') ?? '' }}" srcset="" alt="Logo" style="width: 100%; height: auto;"></a>
                 </div>
                 <div class="toggler">
                     <a class="sidebar-hide d-xl-none d-block" href="#"><i class="bi bi-x bi-middle"></i></a>
