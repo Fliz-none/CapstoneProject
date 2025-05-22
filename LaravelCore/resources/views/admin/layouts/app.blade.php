@@ -1183,7 +1183,7 @@
                         <button type="button" class="btn btn-outline-primary rounded-circle mt-1 btn-inc"><i class="bi bi-plus"></i></button>
                     </div>
                 </td>
-                <td><input type="text" name="prices[]" class="form-control form-control-plaintext border-bottom fs-5 money text-end" list="unit_prices-${unit.id}" value="0" onclick="this.select()" placeholder="Import price" inputmode="numeric" required></td>
+                <td><input type="text" name="prices[]" class="form-control form-control-plaintext border-bottom fs-5 money text-end" list="unit_prices-${unit.id}" value="0" onclick="this.select()" placeholder="Price" inputmode="numeric" required></td>
                 <td><input type="text" name="lots[]" class="form-control form-control-plaintext border-bottom fs-5" onclick="this.select()" placeholder="Lot"></td>
                 <td><input type="date" name="expireds[]" class="form-control form-control-plaintext border-bottom fs-5" min="{{ date('Y-m-d') }}" inputmode="numeric" placeholder="Expiration date"></td>
                 <td>
@@ -1293,8 +1293,8 @@
                     <button type="button" class="btn btn-outline-primary rounded-circle mt-1 btn-inc"><i class="bi bi-plus"></i></button>
                 </div>
             </td>
-            <td><input type="text" name="prices[]" class="form-control form-control-plaintext border-bottom fs-5 money text-end" list="unit_prices-${detail.unit_id}" value="${detail.price}" onclick="this.select()" placeholder="Import Price" inputmode="numeric" required></td>
-            <td><input type="text" name="lots[]" class="form-control form-control-plaintext border-bottom fs-5" value="${detail.stock.lot ? detail.stock.lot : ''}" onclick="this.select()" placeholder="Lot Number"></td>
+            <td><input type="text" name="prices[]" class="form-control form-control-plaintext border-bottom fs-5 money text-end" list="unit_prices-${detail.unit_id}" value="${detail.price}" onclick="this.select()" placeholder="Price" inputmode="numeric" required></td>
+            <td><input type="text" name="lots[]" class="form-control form-control-plaintext border-bottom fs-5" value="${detail.stock.lot ? detail.stock.lot : ''}" onclick="this.select()" placeholder="Lot"></td>
             <td><input type="date" name="expireds[]" class="form-control form-control-plaintext border-bottom fs-5" value="${detail.stock.expired != null ? detail.stock.expired : ''}" inputmode="numeric" placeholder="Expiration Date"></td>
             <td>
                 <datalist id="unit_prices-${detail.unit_id}">

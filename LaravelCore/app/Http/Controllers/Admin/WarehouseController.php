@@ -158,6 +158,7 @@ class WarehouseController extends Controller
                     ->make(true);
             } else {
                 $pageName = self::NAME . ' management';
+                $pageName = self::NAME . ' management';
                 return view('admin.warehouses', compact('pageName'));
             }
         }
@@ -194,9 +195,11 @@ class WarehouseController extends Controller
             } catch (\Exception $e) {
                 log_exception($e);
                 return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                log_exception($e);
+                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Action not authorized!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
@@ -217,6 +220,7 @@ class WarehouseController extends Controller
                             'status' => $request->status,
                         ]);
 
+                        LogController::create('update', self::NAME, $warehouse->id);
                         LogController::create('update', self::NAME, $warehouse->id);
                         cache()->forget('warehouses');
                         $response = array(
@@ -241,6 +245,7 @@ class WarehouseController extends Controller
             }
         } else {
             return response()->json(['errors' => ['role' => ['Action not authorized!']]], 422);
+           return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
