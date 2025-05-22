@@ -26,10 +26,10 @@
                             <i class="bi bi-plus-circle"></i>
                             Add
                         </a>
-                        <a class="btn btn-success ms-2 mb-3 block btn-create-product">
+                        {{-- <a class="btn btn-success ms-2 mb-3 block btn-create-product">
                             <i class="bi bi-plus-circle"></i>
                             Quick Add
-                        </a>
+                        </a> --}}
                     @endif
                     @if (!empty(Auth::user()->can(App\Models\User::UPDATE_PRODUCT)))
                         <button class="btn btn-primary mb-3 btn-sort ms-2" type="button">
@@ -278,7 +278,7 @@
                     }
                 });
             });
-            
+
             $(document).on("click", ".btn-add-catalogues-product", function () {
                 var form = $(this).closest("section").find(".batch-form");
                 form.attr("action", `{{ route('admin.product.add_catalogues') }}`);

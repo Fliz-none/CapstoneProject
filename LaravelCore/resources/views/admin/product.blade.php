@@ -60,7 +60,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="product-excerpt" data-bs-toggle="tooltip" data-bs-title="Product brief">Excerpt</label>
+                                    <label for="product-excerpt">Excerpt</label>
                                     <textarea class="form-control @error('excerpt') is-invalid @enderror" id="product-excerpt" name="excerpt" rows="3">{{ old('excerpt') != null ? old('excerpt') : (isset($product) ? $product->excerpt : '') }}</textarea>
                                     @error('excerpt')
                                         <span class="invalid-feedback d-block" role="alert">
@@ -69,7 +69,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="product-description" data-bs-toggle="tooltip" data-bs-title="Detailed description of the product's features and uses.">Product description</label>
+                                    <label for="product-description">Product description</label>
                                     @error('description')
                                         <span class="invalid-feedback d-inline-block" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -78,7 +78,7 @@
                                     <textarea class="form-control summernote @error('description') is-invalid @enderror" id="product-description" name="description" rows="100">{{ old('description') != null ? old('description') : (isset($product) ? $product->description : '') }}</textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label for="product-images" data-bs-toggle="tooltip" data-bs-title="Bộ hình ảnh của sản phẩm">Product gallery</label>
+                                    <label for="product-images" >Product gallery</label>
                                     <input id="product-images" name="gallery" type="hidden" value="{{ old('gallery') != null ? old('gallery') : (isset($product) ? $product->gallery : '') }}">
                                     <div class="row gallery align-items-center pt-2">
                                     </div>
@@ -127,7 +127,7 @@
     <div class="col-12 col-lg-3 mx-auto">
         <!-- Publish card -->
         <div class="card card-body mb-3">
-            <h6 class="mb-0">Đăng bài</h6>
+            <h6 class="mb-0">POST</h6>
             <hr class="horizontal dark">
             <div class="form-group">
                 <label class="form-label mt-1" for="product-status" data-bs-toggle="tooltip" data-bs-title="Current status of the product in the system.">Status</label>
@@ -139,22 +139,13 @@
                     <option value="2" {{ (isset($product) && $product->status == 2) || old('status') == '2' ? 'selected' : '' }}>
                         Online sale</option>
                     <option value="3" {{ (isset($product) && $product->status == 3) || old('status') == '3' ? 'selected' : '' }}>
-                        Featured</option>
+                        Online and Offline</option>
                 </select>
                 @error('status')
                     <span class="invalid-feedback d-block" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror
-            </div>
-            <div class="form-group">
-                <label class="form-label" for="product-date">Time</label>
-                <div class="input-group">
-                    <input class="form-control @error('date') is-invalid @enderror" id="product-date" name="date" type="date"
-                        value="{{ old('date') != null ? old('date') : (isset($product) ? $product->createdDate() : Carbon\Carbon::now()->format('Y-m-d')) }}" aria-label="Ngày">
-                    <input class="form-control @error('time') is-invalid @enderror" id="product-time" name="time" type="time"
-                        value="{{ old('time') != null ? old('time') : (isset($product) ? $product->createdTime() : Carbon\Carbon::now()->format('H:i:s')) }}" aria-label="Giờ">
-                </div>
             </div>
             @error('date')
                 <span class="invalid-feedback d-block" role="alert">

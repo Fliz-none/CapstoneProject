@@ -2172,6 +2172,119 @@
 
         return `${hours}:${minutes}`;
     }
+
+
+    /* ====================== PRODUCT ====================== */
+
+$(document).on('click', '.btn-create-variable', function(e) {
+        e.preventDefault();
+        const form = $('#variable-form')
+        resetForm(form)
+        $('#variable-units').empty()
+        $('.btn-append-variable').trigger('click')
+        form.find(`[name='status']`).prop('checked', true)
+        form.find(`[name=stock_limit]`).val(0)
+        form.find(`[name='product_id']`).val($(this).attr('data-product'))
+        form.attr('action', `{{ route('admin.variable.create') }}`)
+        form.find('.modal').modal('show').find('.modal-title').text('New variant')
+    })
+
+    $(document).on('click', '.btn-update-variable', function(e) {
+        e.preventDefault();
+        const id = $(this).attr('data-id');
+        $.get(`{{ route('admin.variable') }}/${id}`, function(variable) {
+            initUpdateVariable(variable)
+        })
+    })
+
+    function initUpdateVariable(variable) {
+        const form = $('#variable-form');
+        resetForm(form)
+        form.find('#variable-modal-label').text(variable.name)
+        form.find('[name=id]').val(variable.id)
+        form.find('[name=name]').val(variable.name)
+        form.find('[name=description]').val(variable.description)
+        form.find('[name=stock_limit]').val(variable.stock_limit)
+        form.find(`[name='status']`).prop('checked', variable.status)
+        form.find(`[name='product_id']`).val(variable.product_id)
+        if (variable.deleted_at != null) {
+            form.find('.btn[type=submit]:last-child').addClass('d-none')
+        }
+        $.each(variable.attributes, function(index, attribute) {
+            form.find(`#variable-attribute-${attribute.id}`).prop('checked', true);
+        })
+        form.find('#variable-units').empty()
+        $.each(variable.units, function(index, unit) {
+            form.find('#variable-units').append(`
+            <tr class="variable-unit">
+                <td><input class="form-control" name="unit_barcode[]" type="text" value="${unit.barcode ? unit.barcode : ''}" placeholder="Barcode"></td>
+                <td><input class="form-control" name="unit_term[]" type="text" value="${unit.term}" placeholder="Name" required></td>
+                <td><input class="form-control money" name="unit_price[]" type="text" value="${unit.price}" placeholder="Price" required></td>
+                <td><input class="form-control bg-white" name="unit_rate[]" type="text" value="${unit.rate}" placeholder="Conversion rate" required disabled></td>
+                <td>
+                    <input name="unit_id[]" value="${unit.id}" type="hidden">
+                    <form action="{{ route('admin.unit.remove') }}" method="post" class="save-form">
+                        @csrf
+                        <input type="hidden" name="choices[]" value="${unit.id}"/>
+                        <button class="btn btn-link text-decoration-none btn-remove-unit">
+                            <i class="bi bi-trash3"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>`);
+        })
+        form.attr('action', `{{ route('admin.variable.update') }}`)
+        form.find('.modal').modal('show').find('.modal-title').text(variable.name != null ? variable.name : variable.id)
+    }
+
+    $(document).on('click', '.btn-append-unit', function(e) {
+        e.preventDefault();
+        const form = $('#variable-form');
+        const str = `
+                <tr class="variable-unit">
+                    <td><input class="form-control" name="unit_barcode[]" type="text" placeholder="Barcode"></td>
+                    <td><input class="form-control" name="unit_term[]" type="text" placeholder="Name" required></td>
+                    <td><input class="form-control money" name="unit_price[]" type="text" placeholder="Price" required></td>
+                    <td><input class="form-control" name="unit_rate[]" type="text" placeholder="Conversion rate" required></td>
+                    <td>
+                        <input name="unit_id[]" type="hidden">
+                        <form action="{{ route('admin.unit.remove') }}" method="post" class="save-form">
+                            @csrf
+                            <input type="hidden" name="choices[]" value=""/>
+                            <button class="btn btn-link text-decoration-none btn-remove-unit">
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>`
+        form.find('#variable-units').append(str);
+    })
+
+    $(document).on('click', '.btn-remove-unit', function(e) {
+        e.preventDefault();
+        const btn = $(this);
+        if ($('.variable-unit').length > 1) {
+            if (btn.prev().val()) {
+                const form = btn.closest('form');
+                Swal.fire(config.sweetAlert.confirm).then((result) => {
+                    if (result.isConfirmed) {
+                        submitForm(form).done(function(response) {
+                            if (response.status == 'success') {
+                                btn.closest('.variable-unit').remove();
+                            }
+                        })
+                    }
+                });
+            } else {
+                btn.parents('.variable-unit').remove();
+            }
+        } else {
+            pushToastify('At least one unit is required.!', 'danger')
+        }
+    })
+
+    /* ==================== END PRODUCT ====================== */
+
 </script>
 <script src="{{ asset('admin/js/main.js') }}?v={{ $version_name }}"></script>
 @stack('quick_images')

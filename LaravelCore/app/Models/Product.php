@@ -117,10 +117,10 @@ class Product extends Model
     {
         switch ($this->status) {
             case '3':
-                $name = 'Featured';
+                $name = 'Online & Offline';
                 break;
             case '2':
-                $name = 'Visible Online';
+                $name = 'Online Only';
                 break;
             case '1':
                 $name = 'Offline Only';
