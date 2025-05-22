@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Warehouse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
 class WarehouseController extends Controller
@@ -195,8 +193,6 @@ class WarehouseController extends Controller
             } catch (\Exception $e) {
                 log_exception($e);
                 return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
-                log_exception($e);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {
             return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
@@ -221,7 +217,6 @@ class WarehouseController extends Controller
                         ]);
 
                         LogController::create('update', self::NAME, $warehouse->id);
-                        LogController::create('update', self::NAME, $warehouse->id);
                         cache()->forget('warehouses');
                         $response = array(
                             'status' => 'success',
@@ -244,7 +239,6 @@ class WarehouseController extends Controller
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['Action not authorized!']]], 422);
            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
@@ -279,7 +273,7 @@ class WarehouseController extends Controller
                 'msg' => $msg
             );
         } else {
-            return response()->json(['errors' => ['role' => ['Action not authorized!']]], 422);
+            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
         }
         return response()->json($response, 200);
     }
