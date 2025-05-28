@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\StockController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\DetailController;
+use App\Http\Controllers\Admin\DiscountController;
 use App\Http\Controllers\Admin\ImportDetailController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VariableController;
@@ -58,7 +59,9 @@ Auth::routes(['verify' => true, 'register' => true]);
 // });
 
 Route::group(['prefix' => 'quantri'], function () {
-    Route::get('/', function () { return redirect('quantri/dashboard'); })->name('admin.home');
+    Route::get('/', function () {
+        return redirect('quantri/dashboard');
+    })->name('admin.home');
     Route::get('login', [LoginController::class, 'index'])->name('admin.login');
     Route::get('register', [RegisterController::class, 'index'])->name('admin.register');
 
@@ -139,6 +142,13 @@ Route::group(['prefix' => 'quantri'], function () {
         Route::post('create', [VariableController::class, 'create'])->name('admin.variable.create');
         Route::post('update', [VariableController::class, 'update'])->name('admin.variable.update');
         Route::post('remove', [VariableController::class, 'remove'])->name('admin.variable.remove');
+    });
+
+    Route::group(['prefix' => 'discount'], function () {
+        Route::get('{key?}/{action?}', [DiscountController::class, 'index'])->name('admin.discount');
+        Route::post('create', [DiscountController::class, 'create'])->name('admin.discount.create');
+        Route::post('update', [DiscountController::class, 'update'])->name('admin.discount.update');
+        Route::post('remove', [DiscountController::class, 'remove'])->name('admin.discount.remove');
     });
 
     Route::group(['prefix' => 'import'], function () {

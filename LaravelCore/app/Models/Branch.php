@@ -47,6 +47,11 @@ class Branch extends Model
         return $this->hasMany(Warehouse::class);
     }
 
+    public function discounts()
+    {
+        return $this->hasMany(Discount::class);
+    }
+
     public function getStatusStrAttribute()
     {
         switch ($this->status) {

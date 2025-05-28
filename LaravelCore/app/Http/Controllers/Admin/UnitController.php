@@ -60,7 +60,7 @@ class UnitController extends Controller
                         ->distinct()
                         ->take(100)
                         ->get()
-                        ->map(function ($obj) {
+                        ->map(function ($obj) use ($request) {
                             $obj->import_prices = ImportDetail::where('unit_id', $obj->id)->pluck('price')->filter()->unique()->all();
                             return '<li>
                                         <a class="dropdown-item cursor-pointer btn-select-variable px-0 py-0">

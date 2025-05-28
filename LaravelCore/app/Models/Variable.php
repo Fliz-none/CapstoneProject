@@ -52,6 +52,13 @@ class Variable extends Model
         return $this->hasMany(ImportDetail::class);
     }
 
+
+    public function getCodeAttribute()
+    {
+        return 'VAR' . str_pad($this->id, 5, "0", STR_PAD_LEFT);
+    }
+
+
     public function getFullNameAttribute()
     {
         $product_name = $this->_product->sku . ' - ' . $this->_product->name;

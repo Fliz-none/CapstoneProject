@@ -85,6 +85,11 @@
                                         <a href="{{ route('admin.attribute') }}">Attributes</a>
                                     </li>
                                 @endif
+                                @if (!empty(Auth::user()->hasAnyPermission(app\Models\User::READ_DISCOUNTS)))
+                                    <li class="submenu-item" data-keyword="Discounts">
+                                        <a href="{{ route('admin.discount') }}">Discounts</a>
+                                    </li>
+                                @endif
                             </ul>
                         </li>
                     @endif
