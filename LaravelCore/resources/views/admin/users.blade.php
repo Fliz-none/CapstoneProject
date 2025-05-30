@@ -24,14 +24,14 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_USER)))
                         <a class="btn btn-info mb-3 block btn-create-user">
                             <i class="bi bi-plus-circle"></i>
-                            Add
+                            {{ __('messages.add') }}
                         </a>
                     @endif
                     <div class="d-inline-block process-btns d-none">
                         @if (!empty(Auth::user()->can(App\Models\User::DELETE_USERS)))
                             <a class="btn btn-danger btn-removes mb-3 ms-2" type="button">
                                 <i class="bi bi-trash"></i>
-                                Delete
+                                {{ __('messages.update') }}
                             </a>
                         @endif
                     </div>
@@ -46,12 +46,12 @@
                                 <table class="table table-striped table-bordered key-table" id="user-table">
                                     <thead>
                                         <tr>
-                                            <th>Code</th>
-                                            <th>Name</th>
-                                            <th>Phone</th>
-                                            <th>Role</th>
-                                            <th>Address</th>
-                                            <th>Status</th>
+                                            <th>{{ __('messages.user.code') }}</th>
+                                            <th>{{ __('messages.profile.name') }}</th>
+                                            <th>{{ __('messages.profile.phone') }}</th>
+                                            <th>{{ __('messages.user.role') }}</th>
+                                            <th>{{ __('messages.profile.address') }}</th>
+                                            <th>{{ __('messages.user.status') }}</th>
                                             <th></th>
                                             <th>
                                                 <input class="form-check-input all-choices" type="checkbox">

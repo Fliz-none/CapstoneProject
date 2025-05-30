@@ -313,7 +313,18 @@ Route::get('don-hang', [ProfileController::class, 'orders'])->name('orders');
 Route::get('gio-hang/thanh-toan', [CartController::class, 'index'])->name('checkout');
 Route::get('gio-hang/thanh-toan/hoan-thanh', [CartController::class, 'index'])->name('checkout');
 Route::get('cua-hang/{catalogue?}/{slug?}', [ShopController::class, 'index'])->name('shop');
+Route::post('/change-language', function (Illuminate\Http\Request $request) {
+    $request->validate([
+        'locale' => 'required|in:vn,en' // Validation ngay từ đầu
+    ]);
 
+    session(['locale' => $request->locale]);
+    
+    return response()->json([
+        'status' => 'success',
+        'message' => __('messages.language_changed') // Sử dụng translation
+    ]);
+})->name('change.language.ajax')->middleware('web'); // Thêm middleware web để đảm bảo session
 Route::get('ajax/{type}{key?}', [ShopController::class, 'getAjax'])->name('ajax');
 Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'gio-hang'], function () {

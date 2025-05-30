@@ -372,7 +372,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getStatusStrAttribute()
     {
-        return ($this->status) ? 'Active' : 'Inactive';
+        return $this->status ? __('messages.active') : __('messages.inactive');
     }
 
     public function getFullAddressAttribute()
