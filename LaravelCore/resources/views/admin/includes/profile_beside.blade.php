@@ -13,7 +13,7 @@
             <div class="mt-3">
                 <h4>{{ Auth::user()->name }}</h4>
                 <p class="text-secondary mb-1">{{ Auth::user()->getRoleNames()->first() }}</p>
-                <p class="text-muted font-size-sm">{{ Auth::user()->scores }} points</p>
+                <p class="text-muted font-size-sm">{{ Auth::user()->scores }} {{ __('messages.profile.point') }}</p>
             </div>
         </div>
     </div>
@@ -23,31 +23,31 @@
         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-4">
             <a href="{{ route('admin.profile') }}">
                 <i class="bi bi-person-circle me-2"></i>
-                Account Information
+                {{ __('messages.profile.accountinformation') }}
             </a>
         </li>
         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-4">
             <a href="{{ route('admin.profile', ['key' => 'settings']) }}">
                 <i class="bi bi-gear-fill me-2"></i>
-                Update Information
+                {{ __('messages.profile.accountsetting') }}
             </a>
         </li>
         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-4">
             <a href="{{ route('admin.profile', ['key' => 'password']) }}">
                 <i class="bi bi-shield-lock-fill me-2"></i>
-                Change Password
+                {{ __('messages.profile.changepassword') }}
             </a>
         </li>
         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-4">
             <a href="{{ route('admin.profile', ['key' => 'activity']) }}">
                 <i class="bi bi-ui-checks me-2"></i>
-                Activity Log
+                {{ __('messages.profile.activity') }}
             </a>
         </li>
         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-4">
             <a href="{{ route('admin.profile', ['key' => 'logout']) }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                 <i class="bi bi-x-circle-fill me-2"></i>
-                Logout
+                {{ __('messages.profile.logout') }}
             </a>
         </li>
     </ul>

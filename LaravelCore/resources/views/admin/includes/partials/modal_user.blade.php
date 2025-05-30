@@ -20,59 +20,59 @@
                                 </div>
                                 <hr>
                                 <div class="d-grid">
-                                    <a class="btn btn-outline-primary btn-customer_orders">All Orders</a>
+                                    <a class="btn btn-outline-primary btn-customer_orders">{{ __('messages.user.all_order') }}</a>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12 col-md-8">
                             <div class="mb-3 form-group">
-                                <label class="form-label fw-bold" data-bs-toggle="tooltip" data-bs-title="User's common name" for="user-name">Full Name</label>
-                                <input class="form-control" id="user-name" name="name" type="text" placeholder="Display name" autocomplete="off" required>
+                                <label class="form-label fw-bold" data-bs-toggle="tooltip" data-bs-title="User's common name" for="user-name">{{ __('messages.profile.name') }}</label>
+                                <input class="form-control" id="user-name" name="name" type="text" placeholder="{{ __('messages.user.enter_name') }}" autocomplete="off" required>
                             </div>
                             <div class="mb-3 form-group">
-                                <label class="form-label fw-bold" data-bs-toggle="tooltip" data-bs-title="User's phone number" for="user-phone">Phone</label>
-                                <input class="form-control" id="user-phone" name="phone" type="text" placeholder="Phone number" autocomplete="off" inputmode="numeric">
+                                <label class="form-label fw-bold" data-bs-toggle="tooltip" data-bs-title="User's phone number" for="user-phone">{{ __('messages.profile.phone') }}</label>
+                                <input class="form-control" id="user-phone" name="phone" type="text" placeholder="{{ __('messages.user.enter_phone') }}" autocomplete="off" inputmode="numeric">
                             </div>
+                            <div class="mb-3 form-group">
+                                    <label class="form-label fw-bold" data-bs-toggle="tooltip" data-bs-title="Email used to log in" for="user-email">{{ __('messages.profile.email') }}</label>
+                                    <input class="form-control" id="user-email" name="email" type="email" placeholder="{{ __('messages.user.enter_email') }}" autocomplete="off" inputmode="email">
+                                </div>
                             <div class="pt-2 row align-items-center">
                                 <div class="col-12 btn-group pb-3">
                                     <input class="btn-check" id="gender-male" name="gender" type="radio" value="0">
-                                    <label class="btn btn-outline-primary" for="gender-male">Male</label>
+                                    <label class="btn btn-outline-primary" for="gender-male">{{ __('messages.profile.male') }}</label>
                                     <input class="btn-check" id="gender-female" name="gender" type="radio" value="1">
-                                    <label class="btn btn-outline-primary" for="gender-female">Female</label>
+                                    <label class="btn btn-outline-primary" for="gender-female">{{ __('messages.profile.female') }}</label>
                                     <input class="btn-check" id="gender-other" name="gender" type="radio" value="2">
-                                    <label class="btn btn-outline-primary" for="gender-other">Other</label>
+                                    <label class="btn btn-outline-primary" for="gender-other">{{ __('messages.profile.other') }}</label>
                                 </div>
                                 <div class="pt-2 row align-items-center form-group">
-                                    <label class="form-label fw-bold" data-bs-toggle="tooltip" data-bs-title="User's address" for="user-local_city">Address</label>
+                                    <label class="form-label fw-bold" data-bs-toggle="tooltip" data-bs-title="User's address" for="user-local_city">{{ __('messages.profile.address') }}</label>
+                                    <div class="col-6 mb-3">
+                                        <select class="form-control select2" id="user-local_city" name="local_city" data-ajax--url="{{ route('admin.local', ['key' => 'cities']) }}" data-placeholder="{{ __('messages.user.city') }}"
+                                            autocomplete="off"></select>
+                                    </div>
+                                    <div class="col-6 mb-3">
+                                        <select class="form-control select2" id="user-local_id" name="local_id" data-ajax--url="{{ route('admin.local', ['key' => 'districts']) }}" data-placeholder="{{ __('messages.user.district') }}"
+                                            autocomplete="off"></select>
+                                    </div>
                                     <div class="mb-4">
-                                        <input class="form-control" id="user-address" name="address" type="text" autocomplete="off" placeholder="Enter specific address">
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <select class="form-control select2" id="user-local_city" name="local_city" data-ajax--url="{{ route('admin.local', ['key' => 'cities']) }}" data-placeholder="Select a city / province"
-                                            autocomplete="off"></select>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <select class="form-control select2" id="user-local_id" name="local_id" data-ajax--url="{{ route('admin.local', ['key' => 'districts']) }}" data-placeholder="Select a district"
-                                            autocomplete="off"></select>
+                                        <input class="form-control" id="user-address" name="address" type="text" autocomplete="off" placeholder="{{ __('messages.user.address') }}">
                                     </div>
                                 </div>
                             </div>
                             <div class="collapse" id="user-more">
                                 <div class="mb-3 form-group">
-                                    <label class="form-label fw-bold" data-bs-toggle="tooltip" data-bs-title="Email used to log in" for="user-email">Email</label>
-                                    <input class="form-control" id="user-email" name="email" type="email" placeholder="User email" autocomplete="off" inputmode="email">
-                                </div>
-                                <div class="mb-3 form-group">
-                                    <label class="col-form-label fw-bold" data-bs-toggle="tooltip" data-bs-title="User's date of birth" for="user-birthday">Birthday</label>
+                                    <label class="col-form-label fw-bold" data-bs-toggle="tooltip" data-bs-title="User's date of birth" for="user-birthday">{{ __('messages.profile.birthday') }}</label>
                                     <input class="form-control" id="user-birthday" name="birthday" type="date" max="{{ now()->format('Y-m-d') }}" autocomplete="off">
                                 </div>
                                 <div class="mb-3 form-group">
-                                    <label class="form-label fw-bold" data-bs-toggle="tooltip" data-bs-title="Notes for memory aid" for="user-note">Note</label>
-                                    <textarea class="form-control" id="user-note" name="note" rows="2" placeholder="Enter note content" autocomplete="off"></textarea>
+                                    <label class="form-label fw-bold" data-bs-toggle="tooltip" data-bs-title="Notes for memory aid" for="user-note">{{ __('messages.note') }}</label>
+                                    <textarea class="form-control" id="user-note" name="note" rows="2" placeholder="{{ __('messages.note_content') }}" autocomplete="off"></textarea>
                                 </div>
                             </div>
                             <div class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse" data-bs-target="#user-more" aria-expanded="false" aria-controls="user-more">
-                                More Information
+                                {{ __('messages.user.more_info') }}
                             </div>
                         </div>
                     </div>
@@ -82,13 +82,13 @@
                             <div class="col-12 col-lg-6">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" id="user-status" name="status" type="checkbox">
-                                    <label class="form-check-label" data-bs-toggle="tooltip" data-bs-title="Account status can be changed later" for="user-status">Active</label>
+                                    <label class="form-check-label" data-bs-toggle="tooltip" data-bs-title="Account status can be changed later" for="user-status">{{ __('messages.active') }}</label>
                                 </div>
                             </div>
                             <div class="col-12 col-lg-6 text-end">
                                 @if (!empty(Auth::user()->hasAnyPermission(App\Models\User::UPDATE_USER, App\Models\User::CREATE_USER)))
                                     <input name="id" type="hidden">
-                                    <button class="btn btn-primary" type="submit">Save</button>
+                                    <button class="btn btn-primary" type="submit">{{ __('messages.save') }}</button>
                                 @endif
                             </div>
                         </div>

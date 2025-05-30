@@ -38,10 +38,10 @@
                             <div class="card-body">
                                 <div class="row align-items-center mb-4">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Please enter your current password for this account">Current password</h6>
+                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Please enter your current password for this account">{{ __('messages.profile.current_password') }}</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input class="form-control @error('current_password') is-invalid @enderror" id="profile-current-password" name="current_password" type="password" placeholder="Your current password" autocomplete="current-password">
+                                        <input class="form-control @error('current_password') is-invalid @enderror" id="profile-current-password" name="current_password" type="password" placeholder="{{ __('messages.profile.current_password') }}" autocomplete="current-password">
                                         @error('current_password')
                                             <span class="invalid-feedback d-block" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -51,10 +51,10 @@
                                 </div>
                                 <div class="row align-items-center mb-4">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Please enter a new password (must not match the current password, at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character, and no more than 3 consecutive characters)">New password</h6>
+                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Please enter a new password (must not match the current password, at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character, and no more than 3 consecutive characters)">{{ __('messages.profile.new_password') }}</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input class="form-control @error('password') is-invalid @enderror" name="password" type="password" autocomplete="new-password" placeholder="New password">
+                                        <input class="form-control @error('password') is-invalid @enderror" name="password" type="password" autocomplete="new-password" placeholder="{{ __('messages.profile.new_password') }}">
                                         @error('password')
                                             <span class="invalid-feedback d-block" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -64,10 +64,10 @@
                                 </div>
                                 <div class="row align-items-center mb-4">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Please re-enter the new password to confirm you didn't make a mistake above">Confirm password</h6>
+                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Please re-enter the new password to confirm you didn't make a mistake above">{{ __('messages.profile.confirm_password') }}</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input class="form-control @error('password') is-invalid @enderror" name="password_confirmation" type="password" autocomplete="new-password" placeholder="Confirm new password">
+                                        <input class="form-control @error('password') is-invalid @enderror" name="password_confirmation" type="password" autocomplete="new-password" placeholder="{{ __('messages.profile.confirm_password') }}">
                                         @error('password_confirmation')
                                             <span class="invalid-feedback d-block" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -78,7 +78,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-sm-12 d-flex justify-content-center">
                                         <input name="id" type="hidden" value="{{ Auth::user()->id }}">
-                                        <button class="btn btn-primary " type="submit">{{ __('Update') }}</button>
+                                        <button class="btn btn-primary " type="submit">{{ __('messages.update') }}</button>
                                     </div>
                                 </div>
                             </div>

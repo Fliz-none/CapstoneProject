@@ -30,7 +30,7 @@
                             @if (Auth::user()->name)
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <h6 class="mb-0">Full name</h6>
+                                    <h6 class="mb-0">{{ __('messages.profile.name') }}</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
                                     {{ Auth::user()->name }}
@@ -41,7 +41,7 @@
                             @if (Auth::user()->gender)
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <h6 class="mb-0">Gender</h6>
+                                    <h6 class="mb-0">{{ __('messages.profile.gender') }}</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
                                     {{ Auth::user()->genderStr }}
@@ -52,7 +52,7 @@
                             @if (Auth::user()->email)
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <h6 class="mb-0">Email
+                                    <h6 class="mb-0">{{ __('messages.profile.email') }}
                                         @if (Auth::user()->email_verified_at)
                                             <span class="text-success"><i class="bi bi-check-circle-fill"></i></span>
                                         @endif
@@ -67,7 +67,7 @@
                             @if (Auth::user()->phone)
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <h6 class="mb-0">Phone</h6>
+                                    <h6 class="mb-0">{{ __('messages.profile.phone') }}</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
                                     {{ Auth::user()->phone }}
@@ -78,7 +78,7 @@
                             @if (Auth::user()->address || Auth::user()->local_id)
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <h6 class="mb-0">Address</h6>
+                                    <h6 class="mb-0">{{ __('messages.profile.address') }}</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
                                     {{ Auth::user()->fullAddress }}
@@ -89,7 +89,7 @@
                             @if (Auth::user()->birthday)
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <h6 class="mb-0">Date of Birth</h6>
+                                    <h6 class="mb-0">{{ __('messages.profile.birthday') }}</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
                                     {{ Carbon\Carbon::parse(Auth::user()->birthday)->format('d/m/Y') }}
@@ -100,7 +100,7 @@
                             @if (Auth::user()->last_login_at)
                             <div class="row">
                                 <div class="col-sm-3">
-                                    <h6 class="mb-0">Last login</h6>
+                                    <h6 class="mb-0">{{ __('messages.profile.last_login') }}</h6>
                                 </div>
                                 <div class="col-sm-9 text-secondary">
                                     {{ Carbon\Carbon::parse(Auth::user()->last_login_at)->format('d/m/Y H:i:s') }}
@@ -111,7 +111,7 @@
                             <div class="row">
                                 <div class="col-sm-12 d-flex justify-content-center align-items-center">
                                     <a href="{{ route('admin.profile', ['key' => 'settings']) }}" class="btn btn-primary cursor-pointer">
-                                        {{ __('Update') }}
+                                        {{ __('messages.update') }}
                                     </a>
                                 </div>
                             </div>
