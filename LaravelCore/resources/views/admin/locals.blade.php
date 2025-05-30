@@ -49,7 +49,6 @@
                                             <th>#</th>
                                             <th>City</th>
                                             <th>District</th>
-                                            <th>Created At</th>
                                             <th></th>
                                             <th>
                                                 <input class="form-check-input all-choices" type="checkbox">
@@ -89,7 +88,6 @@
                         data: 'district',
                         name: 'district'
                     },
-                    config.datatable.columns.created_at,
                     config.datatable.columns.action,
                     config.datatable.columns.checkboxes,
                 ],
