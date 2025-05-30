@@ -43,7 +43,7 @@
             @if (!empty(Auth::user()->can(App\Models\User::READ_DASHBOARD)))
                 <div class="col-12 col-lg-12">
                     <div class="row">
-                        <div class="col-6 col-lg-3 col-md-6">
+                        <div class="col-6 col-lg-4 col-md-6">
                             <div class="card mb-3">
                                 <div class="card-body px-3 py-4">
                                     <div class="row">
@@ -67,7 +67,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 col-lg-3 col-md-6">
+                        <div class="col-6 col-lg-4 col-md-6">
                             <div class="card mb-3">
                                 <div class="card-body px-3 py-4">
                                     <div class="row">
@@ -91,7 +91,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 col-lg-3 col-md-6">
+                        <!-- <div class="col-6 col-lg-4 col-md-6">
                             <div class="card mb-3">
                                 <div class="card-body px-3 py-4">
                                     <div class="row">
@@ -114,8 +114,8 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-6 col-lg-3 col-md-6">
+                        </div> -->
+                        <div class="col-6 col-lg-4 col-md-6">
                             <div class="card mb-3">
                                 <div class="card-body px-3 py-4">
                                     <div class="row">
@@ -140,7 +140,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 col-lg-3 col-md-6">
+                        <div class="col-6 col-lg-4 col-md-6">
                             <div class="card mb-3">
                                 <div class="card-body px-3 py-4">
                                     <div class="row">
@@ -164,7 +164,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 col-lg-3 col-md-6">
+                        <div class="col-6 col-lg-4 col-md-6">
                             <div class="card mb-3">
                                 <div class="card-body px-3 py-4">
                                     <div class="row">
@@ -188,7 +188,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 col-lg-3 col-md-6">
+                        <div class="col-6 col-lg-4 col-md-6">
                             <div class="card mb-3">
                                 <div class="card-body px-3 py-4">
                                     <div class="row">
@@ -525,9 +525,9 @@
                         `Payment: ${number_format(data.cashRevenue) + 'đ'}<br/>
                                                             Debt Collection: ${number_format(data.debtRevenue) + 'đ'}`).prev().val(data.allRevenue)
 
-                    $('h3.profits').html(number_format(data.allProfits) + 'đ').attr('data-bs-title',
-                        `Products: ${number_format(data.productProfits)}đ<br/>
-                                                            Cost of Goods Sold: ${number_format(data.productCost)}đ<br/>`).prev().val(data.allProfits)
+                    // $('h3.profits').html(number_format(data.allProfits) + 'đ').attr('data-bs-title',
+                    //     `Products: ${number_format(data.productProfits)}đ<br/>
+                    //                                         Cost of Goods Sold: ${number_format(data.productCost)}đ<br/>`).prev().val(data.allProfits)
 
                     $('h3.orders').html(number_format(data.allOrders)).attr('data-bs-title',
                         `Collected: ${number_format(data.paidOrders)}<br/>Completed: ${number_format(data.completeOrders)}<br/>
