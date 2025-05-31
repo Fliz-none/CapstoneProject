@@ -929,7 +929,7 @@
      */
     $('.btn-change-language').on('click', function () {
     const currentLocale = '{{ app()->getLocale() }}';
-    
+
     Swal.fire({
         title: '{{ __("messages.lang.select_language") }}',
         html: `
@@ -944,7 +944,7 @@
     }).then((result) => {
         if (result.isConfirmed) {
             const newLocale = $('#locale_selector').val();
-            
+
             // Chỉ gửi request nếu ngôn ngữ thay đổi
             if (newLocale !== currentLocale) {
                 $.ajax({
@@ -2152,7 +2152,7 @@
         fillCustomerSuggestions($(this).val())
     })
     /*==================== END ORDER ====================*/
-    
+
     /**
      *  TRANSACTION PROCESS
      */
