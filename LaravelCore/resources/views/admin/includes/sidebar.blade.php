@@ -76,8 +76,8 @@
                                     </li>
                                 @endif
                                 @if (!empty(Auth::user()->hasAnyPermission(app\Models\User::READ_CATALOGUES)))
-                                    <li class="submenu-item" data-keyword="Categories">
-                                        <a href="{{ route('admin.catalogue') }}">Categories</a>
+                                    <li class="submenu-item" data-keyword="Catalogue">
+                                        <a href="{{ route('admin.catalogue') }}">Catalogue</a>
                                     </li>
                                 @endif
                                 @if (!empty(Auth::user()->hasAnyPermission(app\Models\User::READ_ATTRIBUTES)))

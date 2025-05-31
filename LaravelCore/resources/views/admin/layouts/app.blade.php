@@ -415,6 +415,53 @@
         }
     })
 
+    /**
+     * CATALOGUE PROCESS
+     */
+    $(document).on('click', '.btn-create-catalogue', function(e) {
+        e.preventDefault();
+        const form = $('#catalogue-form')
+        resetForm(form)
+        form.addClass($(this).hasClass('btn-single') ? 'single' : '')
+        form.find(`[name='status']`).prop('checked', true)
+        form.attr('action', `{{ route('admin.catalogue.create') }}`)
+        form.find('.modal').modal('show').find('.modal-title').text('New catalogue')
+    })
+
+    $('.btn-refresh-catalogue').click(function() {
+        const btn = $(this)
+        $.get(`{{ route('admin.catalogue') }}/tree`, function(html) {
+            btn.parents('form').find('.catalogue-select .list-group').html(html);
+        })
+    })
+
+    $(document).on('click', '.btn-update-catalogue', function(e) {
+        e.preventDefault();
+        const id = $(this).attr('data-id'),
+            form = $('#catalogue-form');
+        resetForm(form)
+        $.get(`{{ route('admin.catalogue') }}/${id}`, function(catalogue) {
+            form.find('[name=id]').val(catalogue.id)
+            form.find('[name=name]').val(catalogue.name)
+            form.find('[name=note]').val(catalogue.note)
+            form.find('[name=avatar]').val(catalogue.avatar).change()
+            if (catalogue.parent_id != null) {
+                var option = new Option(catalogue._parent.name, catalogue._parent.id, true, true);
+                form.find('[name=parent_id]').append(option).trigger({
+                    type: 'select2:select'
+                });
+            } else {
+                form.find('[name=parent_id]').val(null).trigger("change")
+            }
+            form.find('[name=status]').prop('checked', catalogue.status)
+            form.attr('action', `{{ route('admin.catalogue.update') }}`)
+            if (catalogue.deleted_at != null) {
+                form.find('.btn[type=submit]:last-child').addClass('d-none')
+            }
+            form.find('.modal').modal('show').find('.modal-title').text(catalogue.name)
+        })
+    })
+    // =========== END CATALOGUE ===========
 
     /**
      * CATEGORY PROCESS
