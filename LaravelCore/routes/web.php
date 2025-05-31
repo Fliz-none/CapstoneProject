@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\CatalogueController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ChatController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ExpenseController;
 use App\Http\Controllers\Admin\ExportController;
@@ -23,6 +24,7 @@ use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\DetailController;
 use App\Http\Controllers\Admin\ImportDetailController;
+use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VariableController;
 use App\Http\Controllers\Admin\WarehouseController;
@@ -30,6 +32,7 @@ use App\Http\Controllers\Admin\WorkController;
 use App\Http\Controllers\Admin\SelfController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\VersionController;
+use App\Http\Controllers\Api\PusherController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -281,8 +284,18 @@ Route::group(['prefix' => 'quantri'], function () {
         Route::post('update', [VersionController::class, 'update'])->name('admin.version.update');
         Route::post('remove', [VersionController::class, 'remove'])->name('admin.version.remove');
     });
+
     Route::group(['prefix' => 'notification'], function () {
         Route::post('mark', [NotificationController::class, 'mark'])->name('admin.notification.mark');
+    });
+
+    Route::group(['prefix' => 'chat'], function () {
+        Route::get('{key?}', [ChatController::class, 'index'])->name('admin.chat');
+    });
+    
+    Route::group(['prefix' => 'pusher'], function () {
+        Route::post('/broadcast', [PusherController::class, 'broadcast'])->name('pusher.broadcast');
+        Route::post('/receive', [PusherController::class, 'receive'])->name('pusher.receive');
     });
 });
 

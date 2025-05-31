@@ -319,6 +319,25 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->orders->sum('total') - $this->orders->sum('paid');
     }
 
+    
+    /**
+     * Các cuộc trò chuyện mà user là customer (one-to-many)
+     */
+    public function conversationsAsCustomer()
+    {
+        return $this->hasMany(Conversation::class, 'customer_id');
+    }
+
+    /**
+     * Các cuộc trò chuyện mà user tham gia (many-to-many qua conversation_user)
+     */
+    public function conversations()
+    {
+        return $this->belongsToMany(Conversation::class, 'conversation_user')
+                ->withPivot('role')
+                ->withTimestamps();
+    }
+
     public function getAveragePaymentDelay()
     {
         $now = Carbon::now();

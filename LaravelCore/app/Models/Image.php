@@ -18,10 +18,6 @@ class Image extends Model
         'author_id',
         'created_at'
     ];
-    public function company()
-    {
-        return $this->belongsTo(Company::class);
-    }
 
     public function author()
     {

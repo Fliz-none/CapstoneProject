@@ -15,6 +15,7 @@
                             <th class="text-center">Employee Name</th>
                             <th class="text-center">Total Work Hours</th>
                             <th class="text-center">Times Late / Total Shifts</th>
+                            <th class="text-center">Salary</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -25,6 +26,7 @@
                                 </td>
                                 <td class="text-center">{{ $summary['total_hours'] }}</td>
                                 <td class="text-center">{{ $summary['total_late'] }} / {{ $summary['total_shifts'] }}</td>
+                                <td class="text-center">{{ $summary['salary'] }}</td>
                             </tr>
                         @empty
                             <tr class="text-center">

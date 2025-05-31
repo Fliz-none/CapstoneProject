@@ -76,10 +76,11 @@ class WorkController extends Controller
                             }
                             return false;
                         })->count();
-
+                        $settings = Cache::get('settings');
                         return [
                             'total_minutes' => $total_minutes,
                             'user' => $user_works->first()->user,
+                            'salary' => ($total_hours * $settings['hourly_salary']) . ' '. $settings['currency'],
                             'total_hours' => floor($total_hours) . ' giờ ' . ($total_minutes % 60) . ' phút',
                             'total_shifts' => $total_shifts,
                             'total_late' => $total_late,
@@ -310,34 +311,15 @@ class WorkController extends Controller
                 Storage::disk('public')->put('work/' . $imageName, $image);
 
                 if (!$work->real_checkin) {
-                    // Chấm vào
-                    $prev = self::previous();
-                    if ($prev && !$prev->real_checkout) { // Có ca cần chấm tự động
-                        $prev->update([
-                            'real_checkout' => $prev->sign_checkout,
-                            'image_checkout' => $imageName,
-                        ]);
-                        $work->update([
-                            'real_checkin' => $work->sign_checkin,
-                            'image_checkin' => $imageName,
-                            'real_checkout' => Carbon::now(),
-                            'image_checkout' => $imageName,
-                        ]);
-                        $response = [
-                            'status' => 'success',
-                            'msg' => 'Checkout successful! Your previous shift has been automatically recorded.'
-                        ];
-                    } else {
-                        $work->update([
-                            'real_checkin' => Carbon::now(),
-                            'image_checkin' => $imageName,
-                        ]);
-                        $response = [
-                            'status' => 'success',
-                            'msg' => 'Checkin successful!',
-                            'work' => $work
-                        ];
-                    }
+                    $work->update([
+                        'real_checkin' => Carbon::now(),
+                        'image_checkin' => $imageName,
+                    ]);
+                    $response = [
+                        'status' => 'success',
+                        'msg' => 'Checkin successful!',
+                        'work' => $work
+                    ];
                 } else { // Chấm ra
                     $work->update([
                         'real_checkout' => Carbon::now(),
@@ -482,10 +464,6 @@ class WorkController extends Controller
         } else {
             $isCheckoutTime = false;
         }
-        //Chấm công thích hợp khi đã checkin và hiện tại đã qua thời gian checkin đăng kí
-        if (self::previous()) {
-            $isCheckin = false;
-        }
         return ['isCheckin' => $isCheckin, 'hasWork' => !is_null($work), 'isCheckoutTime' => $isCheckoutTime];
     }
 
@@ -509,29 +487,6 @@ class WorkController extends Controller
         }
         return null;
     }
-
-    /**
-     *  Lấy ca làm việc trước đó
-     * @return \App\Models\Work|null
-     * */
-    public static function previous()
-    {
-        $previous = Work::whereBetween('sign_checkin', [Carbon::today(), Carbon::tomorrow()])
-            ->whereBetween('sign_checkout', [Carbon::today(), Carbon::tomorrow()])
-            ->where('branch_id', Auth::user()->main_branch)
-            ->where('user_id', Auth::id())
-            ->where('sign_checkout', '<', Carbon::now()) // ca đã qua
-            ->orderBy('sign_checkin', 'desc')
-            ->first();
-        $current = self::current();
-        if ($previous && $current) {
-            if (Carbon::parse($previous->sign_checkout)->addMinutes(5) >= Carbon::parse($current->sign_checkin) && $previous->id !== $current->id) {
-                return $previous;
-            }
-        }
-        return null;
-    }
-
 
     /**
      *  Các biến hiển thị điều kiện của chấm công.

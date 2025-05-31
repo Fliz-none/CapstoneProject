@@ -3,6 +3,7 @@
 @php
     $pageName = $pageName ?? '';
 @endphp
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -413,7 +414,8 @@
                 offcanvasCart.show();
                 const form = $(this).closest('form');
                 submitForm(form).done(function(response) {
-                    form.find('[type=submit]:last').prop("disabled", false).html('<i class="bi bi-basket3"></i> <span>Thêm vào giỏ hàng</span>');
+                    form.find('[type=submit]:last').prop("disabled", false).html(
+                        '<i class="bi bi-basket3"></i> <span>Thêm vào giỏ hàng</span>');
                     updateMiniCart(response.cart);
 
                 });
@@ -454,7 +456,8 @@
                 e.preventDefault();
                 const form = $(this).closest('form')
                 submitForm(form).done(function(response) {
-                    form.find('[type=submit]:last').prop("disabled", false).html('<i class="icon-cancel"></i>');
+                    form.find('[type=submit]:last').prop("disabled", false).html(
+                        '<i class="icon-cancel"></i>');
                     updateMiniCart(response.cart);
                 })
             })

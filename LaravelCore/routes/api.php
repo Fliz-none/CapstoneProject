@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\CatalogueController;
 use App\Http\Controllers\Api\ImageController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\PusherController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,5 +28,10 @@ Route::middleware('api')->group(function () {
 
     Route::group(['prefix' => 'catalogue'], function () {
         Route::get('{slug?}', [CatalogueController::class, 'index']);
+    });
+
+    Route::group(['prefix' => 'pusher'], function () {
+        Route::post('/broadcast', [PusherController::class, 'broadcast'])->name('api.pusher.broadcast');
+        Route::post('/receive', [PusherController::class, 'receive'])->name('api.pusher.receive');
     });
 });

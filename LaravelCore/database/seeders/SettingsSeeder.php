@@ -42,6 +42,8 @@ class SettingsSeeder extends Seeder
             ['require_attendance_on_company_wifi', '1'],
             ['scores_rate_exchange', '1'],
             ['expense_group', '[]'],
+            ['currency', 'VND'],
+            ['hourly_salary', '0'],
         ];
 
         foreach ($settings as $key => $setting) {

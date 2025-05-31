@@ -303,6 +303,8 @@ class SettingController extends Controller
             'sign_checkin.*' => 'required|date_format:H:i',
             'sign_checkout.*' => 'required|date_format:H:i|after:sign_checkin.*',
             'staff_number.*' => 'required|integer|min:1',
+            'currency' => 'required',
+            'hourly_salary' => 'required|numeric'
         ], [
             'shift_name.required' => 'Please set at least one shift.',
             'sign_checkin.required' => 'Please set at least one shift.',
@@ -322,6 +324,10 @@ class SettingController extends Controller
             'staff_number.*.required' => 'Please enter the number of staff.',
             'staff_number.*.integer' => 'Number of staff must be an integer.',
             'staff_number.*.min' => 'Number of staff must be at least 1.',
+
+            'currency.required' => 'Please enter a currency.',
+            'hourly_salary.required' => 'Please enter the hourly salary.',
+            'hourly_salary.numeric' => 'Hourly salary must be numeric.',
         ]);
 
         try {
@@ -367,6 +373,8 @@ class SettingController extends Controller
             $this->updateSetting('require_attendance_on_company_wifi', $request->require_attendance_on_company_wifi);
             $this->updateSetting('allow_self_register', $request->allow_self_register);
             $this->updateSetting('work_info', json_encode($work_info));
+            $this->updateSetting('currency', $request->currency);
+            $this->updateSetting('hourly_salary', $request->hourly_salary);
             cache()->forget('settings');
 
             $response = [

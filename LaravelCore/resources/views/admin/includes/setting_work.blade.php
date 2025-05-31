@@ -98,7 +98,6 @@
                     <small class="form-text text-muted">If disabled, only admin can register shifts for employees</small>
                 </label>
                 <div class="col-sm-2">
-                    <input name="allow_self_register" type="hidden" value="0">
                     <input class="form-check-input @error('allow_self_register') is-invalid @enderror" id="allow_self_register" name="allow_self_register" type="checkbox" value="1"
                         {{ isset($settings['allow_self_register']) && $settings['allow_self_register'] == 1 ? 'checked' : '' }}>
                     @error('allow_self_register')
@@ -112,10 +111,33 @@
                     <small class="form-text text-muted">If enabled, employees will be required to check in and check out on company Wi-Fi</small>
                 </label>
                 <div class="col-sm-2">
-                    <input name="require_attendance_on_company_wifi" type="hidden" value="0">
                     <input class="form-check-input @error('require_attendance_on_company_wifi') is-invalid @enderror" id="require_attendance_on_company_wifi" name="require_attendance_on_company_wifi" type="checkbox" value="1"
                         {{ isset($settings['require_attendance_on_company_wifi']) && $settings['require_attendance_on_company_wifi'] == 1 ? 'checked' : '' }}>
                     @error('require_attendance_on_company_wifi')
+                        <span class="invalid-feedback d-block" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+                <label class="col-sm-4 col-form-label" for="hourly_salary">
+                    Hourly salary<br />
+                    <small class="form-text text-muted">The amount of money paid to an employee for each hour of work they perform.</small>
+                </label>
+                <div class="col-sm-2">
+                    <input class="form-control money @error('hourly_salary') is-invalid @enderror" id="hourly_salary" name="hourly_salary" type="text" value="{{ isset($settings['hourly_salary']) ? $settings['hourly_salary'] : 0 }}">
+                    @error('hourly_salary')
+                        <span class="invalid-feedback d-block" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+                <label class="col-sm-4 col-form-label" for="currency">
+                    Currency<br />
+                    <small class="form-text text-muted">The standard unit of value used to measure and express monetary amounts in this financial system.</small>
+                </label>
+                <div class="col-sm-2">
+                    <input class="form-control @error('currency') is-invalid @enderror" id="currency" name="currency" type="text" value="{{ isset($settings['currency']) ? $settings['currency'] : '' }}">
+                    @error('currency')
                         <span class="invalid-feedback d-block" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>

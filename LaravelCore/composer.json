@@ -24,6 +24,7 @@
         "maatwebsite/excel": "^3.1",
         "nao-pon/flysystem-google-drive": "^1.1",
         "predis/predis": "*",
+        "pusher/pusher-php-server": "^7.2",
         "spatie/laravel-permission": "*",
         "yajra/laravel-datatables-oracle": "^9.21",
         "zaloplatform/zalo-php-sdk": "^4.0"

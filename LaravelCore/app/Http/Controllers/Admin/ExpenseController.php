@@ -78,7 +78,7 @@ class ExpenseController extends Controller
             return response()->json($result, 200);
         } else {
             if ($request->ajax()) {
-                $expenses = Expense::with('company', 'branch', 'user', 'receiver')
+                $expenses = Expense::with('branch', 'user', 'receiver')
                     ->when($request->has('branch_id'), function ($query) use ($request) {
                         $query->where('branch_id', $request->branch_id);
                     }, function ($query) {
@@ -220,7 +220,7 @@ class ExpenseController extends Controller
         ];
         $request->validate($rules, self::MESSAGES);
         $settings = cache()->get('settings');
-        if ($settings && $settings['expense_image_required'] == 1 && !$request->hasFile('avatar')) {
+        if (isset($settings['expense_image_required']) && $settings['expense_image_required'] == 1 && !$request->hasFile('avatar')) {
             return response()->json(['errors' => ['avatar' => ['Hãy bổ sung thêm hình ảnh hóa đơn']]], 422);
         }
         if (!empty($this->user->can(User::CREATE_EXPENSE))) {

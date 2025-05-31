@@ -157,7 +157,7 @@
         <form id="email-form" action="{{ route('admin.setting.email') }}" method="post">
             @csrf
             <div class="card-header d-flex justify-content-between">
-                <h3>Email ssettings</h3>
+                <h3>Email settings</h3>
                 <button class="btn btn-primary btn-save" type="submit">Save</button>
             </div>
             <div class="card-body">
