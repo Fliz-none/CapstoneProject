@@ -21,12 +21,13 @@ class PusherBroadcast implements ShouldBroadcast
     public $message;
     public function __construct(Message $message)
     {
+        $message->load('sender');
         $this->message = $message;
     }
 
     public function broadcastOn()
     {
-        return ['public'];
+        return new Channel('public');
     }
 
     public function broadcastAs()
@@ -37,10 +38,7 @@ class PusherBroadcast implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'broadcast' => view('admin.chat.broadcast', ['message' => $this->message])->render(),
-            'receive' => view('admin.chat.receive', ['message' => $this->message])->render(),
-            'sender_id' => $this->message->sender_id,
-            'conversation_id' => $this->message->conversation_id,
+            'message' => $this->message
         ];
     }
 }

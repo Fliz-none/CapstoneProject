@@ -9,15 +9,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="fb:app_id" content="">
     <link type="image/x-icon" href="{{ asset('images/logo-main.svg') }}" rel="shortcut icon">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>{{ config('app.name') }} - @yield('title')</title>
 
     <meta property="og:url" content="https://truongdungpet.com">
     <link href="{{ asset('css/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/bootstrap/css/bootstrap.css') }}" rel="stylesheet">
-    <link href="{{ asset('wow/animate.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link href="{{ asset('css/jquery.fancybox.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/key.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/chat.css') }}" rel="stylesheet">
     {{-- Toastify --}}
     <link href="{{ asset('admin/vendors/toastify/toastify.css') }}" rel="stylesheet">
     {{-- Include sweetalert2 --}}
@@ -52,24 +54,106 @@
         <script src="{{ asset('admin/vendors/sweetalert2/sweetalert2.all.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('vendors/js/library/sweetalert2.all.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('vendors/jquery.fancybox.min.js') }}"></script>
+        {{-- Chat box js --}}
+        <script src="{{ asset('js/pusher.min.js') }}"></script>
+        <script src="{{ asset('js/chat.js') }}"></script>
+        {{-- Laravel Mix --}}
+        <script src="{{ asset('js/app.js') }}"></script>
+        {{-- Include MomentJS --}}
+        <script src="{{ asset('admin/vendors/momentjs/moment.min.js') }}"></script>
+        <script src="{{ asset('admin/vendors/momentjs/moment-with-locales.js') }}"></script>
     </div>
-
+    
     <script>
+        moment.locale('vi');
+
         let config = {
             routes: {
                 login: "{{ route('login.auth') }}",
                 local: "{{ URL::to('locals') }}",
+                pusher: {
+                    broadcast: "{{ route('chat.broadcast') }}",
+                }
             },
         }
+
+        let auth_id = @json(auth()->id());
+        let offset = 0;
+        let loading = false;
+
+        function createChatLi(message, auth_id = null) {
+            const type = message.sender_id == auth_id ? 'outgoing' : 'incoming';
+            const avatar = () => {
+                if (type == 'incoming') {
+                    if (message.sender)
+                        return `<img src="${message.sender.avatarUrl}" alt="avatar" class="rounded-circle ratio-1-1 img-fluid w-100">`;
+                    else
+                        return '<i class="bi bi-robot"></i>';
+                } else {
+                    return '';
+                }
+            }
+            return `<li class="chat ${type}">
+                        <span class="material-symbols-outlined bg-white" style="width: 40px;">${avatar()}</span>
+                        <p class="pb-1">${message.content} <br><small class="m-1 fst-italic ${type == 'outgoing' ? 'float-end text-white' : 'text-muted'}">${moment(message.created_at).fromNow()}</small></p>
+                    </li>`;
+        }
+
+        function loadMessages(reset = false) {
+            if (loading) return;
+            loading = true;
+            $.get(`{{ route('chat', ['key' => 'messages']) }}`, {
+                offset: offset
+            }, function(messages) {
+                const messagesArray = Object.values(messages);
+                let html = '';
+                for (let i = messagesArray.length - 1; i >= 0; i--) {
+                    let message = messagesArray[i];
+                    html += createChatLi(message, auth_id);
+                }
+                const chatbox = $('.chatbox');
+                if (reset) {
+                    chatbox.html(html);
+                    offset = 20;
+                    chatbox.scrollTop(chatbox[0].scrollHeight);
+                } else {
+                    const scrollPos = chatbox[0].scrollHeight;
+                    chatbox.prepend(html);
+                    offset += 20;
+                    chatbox.scrollTop(chatbox[0].scrollHeight - scrollPos);
+                }
+            });
+            loading = false;
+        }
+
         $(document).ready(function() {
+            @if(auth()->check())
+                loadMessages(true);
+            @endif
+
             $(document).on('click', '.btn-login', function() {
                 let form = $('#loginForm');
-                // submitForm(form);
+                submitForm(form);
             });
 
             $(document).on('click', '.btn-register', function() {
                 let form = $('#registerForm');
                 submitForm(form);
+            });
+
+            // nhận tin nhắn
+            window.Echo.channel('public')
+                .listen('.chat', (data) => {
+                    const liHtml = createChatLi(data.message, auth_id);
+                    $('.chatbox').append(liHtml);
+                    $('.chatbox').scrollTop($('.chatbox')[0].scrollHeight);
+                });
+
+            // Scroll để load thêm tin nhắn
+            $('.chatbox').on('scroll', function() {
+                if ($(this).scrollTop() === 0) {
+                    loadMessages(false);
+                }
             });
         });
     </script>

@@ -18,6 +18,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**************************** Permission ****************************/
     const READ_DASHBOARD = 'Read dashboard';
+    const READ_CHATS = 'Read chats';
     const ACCESS_ADMIN = 'Access admin panel';
     const READ_SETTINGS = 'Access settings page';
     const READ_LOGS = 'Read system logs';

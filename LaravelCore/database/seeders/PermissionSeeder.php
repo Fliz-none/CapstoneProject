@@ -19,6 +19,7 @@ class PermissionSeeder extends Seeder
         // Create permissions
         $permissions = [
             ['Read dashboard', 'web', 'Dashboard'],
+            ['Read chats', 'web', 'Dashboard'],
             ['Access admin panel', 'web', 'Access admin'],
             ['Access settings page', 'web', 'Access settings'],
             ['Read system logs', 'web', 'Logs'],

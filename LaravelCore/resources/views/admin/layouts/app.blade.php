@@ -62,7 +62,7 @@
     <link href="{{ asset('admin/vendors/summernote/summernote-lite.min.css') }}" rel="stylesheet">
     {{-- daterangepicker --}}
     <link type="text/css" href="{{ asset('admin/vendors/daterangepicker/daterangepicker.css') }}" rel="stylesheet" />
-
+    
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
@@ -189,6 +189,8 @@
 <script>
     eruda.init();
 </script> --}}
+{{-- Laravel Mix --}}
+<script src="{{ asset('js/app.js') }}"></script>
 <script>
     moment.locale('vi');
     let config = {

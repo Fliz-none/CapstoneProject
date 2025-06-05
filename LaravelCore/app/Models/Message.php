@@ -15,9 +15,10 @@ class Message extends Model
         'sender_id',
         'content',
         'is_seen',
-    ];
+        'answer_id',
+     ];
 
-    // Encrypt content before save
+    //Encrypt content before save
     public function setContentAttribute($value)
     {
         $this->attributes['content'] = Crypt::encryptString($value);

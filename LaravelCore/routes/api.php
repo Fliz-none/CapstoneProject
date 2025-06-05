@@ -30,8 +30,8 @@ Route::middleware('api')->group(function () {
         Route::get('{slug?}', [CatalogueController::class, 'index']);
     });
 
-    Route::group(['prefix' => 'pusher'], function () {
-        Route::post('/broadcast', [PusherController::class, 'broadcast'])->name('api.pusher.broadcast');
-        Route::post('/receive', [PusherController::class, 'receive'])->name('api.pusher.receive');
-    });
+    // Route::group(['prefix' => 'pusher'], function () {
+    //     Route::post('/broadcast', [PusherController::class, 'broadcast'])->name('api.pusher.broadcast');
+    //     Route::post('/receive', [PusherController::class, 'receive'])->name('api.pusher.receive');
+    // });
 });

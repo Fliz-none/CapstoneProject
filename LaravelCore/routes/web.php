@@ -24,7 +24,6 @@ use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\DetailController;
 use App\Http\Controllers\Admin\ImportDetailController;
-use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VariableController;
 use App\Http\Controllers\Admin\WarehouseController;
@@ -32,7 +31,7 @@ use App\Http\Controllers\Admin\WorkController;
 use App\Http\Controllers\Admin\SelfController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\VersionController;
-use App\Http\Controllers\Api\PusherController;
+use App\Http\Controllers\ChatController as ClientChatController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -291,14 +290,14 @@ Route::group(['prefix' => 'quantri'], function () {
 
     Route::group(['prefix' => 'chat'], function () {
         Route::get('{key?}', [ChatController::class, 'index'])->name('admin.chat');
-    });
-    
-    Route::group(['prefix' => 'pusher'], function () {
-        Route::post('/broadcast', [PusherController::class, 'broadcast'])->name('pusher.broadcast');
-        Route::post('/receive', [PusherController::class, 'receive'])->name('pusher.receive');
+        Route::post('broadcast', [ChatController::class, 'broadcast'])->name('admin.chat.broadcast');
     });
 });
-
+// Route chat for client
+Route::group(['prefix' => 'chat'], function () {
+    Route::get('{key?}', [ClientChatController::class, 'index'])->name('chat');
+    Route::post('broadcast', [ClientChatController::class, 'broadcast'])->name('chat.broadcast');
+});
 Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('login', [LoginController::class, 'index'])->name('login');
 Route::post('login', [LoginController::class, 'auth'])->name('login.auth');

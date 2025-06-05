@@ -87,13 +87,17 @@
                             <div class="key-follow">
                                 <div class="social-overlap process-scetion">
                                     <div class="social-icons mb-3 iconpad text-center">
-                                        <a class="slider-nav-item color-facebook" href="#" target="_blank" rel="noopener"> <i class="facebook-icon"></i><br />
+                                        <a class="slider-nav-item color-facebook" href="#" target="_blank"
+                                            rel="noopener"> <i class="facebook-icon"></i><br />
                                         </a><br />
-                                        <a class="slider-nav-item color-messenger" href="#" target="_blank" rel="noopener"><i class="messenger-icon"></i><br />
+                                        <a class="slider-nav-item color-messenger" href="#" target="_blank"
+                                            rel="noopener"><i class="messenger-icon"></i><br />
                                         </a><br />
-                                        <a class="slider-nav-item color-youtube" href="#" target="_blank" rel="noopener"><i class="youtube-icon"></i><br />
+                                        <a class="slider-nav-item color-youtube" href="#" target="_blank"
+                                            rel="noopener"><i class="youtube-icon"></i><br />
                                         </a><br />
-                                        <a class="slider-nav-item color-zalo" href="#" target="_blank" rel="noopener"><i class="zalo-icon"></i><br />
+                                        <a class="slider-nav-item color-zalo" href="#" target="_blank"
+                                            rel="noopener"><i class="zalo-icon"></i><br />
                                         </a>
                                     </div>
                                 </div>
@@ -116,7 +120,8 @@
                                         PetShop
                                     </a>
                                 <li>
-                                    <a href="{{ route('post', ['sub' => 'posts', 'category' => 'cham-soc-boss']) }}" title=" Chăm sóc boss">
+                                    <a href="{{ route('post', ['sub' => 'posts', 'category' => 'cham-soc-boss']) }}"
+                                        title=" Chăm sóc boss">
                                         Chăm sóc boss
                                     </a>
                                 <li>
@@ -146,6 +151,22 @@
             <a class="backtop-btn" id="backTop" href="#" title="">
                 <img src="{{ asset('images/img/backtotop.png') }}" alt="">
             </a>
+        </div>
+        <button class="chatbot-toggler">
+            <span class="material-symbols-rounded fs-5 pt-1"><i class="bi bi-chat-left-text"></i></span>
+            <span class="material-symbols-outlined fs-4"><i class="bi bi-x"></i></span>
+        </button>
+        <div class="chatbot">
+            <header>
+                <h2>Chat with us</h2>
+                <span class="close-btn material-symbols-outlined"><i class="bi bi-x"></i></span>
+            </header>
+            <ul class="chatbox">
+            </ul>
+            <div class="chat-input">
+                <textarea name="message" placeholder="Enter a message..." spellcheck="false" required></textarea>
+                <span id="send-btn" class="material-symbols-rounded"><i class="bi bi-send"></i></span>
+            </div>
         </div>
     </div>
 </div>

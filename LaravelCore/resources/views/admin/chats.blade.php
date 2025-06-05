@@ -36,6 +36,17 @@
             .bg-chat-primary {
                 background-color: #00b7ff17 !important;
             }
+
+            .bg-chat-secondary {
+                background-color: #f0eff6 !important;
+            }
+
+            /* mobile ẩn sender-avatar */
+            @media (max-width: 767px) {
+                .sender-avatar {
+                    display: none;
+                }
+            }
         </style>
         <button id="toggle-fullscreen" class="btn btn-sm btn-outline-primary float-end">
             <i class="bi bi-arrows-fullscreen"></i>
@@ -101,7 +112,7 @@
     </div>
 @endsection
 @push('scripts')
-    <script src="{{ asset('js/pusher.min.js') }}"></script>
+    {{-- <script src="{{ asset('js/pusher.min.js') }}"></script> --}}
     <script>
         let conversationId = null;
         let offset = 0;
@@ -127,7 +138,6 @@
         function loadMessages(reset = false) {
             if (loading || !conversationId) return;
             loading = true;
-
             $.get(`{{ route('admin.chat', ['key' => 'messages']) }}`, {
                 conversation_id: conversationId,
                 offset: offset
@@ -147,9 +157,8 @@
                     offset += 20;
                     container.scrollTop(container[0].scrollHeight - scrollPos);
                 }
-
-                loading = false;
             });
+            loading = false;
         }
 
         function toggleFullscreen() {
@@ -169,14 +178,72 @@
             const $btn = $('#toggle-fullscreen');
             $btn.html(isFull ? '<i class="bi bi-fullscreen-exit"></i>' : '<i class="bi bi-arrows-fullscreen"></i>');
         }
+        
+        const canUpdateUser = {{ Auth::user()->can(\App\Models\User::UPDATE_USER) ? 'true' : 'false' }};
+
+        function broadcast(message) {
+            const time = moment(message.created_at).fromNow();
+            const avatarClass = canUpdateUser ? 'sender-avatar btn-update-user cursor-pointer' : 'sender-avatar';
+            const avatar = `<img src="${message.sender.avatarUrl}" alt="avatar"
+                            class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong ${avatarClass}" 
+                            ${canUpdateUser ? `data-id="${message.sender.id}"` : ''} width="50">`;
+
+            const html = `
+                        <li class="d-flex justify-content-end mb-4">
+                            <div style="max-width: 50%; width: fit-content;">
+                                <div class="card bg-chat-primary mb-0 cursor-pointer">
+                                    <div class="card-header d-flex justify-content-between px-3 py-1 bg-chat-primary">
+                                        <p class="mb-0">${message.sender.name}</p>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="mb-0 p-1">${message.content}</p>
+                                    </div>
+                                </div>
+                                <small class="text-muted ms-3 mb-0 mt-1 float-end d-block">
+                                    <i class="bi bi-clock"></i> ${time}
+                                </small>
+                            </div>
+                            ${avatar}
+                        </li>`;
+            return html;
+        }
+
+        function receive(message) {
+            const time = moment(message.created_at).fromNow();
+            const avatarClass = canUpdateUser ? 'sender-avatar btn-update-user cursor-pointer' : 'sender-avatar';
+            const avatar = `<img src="${message.sender.avatarUrl}" alt="avatar"
+                            class="rounded-circle d-flex align-self-start me-3 shadow-1-strong ${avatarClass}" 
+                            ${canUpdateUser ? `data-id="${message.sender.id}"` : ''} width="50">`;
+
+            const html = `
+                    <li class="d-flex justify-content-start mb-4"> ${avatar}
+                        <div style="max-width: 50%; width: fit-content;">
+                            <div class="card mb-0 cursor-pointer">
+                                <div class="card-header d-flex justify-content-between px-3 py-1 bg-chat-secondary">
+                                    <p class="mb-0">${message.sender.name}</p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="mb-0 p-1">${message.content}</p>
+                                </div>
+                            </div>
+                            <small class="text-muted me-3 mb-0 mt-1 d-block float-start">
+                                <i class="bi bi-clock"></i> ${time}
+                            </small>
+                        </div>
+                    </li>`;
+            return html;
+        }
 
         $(document).ready(function() {
             loadConversations();
 
-            //Search
-            $('#search').on('input', function() {
-                const keyword = $(this).val();
-                loadConversations(keyword);
+            //debounceSearch
+            let timeout = null;
+            $(document).on('input', '#search', function() {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    loadConversations($(this).val());
+                }, 500);
             });
 
             // Click chọn conversation
@@ -189,20 +256,21 @@
 
             // Scroll để load thêm tin nhắn
             $('.messages-container').on('scroll', function() {
-                if ($(this).scrollTop() === 0) {
-                    loadMessages(false);
+                const $container = $(this);
+                if ($container.scrollTop() == 0) {
+                    loadMessages(false)
                 }
             });
 
             // Gửi tin nhắn
-            $('#send-message').on('submit', function(e) {
+            $(document).on('submit', '#send-message', function(e) {
                 e.preventDefault();
                 if (!conversationId) return;
 
                 const message = $('#message').val();
                 if (!message.trim()) return;
 
-                $.post("{{ route('pusher.broadcast') }}", {
+                $.post("{{ route('admin.chat.broadcast') }}", {
                     message: message,
                     conversation_id: conversationId,
                     _token: '{{ csrf_token() }}'
@@ -213,7 +281,7 @@
             });
 
             // Enter để gửi
-            $('#message').on('keydown', function(e) {
+            $(document).on('keydown', '#message', function(e) {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
                     $('#send-message').submit();
@@ -221,7 +289,7 @@
             });
 
             // Toàn màn hình
-            $('#toggle-fullscreen').on('click', function() {
+            $(document).on('click', '#toggle-fullscreen', function() {
                 toggleFullscreen();
             });
 
@@ -231,29 +299,19 @@
                 });
         });
 
-        // Pusher config
-        const pusher = new Pusher(@json(config('broadcasting.connections.pusher.key')), {
-            cluster: @json(config('broadcasting.connections.pusher.options.cluster')),
-            encrypted: true
-        });
-
-        const channel = pusher.subscribe('public');
         const auth_id = @json(auth()->id());
 
-        channel.bind('pusher:subscription_succeeded', function() {
-            console.log('✅ Subscribed to Pusher channel.');
-        });
-
-        channel.bind('chat', function(data) {
-            if (data.conversation_id !== conversationId) {
-                loadConversations('', conversationId);
-                return;
-            } else {
-                loadConversations('', data.conversation_id);
-                const html = auth_id == data.sender_id ? data.broadcast : data.receive;
-                $('.messages').append(html);
-                $('.messages-container').scrollTop($('.messages-container')[0].scrollHeight);
-            }
-        });
+        window.Echo.channel('public')
+            .listen('.chat', (data) => {
+                if (data.message.conversation_id !== conversationId) {
+                    loadConversations('', conversationId);
+                    return;
+                } else {
+                    loadConversations('', data.message.conversation_id);
+                    const html = auth_id == data.message.sender_id ? broadcast(data.message) : receive(data.message);
+                    $('.messages').append(html);
+                    $('.messages-container').scrollTop($('.messages-container')[0].scrollHeight);
+                }
+            });
     </script>
 @endpush
