@@ -41,30 +41,37 @@
                         </li>
                         <li><a class="dropdown-item" href="{{ route('admin.profile') }}">
                                 <i class="bi bi-person-circle me-2"></i>
-                                Account Information
+                                {{ __('messages.profile.accountinformation') }}
                             </a>
                         </li>
                         <li><a class="dropdown-item" href="{{ route('admin.profile', ['key' => 'settings']) }}">
                                 <i class="bi bi-gear-fill me-2"></i>
-                                Account Settings
+                                {{ __('messages.profile.accountsetting') }}
                             </a>
                         </li>
                         @if (Auth::user()->branches->count() > 1)
-                            <li><a class="dropdown-item cursor-pointer btn-change-branch">
+                            <li>
+                                <a class="dropdown-item cursor-pointer btn-change-branch">
                                     <i class="bi bi-git"></i>
-                                    Change Branch
+                                    {{ __('messages.profile.changebranch') }}
                                 </a>
                             </li>
                         @endif
+                         <li>
+                            <a class="dropdown-item cursor-pointer btn-change-language">
+                                    <i class="bi bi-translate"></i>
+                                     {{ __('messages.profile.language') }}
+                                </a>
+                            </li>
                         <li><a class="dropdown-item" href="{{ route('admin.profile', ['key' => 'password']) }}">
                                 <i class="bi bi-shield-lock-fill me-2"></i>
-                                Change Password
+                                {{ __('messages.profile.changepassword') }}
                             </a>
                         </li>
                         <li class="submenu-item">
                             <a class="dropdown-item" href="{{ route('admin.work', ['key' => 'timekeeping']) }}">
                                 <i class="bi bi-stopwatch"></i>
-                                Timekeeping
+                                {{ __('messages.profile.timekeeping') }}
                             </a>
                         </li>
                         @php
@@ -76,7 +83,7 @@
                             <li class="submenu-item">
                                 <a class="dropdown-item cursor-pointer btn-self-schedule">
                                     <i class="bi bi-calendar2-week"></i>
-                                    Schedule Work
+                                    {{ __('messages.profile.schedule') }}
                                 </a>
                             </li>
                         @endif
@@ -86,7 +93,7 @@
                             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                         submitLogoutForm();">
                                 <i class="icon-mid bi bi-box-arrow-left me-2"></i>
-                                {{ __('Logout') }}
+                                {{ __('messages.profile.logout') }}
                             </a>
                         </li>
                         <form class="d-none" id="logout-form" action="{{ route('logout') }}" method="POST">

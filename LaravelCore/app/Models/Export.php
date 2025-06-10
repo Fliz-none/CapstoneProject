@@ -70,11 +70,6 @@ class Export extends Model
         return $this->hasMany(ExportDetail::class);
     }
 
-    public function prescription()
-    {
-        return $this->hasOne(Prescription::class);
-    }
-
     public function getTotalAttribute()
     {
         return $this->export_details->sum(function ($export_detail) {

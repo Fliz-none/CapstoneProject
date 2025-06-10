@@ -7,17 +7,32 @@
         <div class="page-title">
             <div class="row mb-3">
                 <div class="col-12 col-md-auto">
-                    <h5 class="text-uppercase">{{ $pageName }}</h5>
+                    <h5 class="text-uppercase">{{ __('messages.dashboard') }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.dashboard') }}</li>
                         </ol>
                     </nav>
                 </div>
                 <div class="col-12 col-md-3 ms-auto">
-                    <div class="input-group input-daterange">
-                        <input class="form-control" id="daterange" name="daterange" type="text" placeholder="Range" size="25" />
-                        <button class="btn btn-outline-info btn-compare" type="button"><i class="bi bi-graph-up-arrow"></i></button>
+                    <div class="row align-items-center">
+                        <div class="col-md-12">
+                            <div class="input-group input-daterange">
+                                <input class="form-control" id="daterange" name="daterange" type="text" placeholder="Range"
+                                    size="25" />
+                                <button class="btn btn-outline-info btn-compare" type="button">
+                                    <i class="bi bi-graph-up-arrow"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mt-2">
+                            <select id="main_branch" class="form-select" name="main_branch">
+                                @foreach (Auth::user()->branches as $branch)
+                                    <option value="{{ $branch->id }}" {{ Auth::user()->main_branch == $branch->id ? 'selected' : '' }}>{{ $branch->name }}</option>
+                                @endforeach
+                                <option value="all">All</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -28,7 +43,7 @@
             @if (!empty(Auth::user()->can(App\Models\User::READ_DASHBOARD)))
                 <div class="col-12 col-lg-12">
                     <div class="row">
-                        <div class="col-6 col-lg-3 col-md-6">
+                        <div class="col-6 col-lg-4 col-md-6">
                             <div class="card mb-3">
                                 <div class="card-body px-3 py-4">
                                     <div class="row">
@@ -39,17 +54,20 @@
                                         </div>
                                         <div class="col-md-8">
                                             <h6 class="text-muted font-semibold">
-                                                Revenue
+                                                {{ __('messages.dashboard_revenue') }}
                                                 <i class="bi bi-eye cursor-pointer btn-show-money"></i>
                                             </h6>
-                                            <input class="form-control fs-3 py-0 bg-transparent revenue-input form-control-plaintext" type="password" readonly>
-                                            <h3 class="d-none revenue" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Collected: 0<br/>Debt: 0">0</h3>
+                                            <input
+                                                class="form-control fs-3 py-0 bg-transparent revenue-input form-control-plaintext"
+                                                type="password" readonly>
+                                            <h3 class="d-none revenue" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                data-bs-html="true" data-bs-title="Collected: 0<br/>Debt: 0">0</h3>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 col-lg-3 col-md-6">
+                        <div class="col-6 col-lg-4 col-md-6">
                             <div class="card mb-3">
                                 <div class="card-body px-3 py-4">
                                     <div class="row">
@@ -60,17 +78,20 @@
                                         </div>
                                         <div class="col-md-8">
                                             <h6 class="text-muted font-semibold">
-                                                Sales
+                                                {{ __('messages.dashboard_sales') }}
                                                 <i class="bi bi-eye cursor-pointer btn-show-money"></i>
                                             </h6>
-                                            <input class="form-control fs-3 py-0 bg-transparent sales-input form-control-plaintext" type="password" readonly>
-                                            <h3 class="sales d-none" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Sales: 0<br/>Debt: 0">0</h3>
+                                            <input
+                                                class="form-control fs-3 py-0 bg-transparent sales-input form-control-plaintext"
+                                                type="password" readonly>
+                                            <h3 class="sales d-none" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                data-bs-html="true" data-bs-title="Sales: 0<br/>Debt: 0">0</h3>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 col-lg-3 col-md-6">
+                        <!-- <div class="col-6 col-lg-4 col-md-6">
                             <div class="card mb-3">
                                 <div class="card-body px-3 py-4">
                                     <div class="row">
@@ -81,17 +102,20 @@
                                         </div>
                                         <div class="col-md-8">
                                             <h6 class="text-muted font-semibold">
-                                                Gross Profit
+                                                {{ __('messages.dashboard_profit') }}
                                                 <i class="bi bi-eye cursor-pointer btn-show-money"></i>
                                             </h6>
-                                            <input class="form-control fs-3 py-0 bg-transparent profits-input form-control-plaintext" type="password" readonly>
-                                            <h3 class="d-none profits" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Sales: 0">0</h3>
+                                            <input
+                                                class="form-control fs-3 py-0 bg-transparent profits-input form-control-plaintext"
+                                                type="password" readonly>
+                                            <h3 class="d-none profits" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                data-bs-html="true" data-bs-title="Sales: 0">0</h3>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-6 col-lg-3 col-md-6">
+                        </div> -->
+                        <div class="col-6 col-lg-4 col-md-6">
                             <div class="card mb-3">
                                 <div class="card-body px-3 py-4">
                                     <div class="row">
@@ -102,17 +126,21 @@
                                         </div>
                                         <div class="col-md-8">
                                             <h6 class="text-muted font-semibold">
-                                                Orders
+                                                {{ __('messages.dashboard_orders') }}
                                                 <i class="bi bi-eye cursor-pointer btn-show-money"></i>
                                             </h6>
-                                            <input class="form-control fs-3 py-0 bg-transparent orders-input form-control-plaintext" type="password" readonly>
-                                            <h3 class="d-none orders" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Completed: 0<br/>Collected: 0<br/>Cancelled: 0">0</h3>
+                                            <input
+                                                class="form-control fs-3 py-0 bg-transparent orders-input form-control-plaintext"
+                                                type="password" readonly>
+                                            <h3 class="d-none orders" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                data-bs-html="true"
+                                                data-bs-title="Completed: 0<br/>Collected: 0<br/>Cancelled: 0">0</h3>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 col-lg-3 col-md-6">
+                        <div class="col-6 col-lg-4 col-md-6">
                             <div class="card mb-3">
                                 <div class="card-body px-3 py-4">
                                     <div class="row">
@@ -123,17 +151,20 @@
                                         </div>
                                         <div class="col-md-8">
                                             <h6 class="text-muted font-semibold">
-                                                Customers
+                                                {{ __('messages.dashboard_customers') }}
                                                 <i class="bi bi-eye cursor-pointer btn-show-money"></i>
                                             </h6>
-                                            <input class="form-control fs-3 py-0 bg-transparent customers-input form-control-plaintext" type="password" readonly>
-                                            <h3 class="d-none customers" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="New / Old<br/>0 / 0">0</h3>
+                                            <input
+                                                class="form-control fs-3 py-0 bg-transparent customers-input form-control-plaintext"
+                                                type="password" readonly>
+                                            <h3 class="d-none customers" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                data-bs-html="true" data-bs-title="New / Old<br/>0 / 0">0</h3>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 col-lg-3 col-md-6">
+                        <div class="col-6 col-lg-4 col-md-6">
                             <div class="card mb-3">
                                 <div class="card-body px-3 py-4">
                                     <div class="row">
@@ -144,17 +175,20 @@
                                         </div>
                                         <div class="col-md-8">
                                             <h6 class="text-muted font-semibold">
-                                                Products
+                                                {{ __('messages.dashboard_products') }}
                                                 <i class="bi bi-eye cursor-pointer btn-show-money"></i>
                                             </h6>
-                                            <input class="form-control fs-3 py-0 bg-transparent products-input form-control-plaintext" type="password" readonly>
-                                            <h3 class="d-none products" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Sold / New imports<br/>0 / 0">0/0</h3>
+                                            <input
+                                                class="form-control fs-3 py-0 bg-transparent products-input form-control-plaintext"
+                                                type="password" readonly>
+                                            <h3 class="d-none products" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                data-bs-html="true" data-bs-title="Sold / New imports<br/>0 / 0">0/0</h3>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6 col-lg-3 col-md-6">
+                        <div class="col-6 col-lg-4 col-md-6">
                             <div class="card mb-3">
                                 <div class="card-body px-3 py-4">
                                     <div class="row">
@@ -165,11 +199,14 @@
                                         </div>
                                         <div class="col-md-8">
                                             <h6 class="text-muted font-semibold">
-                                                Imports
+                                                {{ __('messages.dashboard_imports') }}
                                                 <i class="bi bi-eye cursor-pointer btn-show-money"></i>
                                             </h6>
-                                            <input class="form-control fs-3 py-0 bg-transparent imports-input form-control-plaintext" type="password" readonly>
-                                            <h3 class="d-none imports" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" data-bs-title="Sold: 0<br/>Revenue/Cost: 0/0">0</h3>
+                                            <input
+                                                class="form-control fs-3 py-0 bg-transparent imports-input form-control-plaintext"
+                                                type="password" readonly>
+                                            <h3 class="d-none imports" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                data-bs-html="true" data-bs-title="Sold: 0<br/>Revenue/Cost: 0/0">0</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -183,21 +220,31 @@
                         <div class="card-header">
                             <div class="row justify-content-between">
                                 <div class="col-4 mb-0">
-                                    <h5 class="card-title font-weight-bolder">Orders</h5>
+                                    <h5 class="card-title font-weight-bolder">{{ __('messages.dashboard_orders') }}</h5>
                                 </div>
                                 <div class="col-8 mb-0 text-end">
                                     <form>
                                         <div class="btn-group" data-toggle="buttons" role="group">
-                                            <input class="btn-check" id="orders-chart-date" name="timeframe" type="radio" value="day" autocomplete="off" checked>
-                                            <label class="btn btn-outline-info" for="orders-chart-date">Day</label>
-                                            <input class="btn-check" id="orders-chart-week" name="timeframe" type="radio" value="week" autocomplete="off">
-                                            <label class="btn btn-outline-info" for="orders-chart-week">Week</label>
-                                            <input class="btn-check" id="orders-chart-month" name="timeframe" type="radio" value="month" autocomplete="off">
-                                            <label class="btn btn-outline-info" for="orders-chart-month">Month</label>
-                                            <input class="btn-check" id="orders-chart-quarter" name="timeframe" type="radio" value="quarter" autocomplete="off">
-                                            <label class="btn btn-outline-info" for="orders-chart-quarter">Quarter</label>
-                                            <input class="btn-check" id="orders-chart-year" name="timeframe" type="radio" value="year" autocomplete="off">
-                                            <label class="btn btn-outline-info" for="orders-chart-year">Year</label>
+                                            <input class="btn-check" id="orders-chart-date" name="timeframe" type="radio"
+                                                value="day" autocomplete="off" checked>
+                                            <label class="btn btn-outline-info"
+                                                for="orders-chart-date">{{ __('messages.dashboard_canvas_day') }}</label>
+                                            <input class="btn-check" id="orders-chart-week" name="timeframe" type="radio"
+                                                value="week" autocomplete="off">
+                                            <label class="btn btn-outline-info"
+                                                for="orders-chart-week">{{ __('messages.dashboard_canvas_week') }}</label>
+                                            <input class="btn-check" id="orders-chart-month" name="timeframe" type="radio"
+                                                value="month" autocomplete="off">
+                                            <label class="btn btn-outline-info"
+                                                for="orders-chart-month">{{ __('messages.dashboard_canvas_month') }}</label>
+                                            <input class="btn-check" id="orders-chart-quarter" name="timeframe" type="radio"
+                                                value="quarter" autocomplete="off">
+                                            <label class="btn btn-outline-info"
+                                                for="orders-chart-quarter">{{ __('messages.dashboard_canvas_quarter') }}</label>
+                                            <input class="btn-check" id="orders-chart-year" name="timeframe" type="radio"
+                                                value="year" autocomplete="off">
+                                            <label class="btn btn-outline-info"
+                                                for="orders-chart-year">{{ __('messages.dashboard_canvas_year') }}</label>
                                         </div>
                                     </form>
                                 </div>
@@ -215,21 +262,31 @@
                         <div class="card-header">
                             <div class="row justify-content-between">
                                 <div class="col-4 mb-0">
-                                    <h5 class="card-title font-weight-bolder">Sales</h5>
+                                    <h5 class="card-title font-weight-bolder">{{ __('messages.dashboard_sales') }}</h5>
                                 </div>
                                 <div class="col-8 mb-0 text-end">
                                     <form>
                                         <div class="btn-group" data-toggle="buttons" role="group">
-                                            <input class="btn-check" id="sales-chart-date" name="timeframe" type="radio" value="day" autocomplete="off" checked>
-                                            <label class="btn btn-outline-info" for="sales-chart-date">Day</label>
-                                            <input class="btn-check" id="sales-chart-week" name="timeframe" type="radio" value="week" autocomplete="off">
-                                            <label class="btn btn-outline-info" for="sales-chart-week">Week</label>
-                                            <input class="btn-check" id="sales-chart-month" name="timeframe" type="radio" value="month" autocomplete="off">
-                                            <label class="btn btn-outline-info" for="sales-chart-month">Month</label>
-                                            <input class="btn-check" id="sales-chart-quarter" name="timeframe" type="radio" value="quarter" autocomplete="off">
-                                            <label class="btn btn-outline-info" for="sales-chart-quarter">Quarter</label>
-                                            <input class="btn-check" id="sales-chart-year" name="timeframe" type="radio" value="year" autocomplete="off">
-                                            <label class="btn btn-outline-info" for="sales-chart-year">Year</label>
+                                            <input class="btn-check" id="sales-chart-date" name="timeframe" type="radio"
+                                                value="day" autocomplete="off" checked>
+                                            <label class="btn btn-outline-info"
+                                                for="sales-chart-date">{{ __('messages.dashboard_canvas_day') }}</label>
+                                            <input class="btn-check" id="sales-chart-week" name="timeframe" type="radio"
+                                                value="week" autocomplete="off">
+                                            <label class="btn btn-outline-info"
+                                                for="sales-chart-week">{{ __('messages.dashboard_canvas_week') }}</label>
+                                            <input class="btn-check" id="sales-chart-month" name="timeframe" type="radio"
+                                                value="month" autocomplete="off">
+                                            <label class="btn btn-outline-info"
+                                                for="sales-chart-month">{{ __('messages.dashboard_canvas_month') }}</label>
+                                            <input class="btn-check" id="sales-chart-quarter" name="timeframe" type="radio"
+                                                value="quarter" autocomplete="off">
+                                            <label class="btn btn-outline-info"
+                                                for="sales-chart-quarter">{{ __('messages.dashboard_canvas_quarter') }}</label>
+                                            <input class="btn-check" id="sales-chart-year" name="timeframe" type="radio"
+                                                value="year" autocomplete="off">
+                                            <label class="btn btn-outline-info"
+                                                for="sales-chart-year">{{ __('messages.dashboard_canvas_year') }}</label>
                                         </div>
                                     </form>
                                 </div>
@@ -248,13 +305,13 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-12 col-lg-6">
-                                    <h4 class="card-title">Customer List</h4>
+                                    <h4 class="card-title">{{ __('messages.dashboard_customer_list') }}</h4>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <select class="form-control" id="user-select">
-                                        <option value="revenue" selected>Highest Revenue</option>
-                                        <option value="quantity">Most Purchased</option>
-                                        <option value="debt">Highest Debt</option>
+                                        <option value="revenue" selected>{{ __('messages.dashboard_highest_revenue') }}</option>
+                                        <option value="quantity">{{ __('messages.dashboard_most_purchased') }}</option>
+                                        <option value="debt">{{ __('messages.dashboard_highest_debt') }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -264,8 +321,8 @@
                                 <table class="table table-hover table-center" id="user-table">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Total</th>
+                                            <th>{{ __('messages.dashboard_table_name') }}</th>
+                                            <th>{{ __('messages.dashboard_table_total') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody> <!-- Bảng sẽ được cập nhật thông qua AJAX -->
@@ -282,12 +339,12 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-12 col-lg-6">
-                                    <h4 class="card-title">Product List</h4>
+                                    <h4 class="card-title">{{ __('messages.dashboard_product_list') }}</h4>
                                 </div>
                                 <div class="col-12 col-lg-6">
                                     <select class="form-control" id="product-select">
-                                        <option value="revenue" selected>Highest Revenue</option>
-                                        <option value="quantity">Most Purchased</option>
+                                        <option value="revenue" selected>{{ __('messages.dashboard_highest_revenue') }}</option>
+                                        <option value="quantity">{{ __('messages.dashboard_most_purchased') }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -317,7 +374,7 @@
 @push('scripts')
     @if (!empty(Auth::user()->can(App\Models\User::READ_DASHBOARD)))
         <script type="text/javascript">
-            $(function() {
+            $(function () {
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -332,44 +389,44 @@
 
                 $('input[name="daterange"]').daterangepicker({
                     ranges: {
-                        'Today': [moment(), moment()],
-                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                        '7 days ago': [moment().subtract(6, 'days'), moment()],
-                        '30 days ago': [moment().subtract(29, 'days'), moment()],
-                        'This month': [moment().startOf('month'), moment().endOf('month')],
-                        'Last month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                        '{{ __("messages.daterange.today") }}': [moment(), moment()],
+                        '{{ __("messages.daterange.yesterday") }}': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        '{{ __("messages.daterange.last7days") }}': [moment().subtract(6, 'days'), moment()],
+                        '{{ __("messages.daterange.last30days") }}': [moment().subtract(29, 'days'), moment()],
+                        '{{ __("messages.daterange.this_month") }}': [moment().startOf('month'), moment().endOf('month')],
+                        '{{ __("messages.daterange.last_month") }}': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
                     },
                     "locale": {
                         "format": "DD/MM/YYYY",
                         "separator": " - ",
-                        "applyLabel": "Apply",
-                        "cancelLabel": "Cancel",
-                        "fromLabel": "From",
-                        "toLabel": "To",
-                        "customRangeLabel": "Custom",
-                        "weekLabel": "W",
+                        "applyLabel": "{{ __('messages.daterange.apply_label') }}",
+                        "cancelLabel": "{{ __('messages.daterange.cancel_label') }}",
+                        "fromLabel": "{{ __('messages.daterange.from_label') }}",
+                        "toLabel": "{{ __('messages.daterange.to_label') }}",
+                        "customRangeLabel": "{{ __('messages.daterange.custom_range_label') }}",
+                        "weekLabel": "{{ __('messages.daterange.week_label') }}",
                         "daysOfWeek": [
-                            "Su",
-                            "Mo",
-                            "Tu",
-                            "We",
-                            "Th",
-                            "Fr",
-                            "Sa"
+                            "{{ __('messages.daterange.days.sun') }}",
+                            "{{ __('messages.daterange.days.mon') }}",
+                            "{{ __('messages.daterange.days.tue') }}",
+                            "{{ __('messages.daterange.days.wed') }}",
+                            "{{ __('messages.daterange.days.thu') }}",
+                            "{{ __('messages.daterange.days.fri') }}",
+                            "{{ __('messages.daterange.days.sat') }}"
                         ],
                         "monthNames": [
-                            "January",
-                            "February",
-                            "March",
-                            "April",
-                            "May",
-                            "June",
-                            "July",
-                            "August",
-                            "September",
-                            "October",
-                            "November",
-                            "December"
+                            "{{ __('messages.daterange.months.jan') }}",
+                            "{{ __('messages.daterange.months.feb') }}",
+                            "{{ __('messages.daterange.months.mar') }}",
+                            "{{ __('messages.daterange.months.apr') }}",
+                            "{{ __('messages.daterange.months.may') }}",
+                            "{{ __('messages.daterange.months.jun') }}",
+                            "{{ __('messages.daterange.months.jul') }}",
+                            "{{ __('messages.daterange.months.aug') }}",
+                            "{{ __('messages.daterange.months.sep') }}",
+                            "{{ __('messages.daterange.months.oct') }}",
+                            "{{ __('messages.daterange.months.nov') }}",
+                            "{{ __('messages.daterange.months.dec') }}"
                         ],
                         "firstDay": 1
                     },
@@ -378,28 +435,48 @@
                     startDate: startDate,
                     endDate: endDate,
                     opens: "left"
-                }, function(start, end) {
-                        startDate = start.startOf('date')
-                        endDate = end.endOf('date')
-                        console.log(startDate, endDate);
-                        
-                        loadAnalytics()
-                        loadDataTables('user');
-                        loadDataTables('product');
+                }, function (start, end) {
+                    startDate = start.startOf('date')
+                    endDate = end.endOf('date')
+                    console.log(startDate, endDate);
+
+                    loadAnalytics()
+                    loadDataTables('user');
+                    loadDataTables('product');
                 });
+
                 loadAnalytics()
                 loadDataTables('user');
                 loadDataTables('product');
 
+                $('#product-select').on('change', function () {
+                    loadDataTables('user');
+                    loadDataTables('product');
+                })
+                $('#user-select').on('change', function () {
+                    loadDataTables('user');
+                    loadDataTables('product');
+                })
+
+                $('#main_branch').on('change', function () {
+                    loadAnalytics()
+                    loadDataTables('user');
+                    loadDataTables('product');
+                })
+
+
+
                 function loadAnalytics() {
                     const range = [startDate.format('YYYY-MM-DD HH:mm:ss'), endDate.format('YYYY-MM-DD HH:mm:ss')],
-                        rangeJson = moment(startDate).format('DD_MM_YYYY') + '__' + moment(endDate).format('DD_MM_YYYY')
+                        rangeJson = moment(startDate).format('DD_MM_YYYY') + '__' + moment(endDate).format('DD_MM_YYYY'),
+                        selectedBranch = $('#main_branch').val();
                     if (localStorage['tdp_stats_' + rangeJson]) {
                         showData(JSON.parse(localStorage['tdp_stats_' + rangeJson]));
                     } else {
                         $.get(`{{ route('admin.dashboard.analytics') }}`, {
-                            range: JSON.stringify(range)
-                        }, function(result) {
+                            range: JSON.stringify(range),
+                            branch: selectedBranch
+                        }, function (result) {
                             showData(result)
                             let today = moment().format('YYYY-MM-DD HH:mm:ss')
                             if (today == startDate && today == endDate) {
@@ -432,7 +509,7 @@
                         }
                     }
                     // Xóa từng key trong danh sách
-                    keysToDelete.forEach(function(key) {
+                    keysToDelete.forEach(function (key) {
                         localStorage.removeItem(key);
                     });
                 }
@@ -440,21 +517,21 @@
                 function showData(data) {
                     $('h3.sales').html(number_format(data.allSales) + 'đ').attr('data-bs-title',
                         `Sales / Debt: <br/>
-                            ${number_format(data.cashSales)+'đ'} / ${number_format(data.debtSales)+'đ'}<br/>
-                            Products: <br/>
-                            ${number_format(data.productSales)+'đ'}`).prev().val(data.allSales)
+                                                            ${number_format(data.cashSales) + 'đ'} / ${number_format(data.debtSales) + 'đ'}<br/>
+                                                            Products: <br/>
+                                                            ${number_format(data.productSales) + 'đ'}`).prev().val(data.allSales)
 
                     $('h3.revenue').html(number_format(data.allRevenue) + 'đ').attr('data-bs-title',
-                        `Payment: ${number_format(data.cashRevenue)+'đ'}<br/>
-                            Debt Collection: ${number_format(data.debtRevenue)+'đ'}`).prev().val(data.allRevenue)
+                        `Payment: ${number_format(data.cashRevenue) + 'đ'}<br/>
+                                                            Debt Collection: ${number_format(data.debtRevenue) + 'đ'}`).prev().val(data.allRevenue)
 
-                    $('h3.profits').html(number_format(data.allProfits) + 'đ').attr('data-bs-title',
-                        `Products: ${number_format(data.productProfits)}đ<br/>
-                            Cost of Goods Sold: ${number_format(data.productCost)}đ<br/>`).prev().val(data.allProfits)
+                    // $('h3.profits').html(number_format(data.allProfits) + 'đ').attr('data-bs-title',
+                    //     `Products: ${number_format(data.productProfits)}đ<br/>
+                    //                                         Cost of Goods Sold: ${number_format(data.productCost)}đ<br/>`).prev().val(data.allProfits)
 
                     $('h3.orders').html(number_format(data.allOrders)).attr('data-bs-title',
                         `Collected: ${number_format(data.paidOrders)}<br/>Completed: ${number_format(data.completeOrders)}<br/>
-                            Canceled: ${number_format(data.cancelOrders)}`).prev().val(data.allOrders)
+                                                            Canceled: ${number_format(data.cancelOrders)}`).prev().val(data.allOrders)
 
                     $('h3.customers').html(number_format(data.allCustomers)).attr('data-bs-title',
                         `New Customers: ${number_format(data.newCustomers)}<br/>Old Customers: ${number_format(data.oldCustomers)}`).prev().val(data.allCustomers)
@@ -469,7 +546,7 @@
                     chartData = data.listOrders
                 }
 
-                $('.btn-show-money').click(function() {
+                $('.btn-show-money').click(function () {
                     $(this).toggleClass('bi-eye').toggleClass('bi-eye-slash').parent().next().toggleClass('d-none').next().toggleClass('d-none')
                 })
 
@@ -514,11 +591,11 @@
                             sumCtx,
                             labelsCurrent,
                             totalsCurrent,
-                            'Current Amount',
+                            '{{ __('messages.dashboard_canvas_current_amount') }}',
                             'rgba(54, 162, 235, 1)',
                             labelsPrevious,
                             totalsPrevious,
-                            'Previous Amount',
+                            '{{ __('messages.dashboard_canvas_previous_amount') }}',
                             '#ccc'
                         );
 
@@ -526,11 +603,11 @@
                             countCtx,
                             labelsCurrent,
                             countsCurrent,
-                            'Current Orders',
+                            '{{ __('messages.dashboard_canvas_current_orders') }}',
                             'rgba(75, 192, 192, 1)',
                             labelsPrevious,
                             countsPrevious,
-                            'Previous Orders',
+                            '{{ __('messages.dashboard_canvas_previous_orders') }}',
                             '#ccc'
                         );
                     } else {
@@ -548,7 +625,7 @@
                             sumCtx,
                             labelsCurrent,
                             totalsCurrent,
-                            'Current Amount',
+                            '{{ __('messages.dashboard_canvas_current_amount') }}',
                             'rgba(54, 162, 235, 1)'
                         );
 
@@ -556,7 +633,7 @@
                             countCtx,
                             labelsCurrent,
                             countsCurrent,
-                            'Current Orders',
+                            '{{ __('messages.dashboard_canvas_current_orders') }}',
                             'rgba(75, 192, 192, 1)'
                         );
                     }
@@ -650,7 +727,7 @@
                                 y: {
                                     title: {
                                         display: true,
-                                        text: 'Value'
+                                        text: '{{ __('messages.dashboard_canvas_value') }}'
                                     },
                                     beginAtZero: true
                                 }
@@ -660,7 +737,7 @@
                                     mode: 'index',
                                     intersect: false,
                                     callbacks: {
-                                        title: function(tooltipItems) {
+                                        title: function (tooltipItems) {
                                             // Lấy ngày đầy đủ từ labelsCurrent và labelsPrevious
                                             const index = tooltipItems[0].dataIndex;
                                             let tooltipTitle = labelsCurrent[index]; // Hiển thị ngày đầy đủ cho labelsCurrent
@@ -701,25 +778,25 @@
                 }
 
                 // Xử lý sự kiện click nút 'Compare'
-                $('.btn-compare').on('click', function() {
+                $('.btn-compare').on('click', function () {
                     const selectedTimeFrame = $('input[name="timeframe"]:checked').val();
                     const range = [startDate, endDate];
-                    $.get(`{{ route('admin.dashboard.analytics') }}?key=compare&range=${JSON.stringify(range)}`, function(response) {
+                    $.get(`{{ route('admin.dashboard.analytics') }}?key=compare&range=${JSON.stringify(range)}`, function (response) {
                         if (response.listOrders) {
                             buildChart(response.listOrders, selectedTimeFrame, true);
                         }
-                    }).error(function() {
+                    }).error(function () {
                         alert('An error occurred while fetching data.');
                     });
                 });
 
                 // Xử lý sự kiện cho radio buttons
-                $('input[name="timeframe"]').on('change', function() {
+                $('input[name="timeframe"]').on('change', function () {
                     buildChart(chartData, $(this).val());
                 });
 
                 // Xử lý sự kiện cho nút so sánh kỳ trước
-                $('#comparePrevious').on('click', function() {
+                $('#comparePrevious').on('click', function () {
                     buildChart(chartData, $('input[name="timeframe"]:checked').val(), true);
                 });
 
@@ -738,32 +815,32 @@
                             [1, 'desc']
                         ],
                         ajax: {
-                            url: `{{ route('admin.dashboard.statistics') }}?model=${model}&type=${$(`#${model}-select`).val()}&range=${JSON.stringify(range)}`
+                            url: `{{ route('admin.dashboard.statistics') }}?model=${model}&branch=${$('#main_branch').val()}&type=${$(`#${model}-select`).val()}&range=${JSON.stringify(range)}`
                         },
                         columns: [{
-                                data: 'name',
-                                name: 'name',
-                                title: 'Tên',
-                                sortable: false
-                            },
-                            {
-                                data: 'total',
-                                name: 'total',
-                                title: 'Total'
-                            },
+                            data: 'name',
+                            name: 'name',
+                            title: '{{ __('messages.dashboard_table_name') }}',
+                            sortable: false
+                        },
+                        {
+                            data: 'total',
+                            name: 'total',
+                            title: '{{ __('messages.dashboard_table_total') }}'
+                        },
                         ],
                         columnDefs: [{
-                                targets: 0,
-                                width: '50%', // Đặt chiều rộng cột "Tên" là 50%
-                                render: function(data, type, row) {
-                                    return `<span style="white-space: nowrap;">${data}</span>`; // Ngăn chặn xuống dòng
-                                }
-                            },
-                            {
-                                targets: 1,
-                                width: '50%', // Đặt chiều rộng cột "Tổng cộng" là 50%
-                                className: 'text-center' // Căn giữa nội dung trong cột "Tổng cộng"
+                            targets: 0,
+                            width: '50%', // Đặt chiều rộng cột "Tên" là 50%
+                            render: function (data, type, row) {
+                                return `<span style="white-space: nowrap;">${data}</span>`; // Ngăn chặn xuống dòng
                             }
+                        },
+                        {
+                            targets: 1,
+                            width: '50%', // Đặt chiều rộng cột "Tổng cộng" là 50%
+                            className: 'text-center' // Căn giữa nội dung trong cột "Tổng cộng"
+                        }
                         ],
                         language: config.datatable.lang,
                         lengths: config.datatable.lengths,
@@ -772,7 +849,7 @@
                         scrollX: false, // Không sử dụng thanh cuộn ngang
                     });
 
-                    $(`#${model}-select`).change(function() {
+                    $(`#${model}-select`).change(function () {
                         const newDateRange = [startDate, endDate];
                         const newUrl = `{{ route('admin.dashboard.statistics') }}?model=${model}&type=${$(`#${model}-select`).val()}&range=${JSON.stringify(range)}`;
                         table.ajax.url(newUrl).load();

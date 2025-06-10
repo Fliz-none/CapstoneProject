@@ -56,7 +56,7 @@
                                             <th>Image</th>
                                             <th>Name</th>
                                             <th>Description</th>
-                                            <th>Parent Category</th>
+                                            <th>Parent Catalogue</th>
                                             <th>Status</th>
                                             <th>Order</th>
                                             <th></th>

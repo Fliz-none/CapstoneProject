@@ -41,4 +41,9 @@ class Unit extends Model
     {
         return $this->hasMany(ExportDetail::class);
     }
+
+    public function discounts()
+    {
+        return $this->belongsToMany(Discount::class);
+    }
 }

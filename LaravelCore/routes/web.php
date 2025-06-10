@@ -23,6 +23,7 @@ use App\Http\Controllers\Admin\StockController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\DetailController;
+use App\Http\Controllers\Admin\DiscountController;
 use App\Http\Controllers\Admin\ImportDetailController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VariableController;
@@ -60,7 +61,9 @@ Auth::routes(['verify' => true, 'register' => true]);
 // });
 
 Route::group(['prefix' => 'quantri'], function () {
-    Route::get('/', function () { return redirect('quantri/dashboard'); })->name('admin.home');
+    Route::get('/', function () {
+        return redirect('quantri/dashboard');
+    })->name('admin.home');
     Route::get('login', [LoginController::class, 'index'])->name('admin.login');
     Route::get('register', [RegisterController::class, 'index'])->name('admin.register');
 
@@ -141,6 +144,13 @@ Route::group(['prefix' => 'quantri'], function () {
         Route::post('create', [VariableController::class, 'create'])->name('admin.variable.create');
         Route::post('update', [VariableController::class, 'update'])->name('admin.variable.update');
         Route::post('remove', [VariableController::class, 'remove'])->name('admin.variable.remove');
+    });
+
+    Route::group(['prefix' => 'discount'], function () {
+        Route::get('{key?}/{action?}', [DiscountController::class, 'index'])->name('admin.discount');
+        Route::post('create', [DiscountController::class, 'create'])->name('admin.discount.create');
+        Route::post('update', [DiscountController::class, 'update'])->name('admin.discount.update');
+        Route::post('remove', [DiscountController::class, 'remove'])->name('admin.discount.remove');
     });
 
     Route::group(['prefix' => 'import'], function () {
@@ -315,7 +325,18 @@ Route::get('don-hang', [ProfileController::class, 'orders'])->name('orders');
 Route::get('gio-hang/thanh-toan', [CartController::class, 'index'])->name('checkout');
 Route::get('gio-hang/thanh-toan/hoan-thanh', [CartController::class, 'index'])->name('checkout');
 Route::get('cua-hang/{catalogue?}/{slug?}', [ShopController::class, 'index'])->name('shop');
+Route::post('/change-language', function (Illuminate\Http\Request $request) {
+    $request->validate([
+        'locale' => 'required|in:vn,en' // Validation ngay từ đầu
+    ]);
 
+    session(['locale' => $request->locale]);
+    
+    return response()->json([
+        'status' => 'success',
+        'message' => __('messages.language_changed') // Sử dụng translation
+    ]);
+})->name('change.language.ajax')->middleware('web'); // Thêm middleware web để đảm bảo session
 Route::get('ajax/{type}{key?}', [ShopController::class, 'getAjax'])->name('ajax');
 Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'gio-hang'], function () {

@@ -111,6 +111,13 @@ class User extends Authenticatable implements MustVerifyEmail
     const UPDATE_VARIABLE = 'Update variable';
     const DELETE_VARIABLE = 'Delete variable';
 
+    const READ_DISCOUNTS = 'Read discount list';
+    const READ_DISCOUNT = 'Read discount details';
+    const CREATE_DISCOUNT = 'Create discount';
+    const UPDATE_DISCOUNT = 'Update discount';
+    const DELETE_DISCOUNT = 'Delete discount';
+    const DELETE_DISCOUNTS = 'Delete multiple discount';
+
     const READ_ORDERS = 'Read order list';
     const READ_ORDER = 'Read order details';
     const CREATE_ORDER = 'Create order';
@@ -385,7 +392,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getStatusStrAttribute()
     {
-        return ($this->status) ? 'Active' : 'Inactive';
+        return $this->status ? __('messages.active') : __('messages.inactive');
     }
 
     public function getFullAddressAttribute()

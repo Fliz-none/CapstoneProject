@@ -38,7 +38,7 @@
                             <div class="card-body">
                                 <div class="row align-items-center mb-4">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="System-wide display name">Display name</h6>
+                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="System-wide display name">{{ __('messages.profile.name') }}</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <input class="form-control @error('name') is-invalid @enderror" id="profile-name" name="name" type="text" value="{{ Auth::user()->name ?? old('name') }}">
@@ -51,16 +51,16 @@
                                 </div>
                                 <div class="row align-items-center mb-4">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Choose gender for convenience in addressing and displaying content">Gender</h6>
+                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Choose gender for convenience in addressing and displaying content">{{ __('messages.profile.gender') }}</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
                                         <div class="btn-group" role="group" aria-label="Gender selection">
                                             <input class="btn-check" id="gender-male" name="gender" type="radio" value="0" autocomplete="off" {{ Auth::user()->gender == '0' || old('gender') == '0' ? 'checked' : '' }}>
-                                            <label class="btn btn-outline-primary" for="gender-male">Male</label>
+                                            <label class="btn btn-outline-primary" for="gender-male">{{ __('messages.profile.male') }}</label>
                                             <input class="btn-check" id="gender-female" name="gender" type="radio" value="1" autocomplete="off" {{ Auth::user()->gender == '1' || old('gender') == '1' ? 'checked' : '' }}>
-                                            <label class="btn btn-outline-primary" for="gender-female">Female</label>
+                                            <label class="btn btn-outline-primary" for="gender-female">{{ __('messages.profile.female') }}</label>
                                             <input class="btn-check" id="gender-other" name="gender" type="radio" value="2" autocomplete="off" {{ Auth::user()->gender == '2' || old('gender') == '2' ? 'checked' : '' }}>
-                                            <label class="btn btn-outline-primary" for="gender-other">Prefer not to say</label>
+                                            <label class="btn btn-outline-primary" for="gender-other">{{ __('messages.profile.other') }}</label>
                                         </div>
                                         @error('gender')
                                             <span class="invalid-feedback d-block" role="alert">
@@ -71,10 +71,10 @@
                                 </div>
                                 <div class="row align-items-center mb-4">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="System-wide email address for login and receiving notifications">Email address</h6>
+                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="System-wide email address for login and receiving notifications">{{ __('messages.profile.email') }}</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input class="form-control @error('email') is-invalid @enderror" id="profile-email" name="email" type="email" value="{{ Auth::user()->email ?? old('email') }}" inputmode="email">
+                                        <input class="form-control @error('email') is-invalid @enderror" id="profile-email" name="email" type="email" value="{{ Auth::user()->email ?? old('email') }}" inputmode="email" placeholder="{{ __('messages.profile.enter_email') }}">
                                         @error('email')
                                             <span class="invalid-feedback d-block" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -84,10 +84,10 @@
                                 </div>
                                 <div class="row align-items-center mb-4">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Used for contact when necessary">Phone number</h6>
+                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Used for contact when necessary">{{ __('messages.profile.phone') }}</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input class="form-control @error('phone') is-invalid @enderror" id="profile-phone" name="phone" type="text" value="{{ Auth::user()->phone ?? old('phone') }}" inputmode="numeric">
+                                        <input class="form-control @error('phone') is-invalid @enderror" id="profile-phone" name="phone" type="text" value="{{ Auth::user()->phone ?? old('phone') }}" inputmode="numeric" placeholder="{{ __('messages.profile.enter_phone') }}">
                                         @error('phone')
                                             <span class="invalid-feedback d-block" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -97,11 +97,11 @@
                                 </div>
                                 <div class="row align-items-center mb-4">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Used for shipping and receiving goods">Address</h6>
+                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Used for shipping and receiving goods">{{ __('messages.profile.address') }}</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input class="form-control @error('address') is-invalid @enderror @error('address') is-invalid @enderror" id="profile-address" name="address" type="text"
-                                            value="{{ Auth::user()->address ?? old('address') }}">
+                                        <input class="form-control @error('address') is-invalid @enderror @error('address') is-invalid @enderror" id="profile-address" name="{{ __('messages.profile.address') }}" type="text"
+                                            value="{{ Auth::user()->address ?? old('address') }}" placeholder="{{ __('messages.profile.enter_address') }}">
                                         @error('address')
                                             <span class="invalid-feedback d-block" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -111,10 +111,10 @@
                                 </div>
                                 <div class="row align-items-center mb-4">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Used to verify you are the account owner updating this information">Your password</h6>
+                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Used to verify you are the account owner updating this information">{{ __('messages.profile.password') }}</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input class="form-control @error('password') is-invalid @enderror" id="profile-password" name="password" type="password" placeholder="Enter your password to confirm you are the owner of this account">
+                                        <input class="form-control @error('password') is-invalid @enderror" id="profile-password" name="password" type="password" placeholder="{{ __('messages.profile.enter_password') }}">
                                         @error('password')
                                             <span class="invalid-feedback d-block" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -125,7 +125,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-sm-12 d-flex justify-content-center">
                                         <input name="id" type="hidden" value="{{ Auth::user()->id }}">
-                                        <button class="btn btn-primary " type="submit">{{ __('Update') }}</button>
+                                        <button class="btn btn-primary " type="submit">{{ __('messages.update') }}</button>
                                     </div>
                                 </div>
                             </div>

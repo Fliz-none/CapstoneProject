@@ -212,17 +212,17 @@
         canUpdateUser: {{ Auth::user()->can(\App\Models\User::UPDATE_USER) ? 'true' : 'false' }},
         datatable: {
             lang: {
-                "sProcessing": "Processing...",
-                "sLengthMenu": "_MENU_ rows / page",
-                "sZeroRecords": "No content available.",
-                "sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
-                "sInfoEmpty": "No entries found",
-                "sInfoFiltered": "(filtered from _MAX_ total entries)",
-                'searchPlaceholder': "Search data",
-                "sInfoPostFix": "",
-                "sSearch": "",
-                "sUrl": "",
-                "oPaginate": {
+               "sProcessing": "{{ __('messages.datatable.processing') }}",
+        "sLengthMenu": "{{ __('messages.datatable.length_menu') }}",
+        "sZeroRecords": "{{ __('messages.datatable.zero_records') }}",
+        "sInfo": "{{ __('messages.datatable.info') }}",
+        "sInfoEmpty": "{{ __('messages.datatable.info_empty') }}",
+        "sInfoFiltered": "{{ __('messages.datatable.info_filtered') }}",
+        "searchPlaceholder": "{{ __('messages.datatable.search_placeholder') }}",
+        "sInfoPostFix": "{{ __('messages.datatable.info_postfix') }}",
+        "sSearch": "{{ __('messages.datatable.search') }}",
+        "sUrl": "{{ __('messages.datatable.url') }}",
+        "oPaginate": {
                     "sFirst": "&laquo;",
                     "sPrevious": "&lsaquo;",
                     "sNext": "&rsaquo;",
@@ -931,6 +931,59 @@
         });
     });
 
+
+    /**
+     * LANGUAGES
+     */
+    $('.btn-change-language').on('click', function () {
+    const currentLocale = '{{ app()->getLocale() }}';
+
+    Swal.fire({
+        title: '{{ __("messages.lang.select_language") }}',
+        html: `
+            <select id="locale_selector" class="form-select">
+                <option value="vn" ${currentLocale === 'vn' ? 'selected' : ''}>🇻🇳 {{ __("messages.lang.vi") }}</option>
+                <option value="en" ${currentLocale === 'en' ? 'selected' : ''}>🇺🇸 {{ __("messages.lang.en") }}</option>
+            </select>
+        `,
+        showCancelButton: true,
+        confirmButtonText: '{{ __("messages.save") }}',
+        cancelButtonText: '{{ __("messages.cancel") }}',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const newLocale = $('#locale_selector').val();
+
+            // Chỉ gửi request nếu ngôn ngữ thay đổi
+            if (newLocale !== currentLocale) {
+                $.ajax({
+                    url: "{{ route('change.language.ajax') }}",
+                    method: 'POST',
+                    data: {
+                        locale: newLocale,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function () {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '{{ __("messages.lang.language_changed_success") }}',
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(() => location.reload());
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: '{{ __("messages.error_occurred") }}',
+                            text: '{{ __("messages.try_again_later") }}'
+                        });
+                    }
+                });
+            }
+        }
+    });
+});
+
+
     /**
      * USER PROCESS
      */
@@ -949,7 +1002,7 @@
         }
         form.find('[name=status]').prop('checked', true);
         form.attr('action', `{{ route('admin.user.create') }}`)
-        form.find('.modal').modal('show').find('.modal-title').text('New user account')
+        form.find('.modal').modal('show').find('.modal-title').text('{{ __('messages.user.create_new_account') }}')
     })
 
     $(document).on('click', '.btn-update-user', function(e) {
@@ -2107,7 +2160,7 @@
         fillCustomerSuggestions($(this).val())
     })
     /*==================== END ORDER ====================*/
-    
+
     /**
      *  TRANSACTION PROCESS
      */

@@ -13,7 +13,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class CatalogueController extends Controller
 {
-    const NAME = 'danh mục',
+    const NAME = 'Catalogue',
         MESSAGES = [
             'name.required' => Controller::NOT_EMPTY,
             'name.string' => Controller::DATA_INVALID,
@@ -222,6 +222,13 @@ class CatalogueController extends Controller
             if ($request->has('id')) {
                 try {
                     $catalogue = Catalogue::find($request->id);
+                    if ($request->id == $request->parent_id) {
+                        $response = array(
+                            'status' => 'error',
+                            'msg' => 'The parent category must be different from the current category!'
+                        );
+                        return response()->json($response, 200);
+                    }
                     if ($catalogue) {
                         $catalogue->update([
                             'name' => $request->name,

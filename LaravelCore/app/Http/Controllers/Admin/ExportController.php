@@ -101,18 +101,18 @@ class ExportController extends Controller
         } else {
             if ($request->ajax()) {
                 $objs = Export::with(['_user.local', '_receiver.local', 'import', 'export_details._stock.import_detail._import.import_details.stock.export_details'])->whereHas('export_details', function ($query) use ($request) {
-                        $query->whereHas('_stock', function ($query) use ($request) {
-                            $query->whereHas('import_detail', function ($query) use ($request) {
-                                $query->whereHas('_import', function ($query) use ($request) {
-                                    $query->when($request->has('warehouse_id'), function ($query) use ($request) {
-                                        $query->where('warehouse_id', $request->warehouse_id);
-                                    }, function ($query) {
-                                        $query->whereIn('warehouse_id', $this->user->warehouses->pluck('id'));
-                                    });
+                    $query->whereHas('_stock', function ($query) use ($request) {
+                        $query->whereHas('import_detail', function ($query) use ($request) {
+                            $query->whereHas('_import', function ($query) use ($request) {
+                                $query->when($request->has('warehouse_id'), function ($query) use ($request) {
+                                    $query->where('warehouse_id', $request->warehouse_id);
+                                }, function ($query) {
+                                    $query->whereIn('warehouse_id', $this->user->warehouses->pluck('id'));
                                 });
                             });
                         });
                     });
+                });
                 $can_read_export = $this->user->can(User::READ_EXPORT);
                 $can_read_user = $this->user->can(User::READ_USER);
                 $can_delete_export = $this->user->can(User::DELETE_EXPORT);
@@ -135,12 +135,12 @@ class ExportController extends Controller
                             $query->when($date['year'], function ($query) use ($date) {
                                 $query->whereYear('exports.created_at', $date['year']);
                             })
-                            ->when($date['month'], function ($query) use ($date) {
-                                $query->whereMonth('exports.created_at', $date['month']);
-                            })
-                            ->when($date['day'], function ($query) use ($date) {
-                                $query->whereDay('exports.created_at', $date['day']);
-                            });
+                                ->when($date['month'], function ($query) use ($date) {
+                                    $query->whereMonth('exports.created_at', $date['month']);
+                                })
+                                ->when($date['day'], function ($query) use ($date) {
+                                    $query->whereDay('exports.created_at', $date['day']);
+                                });
                         }, function ($query) use ($keyword) {
                             $numericKeyword = ltrim(preg_replace('/[^0-9]/', '', $keyword), '0');
                             if (!empty($numericKeyword)) {
@@ -351,6 +351,7 @@ class ExportController extends Controller
 
     public function update(Request $request)
     {
+        // dd(Export::find(10));
         $request->validate(self::RULES, self::MESSAGES);
         if (!empty($this->user->can(User::UPDATE_EXPORT))) {
             if ($request->has('id')) {
@@ -377,11 +378,11 @@ class ExportController extends Controller
 
                         if ($request->has('to_warehouse_id')) {
                             $import = Import::updateOrCreate([
-                                'id' => $export->import->id
+                                'id' => optional($export->import)->id
                             ], [
                                 'warehouse_id' => $request->to_warehouse_id,
                                 'export_id' => $export->id,
-                                'note' => 'Nhập từ ' . $export->code,
+                                'note' => 'Import from ' . $export->code,
                                 'created_at' => $export->created_at,
                                 'status' => 0,
                             ]);
