@@ -39,11 +39,10 @@ class Stock extends Model
     }
 
     public function productName(){
-        $variable = $this->import_detail->_variable;
-        $product_name = $variable->_product->sku . ' - ' . $variable->_product->name;
-        $variable_name = ($variable->name ? ' - ' . $variable->name : '');
-        $str = $variable->_product->deleted_at ? '<span class="text-danger">' . $product_name . '</span>' : $product_name;
-        $str .= $variable->deleted_at ? '<span class="text-danger">' . $variable_name . '</span>' : $variable_name;
+        $variable = $this->_import_detail->_variable;
+        $v_name = ' - ' . $variable->name;
+        $str = $variable->_product->deleted_at ? '<span class="text-danger">' . $variable->_product->name . '</span>' : $variable->_product->name;
+        $str .= $variable->deleted_at ? '<span class="text-danger">' . $v_name . '</span>' : $v_name;
         return $str;
     }
 

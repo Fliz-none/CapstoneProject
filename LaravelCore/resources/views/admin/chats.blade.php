@@ -79,23 +79,22 @@
                                 <!-- JS append messages here -->
                             </ul>
                         </div>
-                        <form id="send-message" class="border-top bg-white p-2" enctype="multipart/form-data">
+                        {{-- Preview file --}}
+                        <div id="preview-attachments" class="gap-2"></div>
+                        <form id="send-message" method="POST" action="{{ route('admin.chat.broadcast') }}"
+                            class="border-top bg-white p-2" enctype="multipart/form-data">
                             @csrf
                             <!-- Dòng icon trên đầu -->
                             <div class="d-flex align-items-center gap-2 mb-2 px-2">
                                 <button type="button" class="btn btn-link text-muted p-1" title="Emoji">
                                     <i class="bi bi-emoji-smile fs-5"></i>
                                 </button>
-                                <button type="button" class="btn btn-link text-muted p-1" title="Hình ảnh">
-                                    <i class="bi bi-image fs-5"></i>
-                                </button>
-                                <label for="attachment" class="btn btn-link text-muted p-1 m-0" title="Tệp đính kèm">
+                                <label for="attachments" class="btn btn-link text-muted p-1 m-0" title="Attachment">
                                     <i class="bi bi-paperclip fs-5"></i>
                                 </label>
-                                <input type="file" id="attachment" name="attachment" class="d-none" />
+                                <input type="file" id="attachments" name="attachments[]" class="d-none" multiple />
                                 <!-- Thêm các icon khác nếu cần -->
                             </div>
-
                             <!-- Textarea + nút gửi -->
                             <div class="d-flex align-items-end gap-2 px-3 pb-3">
                                 <textarea class="form-control border-0 rounded-3 bg-light px-3 py-2" id="message" name="message" rows="2"
@@ -118,13 +117,126 @@
         let offset = 0;
         let loading = false;
 
-        function loadConversations(keyword = '', active_id = false) {
-            $.get(`{{ route('admin.chat', ['key' => 'conversations']) }}`, {
+        // -----------------------------
+        // Utility functions
+        // -----------------------------
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        function createAvatar(sender, align = 'start') {
+            const avatarClass = config.canUpdateUser ? 'btn-update-user cursor-pointer' : '';
+            return `<img src="${sender.avatarUrl}" alt="avatar" width="50"
+            class="rounded-circle d-flex align-self-${align} shadow-1-strong ${sender.id == config.auth_id ? 'sender-avatar' : ''} ${avatarClass}"
+            ${config.canUpdateUser ? `data-id="${sender.id}"` : ''}>`;
+        }
+
+        function renderAttachment(attachment) {
+            const isImage = attachment.mime_type.startsWith('image/');
+            return isImage ?
+                `<img src="${attachment.file_url}" alt="attachment" class="rounded border ratio-1-1 object-fit-cover thumb img-fluid">` :
+                `<a href="${attachment.file_url}" target="_blank"
+                class="text-decoration-none text-truncate border p-1 d-inline-block"
+                style="max-width: 150px;" title="${attachment.file_name}">
+                <i class="bi bi-file-earmark-fill"></i> ${attachment.file_name}</a>`;
+        }
+
+        function renderMessage(message, type = 'receive') {
+            console.log('renderMessage', message);
+
+            const isSender = type === 'broadcast';
+            const align = isSender ? 'end' : 'start';
+            const bg = isSender ? 'bg-chat-primary' : 'bg-chat-secondary';
+            const avatar = createAvatar(message.sender, isSender ? 'start' : 'start');
+            let html = '';
+            if (message.attachments && message.attachments.length > 0) {
+                message.attachments.forEach(att => {
+                    const fileBlock = renderAttachment(att);
+                    html += `<li class="d-flex justify-content-${align} mb-1">
+                        ${!isSender ? avatar : '<div style="width: 50px"></div>'}
+                        <div style="max-width: 50%; width: fit-content;" class="${isSender ? 'ms-auto' : ''}">
+                            <div class="card ${bg} mb-0 cursor-pointer d-inline-block" style="border: 1px solid rgba(133, 133, 244, 0.841)">
+                                <div class="card-body p-1">
+                                    <div class="d-flex flex-wrap gap-2">
+                                        ${fileBlock}
+                                    </div>
+                                </div>
+                            </div>
+                        </div><div style="width: 50px" class="ms-3"></div>
+                    </li>`;
+                });
+            }
+
+            html += `<li class="d-flex justify-content-${align} mb-4">
+                    ${!isSender ? avatar : ''}
+                    <div style="max-width: 50%; width: fit-content;" class="${isSender ? 'me-3' : ''}">
+                        <div class="card mb-0 cursor-pointer ${bg}">
+                            <div class="card-header d-flex justify-content-between px-3 py-1 ${bg}">
+                                <p class="mb-0">${message.sender.name}</p>
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-0 p-1">${message.content}</p>
+                            </div>
+                        </div>
+                        <small class="text-muted ${isSender ? 'ms-3 float-end' : 'me-3 float-start'} mt-1 d-block">
+                            <i class="bi bi-clock"></i> ${moment(message.created_at).fromNow()}
+                        </small>
+                    </div>
+                    ${isSender ? avatar : ''}
+                </li>`;
+            return html;
+        }
+
+        function previewAttachments(files) {
+            const previewContainer = $('#preview-attachments');
+            previewContainer.empty();
+            for (const file of files) {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        const img =
+                            `<img src="${e.target.result}" class="rounded border" style="width: 80px; height: 80px; object-fit: cover;">`;
+                        previewContainer.append(img);
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    previewContainer.append(`<a class="border px-2 bg-light align-items-end">${file.name}</a>`);
+                }
+            }
+        }
+
+        function updateFullscreenButton() {
+            const isFull = document.fullscreenElement || document.webkitFullscreenElement ||
+                document.mozFullScreenElement || document.msFullscreenElement;
+            $('#toggle-fullscreen').html(isFull ?
+                '<i class="bi bi-fullscreen-exit"></i>' :
+                '<i class="bi bi-arrows-fullscreen"></i>');
+        }
+
+        function toggleFullscreen() {
+            const el = document.documentElement;
+            if (!document.fullscreenElement) {
+                el.requestFullscreen?.() || el.webkitRequestFullscreen?.() || el.mozRequestFullScreen?.() || el
+                    .msRequestFullscreen?.();
+            } else {
+                document.exitFullscreen?.() || document.webkitExitFullscreen?.() || document.mozCancelFullScreen?.() ||
+                    document.msExitFullscreen?.();
+            }
+        }
+
+        // -----------------------------
+        // Core chat functions
+        // -----------------------------
+        function loadConversations(keyword = '', activeId = false) {
+            $.get(config.routes.chat.conversations, {
                 search: keyword,
-                active_id: active_id
+                active_id: activeId
             }, function(html) {
                 $('.conversations').html(html);
-
                 const first = $('.conversations li').first();
                 if (first.length > 0 && !conversationId) {
                     first.addClass('active');
@@ -138,7 +250,7 @@
         function loadMessages(reset = false) {
             if (loading || !conversationId) return;
             loading = true;
-            $.get(`{{ route('admin.chat', ['key' => 'messages']) }}`, {
+            $.get(config.routes.chat.messages, {
                 conversation_id: conversationId,
                 offset: offset
             }, function(html) {
@@ -157,96 +269,19 @@
                     offset += 20;
                     container.scrollTop(container[0].scrollHeight - scrollPos);
                 }
+            }).always(() => {
+                loading = false;
             });
-            loading = false;
         }
 
-        function toggleFullscreen() {
-            const el = document.documentElement;
-            if (!document.fullscreenElement) {
-                el.requestFullscreen?.() || el.webkitRequestFullscreen?.() || el.mozRequestFullScreen?.() || el
-                    .msRequestFullscreen?.();
-            } else {
-                document.exitFullscreen?.() || document.webkitExitFullscreen?.() || document.mozCancelFullScreen?.() ||
-                    document.msExitFullscreen?.();
-            }
-        }
+        // -----------------------------
+        // Event bindings
+        // -----------------------------
+        function setupEventListeners() {
+            $('#search').on('input', debounce(() => {
+                loadConversations($('#search').val());
+            }, 500));
 
-        function updateFullscreenButton() {
-            const isFull = document.fullscreenElement || document.webkitFullscreenElement || document
-                .mozFullScreenElement || document.msFullscreenElement;
-            const $btn = $('#toggle-fullscreen');
-            $btn.html(isFull ? '<i class="bi bi-fullscreen-exit"></i>' : '<i class="bi bi-arrows-fullscreen"></i>');
-        }
-        
-        const canUpdateUser = {{ Auth::user()->can(\App\Models\User::UPDATE_USER) ? 'true' : 'false' }};
-
-        function broadcast(message) {
-            const time = moment(message.created_at).fromNow();
-            const avatarClass = canUpdateUser ? 'sender-avatar btn-update-user cursor-pointer' : 'sender-avatar';
-            const avatar = `<img src="${message.sender.avatarUrl}" alt="avatar"
-                            class="rounded-circle d-flex align-self-start ms-3 shadow-1-strong ${avatarClass}" 
-                            ${canUpdateUser ? `data-id="${message.sender.id}"` : ''} width="50">`;
-
-            const html = `
-                        <li class="d-flex justify-content-end mb-4">
-                            <div style="max-width: 50%; width: fit-content;">
-                                <div class="card bg-chat-primary mb-0 cursor-pointer">
-                                    <div class="card-header d-flex justify-content-between px-3 py-1 bg-chat-primary">
-                                        <p class="mb-0">${message.sender.name}</p>
-                                    </div>
-                                    <div class="card-body">
-                                        <p class="mb-0 p-1">${message.content}</p>
-                                    </div>
-                                </div>
-                                <small class="text-muted ms-3 mb-0 mt-1 float-end d-block">
-                                    <i class="bi bi-clock"></i> ${time}
-                                </small>
-                            </div>
-                            ${avatar}
-                        </li>`;
-            return html;
-        }
-
-        function receive(message) {
-            const time = moment(message.created_at).fromNow();
-            const avatarClass = canUpdateUser ? 'sender-avatar btn-update-user cursor-pointer' : 'sender-avatar';
-            const avatar = `<img src="${message.sender.avatarUrl}" alt="avatar"
-                            class="rounded-circle d-flex align-self-start me-3 shadow-1-strong ${avatarClass}" 
-                            ${canUpdateUser ? `data-id="${message.sender.id}"` : ''} width="50">`;
-
-            const html = `
-                    <li class="d-flex justify-content-start mb-4"> ${avatar}
-                        <div style="max-width: 50%; width: fit-content;">
-                            <div class="card mb-0 cursor-pointer">
-                                <div class="card-header d-flex justify-content-between px-3 py-1 bg-chat-secondary">
-                                    <p class="mb-0">${message.sender.name}</p>
-                                </div>
-                                <div class="card-body">
-                                    <p class="mb-0 p-1">${message.content}</p>
-                                </div>
-                            </div>
-                            <small class="text-muted me-3 mb-0 mt-1 d-block float-start">
-                                <i class="bi bi-clock"></i> ${time}
-                            </small>
-                        </div>
-                    </li>`;
-            return html;
-        }
-
-        $(document).ready(function() {
-            loadConversations();
-
-            //debounceSearch
-            let timeout = null;
-            $(document).on('input', '#search', function() {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => {
-                    loadConversations($(this).val());
-                }, 500);
-            });
-
-            // Click chọn conversation
             $(document).on('click', '.conversations li', function() {
                 conversationId = $(this).data('conversation_id');
                 offset = 0;
@@ -254,64 +289,88 @@
                 loadConversations('', conversationId);
             });
 
-            // Scroll để load thêm tin nhắn
             $('.messages-container').on('scroll', function() {
-                const $container = $(this);
-                if ($container.scrollTop() == 0) {
-                    loadMessages(false)
-                }
+                if ($(this).scrollTop() == 0) loadMessages(false);
             });
 
-            // Gửi tin nhắn
-            $(document).on('submit', '#send-message', function(e) {
+            $('#send-message').on('submit', function(e) {
                 e.preventDefault();
                 if (!conversationId) return;
 
-                const message = $('#message').val();
-                if (!message.trim()) return;
+                const message = $('#message').val().trim();
+                const files = $('#attachments')[0].files;
+                const $form = $(this);
 
-                $.post("{{ route('admin.chat.broadcast') }}", {
-                    message: message,
-                    conversation_id: conversationId,
-                    _token: '{{ csrf_token() }}'
-                }, function() {
-                    $('#message').val('').focus();
-                    $('.messages-container').scrollTop($('.messages-container')[0].scrollHeight);
+                if (!message && files.length === 0) return;
+                if (files.length > 5) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Just upload 5 files at a time',
+                        confirmButtonText: 'Close'
+                    }).then(() => {
+                        $('#attachments').val('');
+                        $('#preview-attachments').empty();
+                    });
+                    return;
+                }
+
+                $form.append(`<input type="hidden" name="conversation_id" value="${conversationId}">`);
+                submitForm($form).done(() => {
+                    $('#message').val('');
+                    $('#attachments').val('');
+                    $('#preview-attachments').empty();
+                    $form.find('[type="submit"]').prop('disabled', false).html(
+                        '<i class="bi bi-send"></i>');
                 });
             });
 
-            // Enter để gửi
-            $(document).on('keydown', '#message', function(e) {
+            $('#message').on('keydown', function(e) {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
                     $('#send-message').submit();
                 }
             });
 
-            // Toàn màn hình
-            $(document).on('click', '#toggle-fullscreen', function() {
-                toggleFullscreen();
+            $('#attachments').on('change', function() {
+                previewAttachments(this.files);
             });
 
+            $('#toggle-fullscreen').on('click', toggleFullscreen);
             $(document).on('fullscreenchange webkitfullscreenchange mozfullscreenchange MSFullscreenChange',
-                function() {
-                    updateFullscreenButton();
+                updateFullscreenButton);
+        }
+
+        // -----------------------------
+        // Echo setup
+        // -----------------------------
+        function setupEcho() {
+            window.Echo.channel('public')
+                .listen('.chat', (data) => {
+                    if (data.message.conversation_id !== conversationId) {
+                        loadConversations('', conversationId);
+                        return;
+                    } else {
+                        loadConversations('', data.message.conversation_id);
+                        const html = config.auth_id == data.message.sender_id ?
+                            renderMessage(data.message, 'broadcast') :
+                            renderMessage(data.message, 'receive');
+
+                        $('.messages').append(html);
+                        $('#preview-attachments').empty();
+                        $('#attachments').val('');
+                        $('.messages-container').scrollTop($('.messages-container')[0].scrollHeight);
+                    }
                 });
+        }
+
+        // -----------------------------
+        // Init
+        // -----------------------------
+        $(document).ready(function() {
+            loadConversations();
+            setupEventListeners();
+            setupEcho();
         });
-
-        const auth_id = @json(auth()->id());
-
-        window.Echo.channel('public')
-            .listen('.chat', (data) => {
-                if (data.message.conversation_id !== conversationId) {
-                    loadConversations('', conversationId);
-                    return;
-                } else {
-                    loadConversations('', data.message.conversation_id);
-                    const html = auth_id == data.message.sender_id ? broadcast(data.message) : receive(data.message);
-                    $('.messages').append(html);
-                    $('.messages-container').scrollTop($('.messages-container')[0].scrollHeight);
-                }
-            });
     </script>
 @endpush

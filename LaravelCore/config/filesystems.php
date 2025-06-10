@@ -72,7 +72,13 @@ return [
             'refresh_token' => env('GOOGLE_DRIVE_REFRESH_TOKEN'),
             'folder_id' => env('GOOGLE_DRIVE_COMMON_FOLDER_ID'),
         ],
-
+        
+        'chat_attachments' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/chat'),
+            'url' => env('APP_URL') . '/storage/chat',
+            'visibility' => 'public',
+        ],
     ],
 
     /*

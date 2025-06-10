@@ -402,6 +402,7 @@ $(document).on("click", "img.thumb", function () {
     Swal.fire({
         imageUrl: $(this).attr("src"),
         padding: 0,
+        width: '60vw',
         showConfirmButton: false,
         background: "transparent",
     });

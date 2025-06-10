@@ -200,6 +200,7 @@ if (!function_exists('log_exception')) {
                 'Request URL: "' . request()->fullUrl() . '";' . PHP_EOL .
                 'Received Data: ' . json_encode(request()->all()) . ';' . PHP_EOL .
                 'User ID: ' . (Auth::check() ? Auth::id() : 'Guest') . ';' . PHP_EOL .
+                'Error Code: ' . $e->getCode() . ';' . PHP_EOL .
                 'Error Details: ' . $e->getTraceAsString()
         );
     }

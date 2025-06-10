@@ -8,6 +8,7 @@ use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ChatController extends Controller
 {
@@ -55,6 +56,7 @@ class ChatController extends Controller
 
     public function broadcast(Request $request)
     {
+        DB::beginTransaction();
         try {
             $request->validate([
                 'message' => 'required|string|max:192',
@@ -79,8 +81,10 @@ class ChatController extends Controller
             ]);
 
             broadcast(new PusherBroadcast($message));
+            DB::commit();
         } catch (\Exception $e) {
             log_exception($e);
+            DB::rollBack();
             return response()->json('An error occurred, while sending the message!', 500);
         }
     }

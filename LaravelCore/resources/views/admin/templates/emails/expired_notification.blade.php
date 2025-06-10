@@ -122,7 +122,7 @@
                 $settings = cache()->get('settings') ?? '[]';
             @endphp
             <h4 class="fw-bold">Products Expiring 
-                {{ isset($settings['expired_notification_frequency']) ? 'in the next ' . $settings['expired_notification_frequency'] . ' days' : '' }}
+                {{ isset($settings['expired_notification_before']) ? 'in the next ' . $settings['expired_notification_before'] . ' days' : ' 30 days' }}
             </h4>
             <table>
                 <thead>
@@ -138,7 +138,7 @@
                         @foreach ($data as $stock)
                             <tr>
                                 <td data-label="Stock Code">{{ $stock->code }}</td>
-                                <td data-label="Product Name">{{ $stock->product_name }}</td>
+                                <td data-label="Product Name">{{ $stock->productName() }}</td>
                                 <td data-label="Quantity">
                                     {{ $stock->import_detail->_variable->convertUnit($stock->quantity) }}</td>
                                 <td data-label="Expiration Date">
@@ -155,10 +155,13 @@
         </div>
         <div class="footer">
             <p>
-                <span class="fw-bold">Hotline:</span>
+                <span class="fw-bold">Sent by the automated system of {{ isset($settings['company_name']) ? $settings['company_name'] : 'SMS' }}</span>
             </p>
             <p>
-                <span class="fw-bold">Address:</span>
+                <span class="fw-bold">Hotline: {{ isset($settings['company_hotline']) ? $settings['company_hotline'] : '0942852755' }}</span>
+            </p>
+            <p>
+                <span class="fw-bold">Address: {{ isset($settings['company_address']) ? $settings['company_address'] : 'An Khanh, Ninh Kieu, Can Tho' }}</span>
             </p>
             <p>
                 &copy; {{ \Carbon\Carbon::now()->format('Y') }}

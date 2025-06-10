@@ -54,7 +54,7 @@ class Variable extends Model
 
     public function getFullNameAttribute()
     {
-        $product_name = $this->_product->sku . ' - ' . $this->_product->name;
+        $product_name = $this->_product->sku ? $this->_product->sku . ' - ' . $this->_product->name : $this->_product->name;
         $variable_name = $this->name ? ' - ' . $this->name : '';
         $str = $this->_product->deleted_at ? '<span class="text-danger">' . $product_name . '</span>' : $product_name;
         $str .= $this->deleted_at ? '<span class="text-danger">' . $variable_name . '</span>' : $variable_name;

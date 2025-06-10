@@ -203,7 +203,13 @@
             uploadImage: "{{ route('admin.image.upload') }}",
             updateImage: "{{ route('admin.image.update') }}",
             deleteImage: "{{ route('admin.image.delete') }}",
+            chat: {
+                conversations: `{{ route('admin.chat', ['key' => 'conversations']) }}`,
+                messages: `{{ route('admin.chat', ['key' => 'messages']) }}`
+            }
         },
+        auth_id: @json(auth()->id()),
+        canUpdateUser: {{ Auth::user()->can(\App\Models\User::UPDATE_USER) ? 'true' : 'false' }},
         datatable: {
             lang: {
                 "sProcessing": "Processing...",

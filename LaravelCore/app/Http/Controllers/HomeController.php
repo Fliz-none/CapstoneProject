@@ -7,40 +7,47 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function home()
     {
         $pageName = 'Home';
-        $settings = Setting::pluck('value', 'key');
-        $products = Product::where('status', '>', 0)
-            ->orderBy('sort', 'ASC')
-            ->paginate(12);
-        $categories = Category::where('status', 1)
-            ->with(['posts' => function ($query) {
-                $query->where('status', '>', 0)
-                    ->orderBy('created_at', 'DESC');
-            }])
-            ->orderBy('sort', 'ASC')->get();
+        try {
+            DB::select('select 1');
+            $settings = Setting::pluck('value', 'key');
+            $products = Product::where('status', '>', 0)
+                ->orderBy('sort', 'ASC')
+                ->paginate(12);
+            $categories = Category::where('status', 1)
+                ->with(['posts' => function ($query) {
+                    $query->where('status', '>', 0)
+                        ->orderBy('created_at', 'DESC');
+                }])
+                ->orderBy('sort', 'ASC')
+                ->get();
 
-        return view('web.home', compact('pageName', 'settings', 'products', 'categories'));
+            return view('web.home', compact('pageName', 'settings', 'products', 'categories'));
+
+        } catch (\Exception $e) {
+            log_exception($e);
+            abort(500);
+        }
     }
+
     public function contact()
     {
         $pageName = 'Contact';
-        $settings = Setting::pluck('value', 'key');
+
+        try {
+            DB::select('select 1');
+            $settings = Setting::pluck('value', 'key');
+        } catch (\Exception $e) {
+            log_exception($e);
+            $settings = collect();
+        }
         return view('web.contact', compact('pageName', 'settings'));
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\NotificationController;
 use App\Mail\SendMail;
 use App\Models\Setting;
 use App\Models\Stock;
+use App\Models\User;
 use App\Models\Warehouse;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
@@ -46,20 +47,31 @@ class CheckExpired extends Command
     public function handle()
     {
         try {
-            $before = optional(Setting::whereKey('expired_notification_before')->first())->value ?? 60;
+            $start = microtime(true);
+            $before = optional(Setting::where('key', 'expired_notification_before')->first())->value ?? 30;
             $expiredStocks = Stock::with(['import_detail._import._warehouse', 'import_detail._variable'])
                 ->whereDate('expired', now()->addDays($before))
                 ->get()
                 ->groupBy(function ($stock) {
-                    return $stock->import_detail->_import->_warehouse->id;
-                });
+                    return $stock->import_detail->_import->warehouse_id;
+                }); // Nhom theo kho
+            $warehouses = Warehouse::with([
+                'users' => function ($q) {
+                    $q->where('status', 1)->with('permissions');
+                }
+            ])
+            ->whereIn('status', [1, 2]) //Kho dang ban hoac kho noi bo
+            ->whereIn('id', $expiredStocks->keys()->all()) 
+            ->get()->keyBy('id');
 
             foreach ($expiredStocks as $warehouseId => $stocks) {
-                $warehouse = Warehouse::find($warehouseId);
-                $users = $warehouse->users->where('status', 1);
-                if (!$warehouse) {
-                    continue;
-                }
+                $warehouse = $warehouses->get($warehouseId);
+                if (!$warehouse) continue;
+
+                $users = $warehouse->users->filter(function ($user) {
+                    return $user->can(User::ACCESS_ADMIN);
+                }); //Lay danh sach nguoi dung co quyen admin
+                
                 $expired_day = Carbon::now()->addDays($before);
                 $str = '<div class="row">
                             <a class="d-flex align-items-center fw-bold text-start text-primary py-2" href="' . route('admin.stock', ['expired' => $expired_day->format('Y-m-d')]) . '">
@@ -85,6 +97,7 @@ class CheckExpired extends Command
                 }
             }
 
+            $this->info('Execution time: ' . round(microtime(true) - $start, 2) . 's');
             $this->info(Carbon::now()->format('d/m/Y') . ': Done.');
         } catch (\Throwable $throwable) {
             $this->info(Carbon::now()->format('d/m/Y') . ': Error:' . $throwable->getMessage());
