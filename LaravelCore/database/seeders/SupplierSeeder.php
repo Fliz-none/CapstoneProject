@@ -26,8 +26,7 @@ class SupplierSeeder extends Seeder
             [8, 'Nhà cung cấp HCM', '0376378379', 'hcmct@gmail.com', '13 Nguyễn Trãi P13 Q.GÒ Vấp Tp HCM', 'PETRUM', 1, NULL, '2024-07-09 16:24:44', '2024-07-09 16:24:34', '2024-07-09 16:24:44'],
             [9, 'Nước Lọc', '0979639763', 'nuoclocngon@gmail.com', '27 Ngô Gia Tự', 'AQUAFINA', 1, NULL, NULL, '2024-07-09 16:26:55', '2024-07-10 22:32:05'],
             [10, 'TRUONGDUNGPET', '0911677154', NULL, NULL, NULL, 1, NULL, NULL, '2024-09-18 07:56:10', '2024-09-18 07:56:10'],
-            [11, 'Phan Thanh', NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-09-18 07:57:19', '2024-09-18 07:57:19'],
-            [12, 'Thè Boss', NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-09-18 07:57:28', '2024-09-18 07:57:28'],
+           
         ];
 
         foreach ($suppliers as $supplier) {
