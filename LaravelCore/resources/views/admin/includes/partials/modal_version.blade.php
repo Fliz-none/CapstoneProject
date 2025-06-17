@@ -4,17 +4,17 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-info">
-                    <h1 class="modal-title text-white fs-5" id="version-modal-label">Version</h1>
+                    <h1 class="modal-title text-white fs-5" id="version-modal-label">{{ __('messages.version.version') }}</h1>
                     <button class="btn-close text-white" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3 form-group">
-                        <label class="form-label" for="version-name" data-bs-toggle="tooltip" data-bs-title="Version name">Name</label>
-                        <input class="form-control" id="version-name" name="name" type="text" placeholder="Version name">
+                        <label class="form-label" for="version-name" data-bs-toggle="tooltip" data-bs-title="Version name">{{ __('messages.version.name') }}</label>
+                        <input class="form-control" id="version-name" name="name" type="text" placeholder="{{ __('messages.version.name') }}">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label" for="version-description" data-bs-toggle="tooltip" data-bs-title="Update content of this version">Description</label>
-                        <textarea name="description" id="version-description" class="form-control summernote" placeholder="Enter detailed update content" rows="20"></textarea>
+                        <label class="form-label" for="version-description" data-bs-toggle="tooltip" data-bs-title="Update content of this version">{{ __('messages.datatable.description') }}</label>
+                        <textarea name="description" id="version-description" class="form-control summernote" placeholder="{{ __('messages.datatable.description') }}" rows="20"></textarea>
                     </div>
                     <hr class="px-5">
                     <div class="mb-3">

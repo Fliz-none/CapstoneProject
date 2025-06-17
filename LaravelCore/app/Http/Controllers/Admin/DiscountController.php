@@ -20,19 +20,9 @@ class DiscountController extends Controller
             'type' => ['required', 'numeric'],
             'start_date' => ['required'],
             'end_date' => ['required'],
-        ],
-        MESSAGES = [
-            'name.required' => Controller::NOT_EMPTY,
-            'name.string' => Controller::DATA_INVALID,
-            'name.min' => Controller::MIN,
-            'name.max' => Controller::MAX,
-            'branch_id.numeric' => Controller::DATA_INVALID,
-            'branch_id.required' => 'Please select applicable branch!',
-            'type.required' => Controller::NOT_EMPTY,
-            'type.numeric' => Controller::DATA_INVALID,
-            'start_date.required' => Controller::NOT_EMPTY,
-            'end_date.required' => Controller::NOT_EMPTY,
         ];
+    public static array $MESSAGES = [];
+
 
 
     public function __construct()
@@ -42,6 +32,25 @@ class DiscountController extends Controller
             $this->user = Auth::user();
         }
         $this->middleware(['admin', 'auth']);
+
+        $this->middleware(function ($request, $next) {
+            // Locale đã được set xong ở đây
+            Controller::init();
+            self::$MESSAGES = [
+                'name.required' => Controller::$NOT_EMPTY,
+                'name.string' => Controller::$DATA_INVALID,
+                'name.min' => Controller::$MIN,
+                'name.max' => Controller::$MAX,
+                'branch_id.numeric' => Controller::$DATA_INVALID,
+                'branch_id.required' => __('messages.discount_.select_branch').'!',
+                'type.required' => Controller::$NOT_EMPTY,
+                'type.numeric' => Controller::$DATA_INVALID,
+                'start_date.required' => Controller::$NOT_EMPTY,
+                'end_date.required' => Controller::$NOT_EMPTY,
+            ];
+
+            return $next($request);
+        });
     }
     public function index(Request $request)
     {
@@ -154,7 +163,7 @@ class DiscountController extends Controller
 
     public function create(Request $request)
     {
-        $validator = Validator::make($request->all(), self::RULES, self::MESSAGES);
+        $validator = Validator::make($request->all(), self::RULES, self::$MESSAGES);
 
         $validator->after(function ($validator) use ($request) {
             $type = (int) $request->type;
@@ -162,19 +171,19 @@ class DiscountController extends Controller
             if ($request->has('type')) {
                 if (in_array($type, [0, 1])) {
                     if (is_null($request->value)) {
-                        $validator->errors()->add('', 'Please enter discount value.');
+                        $validator->errors()->add('', __('messages.discount_.required'));
                     }
                     if (is_null($request->min_quantity)) {
-                        $validator->errors()->add('min_quantity', 'This field is required.');
+                        $validator->errors()->add('min_quantity', __('messages.discount_.not_empty'));
                     }
                     if ($type == 0 && $request->value > 100) {
-                        $validator->errors()->add('', 'Discount value cannot exceed 100%.');
+                        $validator->errors()->add('', __('messages.discount_.not_full'));
                     }
                 }
             }
 
             if ($type === 2 && (is_null($request->buy_quantity) || is_null($request->get_quantity))) {
-                $validator->errors()->add('', 'Please fill in Get quantity and Free quantity.');
+                $validator->errors()->add('', __('messages.discount_.needed'));
             }
 
             // Check date logic
@@ -183,10 +192,10 @@ class DiscountController extends Controller
                 $end = Carbon::createFromFormat('Y-m-d', $request->end_date);
 
                 if ($end->lt($start)) {
-                    $validator->errors()->add('end_date', "End date can't be before start date.");
+                    $validator->errors()->add('end_date', __('messages.discount_.end_required'));
                 }
             } catch (\Exception $e) {
-                $validator->errors()->add('start_date', 'The start date or end date is not valid.');
+                $validator->errors()->add('start_date', __('messages.discount_.date_required'));
             }
         });
 
@@ -213,43 +222,43 @@ class DiscountController extends Controller
                     $discount->syncUnit($request->unit_ids ?? []);
                 }
 
-                LogController::create('create', self::NAME, $discount->id);
+                LogController::create('1', self::NAME, $discount->id);
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Created ' . self::NAME . ' ' . $discount->name
+                    'msg' => __('messages.created').' '. __('messages.discount_.discount') . ' ' . $discount->name
                 );
             } catch (\Exception $e) {
                 log_exception($e);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
 
     public function update(Request $request)
     {
-        $validator = Validator::make($request->all(), self::RULES, self::MESSAGES);
+        $validator = Validator::make($request->all(), self::RULES, self::$MESSAGES);
 
         $validator->after(function ($validator) use ($request) {
             $type = (int) $request->type;
             if ($request->has('type')) {
                 if (in_array($type, [0, 1])) {
                     if (is_null($request->value)) {
-                        $validator->errors()->add('', 'Please enter discount value.');
+                        $validator->errors()->add('',  __('messages.discount_.required'));
                     }
                     if (is_null($request->min_quantity)) {
-                        $validator->errors()->add('min_quantity', 'This field is required.');
+                        $validator->errors()->add('min_quantity',  __('messages.discount_.not_empty'));
                     }
                     if ($type === 0 && (float) $request->value > 100) {
-                        $validator->errors()->add('', 'Discount value cannot exceed 100%.');
+                        $validator->errors()->add('',  __('messages.discount_.not_full'));
                     }
                 }
             }
 
             if ($type === 2 && (is_null($request->buy_quantity) || is_null($request->get_quantity))) {
-                $validator->errors()->add('', 'Please fill in Get quantity and Free quantity.');
+                $validator->errors()->add('',  __('messages.discount_.needed'));
             }
 
             // Check date logic
@@ -258,10 +267,10 @@ class DiscountController extends Controller
                 $end = Carbon::createFromFormat('Y-m-d', $request->end_date);
 
                 if ($end->lt($start)) {
-                    $validator->errors()->add('end_date', "End date can't be before start date.");
+                    $validator->errors()->add('end_date',  __('messages.discount_.end_required'));
                 }
             } catch (\Exception $e) {
-                $validator->errors()->add('start_date', 'The start date or end date is not valid.');
+                $validator->errors()->add('start_date',  __('messages.discount_.date_required'));
             }
         });
 
@@ -291,29 +300,29 @@ class DiscountController extends Controller
                             $discount->syncUnit($request->unit_ids ?? []);
                         }
 
-                        LogController::create('update', self::NAME, $discount->id);
+                        LogController::create('2', self::NAME, $discount->id);
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Updated ' . self::NAME . ' ' . $discount->name
+                            'msg' => __('messages.updated').' '. __('messages.discount_.discount') . ' ' . $discount->name
                         );
                     } else {
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'An error occurred, please reload the page and try again!'
+                            'msg' => __('messages.discount_.msg')
                         );
                     }
                 } catch (\Exception $e) {
                     log_exception($e);
-                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'An error occurred, please reload the page and try again!'
+                    'msg' => __('messages.discount_.msg')
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
@@ -325,18 +334,18 @@ class DiscountController extends Controller
             foreach ($request->choices as $key => $id) {
                 $obj = Discount::find($id);
                 $obj->delete();
-                LogController::create("delete", self::NAME, $obj->id);
+                LogController::create("3", self::NAME, $obj->id);
                 array_push($success, $obj->name);
             }
             if (count($success)) {
-                $msg = 'Deleted ' . self::NAME . ' ' . implode(', ', $success) . '. ';
+                $msg = __('messages.deleted').' '. __('messages.discount_.discount') . ' ' . implode(', ', $success) . '. ';
             }
             $response = array(
                 'status' => 'success',
                 'msg' => $msg
             );
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }

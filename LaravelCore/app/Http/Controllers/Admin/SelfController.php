@@ -53,7 +53,7 @@ class SelfController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'msg' => __('Successfully updated avatar'),
+                'msg' => __('messages.msg_update_avatar'),
             ], 200);
         } catch (\Exception $e) {
             log_exception($e);
@@ -65,11 +65,13 @@ class SelfController extends Controller
     {
         $rules = [
             'password' => ['required', 'min:8', 'max:32'],
-            'password' => [function ($attribute, $value, $fail) {
-                if (!Hash::check($value, $this->user->password)) {
-                    return $fail(__('Current password is incorrect'));
+            'password' => [
+                function ($attribute, $value, $fail) {
+                    if (!Hash::check($value, $this->user->password)) {
+                        return $fail(__('messages.profile.error_current_password'));
+                    }
                 }
-            }],
+            ],
             'name' => ['required', 'string', 'min:3', 'max:125'],
             'gender' => ['required', 'in:0,1,2'],
             'email' => ['required', 'email', 'min:5', 'max:125', Rule::unique('users')->ignore($request->id)],
@@ -78,33 +80,34 @@ class SelfController extends Controller
         ];
 
         $messages = [
-            'name.required' => 'This field is required.',
-            'name.string' => 'Invalid format.',
-            'name.min' => 'Minimum 3 characters.',
-            'name.max' => 'Maximum 125 characters.',
+            'name.required' => __('messages.profile.name_required'),
+            'name.string' => __('messages.profile.name_string'),
+            'name.min' => __('messages.profile.name_min'),
+            'name.max' => __('messages.profile.name_max'),
 
-            'phone.required' => 'This field is required.',
-            'phone.numeric' => 'Invalid phone number.',
-            'phone.digit' => 'Please enter a valid phone number.',
-            'phone.regex' => 'Please enter a valid phone number.',
-            'phone.unique' => 'Phone number already in use.',
+            'phone.required' => __('messages.profile.phone_required'),
+            'phone.numeric' => __('messages.profile.phone_numeric'),
+            'phone.digit' => __('messages.profile.phone_digit'),
+            'phone.regex' => __('messages.profile.phone_regex'),
+            'phone.unique' => __('messages.profile.phone_unique'),
 
-            'address.string' => 'Invalid format.',
-            'address.max' => 'Maximum 191 characters.',
+            'address.string' => __('messages.profile.address_string'),
+            'address.max' => __('messages.profile.address_max'),
 
-            'gender.required' => 'This field is required.',
-            'gender.in' => 'Invalid gender format.',
+            'gender.required' => __('messages.profile.gender_required'),
+            'gender.in' => __('messages.profile.gender_in'),
 
-            'email.required' => 'This field is required.',
-            'email.email' => 'Please enter a valid email address.',
-            'email.min' => 'Minimum 5 characters.',
-            'email.max' => 'Maximum 125 characters.',
-            'email.unique' => 'Email already exists.',
+            'email.required' => __('messages.profile.email_required'),
+            'email.email' => __('messages.profile.email_email'),
+            'email.min' => __('messages.profile.email_min'),
+            'email.max' => __('messages.profile.email_max'),
+            'email.unique' => __('messages.profile.email_unique'),
 
-            'password.required' => 'This field is required.',
-            'password.string' => 'Invalid format.',
-            'password.min' => 'Minimum 8 characters.',
-            'password.max' => 'Maximum 32 characters.',
+            'password.required' => __('messages.profile.password_required'),
+            'password.string' => __('messages.profile.password_string'),
+            'password.min' => __('messages.profile.password_min'),
+            'password.max' => __('messages.profile.password_max'),
+
         ];
 
         $request->validate($rules, $messages);
@@ -120,7 +123,7 @@ class SelfController extends Controller
 
             return back()->with('response', [
                 'status' => 'success',
-                'msg' => __('Successfully updated profile information'),
+                'msg' => __('messages.profile.update_profile'),
             ]);
         } catch (\Exception $e) {
             log_exception($e);
@@ -132,29 +135,32 @@ class SelfController extends Controller
     {
         $rules = [
             'current_password' => ['required', 'min:8', 'max:32'],
-            'current_password' => [function ($attribute, $value, $fail) {
-                if (!Hash::check($value, $this->user->password)) {
-                    return $fail(__('Current password is incorrect'));
+            'current_password' => [
+                function ($attribute, $value, $fail) {
+                    if (!Hash::check($value, $this->user->password)) {
+                        return $fail(__('messages.profile.error_current_password'));
+                    }
                 }
-            }],
+            ],
             'password' => ['required', 'min:8', 'max:32', 'different:current_password'],
             'password_confirmation' => ['required', 'min:8', 'max:32', 'same:password'],
         ];
 
         $messages = [
-            'current_password.required' => 'This field is required.',
-            'current_password.min' => 'Minimum 8 characters.',
-            'current_password.max' => 'Maximum 32 characters.',
+            'current_password.required' =>  __('messages.profile.password_required'),
+            'current_password.min' => __('messages.profile.password_min'),
+            'current_password.max' => __('messages.profile.password_max'),
 
-            'password.required' => 'This field is required.',
-            'password.min' => 'Minimum 8 characters.',
-            'password.max' => 'Maximum 32 characters.',
-            'password.different' => 'New password must be different from the old one.',
+            'password.required' => __('messages.profile.password_required'),
+            'password.string' => __('messages.profile.password_string'),
+            'password.min' => __('messages.profile.password_min'),
+            'password.max' => __('messages.profile.password_max'),
 
-            'password_confirmation.required' => 'This field is required.',
-            'password_confirmation.min' => 'Minimum 8 characters.',
-            'password_confirmation.max' => 'Maximum 32 characters.',
-            'password_confirmation.same' => 'Password confirmation does not match.',
+
+            'password_confirmation.required' =>  __('messages.profile.password_required'),
+            'password_confirmation.min' => __('messages.profile.password_min'),
+            'password_confirmation.max' => __('messages.profile.password_max'),
+            'password_confirmation.same' => __('messages.profile.password_confirmation_same'),
         ];
 
         $request->validate($rules, $messages);
@@ -166,7 +172,7 @@ class SelfController extends Controller
 
             return back()->with('response', [
                 'status' => 'success',
-                'msg' => __('Successfully updated password.'),
+                'msg' => __('messages.profile.password_success'),
             ]);
         } catch (\Exception $e) {
             log_exception($e);
@@ -181,8 +187,8 @@ class SelfController extends Controller
         ];
 
         $messages = [
-            'main_branch.required' => Controller::NOT_EMPTY,
-            'main_branch.numeric' => Controller::DATA_INVALID,
+            'main_branch.required' => Controller::$NOT_EMPTY,
+            'main_branch.numeric' => Controller::$DATA_INVALID,
         ];
 
         $request->validate($rules, $messages);
@@ -195,7 +201,7 @@ class SelfController extends Controller
             return response()->json([
                 'main_branch' => $this->user->branch->name,
                 'status' => 'success',
-                'msg' => __('Default branch updated successfully.'),
+                'msg' => __('messages.profile.default_branch'),
             ], 200);
         } catch (\Exception $e) {
             log_exception($e);

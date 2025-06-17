@@ -7,10 +7,10 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <h5 class="text-uppercase">{{ $pageName }}</h5>
+                    <h5 class="text-uppercase">{{ __('messages.roles.role') }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.roles.role') }}</li>
                         </ol>
                     </nav>
                 </div>
@@ -24,7 +24,7 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_ROLE)))
                         <a class="btn btn-info mb-3 block btn-create-role">
                             <i class="bi bi-plus-circle"></i>
-                            Add
+                            {{ __('messages.add') }}
                         </a>
                     @endif
                 </div>
@@ -36,9 +36,9 @@
                             <table class="table table-hover table-borderless" id="role-table">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Role name</th>
-                                        <th>Permissions</th>
+                                        <th>{{ __('messages.datatable.code') }}</th>
+                                        <th>{{ __('messages.roles.name') }}</th>
+                                        <th>{{ __('messages.roles.permission') }}</th>
                                         <th></th>
                                     </tr>
                                 </thead>

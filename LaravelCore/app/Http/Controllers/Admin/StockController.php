@@ -531,7 +531,7 @@ class StockController extends Controller
                                 'created_at' => $range[1],
                             ]);
                         }
-                        LogController::create('create', 'import', $import->id);
+                        LogController::create('1', 'import', $import->id);
                     }
                 } elseif ($diff > 0) { // Tạo phiếu xuat
                     $stocks = Stock::whereHas('_import_detail', function ($query) use ($variable, $range, $request) {
@@ -547,7 +547,7 @@ class StockController extends Controller
                         'date' => $range[1],
                         'user_id' => $this->user->id,
                         'receiver_id' => $this->user->id,
-                        'note' => 'Sync stock ' . Carbon::now()->format('d/m/Y'),
+                        'note' => __('messages.sync') . Carbon::now()->format('d/m/Y'),
                         'status' => 0,
                         'created_at' => $range[1],
                     ]);
@@ -573,20 +573,20 @@ class StockController extends Controller
                             }
                         }
                     }
-                    LogController::create('create', 'export', $export->id);
+                    LogController::create('1', 'export', $export->id);
                 }
             }
             DB::commit();
             $response = [
                 'status' => 'success',
-                'msg' => 'Sync stock successfully',
+                'msg' => __('messages.stock.sync_stock'),
             ];
             return response()->json($response, 200);
         } catch (\Exception $e) {
             DB::rollBack();
             log_exception($e);
             Controller::resetAutoIncrement(['exports', 'imports', 'export_details', 'import_details', 'stocks']);
-            return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+            return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
         }
     }
 

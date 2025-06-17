@@ -7,10 +7,10 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <h5 class="text-uppercase">{{ $pageName }}</h5>
+                    <h5 class="text-uppercase">{{ __('messages.category.category_management') }}</h5>
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.category.category_management') }}</li>
                         </ol>
                     </nav>
                 </div>
@@ -24,13 +24,13 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_CATALOGUE)))
                         <a class="btn k-btn-info mb-3 block btn-create-catalogue">
                             <i class="bi bi-plus-circle"></i>
-                            Add
+                            {{ __('messages.add') }}
                         </a>
                     @endif
                     @if (!empty(Auth::user()->can(App\Models\User::UPDATE_CATALOGUE)))
                         <button class="btn btn-primary mb-3 btn-sort ms-2" type="button">
                             <i class="bi bi-filter-left"></i>
-                            Sort
+                             {{ __('messages.category.category_sort') }}
                         </button>
                     @endif
                     <div class="d-inline-block process-btns d-none">
@@ -52,13 +52,13 @@
                                 <table class="table table-striped table-bordered key-table" id="catalogue-table">
                                     <thead>
                                         <tr>
-                                            <th>Code</th>
-                                            <th>Image</th>
-                                            <th>Name</th>
-                                            <th>Description</th>
-                                            <th>Parent Catalogue</th>
-                                            <th>Status</th>
-                                            <th>Order</th>
+                                            <th>{{ __('messages.datatable.code') }}</th>
+                                            <th>{{ __('messages.expense.image') }}</th>
+                                            <th>{{ __('messages.category.category_name') }}</th>
+                                            <th>{{ __('messages.datatable.description') }}</th>
+                                            <th>{{ __('messages.category.category_parent') }}</th>
+                                            <th>{{ __('messages.datatable.status') }}</th>
+                                            <th>{{ __('messages.datatable.order') }}</th>
                                             <th></th>
                                             <th>
                                                 <input class="form-check-input all-choices" type="checkbox">

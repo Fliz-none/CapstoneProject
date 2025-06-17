@@ -7,10 +7,10 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <h5 class="text-uppercase">{{ $pageName }}</h5>
+                    <h5 class="text-uppercase">{{ __('messages.expense.expense_management') }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.expense.expense_management') }}</li>
                         </ol>
                     </nav>
                 </div>
@@ -24,7 +24,7 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_EXPENSE)))
                         <a class="btn btn-info mb-3 block btn-create-expense">
                             <i class="bi bi-plus-circle"></i>
-                            Add
+                            {{ __('messages.add') }}
                         </a>
                     @endif
                     <div class="d-inline-block process-btns d-none">
@@ -40,7 +40,7 @@
                     @if (Auth::user()->branches->count())
                         <select class="form-control form-control-lg form-control-plaintext bg-transparent text-end"
                             name="expenses-branch" required autocomplete="off">
-                            <option selected hidden disabled>Your branch</option>
+                            <option selected hidden disabled>{{ __('messages.datatable.your_branch') }}</option>
                             @foreach (Auth::user()->branches as $branch)
                                 <option value="{{ $branch->id }}"
                                     {{ isset($_GET['branch_id']) && $_GET['branch_id'] == $branch->id ? 'selected' : '' }}>
@@ -59,13 +59,13 @@
                                 <table class="table table-hover table-bordered table-striped" id="expense-table">
                                     <thead>
                                         <tr>
-                                            <th>Code</th>
-                                            <th>Time</th>
-                                            <th>Image</th>
-                                            <th>Note</th>
-                                            <th>Created By</th>
-                                            <th>Received By</th>
-                                            <th>Amount</th>
+                                            <th>{{ __('messages.datatable.code') }}</th>
+                                            <th>{{ __('messages.datatable.time') }}</th>
+                                            <th>{{ __('messages.expense.image') }}</th>
+                                            <th>{{ __('messages.note') }}</th>
+                                            <th>{{ __('messages.expense.created_by') }}</th>
+                                            <th> {{ __('messages.expense.receive') }}</th>
+                                            <th>{{ __('messages.datatable.amount') }}</th>
                                             <th></th>
                                             <th>
                                                 <input class="form-check-input all-choices" type="checkbox">

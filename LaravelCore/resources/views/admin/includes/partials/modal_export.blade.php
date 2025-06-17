@@ -29,7 +29,7 @@
                                                     <div class="position-relative search-form">
                                                         <input class="form-control form-control-lg search-input" id="export-search-input"
                                                             data-url="{{ route('admin.stock') }}?key=search{{ $my_warehouses->count() ? '&warehouse_id=' . $my_warehouses->first()->id : '' }}&action=export" type="text" autocomplete="off"
-                                                            placeholder="Search products">
+                                                            placeholder="{{ __('messages.search') }}">
                                                         <div class="form-control-icon">
                                                             <i class="bi bi-search"></i>
                                                         </div>
@@ -48,30 +48,30 @@
                         </div>
                         <div class="col-12 col-lg-3 d-flex flex-column">
                             <div class="form-group">
-                                <label data-bs-toggle="tooltip" data-bs-title="Information about the items or reason for export" for="export-note">Description</label>
+                                <label data-bs-toggle="tooltip" data-bs-title="Information about the items or reason for export" for="export-note">{{ __('messages.datatable.description') }}</label>
                                 <input class="form-control form-control-lg" id="export-note" name="note" type="note" required autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <label data-bs-toggle="tooltip" data-bs-title="Date when goods or products are exported from warehouse" for="export-date">Export Date</label>
+                                <label data-bs-toggle="tooltip" data-bs-title="Date when goods or products are exported from warehouse" for="export-date">{{ __('messages.stock.exp') }}</label>
                                 <input class="form-control form-control-lg" id="export-date" name="date" type="date" value="{{ date('Y-m-d') }}" max="{{ date('Y-m-d') }}" required inputmode="numeric">
                             </div>
                             <div class="form-group">
-                                <label data-bs-toggle="tooltip" data-bs-title="Warehouse receiving the imported products" for="export-to_warehouse_id">Receiving Warehouse</label>
-                                <select class="form-select form-control-lg select2" id="export-to_warehouse_id" name="to_warehouse_id" data-ajax--url="{{ route('admin.warehouse', ['key' => 'select2']) }}" data-placeholder="Select receiving warehouse" autocomplete="off"></select>
+                                <label data-bs-toggle="tooltip" data-bs-title="Warehouse receiving the imported products" for="export-to_warehouse_id">{{ __('messages.supplier.receiving_warehouse') }}</label>
+                                <select class="form-select form-control-lg select2" id="export-to_warehouse_id" name="to_warehouse_id" data-ajax--url="{{ route('admin.warehouse', ['key' => 'select2']) }}" data-placeholder="{{ __('messages.supplier.receiving_warehouse') }}" autocomplete="off"></select>
                             </div>
                             <div class="form-group">
-                                <label data-bs-toggle="tooltip" data-bs-title="Person receiving the goods" for="export-receiver_id">Receiver</label>
-                                <select class="form-select form-control-lg select2" id="export-receiver_id" name="receiver_id" data-ajax--url="{{ route('admin.user', ['key' => 'select2']) }}" data-placeholder="Select receiver" required autocomplete="off"></select>
+                                <label data-bs-toggle="tooltip" data-bs-title="Person receiving the goods" for="export-receiver_id">{{ __('messages.import.receive_from') }}</label>
+                                <select class="form-select form-control-lg select2" id="export-receiver_id" name="receiver_id" data-ajax--url="{{ route('admin.user', ['key' => 'select2']) }}" data-placeholder="{{ __('messages.import.receive_from') }}" required autocomplete="off"></select>
                             </div>
                             <div class="form-group">
-                                <label data-bs-toggle="tooltip" data-bs-title="Current status (can be changed later)" for="export-status-waiting">Status</label>
+                                <label data-bs-toggle="tooltip" data-bs-title="Current status (can be changed later)" for="export-status-waiting">{{ __('messages.datatable.status') }}</label>
                                 <div class="form-group">
                                     <div class="d-grid gap-2">
                                         <div class="btn-group btn-group-lg" role="group">
                                             <input class="btn-check" id="export-status-waiting" name="status" type="radio" value="0">
-                                            <label class="btn btn-outline-danger" for="export-status-waiting">Waiting</label>
+                                            <label class="btn btn-outline-danger" for="export-status-waiting">{{ __('messages.stock.waiting') }}</label>
                                             <input class="btn-check" id="export-status-exported" name="status" type="radio" value="1">
-                                            <label class="btn btn-outline-success" for="export-status-exported">Exported</label>
+                                            <label class="btn btn-outline-success" for="export-status-exported">{{ __('messages.stock.imported') }}</label>
                                         </div>
                                     </div>
                                 </div>

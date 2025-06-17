@@ -63,7 +63,7 @@ class LogController extends Controller
                 $logs = Log::with(['_user', 'branch'])->orderByDesc('created_at');
                 return DataTables::of($logs)
                     ->addColumn('code', function ($log) {
-                        $code = '<span class="fw-bold text-success">' . $log->code . '</span>';
+                         $code = '<a class="cursor-pointer btn-detail-log text-primary fw-bold" data-id="' . $log->id . '">' . $log->code . '</a>';
                         return $code . '<br/><small>' . optional($log->created_at)->format('d/m/Y H:i') . '</small>';
                     })
                     ->filterColumn('code', function ($query, $keyword) {
@@ -94,9 +94,28 @@ class LogController extends Controller
                             $query->where('name', 'like', '%' . $keyword . '%');
                         });
                     })
+
+                    // ->editColumn('action', function ($log) {
+                    //     return '<span class="fw-bold">' . $log->action . '</span>';
+                    // })
                     ->editColumn('action', function ($log) {
-                        return '<span class="fw-bold">' . $log->action . '</span>';
-                    })
+                    switch ($log->action) {
+                        case 1:
+                            $actionText = __('messages.create');
+                            break;
+                        case 2:
+                            $actionText = __('messages.update');
+                            break;
+                        case 3:
+                            $actionText = __('messages.delete');
+                            break;
+                        default:
+                            $actionText = __('messages.unknown');
+                            break;
+                    }
+                    return '<span class="fw-bold">' . $actionText . '</span>';
+                })
+
                     ->filterColumn('action', function ($query, $keyword) {
                         $query->where('action', 'like', '%' . $keyword . '%');
                     })
@@ -147,5 +166,14 @@ class LogController extends Controller
             'platform' => $agent->platform() . ' ' . $agent->version($agent->platform()),
             'device' => ($agent->isRobot()) ? $agent->robot() : $agent->device(),
         ]);
+    }
+
+    public function show($id)
+    {
+        $log = Log::find($id);
+        if (!$log) {
+            return response()->json(['error' => 'Log not found'], 404);
+        }
+        return response()->json($log);
     }
 }

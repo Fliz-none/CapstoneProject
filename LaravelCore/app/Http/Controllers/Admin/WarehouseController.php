@@ -17,20 +17,9 @@ class WarehouseController extends Controller
             'branch_id' => ['nullable', 'numeric',],
             'note' => ['nullable', 'string', 'min:2', 'max:125'],
             'address' => ['nullable', 'string', 'min:2', 'max:125'],
-        ],
-        MESSAGES = [
-            'name.required' => Controller::NOT_EMPTY,
-            'name.string' => Controller::DATA_INVALID,
-            'name.min' => Controller::MIN,
-            'name.max' => Controller::MAX,
-            'note.string' => Controller::DATA_INVALID,
-            'note.min' => Controller::MIN,
-            'note.max' => Controller::MAX,
-            'address.string' => Controller::DATA_INVALID,
-            'address.min' => Controller::MIN,
-            'address.max' => Controller::MAX,
-            'branch_id.numeric' => Controller::DATA_INVALID,
         ];
+        public static array $MESSAGES = [];
+        
 
     public function __construct()
     {
@@ -39,6 +28,28 @@ class WarehouseController extends Controller
             $this->user = Auth::user();
         }
         $this->middleware(['admin', 'auth']);
+
+        $this->middleware(function ($request, $next) {
+        // Locale đã được set xong ở đây
+       Controller::init();
+        self::$MESSAGES = [
+            'name.required' => Controller::$NOT_EMPTY,
+            'name.string' => Controller::$DATA_INVALID,
+            'name.min' => Controller::$MIN,
+            'name.max' => Controller::$MAX,
+            'note.string' => Controller::$DATA_INVALID,
+            'note.min' => Controller::$MIN,
+            'note.max' => Controller::$MAX,
+            'address.string' => Controller::$DATA_INVALID,
+            'address.min' => Controller::$MIN,
+            'address.max' => Controller::$MAX,
+            'branch_id.numeric' => Controller::$DATA_INVALID,
+        ];
+
+        return $next($request);
+        });
+
+        
     }
 
     /**
@@ -156,7 +167,7 @@ class WarehouseController extends Controller
                     ->make(true);
             } else {
                 $pageName = self::NAME . ' management';
-                $pageName = self::NAME . ' management';
+                $pageName = self::NAME . ' management'; 
                 return view('admin.warehouses', compact('pageName'));
             }
         }
@@ -173,7 +184,7 @@ class WarehouseController extends Controller
 
     public function create(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES, self::$MESSAGES);
         if (!empty($this->user->can(User::CREATE_WAREHOUSE))) {
             try {
                 $warehouse = Warehouse::create([
@@ -184,25 +195,24 @@ class WarehouseController extends Controller
                     'status' => $request->status,
                 ]);
 
-                LogController::create('create', self::NAME, $warehouse->id);
                 cache()->forget('warehouses');
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Created ' . self::NAME . ' ' . $warehouse->name
+                    'msg' => __('messages.created'). __('messages.warehouses.warehouse') . ' ' . $warehouse->name
                 );
             } catch (\Exception $e) {
                 log_exception($e);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
 
     public function update(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES, self::$MESSAGES);
         if (!empty($this->user->can(User::UPDATE_WAREHOUSE))) {
             if ($request->has('id')) {
                 try {
@@ -216,30 +226,30 @@ class WarehouseController extends Controller
                             'status' => $request->status,
                         ]);
 
-                        LogController::create('update', self::NAME, $warehouse->id);
+                        LogController::create('2', self::NAME, $warehouse->id);
                         cache()->forget('warehouses');
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Updated ' . self::NAME . ' ' . $warehouse->name
+                            'msg' => __('messages.updated'). __('messages.warehouses.warehouse'). ' ' . $warehouse->name
                         );
                     } else {
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'An error occurred, please reload the page and try again!'
+                            'msg' => __('messages.msg')
                         );
                     }
                 } catch (\Exception $e) {
                     log_exception($e);
-                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'An error occurred, please reload the page and try again!'
+                    'msg' => __('messages.msg')
                 );
             }
         } else {
-           return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+           return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
@@ -256,14 +266,13 @@ class WarehouseController extends Controller
                 if ($obj->canRemove()) {
                     $obj->delete();
                     cache()->forget('warehouses');
-                    LogController::create("delete", self::NAME, $obj->id);
                     array_push($success, $obj->name);
                 } else {
                     array_push($fail, $obj->name);
                 }
             }
             if (count($success)) {
-                $msg = 'Deleted ' . self::NAME . ' ' . implode(', ', $success) . '. ';
+                $msg = __('messages.deleted'). __('messages.warehouses.warehouse'). ' ' . implode(', ', $success) . '. ';
             }
             if (count($fail)) {
                 $msg .= implode(', ', $fail) . ', could not be deleted!';
@@ -273,7 +282,7 @@ class WarehouseController extends Controller
                 'msg' => $msg
             );
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }

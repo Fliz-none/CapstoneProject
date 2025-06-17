@@ -18,6 +18,8 @@ class PostController extends Controller
 {
     const NAME = 'Post';
 
+    public static array $MESSAGES;
+
     public function __construct()
     {
         parent::__construct();
@@ -25,6 +27,24 @@ class PostController extends Controller
             $this->user = Auth::user();
         }
         $this->middleware(['admin', 'auth']);
+        $this->middleware(function ($request, $next) {
+        // Locale đã được set xong ở đây
+        Controller::init();
+         self::$MESSAGES = [
+           'title.required' => __('messages.post.post').': '. Controller::$NOT_EMPTY,
+            'title.string' => __('messages.post.post').': '. Controller::$DATA_INVALID,
+            'title.max' => __('messages.post.post').': '. Controller::$MAX,
+            'excerpt.string' =>  Controller::$DATA_INVALID,
+            'excerpt.max' =>  Controller::$MAX,
+            'status.numeric' => __('messages.post.status') .': '. Controller::$NOT_EMPTY,
+            'status.required' => __('messages.post.status') .': '. Controller::$DATA_INVALID,
+            'category_id.numeric' => __('messages.post.category') .': '. Controller::$DATA_INVALID,
+            'category_id.required' => __('messages.post.category') .': '. Controller::$NOT_EMPTY,
+            'image.string' => __('messages.post.image') .': '. Controller::$DATA_INVALID,
+        ];
+
+        return $next($request);
+        });
     }
 
     /**
@@ -167,19 +187,8 @@ class PostController extends Controller
             'category_id' => ['required', 'numeric'],
             'description' => ['nullable'],
         ];
-        $messages = [
-            'title.required' => 'Post name: ' . Controller::NOT_EMPTY,
-            'title.string' => 'Post name: ' . Controller::DATA_INVALID,
-            'title.max' => 'Post name: ' . Controller::MAX,
-            'excerpt.string' => 'Excerpt: ' . Controller::DATA_INVALID,
-            'excerpt.max' => 'Excerpt: ' . Controller::MAX,
-            'status.numeric' => 'Status: ' . Controller::NOT_EMPTY,
-            'status.required' => 'Status: ' . Controller::DATA_INVALID,
-            'category_id.numeric' => 'Category: ' . Controller::DATA_INVALID,
-            'category_id.required' => 'Category: ' . Controller::NOT_EMPTY,
-            'image.string' => 'Image: ' . Controller::DATA_INVALID,
-        ];
-        $request->validate($rules, $messages);
+
+        $request->validate($rules, self::$MESSAGES);
         if (!empty($this->user->can(User::UPDATE_POST)) || !empty($this->user->can(User::CREATE_POST))) {
             try {
                 $post = Post::updateOrCreate(
@@ -198,20 +207,18 @@ class PostController extends Controller
                     $post->image = $request->image;
                     $post->save();
                 }
-                $action = ($request->id) ? 'update' : 'create';
-
-                LogController::create($action, self::NAME, $post->id);
+                $action = ($request->id) ? __('messages.update') : __('messages.add');
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Successfully ' . $action . ' ' . self::NAME . ' ' . $post->name
+                    'msg' => __('messages.post.success').' ' . $action . ' ' . __('messages.post.post') . ' ' . $post->name
                 );
             } catch (\Exception $e) {
                 log_exception($e);
                 DB::rollBack();
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.post.role')]]], 422);
         }
         return redirect()->route('admin.post', ['key' => $post->id])->with('response', $response);
     }
@@ -225,26 +232,26 @@ class PostController extends Controller
                 $obj = Post::find($id);
                 if ($obj->canRemove()) {
                     $obj->delete();
-                    LogController::create("delete", self::NAME, $obj->id);
+                    LogController::create("3", self::NAME, $obj->id);
                     array_push($success, $obj->name);
                 } else {
                     array_push($fail, $obj->name);
                 }
             }
             if (count($success)) {
-                $msg = 'Deleted ' . self::NAME . ' ' . implode(', ', $success);
+                $msg = __('messages.deleted') . ' ' . __('messages.post.post') . ' ' . implode(', ', $success);
             }
             if (count($fail) && count($success)) {
                 $msg .= ' except ' . implode(', ', $fail) . '!';
             } else if (count($fail)) {
-                $msg = 'Can not delete ' . self::NAME . ' ' . implode(', ', $fail) . '!';
+                $msg = __('messages.cannot_delete') . ' ' . __('messages.post.post') . ' ' . implode(', ', $fail) . '!';
             }
             $response = array(
                 'status' => 'success',
                 'msg' => $msg
             );
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.post.role')]]], 422);
         }
         return response()->json($response, 200);
     }

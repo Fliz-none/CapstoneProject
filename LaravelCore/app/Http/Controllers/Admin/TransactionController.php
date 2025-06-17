@@ -25,31 +25,43 @@ class TransactionController extends Controller
         'amount' => ['required', 'numeric'],
         'status' => ['required', 'string'],
     ];
-    const MESSAGES = [
-        'note.required' => Controller::NOT_EMPTY,
-        'note.string' => Controller::DATA_INVALID,
-        'note.min' => Controller::MIN,
-        'note.max' => Controller::MAX,
-        'customer_id.required_without' => 'Please select a customer',
-        'cashier_id.required' => Controller::NOT_EMPTY,
-        'payment.required' => Controller::NOT_EMPTY,
-        'amount.required' => Controller::NOT_EMPTY,
-        'status.required' => Controller::NOT_EMPTY,
-        'customer_id.numeric' => Controller::DATA_INVALID,
-        'cashier_id.numeric' => Controller::DATA_INVALID,
-        'payment.numeric' => Controller::DATA_INVALID,
-        'amount.numeric' => Controller::DATA_INVALID,
-        'status.string' => Controller::DATA_INVALID,
-    ];
+
+    public static array $MESSAGES = [];
+     
 
     protected $zalo;
     public function __construct()
     {
+        
         parent::__construct();
         if ($this->user === null) {
             $this->user = Auth::user();
         }
+       
         $this->middleware(['admin', 'auth']);
+        $this->middleware(function ($request, $next) {
+        // Locale đã được set xong ở đây
+        Controller::init(); // Gán các biến tĩnh ở đây
+
+        self::$MESSAGES = [
+            'note.required' => Controller::$NOT_EMPTY,
+            'note.string' => Controller::$DATA_INVALID,
+            'note.min' => Controller::$MIN,
+            'note.max' => Controller::$MAX,
+            'customer_id.required_without' => __('messages.transaction.required_without'),
+            'cashier_id.required' => Controller::$NOT_EMPTY,
+            'payment.required' => Controller::$NOT_EMPTY,
+            'amount.required' => Controller::$NOT_EMPTY,
+            'status.required' => Controller::$NOT_EMPTY,
+            'customer_id.numeric' => Controller::$DATA_INVALID,
+            'cashier_id.numeric' => Controller::$DATA_INVALID,
+            'payment.numeric' => Controller::$DATA_INVALID,
+            'amount.numeric' => Controller::$DATA_INVALID,
+            'status.string' => Controller::$DATA_INVALID,
+        ];
+
+        return $next($request);
+    });
     }
 
     /**
@@ -59,6 +71,7 @@ class TransactionController extends Controller
      */
     public function index(Request $request)
     {
+        Controller::init();
         if (isset($request->key)) {
             switch ($request->key) {
                 case 'amountOfDate':
@@ -169,7 +182,7 @@ class TransactionController extends Controller
                                 return $obj->_customer->fullName;
                             }
                         } else {
-                            return 'N/A';
+                            return __('messages.unknown');
                         }
                     })
                     ->filterColumn('customer', function ($query, $keyword) {
@@ -198,7 +211,7 @@ class TransactionController extends Controller
                             $order_day = Carbon::parse($obj->_order->created_at)->startOfDay();
                             $result = $obj->fullAmount . '<br>
                             <input type="hidden" data-date="' . $obj->created_at->format('d/m/Y') . '" data-payment="' . $obj->payment . '" value="' . $obj->amount . '">
-                            <small>' . ($transaction_day->eq($order_day) ? 'Purchase' : 'Debt payment') . '</small>';
+                            <small>' . ($transaction_day->eq($order_day) ? __('messages.datatable.purchase') : __('messages.datatable.debt_payment')) . '</small>';
                         } else {
                             $result = '';
                         }
@@ -213,7 +226,7 @@ class TransactionController extends Controller
                             $order_day = Carbon::parse($obj->_order->created_at)->startOfDay();
                             $result = $obj->fullAmount . '<br>
                             <input type="hidden" data-date="' . $obj->created_at->format('d/m/Y') . '" data-payment="' . $obj->payment . '" value="' . $obj->amount . '">
-                            <small>' . ($transaction_day->eq($order_day) ? 'Purchase' : 'Debt payment') . '</small>';
+                            <small>' . ($transaction_day->eq($order_day) ? __('messages.datatable.purchase') : __('messages.datatable.debt_payment')) . '</small>';
                         } else {
                             $result = '';
                         }
@@ -260,7 +273,9 @@ class TransactionController extends Controller
 
     public function create(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        //dd(app()->getLocale());
+        Controller::init();
+        $request->validate(self::RULES, self::$MESSAGES);
         if (!empty($this->user->can(User::CREATE_TRANSACTION))) {
             if ($request->has('order_id') && $request->order_id != null) {
                 DB::beginTransaction();
@@ -277,7 +292,7 @@ class TransactionController extends Controller
                     ]);
                     $transaction->order->sync_scores($transaction->amount);
 
-                    LogController::create('create', self::NAME, $transaction->id);
+                    LogController::create('1', self::NAME, $transaction->id);
                     $response = array(
                         'status' => 'success',
                         'msg' => 'Transaction added successfully: ' . $transaction->id
@@ -310,7 +325,7 @@ class TransactionController extends Controller
                                 ]);
                                 $order->sync_scores($transaction->amount);
 
-                                LogController::create('tạo', self::NAME, $transaction->id);
+                                LogController::create('1', self::NAME, $transaction->id);
                                 $totalAmount -= $amount;
                                 array_push($ids, $order->id);
                             }
@@ -318,7 +333,7 @@ class TransactionController extends Controller
 
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Payment completed for orders ' . implode(', ', $ids)
+                            'msg' => __('messages.created') . implode(', ', $ids)
                         );
                         DB::commit();
                     } else {
@@ -339,7 +354,8 @@ class TransactionController extends Controller
 
     public function update(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+         Controller::init();
+        $request->validate(self::RULES, self::$MESSAGES);
         if (!empty($this->user->can(User::UPDATE_TRANSACTION))) {
             if ($request->has('id')) {
                 try {
@@ -357,7 +373,7 @@ class TransactionController extends Controller
                             'note' => $request->note,
                         ]);
 
-                        LogController::create('update', self::NAME, $transaction->id);
+                        LogController::create('2', self::NAME, $transaction->id);
                         $response = array(
                             'status' => 'success',
                             'msg' => 'Transaction updated successfully: ' . $transaction->id
@@ -393,7 +409,7 @@ class TransactionController extends Controller
                 $obj = Transaction::with('order')->find($id);
                 $obj->order->sync_scores($obj->amount * -1);
                 $obj->delete();
-                LogController::create("delete", self::NAME, $obj->id);
+                LogController::create("3", self::NAME, $obj->id);
                 array_push($success, $obj->name);
             }
             $msg = '';

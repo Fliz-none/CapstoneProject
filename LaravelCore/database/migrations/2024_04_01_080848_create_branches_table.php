@@ -16,10 +16,10 @@ class CreateBranchesTable extends Migration
         Schema::create('branches', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('phone');
+            $table->string('phone', 20);
             $table->string('address');
             $table->text('note')->nullable();
-            $table->string('ip_address')->nullable();
+            //$table->string('ip_address')->nullable();
             $table->unsignedTinyInteger('status')->comment('0:block; 1:active')->default(1);
             $table->softDeletes();
             $table->timestamps();

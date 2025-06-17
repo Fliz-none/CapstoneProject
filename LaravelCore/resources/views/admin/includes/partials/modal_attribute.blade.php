@@ -4,17 +4,17 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="attribute-modal-label">Attribute</h1>
+                    <h1 class="modal-title fs-5" id="attribute-modal-label">{{ __('messages.attribute.attribute') }}</h1>
                     <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3 form-group">
-                        <label class="form-label" for="attribute-key" data-bs-toggle="tooltip" data-bs-title="A specific characteristic used to describe and distinguish a product">Attribute Name</label>
-                        <input class="form-control" id="attribute-key" name="key" type="text" placeholder="Attribute Name">
+                        <label class="form-label" for="attribute-key" data-bs-toggle="tooltip" data-bs-title="A specific characteristic used to describe and distinguish a product">{{ __('messages.attribute.attribute_name') }}</label>
+                        <input class="form-control" id="attribute-key" name="key" type="text" placeholder="{{ __('messages.attribute.attribute_name') }}">
                     </div>
                     <div class="mb-3 form-group">
-                        <label class="form-label" for="attribute-value" data-bs-toggle="tooltip" data-bs-title="The value of the attribute">Value</label>
-                        <textarea class="form-control" id="attribute-value" name="value" placeholder="Enter attribute values. TIP: use commas to add more than one value"></textarea>
+                        <label class="form-label" for="attribute-value" data-bs-toggle="tooltip" data-bs-title="The value of the attribute">{{ __('messages.dashboard_canvas_value') }}</label>
+                        <textarea class="form-control" id="attribute-value" name="value" placeholder="{{ __('messages.attribute.attribute_placeholder') }}"></textarea>
                     </div>
                     <hr class="px-5">
                     <div class="mb-3">

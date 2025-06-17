@@ -111,11 +111,11 @@ class RoleController extends Controller
             }],
         ];
         $messages = [
-            'name.unique' => 'This role name has already been created.',
-            'name.required' => 'Name cannot be empty.',
-            'name.string' => 'Invalid name.',
-            'name.min' => 'Minimum 3 characters',
-            'name.max' => 'Maximum 125 characters.',
+            'name.unique' => __('messages.roles.unique'),
+            'name.required' => __('messages.roles.required'),
+            'name.string' => __('messages.roles.string'),
+            'name.min' => __('messages.roles.min'),
+            'name.max' => __('messages.roles.max'),
         ];
         $request->validate($rules, $messages);
 
@@ -139,19 +139,19 @@ class RoleController extends Controller
                 cache()->forget('cashiers');
 
                 DB::commit();
-                LogController::create('create', self::NAME, $role->id);
+                LogController::create('1', self::NAME, $role->id);
                 $response = [
                     'status' => 'success',
-                    'msg' => 'Created ' . self::NAME . ' ' . $role->name,
+                    'msg' =>  __('messages.created') . __('messages.roles.role') . ' ' . $role->name,
                 ];
             } catch (\Exception $e) {
                 DB::rollBack();
                 log_exception($e);
                 Controller::resetAutoIncrement(['roles', 'permissions']);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
@@ -162,16 +162,17 @@ class RoleController extends Controller
             'name' => ['required', 'string', 'min: 3', 'max:125', 
             function ($attribute, $value, $fail) use ($request) {
                 if(Role::where('name', $value)->where('id', '!=', $request->id)->count()){
-                    $fail('This role has already been created.');
+                    $fail(__('messages.roles.role') . ' ' . __('messages.created'));
                 }
             }],
         ];
-        $messages = [
-            'name.required' => 'Name cannot be empty.',
-            'name.string' => 'Invalid name.',
-            'name.min' => 'Minimum 3 characters',
-            'name.max' => 'Maximum 125 characters.',
-            'name.unique' => 'This role has already been created.',
+
+         $messages = [
+            'name.unique' => __('messages.roles.unique'),
+            'name.required' => __('messages.roles.required'),
+            'name.string' => __('messages.roles.string'),
+            'name.min' => __('messages.roles.min'),
+            'name.max' => __('messages.roles.max'),
         ];
 
         $request->validate($rules, $messages);
@@ -203,29 +204,29 @@ class RoleController extends Controller
                         cache()->forget('dealers');
                         cache()->forget('cashiers');
 
-                        LogController::create('update', self::NAME, $role->id);
+                        LogController::create('2', self::NAME, $role->id);
                         DB::commit();
                         $response = [
                             'status' => 'success',
-                            'msg' => 'Updated ' . self::NAME . ' ' . $role->name,
+                            'msg' => __('messages.updated') . __('messages.roles.role') . ' ' . $role->name,
                         ];
                     } else {
                         DB::rollBack();
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'An error occurred, please reload the page and try again!'
+                            'msg' => __('messages.msg'),
                         );
                     }
                 } catch (\Exception $e) {
                     DB::rollBack();
                     log_exception($e);
                     Controller::resetAutoIncrement(['roles', 'permissions']);
-                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
                 }
             } else {
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
@@ -237,12 +238,12 @@ class RoleController extends Controller
             $role = Role::find($id);
             $role->delete();
             array_push($names, $role->name);
-            LogController::create("delete", "role", $role->id);
+            LogController::create("3", "role", $role->id);
         }
         cache()->forget('roles');
         return response()->json([
             'status' => 'success',
-            'msg' => 'Deleted ' . self::NAME . ' ' . implode(', ', $names),
+            'msg' => __('messages.deleted') . __('messages.roles.role'). ' ' . implode(', ', $names),
         ], 200);
     }
 }

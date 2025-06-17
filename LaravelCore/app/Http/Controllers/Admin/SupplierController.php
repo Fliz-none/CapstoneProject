@@ -13,30 +13,10 @@ use Yajra\DataTables\Facades\DataTables;
 
 class SupplierController extends Controller
 {
-    const NAME = 'Supplier',
-        MESSAGES = [
-            'name.required' => Controller::NOT_EMPTY,
-            'name.string' => Controller::DATA_INVALID,
-            'name.max' => Controller::MAX,
-            'phone.required' => Controller::NOT_EMPTY,
-            'phone.numeric' => Controller::DATA_INVALID,
-            'phone.digits' => 'Please enter a valid phone number.',
-            'phone.regex' => Controller::DATA_INVALID,
-            'phone.unique' => 'This phone number is already in use.',
-            'email.required' => Controller::NOT_EMPTY,
-            'email.string' => Controller::DATA_INVALID,
-            'email.min' => Controller::MIN,
-            'email.max' => Controller::MAX,
-            'email.email' => Controller::DATA_INVALID,
-            'email.unique' => 'This email is invalid or already in use.',
-            'address.required' => Controller::NOT_EMPTY,
-            'address.string' => Controller::DATA_INVALID,
-            'address.min' => Controller::MIN,
-            'address.max' => Controller::MAX,
-            'organ.string' => Controller::DATA_INVALID,
-            'organ.min' => Controller::MIN,
-            'organ.max' => Controller::MAX,
-        ];
+    const NAME = 'Supplier';
+
+    public static array $MESSAGES = [];
+
 
 
     public function __construct()
@@ -46,6 +26,38 @@ class SupplierController extends Controller
             $this->user = Auth::user();
         }
         $this->middleware(['admin', 'auth']);
+
+        $this->middleware(function ($request, $next) {
+            // Locale đã được set xong ở đây
+            Controller::init();
+            self::$MESSAGES = [
+                'name.required' => Controller::$NOT_EMPTY,
+                'name.string' => Controller::$DATA_INVALID,
+                'name.max' => Controller::$MAX,
+                'phone.required' => Controller::$NOT_EMPTY,
+                'phone.numeric' => Controller::$DATA_INVALID,
+                'phone.digits' => __('messages.supplier.phone_regex'),
+                'phone.regex' => Controller::$DATA_INVALID,
+                'phone.unique' => __('messages.supplier.phone_unique'),
+                'email.required' => Controller::$NOT_EMPTY,
+                'email.string' => Controller::$DATA_INVALID,
+                'email.min' => Controller::$MIN,
+                'email.max' => Controller::$MAX,
+                'email.email' => Controller::$DATA_INVALID,
+                'email.unique' => __('messages.supplier.email_unique'),
+                'address.required' => Controller::$NOT_EMPTY,
+                'address.string' => Controller::$DATA_INVALID,
+                'address.min' => Controller::$MIN,
+                'address.max' => Controller::$MAX,
+                'organ.string' => Controller::$DATA_INVALID,
+                'organ.min' => Controller::$MIN,
+                'organ.max' => Controller::$MAX,
+            ];
+
+            return $next($request);
+        });
+
+
     }
 
     /**
@@ -133,7 +145,7 @@ class SupplierController extends Controller
                             return '
                                 <form action="' . route('admin.supplier.remove') . '" method="post" class="save-form">
                                     <input type="hidden" name="_token" value="' . csrf_token() . '"/>
-                                    <input type="hidden" name="choices[]" value="' . $obj->id . '" data-id="'  . $obj->id . '"/>
+                                    <input type="hidden" name="choices[]" value="' . $obj->id . '" data-id="' . $obj->id . '"/>
                                     <button class="btn btn-link text-decoration-none btn-remove">
                                         <i class="bi bi-trash3"></i>
                                     </button>
@@ -158,7 +170,7 @@ class SupplierController extends Controller
             'address' => ['nullable', 'string', 'min:2', 'max:125'],
             'organ' => ['nullable', 'string', 'min:2', 'max:125'],
         ];
-        $request->validate($rules, self::MESSAGES);
+        $request->validate($rules, self::$MESSAGES);
 
         if (!empty($this->user->can(User::CREATE_SUPPLIER))) {
             try {
@@ -171,18 +183,16 @@ class SupplierController extends Controller
                     'status' => $request->has('status'),
                     'note' => $request->note
                 ]);
-
-                LogController::create('create', self::NAME, $supplier->id);
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Created ' . self::NAME . ' ' . $supplier->name
+                    'msg' => __('messages.created') . __('messages.supplier.supplier') . ' ' . $supplier->name
                 );
             } catch (\Exception $e) {
                 log_exception($e);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
@@ -196,7 +206,7 @@ class SupplierController extends Controller
             'address' => ['required', 'string', 'min:2', 'max:125'],
             'organ' => ['nullable', 'string', 'min:2', 'max:125'],
         ];
-        $request->validate($rules, self::MESSAGES);
+        $request->validate($rules, self::$MESSAGES);
 
         if (!empty($this->user->can(User::UPDATE_SUPPLIER))) {
             if ($request->has('id')) {
@@ -213,29 +223,29 @@ class SupplierController extends Controller
                             'status' => $request->has('status'),
                         ]);
 
-                        LogController::create('update', self::NAME, $supplier->id);
+                        LogController::create('2', self::NAME, $supplier->id);
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Updated ' . self::NAME . ' ' . $supplier->name
+                            'msg' => __('messages.updated') . __('messages.supplier.supplier') . ' ' . $supplier->name
                         );
                     } else {
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'An error occurred, please reload the page and try again!'
+                            'msg' => __('messages.msg')
                         );
                     }
                 } catch (\Exception $e) {
                     log_exception($e);
-                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'An error occurred, please reload the page and try again!'
+                    'msg' => __('messages.msg')
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
@@ -249,7 +259,7 @@ class SupplierController extends Controller
                 $obj = Supplier::find($id);
                 if (!count($obj->imports)) {
                     $obj->delete();
-                    LogController::create("delete", self::NAME, $obj->id);
+                    LogController::create("3", self::NAME, $obj->id);
                     array_push($success, $obj->name);
                 } else {
                     array_push($fail, $obj->name);
@@ -257,17 +267,17 @@ class SupplierController extends Controller
             }
             $msg = '';
             if (count($success)) {
-                $msg .= 'Deleted ' . self::NAME . ' ' . implode(', ', $success) . '. ';
+                $msg .= __('messages.deleted') . __('messages.supplier.supplier'). ' ' . implode(', ', $success) . '. ';
             }
             if (count($fail)) {
-                $msg .= implode(', ', $fail) . ' are in use, cannot delete!';
+                $msg .= implode(', ', $fail) . __('messages.being_used');
             }
             $response = array(
                 'status' => 'success',
                 'msg' => $msg
             );
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }

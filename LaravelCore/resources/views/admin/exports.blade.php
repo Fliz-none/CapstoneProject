@@ -7,10 +7,10 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <h5 class="text-uppercase">{{ $pageName }}</h5>
+                    <h5 class="text-uppercase">{{ __('messages.export.export_management') }}</h5>
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.export.export_management') }}</li>
                         </ol>
                     </nav>
                 </div>
@@ -24,7 +24,7 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_EXPORT)))
                         <a class="btn btn-info mb-3 block btn-create-export">
                             <i class="bi bi-plus-circle"></i>
-                            Add
+                            {{ __('messages.add') }}
                         </a>
                     @endif
                     <div class="d-inline-block process-btns d-none">
@@ -41,7 +41,7 @@
                         <select
                             class="form-control form-control-lg form-control-plaintext bg-transparent text-end list-warehouses"
                             required autocomplete="off">
-                            <option selected hidden disabled>Your warehouse</option>
+                            <option selected hidden disabled>{{ __('messages.stock.your_warehouse') }}</option>
                             @foreach (Auth::user()->warehouses as $warehouse)
                                 <option value="{{ $warehouse->id }}"
                                     {{ isset($_GET['warehouse_id']) && $_GET['warehouse_id'] == $warehouse->id ? 'selected' : '' }}>
@@ -59,12 +59,12 @@
                                 <table class="table table-striped table-bordered key-table" id="export-table">
                                     <thead>
                                         <tr>
-                                            <th>Code</th>
-                                            <th>Content</th>
-                                            <th>Created By</th>
-                                            <th>Received By</th>
-                                            <th>Type</th>
-                                            <th>Status</th>
+                                            <th>{{ __('messages.datatable.code') }}</th>
+                                            <th>{{ __('messages.export.content') }}</th>
+                                            <th>{{ __('messages.import.created_by') }}</th>
+                                            <th>{{ __('messages.import.receive_from') }}</th>
+                                            <th>{{ __('messages.export.type') }}</th>
+                                            <th>{{ __('messages.datatable.status') }}</th>
                                             <th></th>
                                             <th>
                                                 <input class="form-check-input all-choices" type="checkbox">

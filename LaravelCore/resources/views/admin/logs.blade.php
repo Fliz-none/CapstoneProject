@@ -7,10 +7,10 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <h5 class="text-uppercase">{{ $pageName }}</h5>
+                    <h5 class="text-uppercase">{{ __('messages.roles.log_management') }}</h5>
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.roles.log_management') }}</li>
                         </ol>
                     </nav>
                 </div>
@@ -30,15 +30,15 @@
                             <table class="table table-hover table-borderless" id="log-table">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>User</th>
-                                        <th>Action</th>
-                                        <th>Object</th>
-                                        <th>Code</th>
-                                        <th>Location</th>
-                                        <th>Browser</th>
-                                        <th>Platform</th>
-                                        <th>Device</th>
+                                        <th>{{ __('messages.log.code') }}</th>
+                                        <th>{{ __('messages.log.user') }}</th>
+                                        <th>{{ __('messages.log.action') }}</th>
+                                        <th>{{ __('messages.log.object') }}</th>
+                                        <th>{{ __('messages.log.code_user') }}</th>
+                                        <th>{{ __('messages.log.location') }}</th>
+                                        <th>{{ __('messages.log.browser') }}</th>
+                                        <th>{{ __('messages.log.platform') }}</th>
+                                        <th>{{ __('messages.log.device') }}</th>
                                     </tr>
                                 </thead>
                             </table>

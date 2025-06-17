@@ -311,7 +311,7 @@
                                     <select class="form-control" id="user-select">
                                         <option value="revenue" selected>{{ __('messages.dashboard_highest_revenue') }}</option>
                                         <option value="quantity">{{ __('messages.dashboard_most_purchased') }}</option>
-                                        <option value="debt">{{ __('messages.dashboard_highest_debt') }}</option>
+                                        <!-- <option value="debt">{{ __('messages.dashboard_highest_debt') }}</option> -->
                                     </select>
                                 </div>
                             </div>

@@ -7,10 +7,10 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <h5 class="text-uppercase">{{ $pageName }}</h5>
+                    <h5 class="text-uppercase">{{ __('messages.local.local_management') }}</h5>
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.local.local_management') }}</li>
                         </ol>
                     </nav>
                 </div>
@@ -24,7 +24,7 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_LOCAL)))
                         <a class="btn k-btn-info mb-3 block btn-create-local">
                             <i class="bi bi-plus-circle"></i>
-                            Add
+                            {{ __('messages.add') }}
                         </a>
                     @endif
                     <div class="d-inline-block process-btns d-none">
@@ -46,9 +46,9 @@
                                 <table class="table table-striped table-bordered key-table" id="local-table">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th>City</th>
-                                            <th>District</th>
+                                            <th>{{ __('messages.datatable.code') }}</th>
+                                            <th>{{ __('messages.local.city') }}</th>
+                                            <th>{{ __('messages.local.district') }}</th>
                                             <th></th>
                                             <th>
                                                 <input class="form-check-input all-choices" type="checkbox">

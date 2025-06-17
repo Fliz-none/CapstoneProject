@@ -117,22 +117,22 @@ class Product extends Model
     {
         switch ($this->status) {
             case '4':
-                $name = 'Featured';
+                $name = __('messages.product.feature');
                 break;
             case '3':
-                $name = 'Online & Offline';
+                $name = __('messages.product.online_and_offline');
                 break;
             case '2':
-                $name = 'Online Only';
+                $name = __('messages.product.online');
                 break;
             case '1':
-                $name = 'Offline Only';
+                $name = __('messages.product.offline');
                 break;
             case '0':
-                $name = 'Locked';
+                $name = __('messages.product.locked');
                 break;
             default:
-                $name = 'Unknown';
+                $name = __('messages.unknown');
                 break;
         }
         return $name;

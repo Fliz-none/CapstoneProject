@@ -68,11 +68,10 @@ class ImageController extends Controller
                 'name' => $imageName,
                 'author_id' => $this->user->id,
             ]);
-            LogController::create('create', self::NAME . ' ' . $image->name,  $image->id);
 
             $response = array(
                 'status' => 'success',
-                'msg' => 'Upload successfully!',
+                'msg' => __('messages.images.upload_success'),
             );
 
             return response()->json($response, 200);
@@ -88,8 +87,8 @@ class ImageController extends Controller
             'name' => 'required|regex:/^[a-zA-Z0-9\-]+$/',
         ];
         $messages = [
-            'name.required' => Controller::NOT_EMPTY,
-            'name.regex' => 'The name must only contain lowercase letters, uppercase letters, numbers, and hyphens.',
+            'name.required' => Controller::$NOT_EMPTY,
+            'name.regex' => __('messages.images.regex'),
         ];
         $request->validate($rules, $messages);
         try {
@@ -115,17 +114,16 @@ class ImageController extends Controller
                 $image->alt = $request->alt;
                 $image->caption = $request->caption;
                 $image->save();
-                LogController::create('delete', self::NAME . ' ' . $image->name,  $image->id);
             } else {
                 $image->delete();
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'The file no longer exists! The data about the file will be deleted from the system.',
+                    'msg' => __('messages.msg'),
                 );
             }
             $response = array(
                 'status' => 'success',
-                'msg' => 'Updated ' . self::NAME . ' ' . $image->name,
+                'msg' => __('messages.updated') . ' ' . __('messages.images.image') . ' ' . $image->name,
             );
             return response()->json($response, 200);
         } catch (\Exception $e) {
@@ -144,7 +142,7 @@ class ImageController extends Controller
                 } else {
                     $response = array(
                         'status' => 'error',
-                        'msg' => 'Cannot delete ' . $id,
+                        'msg' => __('messages.cannot_delete') . $id,
                     );
                     return response()->json($response, 200);
                     break;
@@ -152,12 +150,12 @@ class ImageController extends Controller
             }
             $response = array(
                 'status' => 'success',
-                'msg' => 'Deleted ' . self::NAME . ' ' . implode(', ', $names)
+                'msg' => __('messages.deleted') . ' ' . __('messages.images.image'). ' ' . implode(', ', $names)
             );
         } else {
             $response = array(
                 'status' => 'error',
-                'msg' => 'Unable to process the request! Please try again later.',
+                'msg' => __('messages.msg'),
             );
         }
         return response()->json($response, 200);
@@ -168,7 +166,6 @@ class ImageController extends Controller
         $image = Image::find($id);
         if ($image) {
             $path = 'public/' . $image->name;
-            LogController::create('xóa', self::NAME . ' ' . $image->name,  $image->id);
             $image->delete();
             if (Storage::exists($path)) {
                 Storage::delete($path);

@@ -42,14 +42,14 @@ class WorkController extends Controller
                     // Sử dụng $range trong truy vấn
                     $works =
                         Work::whereBetween('sign_checkin', $range)
-                        ->whereBetween('sign_checkout', $range)
-                        ->where(function ($query) use ($request) {
-                            $query->when($request->has('branch_id'), function ($query) use ($request) {
-                                $query->where('branch_id', $request->branch_id);
-                            }, function ($query) {
-                                $query->whereIn('branch_id', Auth::user()->branches->pluck('id'));
-                            });
-                        })->get();
+                            ->whereBetween('sign_checkout', $range)
+                            ->where(function ($query) use ($request) {
+                                $query->when($request->has('branch_id'), function ($query) use ($request) {
+                                    $query->where('branch_id', $request->branch_id);
+                                }, function ($query) {
+                                    $query->whereIn('branch_id', Auth::user()->branches->pluck('id'));
+                                });
+                            })->get();
                     $summarys = $works->groupBy('user_id')->map(function ($user_works, $user_id) use ($range) {
                         $total_minutes = 0;
                         foreach ($user_works as $index => $work) {
@@ -80,7 +80,7 @@ class WorkController extends Controller
                         return [
                             'total_minutes' => $total_minutes,
                             'user' => $user_works->first()->user,
-                            'salary' => ($total_hours * $settings['hourly_salary']) . ' '. $settings['currency'],
+                            'salary' => ($total_hours * $settings['hourly_salary']) . ' ' . $settings['currency'],
                             'total_hours' => floor($total_hours) . ' giờ ' . ($total_minutes % 60) . ' phút',
                             'total_shifts' => $total_shifts,
                             'total_late' => $total_late,
@@ -192,7 +192,7 @@ class WorkController extends Controller
                                 $str = $obj->user->fullName;
                             }
                         } else {
-                            $str = 'N/A';
+                            $str = __('messages.unknown');
                         }
                         if ($obj->branch_id) {
                             if ($can_update_branch) {
@@ -212,7 +212,7 @@ class WorkController extends Controller
                         $query->orderBy('works.user_id', $order);
                     })
                     ->addColumn('check_in', function ($obj) {
-                        return '<small>' . (isset($obj->real_checkin) ? Carbon::parse($obj->real_checkin)->format('d/m/Y H:i') : 'Not available') . $obj->gap_checkin() . '</small>';
+                        return '<small>' . (isset($obj->real_checkin) ? Carbon::parse($obj->real_checkin)->format('d/m/Y H:i') : __('messages.work_schedule.not_available')) . $obj->gap_checkin() . '</small>';
                     })
                     ->filterColumn('check_in', function ($query, $keyword) {
                         $date = parseDate($keyword);
@@ -227,7 +227,7 @@ class WorkController extends Controller
                             });
                     })
                     ->addColumn('check_out', function ($obj) {
-                        return '<small>' . (isset($obj->real_checkout) ? Carbon::parse($obj->real_checkout)->format('d/m/Y H:i') : 'Not available') . $obj->gap_checkout() . '</small>';
+                        return '<small>' . (isset($obj->real_checkout) ? Carbon::parse($obj->real_checkout)->format('d/m/Y H:i') : __('messages.work_schedule.not_available')) . $obj->gap_checkout() . '</small>';
                     })
                     ->filterColumn('check_out', function ($query, $keyword) {
                         $date = parseDate($keyword);
@@ -264,7 +264,7 @@ class WorkController extends Controller
                     ->make(true);
             } else {
                 if (isset($request->display) && $request->display == 'list') {
-                    $pageName = self::NAME . ' management';
+                    $pageName = __('messages.work_schedule.attendance') . ' management';
                     return view('admin.work_list', compact('pageName'));
                 }
                 $pageName = 'Work Schedule';
@@ -299,8 +299,8 @@ class WorkController extends Controller
             $request->validate([
                 'work_image' => 'required|string', // Validate base64 string
             ], [
-                'work_image.required' => 'The system could not get the attendance image.',
-                'work_image.string' => 'Invalid image data.',
+                'work_image.required' => __('messages.work_schedule.work_image_error'),
+                'work_image.string' => __('messages.work_schedule.work_data_invalid'),
             ]);
 
             $work = self::current();
@@ -311,6 +311,7 @@ class WorkController extends Controller
                 Storage::disk('public')->put('work/' . $imageName, $image);
 
                 if (!$work->real_checkin) {
+                    // Chấm vào
                     $work->update([
                         'real_checkin' => Carbon::now(),
                         'image_checkin' => $imageName,
@@ -327,20 +328,20 @@ class WorkController extends Controller
                     ]);
                     $response = [
                         'status' => 'success',
-                        'msg' => 'Checkout successful!'
+                        'msg' => __('messages.work_schedule.check_out_success')
                     ];
                 }
             } else {
                 $response = [
                     'status' => 'error',
-                    'msg' => 'No work shift needs to be clocked in!'
+                    'msg' => __('messages.work_schedule.no_work')
                 ];
             }
             return redirect()->back()->with('response', $response);
         } catch (\Throwable $th) {
             $response = array(
                 'status' => 'danger',
-                'msg' => 'An error occurred, please contact the software developer for assistance!'
+                'msg' => __('messages.work_schedule.msg')
             );
             return redirect()->back()->with('response', $response);
         }
@@ -354,9 +355,9 @@ class WorkController extends Controller
                 'real_checkin' => 'nullable|date_format:H:i',
                 'real_checkout' => 'nullable|date_format:H:i|after:real_checkin',
             ], [
-                'real_checkout.after' => 'Checkout time must be later than check-in time.',
-                'real_checkin.date_format' => 'Invalid check-in time format.',
-                'real_checkout.date_format' => 'Invalid checkout time format.',
+                'real_checkout.after' => __('messages.work_schedule.checkout_error'),
+                'real_checkin.date_format' => __('messages.work_schedule.checkin_invaled'),
+                'real_checkout.date_format' => __('messages.work_schedule.checkout_invaled'),
             ]);
 
             $work = Work::find($request->id);
@@ -373,10 +374,10 @@ class WorkController extends Controller
 
             $response = array(
                 'status' => 'success',
-                'msg' => self::NAME . ' ' . $work->code . ' has been updated successfully.',
+                'msg' => __('messages.work_schedule.attendance') . ' ' . $work->code . __('messages.updated'),
             );
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
@@ -407,7 +408,7 @@ class WorkController extends Controller
                         $branch_name = $registered->map(function ($work, $index) {
                             return $work->branch->name; // Thêm index vào tên chi nhánh
                         })->unique()->join(', ');
-                        return response()->json(['errors' => ['has_enough' => ['This shift at ' . $branch_name . ' already has enough registered employees.']]], 422);
+                        return response()->json(['errors' => ['has_enough' => [$branch_name . __('messages.work_schedule.shift_enough')]]], 422);
                     }
                     unset($work_info->allow_self_register); // Loại bỏ trường 'allow_self_register'
                     $shiftFound = collect($work_info)->first(function ($shift) use ($shifts) {
@@ -422,23 +423,23 @@ class WorkController extends Controller
                     ]);
                     $response = array(
                         'status' => 'success',
-                        'msg' => 'Successfully registered shift ' . $shiftFound->shift_name . ' for ' . User::find($request->user_id)->name
+                        'msg' => __('messages.work_schedule.shift_success') . $shiftFound->shift_name . __('messages.work_schedule.for') . User::find($request->user_id)->name
                     );
                 } else { // Có đăng ký thì xóa
                     $work->delete();
                     $response = array(
                         'status' => 'success',
-                        'msg' => 'Successfully canceled registration for ' . $work->shift_name . ' for ' . User::find($request->user_id)->name
+                        'msg' => __('messages.work_schedule.shift_cancel') . $work->shift_name . __('messages.work_schedule.for') . User::find($request->user_id)->name
                     );
                 }
                 return response()->json($response, 200);
             } else {
-                return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+                return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
             }
         } catch (\Throwable $th) {
             $response = array(
                 'status' => 'danger',
-                'msg' => 'An error occurred, please contact the software developer for assistance!'
+                'msg' => __('messages.work_schedule.work_data_invalid')
             );
             return response()->json($response, 200);
         }
@@ -498,11 +499,10 @@ class WorkController extends Controller
         foreach ($request->choices as $key => $id) {
             $obj = Work::find($id);
             $obj->delete();
-            LogController::create("delete", self::NAME, $obj->id);
             array_push($success, $obj->name);
         }
         if (count($success)) {
-            $msg = 'Successfully deleted ' . self::NAME . ' ' . implode(', ', $success);
+            $msg = __('messages.deleted') . __('messages.work_schedule.attendance') . ' ' . implode(', ', $success);
         }
         $response = array(
             'status' => 'success',

@@ -54,13 +54,13 @@ class Warehouse extends Model
     {
         switch ($this->status) {
             case '2':
-                $name = 'On Sale';
+                $name = __('messages.warehouses.on_sale');
                 break;
             case '1':
-                $name = 'Internal Use Only';
+                $name = __('messages.warehouses.internal');
                 break;
             default:
-                $name = 'Locked';
+                $name = __('messages.warehouses.lock');
                 break;
         }
         return $name;

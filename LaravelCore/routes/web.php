@@ -32,6 +32,7 @@ use App\Http\Controllers\Admin\WorkController;
 use App\Http\Controllers\Admin\SelfController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\VersionController;
+use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\ChatController as ClientChatController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
@@ -253,7 +254,8 @@ Route::group(['prefix' => 'quantri'], function () {
     });
 
     Route::group(['prefix' => 'log'], function () {
-        Route::get('{key?}', [LogController::class, 'index'])->name('admin.log');
+       Route::get('/', [LogController::class, 'index'])->name('admin.log'); // danh sách
+        Route::get('/{id}', [LogController::class, 'show'])->name('admin.log.show'); // xem chi tiết
     });
 
     Route::group(['prefix' => 'profile'], function () {
@@ -325,18 +327,9 @@ Route::get('don-hang', [ProfileController::class, 'orders'])->name('orders');
 Route::get('gio-hang/thanh-toan', [CartController::class, 'index'])->name('checkout');
 Route::get('gio-hang/thanh-toan/hoan-thanh', [CartController::class, 'index'])->name('checkout');
 Route::get('cua-hang/{catalogue?}/{slug?}', [ShopController::class, 'index'])->name('shop');
-Route::post('/change-language', function (Illuminate\Http\Request $request) {
-    $request->validate([
-        'locale' => 'required|in:vn,en' // Validation ngay từ đầu
-    ]);
-
-    session(['locale' => $request->locale]);
-    
-    return response()->json([
-        'status' => 'success',
-        'message' => __('messages.language_changed') // Sử dụng translation
-    ]);
-})->name('change.language.ajax')->middleware('web'); // Thêm middleware web để đảm bảo session
+Route::post('/change-language', [LanguageController::class, 'changeLanguage'])
+    ->name('change.language.ajax')
+    ->middleware('web');
 Route::get('ajax/{type}{key?}', [ShopController::class, 'getAjax'])->name('ajax');
 Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'gio-hang'], function () {

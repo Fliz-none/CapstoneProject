@@ -17,16 +17,9 @@ class CategoryController extends Controller
         RULES = [
             'name' => ['required', 'string', 'min:2', 'max:125'],
             'note' => ['nullable', 'string', 'min:2', 'max:320']
-        ],
-        MESSAGES = [
-            'name.required' => Controller::NOT_EMPTY,
-            'name.string' => Controller::DATA_INVALID,
-            'name.min' => Controller::MIN,
-            'name.max' => Controller::MAX,
-            'note.string' => Controller::DATA_INVALID,
-            'note.min' => Controller::MIN,
-            'note.max' => Controller::MAX,
         ];
+    public static array $MESSAGES = [];
+
 
     public function __construct()
     {
@@ -35,6 +28,24 @@ class CategoryController extends Controller
             $this->user = Auth::user();
         }
         $this->middleware(['admin', 'auth']);
+
+        $this->middleware(function ($request, $next) {
+            // Locale đã được set xong ở đây
+            Controller::init();
+            self::$MESSAGES = [
+                'name.required' => Controller::$NOT_EMPTY,
+                'name.string' => Controller::$DATA_INVALID,
+                'name.min' => Controller::$MIN,
+                'name.max' => Controller::$MAX,
+                'note.string' => Controller::$DATA_INVALID,
+                'note.min' => Controller::$MIN,
+                'note.max' => Controller::$MAX,
+            ];
+
+            return $next($request);
+        });
+
+
     }
 
     /**
@@ -118,12 +129,12 @@ class CategoryController extends Controller
                 Category::find($ids[$index])->update(['sort' => $index + 1]);
             }
         }
-        return response()->json(['msg' => 'The sort order has been updated successfully!'], 200);
+        return response()->json(['msg' => __('messages.sort.sort_success')], 200);
     }
 
     public function create(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES, self::$MESSAGES);
         if (!empty($this->user->can(User::CREATE_CATEGORY))) {
             try {
                 $category = Category::create([
@@ -133,25 +144,24 @@ class CategoryController extends Controller
                     'status' => $request->has('status'),
                 ]);
 
-                LogController::create('create', self::NAME, $category->id);
                 cache()->forget('categories');
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Created ' . self::NAME . ' ' . $category->name
+                    'msg' => __('messages.created') . ' ' . __('messages.category.category') . ' ' . $category->name
                 );
             } catch (\Exception $e) {
                 log_exception($e);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['error' => ['You do not have permission!']]], 403);
+            return response()->json(['errors' => ['error' => [__('messages.role')]]], 403);
         }
         return response()->json($response, 200);
     }
 
     public function update(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES, self::$MESSAGES);
         if (!empty($this->user->can(User::UPDATE_CATEGORY))) {
             if ($request->has('id')) {
                 try {
@@ -164,30 +174,29 @@ class CategoryController extends Controller
                             'status' => $request->has('status'),
                         ]);
 
-                        LogController::create('update', self::NAME, $category->id);
                         cache()->forget('categories');
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Updated ' . self::NAME . ' ' . $category->name
+                            'msg' => __('messages.updated') . ' ' . __('messages.category.category') . ' ' . $category->name
                         );
                     } else {
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'An error occurred, please reload the page and try again!'
+                            'msg' => __('messages.msg')
                         );
                     }
                 } catch (\Exception $e) {
                     log_exception($e);
-                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'An error occurred, please reload the page and try again!'
+                    'msg' => __('messages.msg')
                 );
             }
         } else {
-            return response()->json(['errors' => ['error' => ['You do not have permission!']]], 403);
+            return response()->json(['errors' => ['error' => [__('messages.role')]]], 403);
         }
         return response()->json($response, 200);
     }
@@ -204,24 +213,23 @@ class CategoryController extends Controller
                 if ($obj->canRemove()) {
                     $obj->delete();
                     cache()->forget('categories');
-                    LogController::create("delete", self::NAME, $obj->id);
                     array_push($success, $obj->name);
                 } else {
                     array_push($fail, $obj->name);
                 }
             }
             if (count($success)) {
-                $msg = 'Deleted ' . self::NAME . ' ' . implode(', ', $success) . '. ';
+                $msg = __('messages.deleted') . ' ' . __('messages.category.category') . ' ' . implode(', ', $success) . '. ';
             }
             if (count($fail)) {
-                $msg .= implode(', ', $fail) . ' is being used, can not be deleted!';
+                $msg .= implode(', ', $fail) . __('messages.categories.being_used');
             }
             $response = array(
                 'status' => 'success',
                 'msg' => $msg
             );
         } else {
-            return response()->json(['errors' => ['error' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['error' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }

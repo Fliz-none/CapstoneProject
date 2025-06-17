@@ -7,10 +7,10 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <h5 class="text-uppercase">{{ $pageName }}</h5>
+                    <h5 class="text-uppercase">{{ __('messages.discount_.discount_management') }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.discount_.discount_management') }}</li>
                         </ol>
                     </nav>
                 </div>
@@ -24,7 +24,7 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_DISCOUNT)))
                         <a class="btn btn-info mb-3 block btn-create-discount">
                             <i class="bi bi-plus-circle"></i>
-                            Add
+                            {{__('messages.add') }}
                         </a>
                     @endif
                     <div class="d-inline-block process-btns d-none">
@@ -40,7 +40,7 @@
                     @if (Auth::user()->branches->count())
                         <select
                             class="form-control form-control-lg form-control-plaintext bg-transparent text-end list-branches" required autocomplete="off">
-                            <option selected hidden disabled>Your branch</option>
+                            <option selected hidden disabled>{{ __('messages.datatable.your_branch') }}</option>
                             @foreach (Auth::user()->branches as $branch)
                                 <option value="{{ $branch->id }}" {{ isset($_GET['branch_id']) && $_GET['branch_id'] == $branch->id ? 'selected' : '' }}>
                                     {{ $branch->name }}</option>
@@ -57,12 +57,12 @@
                                 <table class="table table-striped table-bordered key-table" id="discount-table">
                                     <thead>
                                         <tr>
-                                            <th>Code</th>
-                                            <th>Name</th>
-                                            <th>Branch</th>
-                                            <th>Type</th>
-                                            <th>Validity</th>
-                                            <th>Status</th>
+                                            <th>{{ __('messages.datatable.code') }}</th>
+                                            <th>{{ __('messages.discount_.discount_name') }}</th>
+                                            <th>{{ __('messages.datatable.branch') }}</th>
+                                            <th>{{ __('messages.discount_.type') }}</th>
+                                            <th>{{ __('messages.discount_.vality') }}</th>
+                                            <th>{{ __('messages.datatable.status') }}</th>
                                             <th></th>
                                             <th>
                                                 <input class="form-check-input all-choices" type="checkbox">

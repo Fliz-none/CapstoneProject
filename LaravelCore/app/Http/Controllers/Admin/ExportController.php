@@ -35,34 +35,9 @@ class ExportController extends Controller
             'quantities.*' => ['required', 'numeric', 'min:0'],
             'notes' => ['array'],
             'notes.*' => ['nullable', 'string'],
-        ],
-        MESSAGES = [
-            'note.required' => 'Content: ' . Controller::NOT_EMPTY,
-            'note.string' => 'Content: ' . Controller::DATA_INVALID,
-            'date.required' => 'Date: ' . Controller::NOT_EMPTY,
-            'date.date_format' => 'Date: ' . Controller::DATA_INVALID,
-            'receiver_id.required' => 'Receiver: ' . Controller::NOT_EMPTY,
-            'receiver_id.numeric' => 'Receiver: ' . Controller::DATA_INVALID,
-            'stock_ids.required' => 'Stock: ' . Controller::ONE_LEAST,
-            'stock_ids.array' => 'Stock: ' . Controller::ONE_LEAST,
-            'stock_ids.min' => 'Stock: ' . Controller::ONE_LEAST,
-            'stock_ids.*.required' => 'Stock: ' . Controller::NOT_EMPTY,
-            'stock_ids.*.numeric' => 'Stock: ' . Controller::NOT_EMPTY,
-            'unit_ids.array' => 'Unit: ' . Controller::ONE_LEAST,
-            'unit_ids.min' => 'Unit: ' . Controller::ONE_LEAST,
-            'unit_ids.*.required' => 'Unit: ' . Controller::NOT_EMPTY,
-            'unit_ids.*.numeric' => 'Unit: ' . Controller::NOT_EMPTY,
-            'rates.array' => 'Rate: ' . Controller::ONE_LEAST,
-            'rates.min' => 'Rate: ' . Controller::ONE_LEAST,
-            'rates.*.required' => 'Rate: ' . Controller::NOT_EMPTY,
-            'rates.*.numeric' => 'Rate: ' . Controller::NOT_EMPTY,
-            'quantities' => 'Quantity: ' . Controller::DATA_INVALID,
-            'quantities.*.required' => 'Quantity: ' . Controller::NOT_EMPTY,
-            'quantities.*.numeric' => 'Quantity: ' . Controller::DATA_INVALID,
-            'quantities.*.min' => 'Quantity: Can not be less than 0!',
-            'notes' => 'Reason: ' . Controller::DATA_INVALID,
-            'notes.*.numeric' => 'Reason: ' . Controller::DATA_INVALID,
         ];
+    public static array $MESSAGES = [];
+
 
     public function __construct()
     {
@@ -71,6 +46,38 @@ class ExportController extends Controller
             $this->user = Auth::user();
         }
         $this->middleware(['admin', 'auth']);
+        $this->middleware(function ($request, $next) {
+            // Locale đã được set xong ở đây
+            Controller::init();
+            self::$MESSAGES = [
+                'note.required' => __('messages.export.content').': ' . Controller::$NOT_EMPTY,
+                'note.string' => __('messages.export.content').': ' . Controller::$DATA_INVALID,
+                'date.required' => __('messages.date').': ' . Controller::$NOT_EMPTY,
+                'date.date_format' => __('messages.date').': ' . Controller::$DATA_INVALID,
+                'receiver_id.required' => __('messages.receiver') .': ' . Controller::$NOT_EMPTY,
+                'receiver_id.numeric' => __('messages.receiver') .': ' . Controller::$DATA_INVALID,
+                'stock_ids.required' => __('messages.stock.stock').': ' . Controller::$ONE_LEAST,
+                'stock_ids.array' => __('messages.stock.stock').': ' . Controller::$ONE_LEAST,
+                'stock_ids.min' => __('messages.stock.stock').': ' . Controller::$ONE_LEAST,
+                'stock_ids.*.required' => __('messages.stock.stock').': ' . Controller::$NOT_EMPTY,
+                'stock_ids.*.numeric' => __('messages.stock.stock').': ' . Controller::$NOT_EMPTY,
+                'unit_ids.array' => __('messages.order_controller.unit') .': ' . Controller::$ONE_LEAST,
+                'unit_ids.min' => __('messages.order_controller.unit') .': ' . Controller::$ONE_LEAST,
+                'unit_ids.*.required' => __('messages.order_controller.unit') .': ' . Controller::$NOT_EMPTY,
+                'unit_ids.*.numeric' => __('messages.order_controller.unit') .': ' . Controller::$NOT_EMPTY,
+                'rates.array' => __('messages.order_controller.rate').': ' . Controller::$ONE_LEAST,
+                'rates.min' => __('messages.order_controller.rate').': ' . Controller::$ONE_LEAST,
+                'rates.*.required' => __('messages.order_controller.rate').': ' . Controller::$NOT_EMPTY,
+                'rates.*.numeric' => __('messages.order_controller.rate').': ' . Controller::$NOT_EMPTY,
+                'quantities' => __('messages.order_controller.quantity').': ' . Controller::$DATA_INVALID,
+                'quantities.*.required' => __('messages.order_controller.quantity').': ' . Controller::$NOT_EMPTY,
+                'quantities.*.numeric' => __('messages.order_controller.quantity').': ' . Controller::$DATA_INVALID,
+                'quantities.*.min' => __('messages.order_controller.quantity').': '.__('messages.order_controller.min'),
+                'notes' => __('messages.note').': ' . Controller::$DATA_INVALID,
+                'notes.*.numeric' => __('messages.note').': ' . Controller::$DATA_INVALID,
+            ];
+            return $next($request);
+        });
     }
 
     /**
@@ -198,11 +205,11 @@ class ExportController extends Controller
                     })
                     ->addColumn('type', function ($obj) {
                         if ($obj->order_id) {
-                            return '<span class="badge bg-success text-white">For sale</span>';
+                            return '<span class="badge bg-success text-white">' . __('messages.export.for_sale') . '</span>';
                         } else if ($obj->import) {
-                            return '<span class="badge bg-primary text-white">Internal Export</span>';
+                            return '<span class="badge bg-primary text-white">' . __('messages.export.internal_export') . '</span>';
                         } else {
-                            return '<span class="badge bg-danger text-white">Discarded</span>';
+                            return '<span class="badge bg-danger text-white">' . __('messages.export.cancel') . '</span>';
                         }
                     })
                     ->filterColumn('type', function ($query, $keyword) {
@@ -265,7 +272,7 @@ class ExportController extends Controller
 
     public function create(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES, self::$MESSAGES);
         if (!empty($this->user->can(User::CREATE_EXPORT))) {
             DB::beginTransaction();
             try {
@@ -332,19 +339,18 @@ class ExportController extends Controller
                 }
 
                 DB::commit();
-                LogController::create('create', self::NAME, $export->id);
                 $response = [
                     'status' => 'success',
-                    'msg' => 'Created ' . $export->note,
+                    'msg' => __('messages.created') . $export->note,
                 ];
             } catch (\Exception $e) {
                 DB::rollBack();
                 log_exception($e);
                 Controller::resetAutoIncrement(['exports', 'imports', 'export_details', 'import_details', 'stocks']);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
@@ -352,7 +358,7 @@ class ExportController extends Controller
     public function update(Request $request)
     {
         // dd(Export::find(10));
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES, self::$MESSAGES);
         if (!empty($this->user->can(User::UPDATE_EXPORT))) {
             if ($request->has('id')) {
                 DB::beginTransaction();
@@ -360,10 +366,10 @@ class ExportController extends Controller
                     $export = Export::find($request->id);
                     if ($export) {
                         if ($export->import && $export->import->status == 1) {
-                            return response()->json(['errors' => ['import_confirmed' => ['Once the receiving warehouse has confirmed the goods receipt, the delivery note can no longer be modified.']]], 422);
+                            return response()->json(['errors' => ['import_confirmed' => [__('messages.export.recieved')]]], 422);
                         }
                         if ($export->order_id) {
-                            return response()->json(['errors' => ['export_order' => ['Export for an order cannot be modified. Please just modify on the invoice.']]], 422);
+                            return response()->json(['errors' => ['export_order' => [__('messages.export.cannot')]]], 422);
                         }
                         $export = Export::updateOrCreate([
                             'id' => $request->id
@@ -438,32 +444,31 @@ class ExportController extends Controller
                         }
 
                         DB::commit();
-                        LogController::create('update', self::NAME, $export->id);
                         $response = [
                             'status' => 'success',
-                            'msg' => 'Updated export order ' . $export->note,
+                            'msg' => __('messages.updated') . $export->note,
                         ];
                     } else {
                         DB::rollBack();
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'An error occurred, please reload the page and try again!'
+                            'msg' => __('messages.msg')
                         );
                     }
                 } catch (\Exception $e) {
                     DB::rollBack();
                     log_exception($e);
                     Controller::resetAutoIncrement(['exports', 'imports', 'export_details', 'import_details', 'stocks']);
-                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'An error occurred, please reload the page and try again!'
+                    'msg' => __('messages.msg')
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
@@ -474,13 +479,13 @@ class ExportController extends Controller
         foreach ($request->choices as $key => $id) {
             $obj = Export::find($id);
             if (!$obj) {
-                return response()->json(['errors' => ['message' => ['Cannot find this export']]], 422);
+                return response()->json(['errors' => ['message' => [__('messages.export.cannot_found')]]], 422);
             }
             if ($obj->order_id) {
-                return response()->json(['errors' => ['message' => ['Cannot delete this export. Please delete the order instead']]], 422);
+                return response()->json(['errors' => ['message' => [__('messages.export.cannot_delete')]]], 422);
             }
             if ($obj->import && $obj->import->status) {
-                return response()->json(['errors' => ['message' => ['Once the receiving warehouse has confirmed the goods receipt, this export cannot be deleted']]], 422);
+                return response()->json(['errors' => ['message' => [__('messages.export.cannot_export')]]], 422);
             }
             DB::beginTransaction();
             try {
@@ -528,12 +533,12 @@ class ExportController extends Controller
                 DB::rollBack();
                 log_exception($e);
                 Controller::resetAutoIncrement(['exports', 'export_details', 'imports', 'import_details', 'stocks']);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
             }
         }
         return response()->json([
             'status' => 'success',
-            'msg' => 'Deleted export ' . implode(', ', $names),
+            'msg' => __('messages.deleted') . implode(', ', $names),
         ], 200);
     }
 }

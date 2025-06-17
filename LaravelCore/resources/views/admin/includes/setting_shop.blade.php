@@ -3,13 +3,13 @@
     <form id="company-form" action="{{ route('admin.setting.shop') }}" method="post">
         @csrf
         <div class="card-header d-flex justify-content-between">
-            <h3>Shop settings</h3>
-            <button class="btn btn-primary btn-save" type="submit">Save</button>
+            <h3>{{ __('messages.shop_setting.shop_setting') }}</h3>
+            <button class="btn btn-primary btn-save" type="submit">{{ __('messages.save') }}</button>
         </div>
         <div class="card-body">
             <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label" for="inventory_manage">Inventory management<br />
-                    <small class="form-text text-muted" id="inventory_manage-help">Control stock in, out, and remaining inventory</small>
+                <label class="col-sm-4 col-form-label" for="inventory_manage">{{ __('messages.shop_setting.inventory_management') }}<br />
+                    <small class="form-text text-muted" id="inventory_manage-help">{{ __('messages.shop_setting.inventory_placeholder') }}</small>
                 </label>
                 <div class="col-sm-8">
                     <input class="form-control @error('inventory_manage') is-invalid @enderror" id="inventory_manage" name="inventory_manage" type="text" value="{{ $settings['inventory_manage'] }}">
@@ -19,8 +19,8 @@
                 </div>
             </div>
             <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label" for="scores_rate_exchange">Reward points exchange rate<br />
-                    <small class="form-text text-muted" id="scores_rate_exchange-help">How much money spent equals 1 reward point</small>
+                <label class="col-sm-4 col-form-label" for="scores_rate_exchange">{{ __('messages.shop_setting.reward') }}<br />
+                    <small class="form-text text-muted" id="scores_rate_exchange-help">{{ __('messages.shop_setting.reward_placeholder') }}</small>
                 </label>
                 <div class="col-sm-8">
                     <input class="form-control @error('scores_rate_exchange') is-invalid @enderror" id="scores_rate_exchange" name="scores_rate_exchange" type="text" value="{{ $settings['scores_rate_exchange'] }}">
@@ -36,14 +36,14 @@
     <form id="print-form" action="{{ route('admin.setting.print') }}" method="post">
         @csrf
         <div class="card-header d-flex justify-content-between">
-            <h3>Invoice printing settings</h3>
-            <button class="btn btn-primary btn-save" type="submit">Save</button>
+            <h3>{{ __('messages.shop_setting.invoice') }}</h3>
+            <button class="btn btn-primary btn-save" type="submit">{{ __('messages.save') }}</button>
         </div>
         <div class="card-body">
             <div class="mb-3 row">
                 <label class="col-sm-4 col-form-label" for="print_order_bank_a5">
-                    Add QR code to A5 paper<br />
-                    <small class="form-text text-muted">Add payment QR code to invoice on A5 paper</small>
+                    {{ __('messages.shop_setting.a5') }}<br />
+                    <small class="form-text text-muted">{{ __('messages.shop_setting.a5_placeholder') }}</small>
                 </label>
                 <div class="col-sm-8">
                     <input name="print_order_bank_a5" type="hidden" value="0">
@@ -58,8 +58,8 @@
             </div>
             <div class="mb-3 row">
                 <label class="col-sm-4 col-form-label" for="print_order_bank_c80">
-                    Add QR code to C80 paper<br />
-                    <small class="form-text text-muted">Add payment QR code to invoice on C80 paper</small>
+                    {{ __('messages.shop_setting.c80') }}<br />
+                    <small class="form-text text-muted">{{ __('messages.shop_setting.c80_placeholder') }}</small>
                 </label>
                 <div class="col-sm-8">
                     <input name="print_order_bank_c80" type="hidden" value="0">
@@ -82,7 +82,7 @@
     <form id="expense-group-form" action="{{ route('admin.setting.expense') }}" method="post">
         @csrf
         <div class="card-header d-flex justify-content-between">
-            <h3>Setup expense voucher</h3>
+            <h3>{{ __('messages.shop_setting.setup_expense_voucher') }}</h3>
             <button class="ms-auto btn btn-outline-primary btn-add-expense" type="button"><i class="bi bi-plus"></i> Add</button>
             <button class="ms-2 btn btn-outline-primary btn-remove-expense" type="button"><i class="bi bi-dash"></i> Remove</button>
             <button class="ms-2 btn btn-primary btn-save" type="submit">Save</button>

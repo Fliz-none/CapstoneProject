@@ -25,7 +25,7 @@ return [
     'dashboard_most_purchased' => 'Mua nhiều nhất',
     'dashboard_highest_debt' => 'Nợ nhiều nhất',
     'dashboard_table_name' => 'Tên',
-    'dashboard_table_total' => 'Tổng cộng',
+    'dashboard_table_total' => 'Tổng',
 
     // Date Range Options
     'daterange.today' => 'Hôm nay',
@@ -67,13 +67,37 @@ return [
     'daterange.months.dec' => 'Tháng 12',
 
     'datatable' => [
+        'purchase' => 'Mua',
+        'debt_payment' => 'Thanh toán nợ',
+        'received' => 'Đã nhận',
+        'paid' => 'Đã trả',
+        'other' => 'Khác',
+        'order' => 'Đơn hàng',
+        'transfer' => 'Chuyển khoản',
+        'cash' => 'Tiền mặt',
+        'amount_due' => 'Tổng trả',
+        'description' => 'Mô tả',
+        'your_branch' => 'Chi nhánh của bạn',
+        'method' => 'Phương thức',
+        'code' => 'Mã',
+        'customer' => 'Khách hàng',
+        'cashier' => 'Thu ngân',
+        'payment' => 'Thanh toán',
+        'payment_method' => 'Phương thức thanh toán',
+        'amount' => 'Số tiền',
+        'total_order' => 'Tổng đơn hàng',
+        'total_amount' => 'Tổng số tiền',
+        'select_customer' => 'Chọn khách hàng',
+        'dealer' => 'Người bán',
+        'branch' => 'Chi nhánh',
+        'status' => 'Trạng thái',
         'processing' => 'Đang xử lý...',
         'length_menu' => '_MENU_ dòng / trang',
-        'zero_records' => 'Không có dữ liệu.',
-        'info' => 'Hiển thị từ _START_ đến _END_ của _TOTAL_ dòng',
-        'info_empty' => 'Không tìm thấy dòng nào',
-        'info_filtered' => '(lọc từ tổng số _MAX_ dòng)',
-        'search_placeholder' => 'Tìm kiếm dữ liệu',
+        'zero_records' => 'Không có nội dung.',
+        'info' => 'Hiển thị từ _START_ đến _END_ trong tổng số _TOTAL_ mục',
+        'info_empty' => 'Không tìm thấy mục nào',
+        'info_filtered' => '(đã lọc từ tổng số _MAX_ mục)',
+        'search_placeholder' => 'Tìm kiếm',
         'info_postfix' => '',
         'search' => '',
         'url' => '',
@@ -84,6 +108,7 @@ return [
             'last' => '&raquo;',
         ],
     ],
+
 
     'lang' => [
         'vi' => 'Tiếng Việt',
@@ -123,6 +148,7 @@ return [
         'systemsetting' => 'Thiết lập hệ thống',
         'systemlog' => 'Nhật ký hệ thống',
         'version' => 'Phiên bản',
+        'discount' => 'Giảm giá',
     ],
 
     // Profile
@@ -137,7 +163,6 @@ return [
         'activity' => 'Nhật ký hoạt động',
         'point' => 'Điểm thưởng',
         'logout' => 'Đăng xuất',
-
         'name' => 'Họ và tên',
         'gender' => 'Giới tính',
         'email' => 'Email',
@@ -152,37 +177,760 @@ return [
         'male' => 'Nam',
         'female' => 'Nữ',
         'other' => 'Khác',
-        'enter_email'=> 'Nhập email của bạn',
-        'enter_phone'=> 'Nhập SĐT của bạn',
-        'enter_address'=> 'Nhập địa chỉ của bạn',
-        'enter_password'=> 'Nhập mật khẩu của bạn',
+        'enter_email' => 'Nhập email của bạn',
+        'enter_phone' => 'Nhập SĐT của bạn',
+        'enter_address' => 'Nhập địa chỉ của bạn',
+        'enter_password' => 'Nhập mật khẩu của bạn',
+        'error_current_password' => 'Mật khẩu hiện tại không đúng',
+
+        'update_profile' => 'Đã cập nhật thành công thông tin cá nhân.',
+
+        'name_required' => 'Trường này là bắt buộc.',
+        'name_string' => 'Định dạng không hợp lệ.',
+        'name_min' => 'Tối thiểu 3 ký tự.',
+        'name_max' => 'Tối đa 125 ký tự.',
+
+        'phone_required' => 'Trường này là bắt buộc.',
+        'phone_numeric' => 'Số điện thoại không hợp lệ.',
+        'phone_digit' => 'Vui lòng nhập số điện thoại hợp lệ.',
+        'phone_regex' => 'Vui lòng nhập số điện thoại hợp lệ.',
+        'phone_unique' => 'Số điện thoại đã được sử dụng.',
+
+        'address_string' => 'Định dạng không hợp lệ.',
+        'address_max' => 'Tối đa 125 ký tự.',
+
+        'gender_required' => 'Trường này là bắt buộc.',
+        'gender_in' => 'Định dạng giới tính không hợp lệ.',
+
+        'email_required' => 'Trường này là bắt buộc.',
+        'email_email' => 'Vui lòng nhập địa chỉ email hợp lệ.',
+        'email_min' => 'Tối thiểu 5 ký tự.',
+        'email_max' => 'Tối đa 125 ký tự.',
+        'email_unique' => 'Email đã được sử dụng.',
+
+        'password_required' => 'Trường này là bắt buộc.',
+        'password_string' => 'Định dạng không hợp lệ.',
+        'password_min' => 'Tối thiểu 8 ký tự.',
+        'password_max' => 'Tối đa 32 ký tự.',
+        'password_confirmation_same' => 'Mật khẩu không khớp nhau.',
+        'password_success' => 'Đã cập nhật mật khẩu thành công.',
+
+        'default_branch' => 'Cập nhật thành công chi nhánh mặt định.',
     ],
 
     //User
     'user' => [
-    'enter_name' => 'Nhập họ tên',
-    'enter_email' => 'Nhập địa chỉ email',
-    'enter_phone' => 'Nhập số điện thoại',
-    'enter_address' => 'Nhập địa chỉ',
-    'all_order' => 'Tất cả đơn hàng',
-    'more_info' => 'Thông tin chi tiết',
-    'city' => 'Chọn tỉnh / thành phố',
-    'district' => 'Chọn quận / huyện',
-    'address' => 'Nhập địa chỉ cụ thể',
-    'create_new_account'=> 'Tạo tài khoản mới',
-    'status'=> 'Trạng thái',
-    'role'=> 'Vai trò',
-    'code'=> 'Mã',
-],
+        'set_password' => 'Đặt lại mật khẩu',
+        'new_password' => 'Mật khẩu mới',
+        'user_mana' => 'Quản lý người dùng',
+        'max_name' => 'Số ký tự không thể vượt quá 50',
+        'enter_name' => 'Nhập họ tên',
+        'enter_email' => 'Nhập địa chỉ email',
+        'enter_phone' => 'Nhập số điện thoại',
+        'enter_address' => 'Nhập địa chỉ',
+        'all_order' => 'Tất cả đơn hàng',
+        'more_info' => 'Thông tin chi tiết',
+        'city' => 'Chọn tỉnh / thành phố',
+        'district' => 'Chọn quận / huyện',
+        'address' => 'Nhập địa chỉ cụ thể',
+        'create_new_account' => 'Tạo tài khoản mới',
+        'status' => 'Trạng thái',
+        'role' => 'Vai trò',
+        'code' => 'Mã',
+        'digits' => 'Số điện thoại phải gồm 10 chữ số!',
+        'unique' => 'Số điện thoại đã được sử dụng!',
+        'regex' => 'Số điện thoại không đúng định dạng!',
+        'required_gender' => 'Vui lòng chọn giới tính!',
+        'min_2' => 'Ít nhất có 2 ký tự!',
+        'email_unique' => 'Email đã sử dụng!',
+        'user_not_exist' => 'Người dùng không tồn tại!',
+        'update_password' => 'Đã cập nhật mật khẩu cho ',
+        'not_delete' => ' không thể bị xóa!',
+        'self_delete' => 'Bạn không thể xóa tài khoản của chính mình!',
+        'account_not_delete' => 'Bạn không thể xóa tài khoản này!',
+    ],
+
+    //Log
+    'log' => [
+        'code' => 'Mã',
+        'user' => 'Người dùng',
+        'action' => 'Hành động',
+        'object' => 'Đối tượng',
+        'code_user' => 'Mã người dùng',
+        'browser' => 'Trình duyệt',
+        'location' => 'Vị trí',
+        'platform' => 'Nền tảng',
+        'device' => 'Thiết bị',
+    ],
+
+    // Đơn hàng
+    'order' => [
+        'order' => 'Quản lý đơn hàng',
+        'new_order' => 'Đơn hàng mới',
+        'select_a_product' => 'Chọn một sản phẩm',
+        'customer_required' => 'Hãy chọn 1 khách hàng để lưu đơn hàng',
+    ],
+    // Giao dịch
+    'transaction' => [
+        'transaction' => 'Giao dịch',
+        'new_transaction' => 'Giao dịch mới',
+        'transaction_mana' => 'Quản lý giao dịch',
+        'add_transaction' => 'Thêm giao dịch',
+        'required_without' => 'Hãy chọn 1 khách hàng',
+    ],
 
 
-    'note'=> 'Nhập ghi chú',
-    'active'=>'Hoạt động',
-    'inactive'=> 'Không hoạt động',
-    'note_content'=> 'Nhập nội dung ghi chú',
-    'add'=> 'Thêm',
+    //Sweetalert
+    'sweet_confirm_title' => 'Chú ý!',
+    'sweet_confirm_text' => 'Vui lòng xác nhận trước khi tiếp tục?',
+    'sweet_confirm_button' => 'Xác nhận',
+    'sweet_cancel_button' => 'Quay lại',
+    'sweet_delay_title' => 'Đang xử lý...',
+    'sweet_delay_text' => 'Hành động của bạn đang mất nhiều thời gian hơn. Vui lòng kiên nhẫn!',
+
+
+    //Branch
+    'branch' => [
+        'branch' => 'Chi nhánh',
+    ],
+
+    //Role
+    'role1' => [
+        'role' => 'Vai trò',
+    ],
+
+    //Warehouse
+    'warehouse' => [
+        'warehouse' => 'Kho',
+    ],
+
+    'set_role' => 'Cài đặt quyền cho ',
+    'search' => 'Tìm kiếm',
+    'available_stock' => 'Hàng tồn',
+    'pay_in_full' => 'Thanh toán hết',
+    'discount' => 'Giảm giá',
+    'item' => 'cái',
+    'managemnent' => 'Quản lý',
+    'msg_update_role' => 'Cập nhật vai trò thành công',
+    'msg_update_avatar' => 'Cập nhật ảnh đại diện thành công',
+    'for' => ' cho ',
+    'error' => 'Đã xảy ra lỗi: ',
+    'role' => 'Bạn không có quyền truy cập!',
+    'msg' => 'Đã xảy ra lỗi, vui lòng tải lại trang và thử lại!',
+    'active' => 'Đang hoạt động',
+    'inactive' => 'Không hoạt động',
+    'processing' => 'Đang xử lý',
+    'queued' => 'Đang chờ',
+    'complete' => 'Hoàn tất',
+    'note' => 'Ghi chú',
+    'note_content' => 'Nhập nội dung ghi chú',
+    'add' => 'Thêm',
+    'new' => 'Mới',
+    'create' => 'Tạo',
+    'created' => 'Đã tạo thành công ',
     'update' => 'Cập nhật',
+    'updated' => 'Đã cập nhật thành công ',
     'save' => 'Lưu',
     'cancel' => 'Hủy',
+    'delete' => 'Xóa',
+    'deleted' => 'Đã xóa thành công ',
+    'unknown' => 'Không xác định',
+    'data_invalid' => 'Dữ liệu không hợp lệ',
+    'not_empty' => 'Vui lòng không để trống trường này',
+    'one_least' => 'Cần ít nhất một vật phẩm',
+    'min' => 'Phải đạt số lượng tối thiểu',
+    'max' => 'Không được vượt quá số lượng tối đa',
+    'cannot_delete' => 'Không thể xóa',
+
+    //Expense
+    'expense' => [
+        'expense' => 'Chi phí',
+        'expense_management' => 'Quản lí chi phí',
+        'expense_voucher' => 'Phiếu chi',
+        'payment_method' => 'Phương thức thanh toán',
+        'transfer' => 'Chuyển khoản',
+        'cash' => 'Tiền mặt',
+        'card' => 'Quyẹt thẻ',
+        'receive' => 'Người nhận',
+        'select_receive' => 'Chọn người nhận',
+        'category' => 'Danh mục chi phí',
+        'created_by' => 'Người tạo',
+        'image' => 'Hình ảnh',
+        'remove' => 'Xóa',
+        'approve' => 'Chấp nhận',
+        'avatar_max_size' => 'Hình ảnh không được vượt quá 3 MB.',
+        'receiver_not_found' => 'Người nhận không tồn tại.',
+        'receiver_required' => 'Vui lòng chọn người nhận.',
+        'payment_invalid' => 'Dữ liệu phương thức thanh toán không hợp lệ.',
+        'payment_out_of_range' => 'Phương thức thanh toán không hợp lệ.',
+        'amount_required' => 'Vui lòng nhập số tiền.',
+        'amount_not_number' => 'Số tiền phải là một số.',
+        'amount_too_small' => 'Số tiền phải lớn hơn hoặc bằng 0.',
+        'amount_too_large' => 'Số tiền vượt quá giá trị cho phép của phiếu thanh toán.',
+        'note_required' => 'Vui lòng nhập ghi chú.',
+        'note_too_long' => 'Không được vượt quá 255 ký tự.',
+        'error' => 'Đã xảy ra lỗi: ',
+        'role' => 'Bạn không có quyền truy cập!',
+        'msg' => 'Đã xảy ra lỗi, vui lòng tải lại trang và thử lại!',
+    ],
+
+    //Product
+    'product' => [
+        'product' => 'Sản phẩm',
+        'product_name' => 'Tên sản phẩm',
+        'product_management' => 'Quản lí sản phẩm',
+        'online_and_offline' => 'Bán trực tuyến và bán trực tiếp',
+        'online' => 'Bán trực tuyến',
+        'offline' => 'Bán trực tiếp',
+        'locked' => 'Khóa bán',
+        'feature' => 'Vừa ra mắt',
+        'product_sku' => 'Sản phẩm SKU',
+        'exp' => 'Hạn sử dụng',
+        'technical' => 'Thông số kỹ thuật',
+        'product_gallery' => 'Trưng bày ảnh sản phẩm',
+        'post' => 'Đăng bài',
+        'keyword' => 'Từ khóa',
+        'keyword_placeholder' => 'Từ khóa để tìm kiếm',
+        'minimum_stock' => 'Tồn kho tối thiểu',
+        'allow_review' => 'Cho phép theo dõi',
+        'sort' => 'Sắp xếp',
+        'import_excel' => 'Nhập từ excel',
+        'export_excel' => 'Xuất ra excel',
+
+        'product_sku_unique' => 'Đã tồn tại mã SKU',
+
+        'sort_success' => 'Đã sắp xếp thành công',
+        'error' => 'Đã xảy ra lỗi: ',
+        'role' => 'Bạn không có quyền truy cập!',
+        'msg' => 'Đã xảy ra lỗi, vui lòng tải lại trang và thử lại!',
+
+        'import_success' => 'Nhập excel thành cộng',
+        'export_success' => 'Xuất excel thành cộng',
+        'but' => ', do',
+        'but_end' => ' vật phẩm không thể được cập nhật ',
+    ],
+
+    //Category
+    'category' => [
+        'category' => 'Danh mục',
+        'category_management' => 'Quản lý danh mục',
+        'new_catalogue' => 'Danh mục mới',
+        'catagory_array' => 'Danh mục: ',
+        'category_name' => 'Tên danh mục',
+        'category_sort' => 'Sắp xếp',
+        'category_required' => 'Danh mục không thể để trống',
+        'category_min' => 'Phải chọn nhiều hơn 1 danh mục',
+        'category_delete' => 'Xóa danh mục chung của ',
+        'category_none_common' => 'Không có danh mục chung giữa các sản phẩm',
+        'category_not_found' => 'Không tìm thấy danh mục',
+        'category_parent' => 'Danh mục cha',
+        'select_category_parent' => 'Chọn danh mục cha',
+
+        'parent_error' => 'Danh mục cha phải được tạo trước danh mục con',
+        'parent_diffirent' => 'Danh mục cha phải khác danh mục hiện tại',
+        'you_are_offline' => 'Bạn đang offline',
+
+        'sort_success' => 'Đã sắp xếp thành công',
+        'error' => 'Đã xảy ra lỗi: ',
+        'role' => 'Bạn không có quyền truy cập!',
+        'msg' => 'Đã xảy ra lỗi, vui lòng tải lại trang và thử lại!',
+    ],
+
+    //Variable
+    'variable' => [
+        'variable' => 'Biến thể',
+        'variable_management' => 'Quản lý biến thể',
+        'variable_name' => 'Tên biến thể',
+    ],
+
+    //Attribute
+    'attribute' => [
+        'attribute' => 'Thuộc tính',
+        'attribute_name' => 'Tên thuộc tính',
+        'attribute_management' => 'Quản lý thuộc tính',
+        'attribute_placeholder' => 'Nhập giá trị thuộc tính. MẸO: sử dụng dấu phẩy để thêm nhiều hơn một giá trị',
+    ],
+
+    //Discount
+
+    'discount_' => [
+        'discount' => 'Giảm giá',
+        'discount_management' => 'Quản lý Giảm giá',
+        'discount_name' => 'Tên Giảm giá',
+        'vality' => 'Hợp lệ',
+        'type' => 'Loại Giảm giá',
+        'select_type' => 'Chọn loại Giảm giá',
+        'your_branch' => 'Chi nhánh của bạn',
+        'select_branch' => 'Chọn chi nhánh',
+        'percent' => 'Giảm giá theo %',
+        'fix_discount' => 'Giảm giá cố định',
+        'buy' => 'Mua X tặng Y miễn phí ',
+        'value' => 'Giá trị',
+        'quantity' => 'Số lượng',
+        'free' => 'Tặng',
+        'start' => 'Ngày bắt đầu',
+        'end' => 'Ngày kết thúc',
+        'apply' => 'Áp dụng',
+        'locked' => 'Khóa',
+
+        'required' => 'Hãy nhập giá Giảm giá',
+        'not_empty' => 'Không thể để trống',
+        'not_full' => 'Không thể Giảm giá 100%',
+        'needed' => ' nhập số lượng mua và số lượng tặng',
+        'end_required' => 'Ngày kết thúc không thể trước ngày bắt đầu ',
+        'date_required' => 'Ngày bắt đầu hoặc ngày kết thúc không hợp lệ',
+
+        'error' => 'Đã xảy ra lỗi: ',
+        'role' => 'Bạn không có quyền truy cập!',
+        'msg' => 'Đã xảy ra lỗi, vui lòng tải lại trang và thử lại!',
+    ],
+
+    //Stock
+    'stock' => [
+        'stock' => 'Tồn kho',
+        'stock_management' => 'Quản lý tồn kho',
+        'stock_name' => 'Tên tồn kho',
+        'image' => 'Hình ảnh',
+        'quantity' => 'Số lượng',
+        'price' => 'Giá nhập',
+        'stock_import' => 'Kho nhập',
+        'stock_export' => 'Kho xuất',
+        'exp' => 'Hạn sử dụng',
+        'your_warehouse' => 'Kho của bạn',
+        'unit' => 'Đơn vị',
+        'batch' => 'Lô hàng',
+        'warehouse' => 'Kho',
+        'warehouse_select' => 'Chọn kho',
+        'supplier' => 'Nhà cung cấp',
+        'supplier_select' => 'Chọn nhà cung cấp',
+        'waiting' => 'Chưa xử lý',
+        'imported' => 'Đã nhập',
+        'sync_stock' => 'Đồng bộ kho thành công',
+
+        'print' => 'In',
+        'sync' => 'Đồng bộ kho',
+        'stock_list' => 'Danh sách hàng tồn kho',
+        'select_category' => 'Chọn danh mục',
+        'opening_stock' => 'Mở bán',
+        'stock_in' => 'Hàng vào',
+        'stock_out' => 'Hàng ra',
+        'closed_stock' => 'Đóng kho',
+        'actual_stock' => 'Hàng thực tế',
+        'minimum_stock' => 'số lượng ít nhất',
+        'select_warehouse_and_category' => 'Chọn danh mục và kho để liệt kê',
+
+    ],
+    //Import
+    'import' => [
+        'selling' => 'Đang bán',
+        'imported' => 'Đã nhập',
+        'import' => 'Nhập hàng',
+        'import_date' => 'Ngày nhập',
+        'import_total' => 'Tổng nhập',
+        'import_management' => 'Quản lý nhập hàng',
+        'import_detail' => 'Chi tiết nhập hàng',
+        'import_content' => 'Nội dung nhập hàng',
+        'created_by' => 'Người tạo',
+        'receive_from' => 'Người nhận',
+    ],
+    //Export
+    'export' => [
+        'export' => 'Xuất hàng',
+        'export_management' => 'Quản lý xuất hàng',
+        'export_date' => 'Ngày xuất',
+        'for_sale' => 'Bán ngoài',
+        'internal_export' => 'Xuất nội bộ',
+        'cancel' => 'Đã hủy',
+        'content' => 'Nội dung xuất hàng',
+        'type' => 'Loại xuất hàng',
+        'recieved' => 'Sau khi kho nhận hàng đã xác nhận biên lai hàng hóa, biên lai giao hàng sẽ không thể sửa đổi được nữa.',
+        'cannot' => 'Không thể sửa đổi xuất khẩu cho một đơn hàng. Vui lòng chỉ sửa đổi trên hóa đơn.',
+        'cannot_found' => 'Không thể tìm thấy xuất hàng',
+        'cannot_delete' => 'Không thể xóa bản xuất này. Vui lòng xóa đơn hàng thay thế',
+        'cannot_export' => 'Sau khi kho nhận hàng đã xác nhận biên lai hàng hóa, thì không thể xóa lô hàng xuất khẩu này',
+    ],
+
+    //Work schedule
+    'work_schedule' => [
+        'work_schedule' => 'Lịch làm việc',
+        'summary' => 'Tổng kết',
+        'work_schedule_management' => 'Quản lý lịch làm việc',
+        'work_schedule_list' => 'Danh sách lịch làm việc',
+        'your_branch' => 'Chi nhánh của bạn',
+        'all_branch' => 'Toàn chi nhánh',
+        'attendance_management' => 'Quản lý chấm công',
+        'attendance' => 'Chấm công',
+        'image' => 'Hình ảnh',
+        'name' => 'Tên',
+        'shift_checked' => 'Đã kiểm tra ca làm việc',
+        'not_checked' => 'Chưa kiểm tra',
+        'absent' => 'Vắng mặt',
+        'work_shift' => 'Ca làm việc',
+        'month_summary' => 'Tổng kết tháng',
+        'name_employee' => 'Tên nhân viên',
+        'total_hours' => 'Tổng giờ làm việc',
+        'total_time_late' => 'Tổng thời gian trễ',
+        'total_shift' => 'Tổng số ca',
+        'no_shift' => 'Không có ca làm việc',
+        'not_available' => 'Không có sẵn',
+        'shift' => 'Ca',
+        'shift_enough' => ' đã đủ số lượng nhân viên đăng ký cho ca này.',
+
+        'shift_success' => 'Đăng ký ca thành công ',
+        'shift_cancel' => 'Hủy đăng ký ca ',
+        'for' => ' cho ',
+
+
+        'work_image_error' => 'Hệ thống không thể lấy được hình ảnh chấm công.',
+        'work_data_invalid' => 'dữ liệu ảnh không hợp lệ.',
+        'no_work' => 'Không còn ca làm việc để chấm công',
+        'msg' => 'Đã xảy ra lỗi, vui lòng liên hệ với nhà phát triển phần mềm để được hỗ trợ!',
+        'check_out_success_auto' => 'Check-out thành công! Ca làm việc trước của bạn đã được tự động ghi lại.',
+        'check_out_success' => 'Check-out thành công!',
+        'check_in_success' => 'Check-in thanh công!',
+
+        'checkout_error' => 'Thời gian check-out phải sau thời gian check-in',
+        'checkin_invaled' => 'Lỗi định dạng thời gian check-in',
+        'checkout_invaled' => 'Lỗi định dạng thời gian check-out',
+
+    ],
+
+    //Post
+
+    'post' => [
+        'post' => 'Bài viết',
+        'new_post' => 'Bài viết mới',
+        'post_management' => 'Quản lý bài viết',
+        'post_list' => 'Danh sách bài viết',
+        'title' => 'Tiêu đề',
+        'content' => 'Nội dung',
+        'author' => 'Tác giả',
+        'image' => 'Hình ảnh',
+        'category' => 'Danh mục',
+        'status' => 'Trạng thái',
+        'type' => 'Loại',
+        'created_at' => 'Ngày tạo',
+        'short' => 'Miêu tả ngắn',
+        'puslish_post' => 'Đăng bài viết',
+        'publish' => 'Đăng bài',
+        'feature' => 'Nổi bật',
+        'hide' => 'Ẩn',
+        'time' => 'Thời gian',
+        'image_feature' => 'Hình ảnh nổi bật',
+        'success' => 'Thành công',
+    ],
+
+
+    //Sort
+    'sort' => [
+        'sort' => 'Sắp xếp',
+        'sort_success' => 'Sắp xếp thành công',
+        'type' => 'Loại',
+        'sort_by' => 'Sắp xếp theo',
+        'old' => 'Thời gian (cũ nhất trước)',
+        'new' => 'Thời gian (mới nhất trước)',
+        'a_z' => 'Tên (A-Z)',
+        'z_a' => 'Tên (Z-A)',
+    ],
+    //Categories
+    'categories' => [
+        'category' => 'Danh mục',
+        'category_management' => 'Quản lý danh mục',
+        'category_list' => 'Danh sách danh mục',
+        'name' => 'Tên danh mục',
+        'parent' => 'Danh mucch cha',
+        'sort' => 'Sắp xếp',
+        'created_at' => 'Ngày tạo',
+        'being_used' => ' đang được sử dụng!',
+    ],
+
+    //Images
+    'images' => [
+        'image' => 'Hình ảnh',
+        'image_management' => 'Quản lý hình ảnh',
+        'image_list' => 'Danh sách hình ảnh',
+        'name' => 'Tên hình ảnh',
+        'created_at' => 'Ngày tạo',
+        'being_used' => ' đang được sử dụng!',
+        'upload_success' => 'Tạo hình ảnh thành công',
+        'regex' => 'Tên chỉ được chứa chữ thường, chữ hoa, số và dấu gạch nối.'
+    ],
+    //Local
+
+    'local' => [
+        'local' => 'Địa phương',
+        'local_management' => 'Quản lý Địa phương',
+        'local_list' => 'Danh sách Địa phương',
+        'name' => 'Tên Địa phương',
+        'created_at' => 'Ngày tạo',
+        'being_used' => ' đang được sử dụng!',
+        'city' => 'Thành phố',
+        'district' => 'Quận / Huyện',
+    ],
+    //Branches
+
+    'branches' => [
+        'branch' => 'Chi nhánh',
+        'branch_management' => 'Quản lý Chi nhánh',
+        'branch_list' => 'Danh sách Chi nhánh',
+        'new_branch' => 'Chi nhánh mới',
+        'name' => 'Tên Chi nhánh',
+        'created_at' => 'Ngày tạo',
+        'being_used' => ' đang được sử dụng!',
+        'phone' => 'Số điện thoại',
+        'address' => 'Địa chỉ',
+
+        'phone_regex' => 'Số điện thoại phải bằng 10 số',
+        'phone_unique' => 'Số điện thoại đã được sử dụng',
+    ],
+
+    //warehouse
+
+    'warehouses' => [
+        'warehouse' => 'Kho',
+        'warehouse_management' => 'Quản lý Kho',
+        'warehouse_list' => 'Danh sách Kho',
+        'new_warehouse' => 'Kho mới',
+        'name' => 'Tên Kho',
+        'created_at' => 'Ngày tạo',
+        'being_used' => ' đang được sử dụng!',
+        'phone' => 'Số điện thoại',
+        'address' => 'Địa chi',
+        'select_branch' => 'Chọn chi nhánh',
+        'on_sale' => 'Mở bán',
+        'internal' => 'Dùng nội bộ',
+        'lock' => 'Khóa',
+        'status' => 'Trạng thái',
+    ],
+
+
+    //Supplier
+
+    'supplier' => [
+        'supplier' => 'Nhà cung cấp',
+        'supplier_management' => 'Quản lý Nhà cung cấp',
+        'supplier_list' => 'Danh sách Nhà cung cấp',
+        'new_supplier' => 'Nhà cung cấp mới',
+        'name' => 'Tên Nhà cung cấp',
+        'phone' => 'Số điện thoại',
+        'address' => 'Địa chỉ',
+        'created_at' => 'Ngày tạo',
+        'being_used' => ' đang được sử dụng!',
+        'phone_regex' => 'Số điện thoại phải bằng 10 số',
+        'phone_unique' => 'Số điện thoại đã được sử dụng',
+        'email_unique' => 'Email đã được sử dụng',
+        'receiving_warehouse' => 'Kho nhập',
+        'new_export' => 'Xuất hàng mới',
+    ],
+
+    //Role
+
+    'roles' => [
+        'log_management' => 'Quản lý nhật ký',
+        'role' => 'Vai trò',
+        'role_management' => 'Quản lý Vai trò',
+        'role_list' => 'Danh sách Vai trò',
+        'new_role' => 'Vai trò mới',
+        'name' => '	Tên vai trò',
+        'created_at' => 'Ngày tạo',
+        'being_used' => ' đang được sử dụng!',
+        'permission' => 'Quyền',
+        'select_permission' => 'Chọn quyền',
+        'placeholder' => 'Vui lòng nhập tên vai trò',
+
+        'unique' => 'Vai trò đã sử dụng',
+        'required' => 'Vui lòng nhập tên vai trò',
+        'string' => 'Vai trò phải bằng chữ',
+        'min' => 'Vai trò phải bằng nhất 3 ký tự',
+        'max' => 'Vai trò trong 125 ký tự',
+
+    ],
+
+    //Version
+
+    'version' => [
+        'version' => 'Phiên bản',
+        'version_management' => 'Quản lý Phiên bản',
+        'version_list' => 'Danh sách Phiên bản',
+        'new_version' => 'Phiên bản mới',
+        'name' => 'Phiên bản',
+        'created_at' => 'Ngày tạo',
+        'being_used' => ' đang được sử dụng!',
+        'updated_by' => 'Người cập nhật',
+        'updated_at' => 'Ngày cập nhật',
+    ],
+
+    //Setting
+
+    'setting' => [
+        'setting' => 'Cài đặt',
+        'setting_management' => 'Quản lý Cài đặt',
+        'general_setting' => 'Cài đặt chung',
+        'shop_setting' => 'Cài đặt cửa hàng',
+        'website_setting' => 'Cài đặt website',
+        'work_shift' => 'Cài đặt ca làm',
+
+        'logo_setting' => 'Cài đặt logo',
+        'website_icon' => 'Biểu tượng website',
+        'color' => 'Logo màu',
+        'square' => 'Logo màu - vuông',
+        'black_and_white' => 'Logo đen trắng',
+        'black_and_white_square' => 'Logo đen trắng - vuông',
+
+        'payment_setting' => 'Cài đặt thanh toán',
+        'bank' => 'Ngân hàng',
+        'account' => 'Tên tài khoản',
+        'account_number' => 'Số tài khoản',
+        'placeholder' => 'Dùng mã QR để thanh toán',
+        'bank_select' => 'Chọn ngân hàng',
+
+        'email_setting' => 'Cài đặt email',
+        'application_name' => 'Tên cửa hàng',
+        'application_placeholder' => 'Hiển thị trên trang web và tiêu đề email',
+        'noti_email' => 'Email thống báo',
+        'noti_email_placeholder' => 'Được sử dụng để gửi thông báo đặt hàng và đặt dịch vụ',
+        'user_email' => 'Email người dùng',
+        'user_email_placeholder' => 'Tên người dùng cho máy chủ gửi email của toàn bộ hệ thống email',
+        'password' => 'Mật khẩu áp dụng',
+        'password_placeholder' => 'Mật khẩu cho máy chủ gửi email của toàn bộ hệ thống email',
+        'smtp_encryption' => 'Mã hoá SMTP',
+        'smtp_encryption_placeholder' => 'Được sử dụng để gửi email an toàn',
+        'mail_sending_protocol' => 'Giao thức gửi email',
+        'mail_sending_protocol_placeholder' => 'Giao thức được sử dụng để gửi tất cả email hệ thống',
+        'port' => 'Cổng email',
+        'port_placeholder' => 'Cổng để truy cập vào máy chủ email',
+        'mail_server' => 'Mail máy chủ',
+        'mail_server_placeholder' => 'Máy chủ xử lý tất cả việc gửi email cho hệ thống',
+        'mail_auto' => 'Tần suất gửi email tự động',
+        'mail_auto_placeholder' => 'Tần suất thông báo qua email về các sản phẩm sắp hết hạn',
+
+        'social_setting' => 'Cấu hình kênh truyền thông xã hội',
+        'facebook' => 'Đường dẫn đến facebook',
+        'google' => 'Đường dẫn đến google',
+        'twitter' => 'Đường dẫn đến twitter',
+        'youtube' => 'Đường dẫn đến youtube',
+        'linkedin' => 'Đường dẫn đến linkedin',
+        'instagram' => 'Đường dẫn đến instagram',
+        'pinterest' => 'Đường dẫn đến pinterest',
+        'zalo' => 'Số điện thoại đăng kí zalo',
+    ],
+
+    //ShopSetting
+    'shop_setting' => [
+        'shop_setting' => 'Cài đặt cửa hàng',
+        'inventory_management' => 'Quản lý hàng tồn kho',
+        'inventory_placeholder' => 'Kiểm soát lượng hàng nhập, xuất và hàng tồn kho còn lại',
+        'reward' => 'Tỷ giá quy đổi điểm thưởng',
+        'reward_placeholder' => 'Số tiền chi tiêu tương đương với 1 điểm thưởng',
+
+        'invoice' => 'Cài đặt in hoá đơn',
+        'a5' => 'Thêm mã QR vào giấy A5',
+        'a5_placeholder' => 'Thêm mã QR thanh toán vào hóa đơn trên giấy A5',
+        'c80' => 'Thêm mã QR vào giấy C80',
+        'c80_placeholder' => 'Thêm mã QR thanh toán vào hóa đơn trên giấy C80',
+        'print_success' => 'In hóa đơn thành công',
+
+        'setup_expense_voucher' => 'Thiết lập chứng từ chi phí',
+    ],
+
+    'shift_setting' => [
+        'shift_setting' => 'Cài đặt ca',
+        'name' => 'Tên ca',
+        'checkin' => 'Thời gian vào ca',
+        'checkout' => 'Thời gian ra ca',
+        'staff' => 'Số lượng nhân viên/Ca làm việc',
+        'allow' => 'Cho phép nhân viên tự đăng ký ca làm việc',
+        'allow_placeholder' => 'Nếu bị vô hiệu hóa, chỉ có quản trị viên mới có thể đăng ký ca làm việc cho nhân viên',
+        'wifi_require' => 'Yêu cầu chấm công trên Wi-Fi của công ty',
+        'wifi_require_placeholder' => 'Nếu được bật, nhân viên sẽ được yêu cầu đăng ký và trả phòng trên Wi-Fi của công ty',
+        'quantity_staff' => 'Số lượng nhân viên/Ca',
+        'no_shift' => 'Không còn ca làm việc',
+        'shift_unique' => 'Tên ca đã tồn tại',
+    ],
+
+    'setting_controller' => [
+        'setting_email' => 'Cài đặt thư đã được lưu thành công!',
+        'setting_social' => 'Cài đặt kênh truyện thông xã hội được lưu thông',
+        'expense_group__list_saved_successfully' => 'Danh sách nhóm chi phí đã được lưu thành công.',
+        'payment_setting' => 'Cài đặt thanh toán đã được lưu thành công.',
+        'shift_setting' => 'Một số nhân viên đã đăng ký ca làm việc này! Không thể cập nhật cài đặt.',
+        'work_setting' => 'Cài đặt lịch làm việc đã thành công.',
+
+        'expense_group_required' => 'Danh sách chi phí không được để trống.',
+        'expense_group_array' => 'Định dạng danh sách chi phí không hợp lệ.',
+        'expense_group__required' => 'Vui lòng nhập mô tả chi phí.',
+        'expense_group__string' => 'Mô tả chi phí phải là dạng chuỗi.',
+        'expense_group__max' => 'Mô tả chi phí không được vượt quá 255 ký tự.',
+
+        'bank_ids__required' => 'Vui lòng chọn ít nhất một ngân hàng.',
+        'bank_ids__array' => 'Định dạng danh sách ngân hàng không hợp lệ.',
+        'bank_numbers__required' => 'Vui lòng nhập ít nhất một số tài khoản ngân hàng.',
+        'bank_numbers__array' => 'Định dạng danh sách số tài khoản ngân hàng không hợp lệ.',
+        'bank_accounts__required' => 'Vui lòng nhập ít nhất một tên chủ tài khoản.',
+        'bank_accounts__array' => 'Định dạng danh sách tên chủ tài khoản không hợp lệ.',
+
+        'bank_ids__*__required' => 'Vui lòng chọn ngân hàng.',
+        'bank_accounts__*__required' => 'Vui lòng nhập tên chủ tài khoản.',
+        'bank_accounts__*__string' => 'Tên chủ tài khoản phải là một chuỗi ký tự.',
+        'bank_accounts__*__max' => 'Tên chủ tài khoản không được vượt quá 255 ký tự.',
+        'bank_numbers__*__required' => 'Vui lòng nhập số tài khoản ngân hàng.',
+        'bank_numbers__*__numeric' => 'Số tài khoản ngân hàng phải là số.',
+
+
+        'shift_name__required' => 'Vui lòng thiết lập ít nhất một ca làm việc.',
+        'sign_checkin__required' => 'Vui lòng thiết lập ít nhất một ca làm việc.',
+        'sign_checkout__required' => 'Vui lòng thiết lập ít nhất một ca làm việc.',
+        'staff_number__required' => 'Vui lòng thiết lập ít nhất một ca làm việc.',
+
+        'shift_name__*__required' => 'Vui lòng nhập tên ca làm việc.',
+        'shift_name__*__string' => 'Tên ca làm việc không hợp lệ.',
+        'shift_name__*__min' => 'Tên ca làm việc không được để trống.',
+
+        'sign_checkin__*__required' => 'Vui lòng chọn thời gian check-in.',
+        'sign_checkout__*__required' => 'Vui lòng chọn thời gian check-out.',
+        'sign_checkin__*__date_format' => 'Định dạng thời gian check-in không hợp lệ.',
+        'sign_checkout__*__date_format' => 'Định dạng thời gian check-out không hợp lệ.',
+        'sign_checkout__*__after' => 'Thời gian check-out phải sau thời gian check-in.',
+
+        'staff_number__*__required' => 'Vui lòng nhập số lượng nhân viên.',
+        'staff_number__*__integer' => 'Số lượng nhân viên phải là số nguyên.',
+        'staff_number__*__min' => 'Số lượng nhân viên phải ít nhất là 1.',
+
+    ],
+
+    //OrderController
+    'date'=>'ngày',
+    'receiver'=>'Người nhận',
+    'built'=>'Được thiết kế với ',
+    'by'=>' bởi',
+    'order_controller' => [
+        'customer' => 'Khách hàng',
+        'product' => 'Sản phẩm',
+        'unit' => 'Đơn vị',
+        'order' => 'Đơn hàng',
+        'rate' =>'Tỉ lệ',
+        'quantity' => 'Số lượng',
+
+        'min'=>'Không thể bé hơn 0!',
+
+        'order_discount' => 'Giảm giá đơn hàng',
+        'order_note' => 'Ghi chú đơn hàng',
+        'order_detail' => 'Chi tiết đơn hàng',
+
+        'product_price'=> 'Giá sản phẩm',
+        'product_quantity'=> 'Số lượng sản phẩm',
+        'product_discount'=> 'Giảm giá sản phẩm',
+        'product_note'=> 'Ghi chú sản phẩm',
+
+        'unit_rate'=> 'Tỉ lệ đơn vị',
+
+        'payment_method'=> 'Phương thức thanh toán',
+        'payment_amount'=> 'Số tiền thanh toán',
+        'status'=> 'Trạng thái trả về',
+
+    ]
+
+
+
 
 ];

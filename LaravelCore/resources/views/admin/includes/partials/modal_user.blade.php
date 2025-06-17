@@ -62,10 +62,10 @@
                                 </div>
                             </div>
                             <div class="collapse" id="user-more">
-                                <div class="mb-3 form-group">
+                                <!-- <div class="mb-3 form-group">
                                     <label class="col-form-label fw-bold" data-bs-toggle="tooltip" data-bs-title="User's date of birth" for="user-birthday">{{ __('messages.profile.birthday') }}</label>
                                     <input class="form-control" id="user-birthday" name="birthday" type="date" max="{{ now()->format('Y-m-d') }}" autocomplete="off">
-                                </div>
+                                </div> -->
                                 <div class="mb-3 form-group">
                                     <label class="form-label fw-bold" data-bs-toggle="tooltip" data-bs-title="Notes for memory aid" for="user-note">{{ __('messages.note') }}</label>
                                     <textarea class="form-control" id="user-note" name="note" rows="2" placeholder="{{ __('messages.note_content') }}" autocomplete="off"></textarea>
@@ -112,8 +112,8 @@
                     <div class="modal-body overflow-auto row justify-content-center">
                         <div class="col-12 col-md-4">
                             <div class="form-group search-container">
-                                <label class="form-label fw-bolder d-flex align-items-center mb-0" data-bs-toggle="tooltip" data-bs-title="Select the user's role" for="role-search-input">Role</label>
-                                <input class="form-control search-input" id="role-search-input" placeholder="Enter keyword to search">
+                                <label class="form-label fw-bolder d-flex align-items-center mb-0" data-bs-toggle="tooltip" data-bs-title="Select the user's role" for="role-search-input">{{ __('messages.role1.role') }}</label>
+                                <input class="form-control search-input" id="role-search-input" placeholder="{{ __('messages.search') }}">
                             </div>
                             <div class="search-item overflow-auto h-100" id="roles-check">
                                 <ul class="list-group search-list">
@@ -128,8 +128,8 @@
                         </div>
                         <div class="col-12 col-md-4">
                             <div class="form-group search-container">
-                                <label class="form-label fw-bolder d-flex align-items-center mb-0" data-bs-toggle="tooltip" data-bs-title="Select the warehouses the user manages" for="warehouse-search-input">Warehouse</label>
-                                <input class="form-control search-input" id="warehouse-search-input" placeholder="Enter keyword to search">
+                                <label class="form-label fw-bolder d-flex align-items-center mb-0" data-bs-toggle="tooltip" data-bs-title="Select the warehouses the user manages" for="warehouse-search-input">{{ __('messages.warehouse.warehouse') }}</label>
+                                <input class="form-control search-input" id="warehouse-search-input" placeholder="{{ __('messages.search') }}">
                             </div>
                             <div class="search-item overflow-auto h-100" id="warehouses-check">
                                 <ul class="list-group search-list">
@@ -144,8 +144,8 @@
                         </div>
                         <div class="col-12 col-md-4">
                             <div class="form-group search-container">
-                                <label class="form-label fw-bolder d-flex align-items-center mb-0" data-bs-toggle="tooltip" data-bs-title="Select the branches the user manages" for="branch-search-input">Branch</label>
-                                <input class="form-control search-input" id="branch-search-input" placeholder="Enter keyword to search">
+                                <label class="form-label fw-bolder d-flex align-items-center mb-0" data-bs-toggle="tooltip" data-bs-title="Select the branches the user manages" for="branch-search-input">{{ __('messages.branch.branch') }}</label>
+                                <input class="form-control search-input" id="branch-search-input" placeholder="{{ __('messages.search') }}">
                             </div>
                             <div class="search-item overflow-auto h-100" id="branches-check">
                                 <ul class="list-group search-list">
@@ -185,12 +185,12 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-info">
-                        <h1 class="modal-title fs-5 text-white" id="user_password-modal-label">Set Password</h1>
+                        <h1 class="modal-title fs-5 text-white" id="user_password-modal-label">{{ __('messages.user.set_password') }}</h1>
                         <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group mb-3">
-                            <label class="form-label" for="user_password-password">New Password</label>
+                            <label class="form-label" for="user_password-password">{{ __('messages.user.new_password') }}</label>
                             <input class="form-control" id="user_password-password" name="password" type="text">
                         </div>
                         <hr class="px-5">

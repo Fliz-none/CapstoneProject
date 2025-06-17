@@ -16,52 +16,11 @@ use Yajra\DataTables\DataTables;
 
 class ImportController extends Controller
 {
-    const NAME = 'Import', MESSAGES = [
-        'note.required' => 'Content: ' . Controller::NOT_EMPTY,
-        'note.min' => 'Content: ' . Controller::MIN,
-        'note.max' => 'Content: ' . Controller::MAX,
-        'warehouse_id.required' => 'Warehouse: ' . Controller::NOT_EMPTY,
-        'warehouse_id.numeric' => 'Warehouse: ' . Controller::DATA_INVALID,
-        'supplier_id.required' => 'Supplier: ' . Controller::NOT_EMPTY,
-        'supplier_id.numeric' => 'Supplier: ' . Controller::DATA_INVALID,
-        'status.required' => 'Content: ' . Controller::NOT_EMPTY,
-        'status.string' => 'Content: ' . Controller::DATA_INVALID,
-        'status.max' => 'Content: ' . Controller::MAX,
+    const NAME = 'Import';
 
-        'variable_ids.required' => 'Product: ' . Controller::NOT_EMPTY,
-        'variable_ids.array' => 'Product: ' . Controller::DATA_INVALID,
-        'variable_ids.*.required' => 'Product: ' . Controller::NOT_EMPTY,
-        'variable_ids.*.numeric' => 'Product: ' . Controller::DATA_INVALID,
-        'unit_ids.required' => '' . Controller::NOT_EMPTY,
-        'unit_ids.array' => '' . Controller::DATA_INVALID,
-        'unit_ids.*.required' => '' . Controller::NOT_EMPTY,
-        'unit_ids.*.numeric' => '' . Controller::DATA_INVALID,
-        'current_unit_ids.required' => 'Unit: ' . Controller::NOT_EMPTY,
-        'current_unit_ids.array' => 'Unit: ' . Controller::DATA_INVALID,
-        'current_unit_ids.*.required' => 'Unit: ' . Controller::NOT_EMPTY,
-        'current_unit_ids.*.numeric' => 'Unit: ' . Controller::DATA_INVALID,
-        'quantities.required' => 'Quantity: ' . Controller::NOT_EMPTY,
-        'quantities.array' => 'Quantity: ' . Controller::DATA_INVALID,
-        'quantities.*.required' => 'Quantity: ' . Controller::NOT_EMPTY,
-        'quantities.*.numeric' => 'Quantity: ' . Controller::DATA_INVALID,
-        'prices.required' => 'Price: ' . Controller::NOT_EMPTY,
-        'prices.array' => 'Price: ' . Controller::DATA_INVALID,
-        'prices.*.required' => 'Price: ' . Controller::NOT_EMPTY,
-        'prices.*.numeric' => 'Price: ' . Controller::DATA_INVALID,
-        'lots.required' => 'Lot: ' . Controller::NOT_EMPTY,
-        'lots.array' => 'Lot: ' . Controller::DATA_INVALID,
-        'lots.*.string' => 'Lot: ' . Controller::DATA_INVALID,
-        'lots.*.max' => 'Lot: ' . Controller::MAX,
-        'expireds.required' => 'Expired: ' . Controller::NOT_EMPTY,
-        'expireds.array' => 'Expired: ' . Controller::DATA_INVALID,
-        'expireds.*.date_format' => 'Expired: ',
-        'import_detail_ids.required' => 'Import Detail: ' . Controller::DATA_INVALID,
-        'import_detail_ids.array' => 'Import Detail: ' . Controller::DATA_INVALID,
-        'import_detail_ids.*.numeric' => 'Import Detail: ' . Controller::DATA_INVALID,
-        'stock_ids.required' => 'Stock: ' . Controller::DATA_INVALID,
-        'stock_ids.array' => 'Stock: ' . Controller::DATA_INVALID,
-        'stock_ids.*.numeric' => 'Stock: ' . Controller::DATA_INVALID,
-    ];
+    public static array $MESSAGES = [];
+
+
 
     /**
      * Create a new controller instance.
@@ -76,6 +35,57 @@ class ImportController extends Controller
             $this->user = Auth::user();
         }
         $this->middleware(['admin', 'auth']);
+        $this->middleware(function ($request, $next) {
+            // Locale đã được set xong ở đây
+            Controller::init();
+            self::$MESSAGES = [
+                'note.required' => __('messages.import.import_content').': ' . Controller::$NOT_EMPTY,
+                'note.min' => __('messages.import.import_content').': ' . Controller::$MIN,
+                'note.max' => __('messages.import.import_content').': ' . Controller::$MAX,
+                'warehouse_id.required' => __('messages.stock.warehouse').': ' . Controller::$NOT_EMPTY,
+                'warehouse_id.numeric' => __('messages.stock.warehouse').': ' . Controller::$DATA_INVALID,
+                'supplier_id.required' =>  __('messages.stock.supplier').': ' . Controller::$NOT_EMPTY,
+                'supplier_id.numeric' =>  __('messages.stock.supplier').': ' . Controller::$DATA_INVALID,
+                'status.required' => __('messages.import.import_content').': ' . Controller::$NOT_EMPTY,
+                'status.string' => __('messages.import.import_content').': ' . Controller::$DATA_INVALID,
+                'status.max' => __('messages.import.import_content').': ' . Controller::$MAX,
+                'variable_ids.required' => __('messages.product.product').': ' . Controller::$NOT_EMPTY,
+                'variable_ids.array' => __('messages.product.product').': ' . Controller::$DATA_INVALID,
+                'variable_ids.*.required' => __('messages.product.product').': ' . Controller::$NOT_EMPTY,
+                'variable_ids.*.numeric' => __('messages.product.product').': ' . Controller::$DATA_INVALID,
+                'unit_ids.required' => '' . Controller::$NOT_EMPTY,
+                'unit_ids.array' => '' . Controller::$DATA_INVALID,
+                'unit_ids.*.required' => '' . Controller::$NOT_EMPTY,
+                'unit_ids.*.numeric' => '' . Controller::$DATA_INVALID,
+                'current_unit_ids.required' => __('messages.stock.unit').': ' . Controller::$NOT_EMPTY,
+                'current_unit_ids.array' => __('messages.stock.unit').': ' . Controller::$DATA_INVALID,
+                'current_unit_ids.*.required' => __('messages.stock.unit').': ' . Controller::$NOT_EMPTY,
+                'current_unit_ids.*.numeric' => __('messages.stock.unit').': ' . Controller::$DATA_INVALID,
+                'quantities.required' => __('messages.stock.quantity').': ' . Controller::$NOT_EMPTY,
+                'quantities.array' => __('messages.stock.quantity').': ' . Controller::$DATA_INVALID,
+                'quantities.*.required' => __('messages.stock.quantity').': ' . Controller::$NOT_EMPTY,
+                'quantities.*.numeric' => __('messages.stock.quantity').': ' . Controller::$DATA_INVALID,
+                'prices.required' => __('messages.stock.price').': ' . Controller::$NOT_EMPTY,
+                'prices.array' => __('messages.stock.price').': ' . Controller::$DATA_INVALID,
+                'prices.*.required' => __('messages.stock.price').': ' . Controller::$NOT_EMPTY,
+                'prices.*.numeric' => __('messages.stock.price').': ' . Controller::$DATA_INVALID,
+                'lots.required' => 'Lot: ' . Controller::$NOT_EMPTY,
+                'lots.array' => 'Lot: ' . Controller::$DATA_INVALID,
+                'lots.*.string' => 'Lot: ' . Controller::$DATA_INVALID,
+                'lots.*.max' => 'Lot: ' . Controller::$MAX,
+                'expireds.required' => __('messages.stock.exp').': ' . Controller::$NOT_EMPTY,
+                'expireds.array' => __('messages.stock.exp').': ' . Controller::$DATA_INVALID,
+                'expireds.*.date_format' => __('messages.stock.exp').': ',
+                'import_detail_ids.required' => __('messages.import.import_detail').': ' . Controller::$DATA_INVALID,
+                'import_detail_ids.array' => __('messages.import.import_detail').': ' . Controller::$DATA_INVALID,
+                'import_detail_ids.*.numeric' => __('messages.import.import_detail').': ' . Controller::$DATA_INVALID,
+                'stock_ids.required' => __('messages.stock.stock').': ' . Controller::$DATA_INVALID,
+                'stock_ids.array' => __('messages.stock.stock').': ' . Controller::$DATA_INVALID,
+                'stock_ids.*.numeric' => __('messages.stock.stock').': ' . Controller::$DATA_INVALID,
+            ];
+            return $next($request);
+        });
+
     }
 
     /**
@@ -304,7 +314,7 @@ class ImportController extends Controller
             'stock_ids' => ['required', 'array'],
             'stock_ids.*' => ['nullable', 'numeric'],
         ];
-        $request->validate($rules, self::MESSAGES);
+        $request->validate($rules, self::$MESSAGES);
         if (!empty($this->user->can(User::CREATE_IMPORT))) {
             DB::beginTransaction();
             try {
@@ -338,10 +348,9 @@ class ImportController extends Controller
                     }
 
                     DB::commit();
-                    LogController::create('create', self::NAME, $import->id);
                     $response = [
                         'status' => 'success',
-                        'msg' => 'Created ' . $import->note,
+                        'msg' => __('messages.created') . $import->note,
                     ];
                     return response()->json($response, 200);
                 }
@@ -349,10 +358,10 @@ class ImportController extends Controller
                 DB::rollBack();
                 log_exception($e);
                 Controller::resetAutoIncrement(['imports', 'import_details', 'stocks']);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
     }
 
@@ -391,7 +400,7 @@ class ImportController extends Controller
             'stock_ids' => ['required', 'array'],
             'stock_ids.*' => ['nullable', 'numeric'],
         ];
-        $request->validate($rules, self::MESSAGES);
+        $request->validate($rules, self::$MESSAGES);
         if ($this->user->can(User::UPDATE_IMPORT)) {
             if ($request->has('id')) {
                 DB::beginTransaction();
@@ -421,7 +430,7 @@ class ImportController extends Controller
                             DB::commit();
                             $response = [
                                 'status' => 'success',
-                                'msg' => 'Updated ' . $old->code . '. Just update the the updated user and status',
+                                'msg' => __('messages.updated') . $old->code ,
                             ];
                             return response()->json($response, 200);
                         }
@@ -462,15 +471,15 @@ class ImportController extends Controller
                                 Controller::resetAutoIncrement(['imports', 'import_details', 'stocks']);
                                 $response = array(
                                     'status' => 'error',
-                                    'msg' => 'An error occurred, please reload the page and try again!'
+                                    'msg' => __('messages.msg')
                                 );
                             }
 
                             DB::commit();
-                            LogController::create('update', self::NAME, $old->id);
+                            LogController::create('2', self::NAME, $old->id);
                             $response = [
                                 'status' => 'success',
-                                'msg' => 'Updated ' . $old->code,
+                                'msg' => __('messages.updated') . $old->code,
                             ];
                             return response()->json($response, 200);
                         } else {
@@ -478,27 +487,27 @@ class ImportController extends Controller
                             Controller::resetAutoIncrement(['imports', 'import_details', 'stocks']);
                             $response = array(
                                 'status' => 'error',
-                                'msg' => 'An error occurred, please reload the page and try again!'
+                                'msg' => __('messages.msg')
                             );
                         }
                     } else {
                         DB::rollBack();
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'An error occurred, please reload the page and try again!'
+                            'msg' => __('messages.msg')
                         );
                     }
                 } catch (\Exception $e) {
                     DB::rollBack();
                     log_exception($e);
                     Controller::resetAutoIncrement(['imports', 'import_details', 'stocks']);
-                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
                 }
             } else {
-                return response()->json(['errors' => ['mission_id' => ['An error occurred']]], 422);
+                return response()->json(['errors' => ['mission_id' => [__('messages.role')]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role_import' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role_import' => [__('messages.role')]]], 422);
         }
     }
 
@@ -544,12 +553,12 @@ class ImportController extends Controller
                 DB::rollBack();
                 log_exception($e);
                 Controller::resetAutoIncrement(['imports', 'import_details', 'stocks']);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
             }
         }
         $response = array(
             'status' => 'success',
-            'msg' => 'Deleted ' . implode(', ', $names)
+            'msg' =>  __('messages.deleted') . implode(', ', $names)
         );
         return response()->json($response, 200);
     }

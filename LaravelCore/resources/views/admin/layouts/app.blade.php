@@ -18,8 +18,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="white">
 
     {{-- Mô tả của web app --}}
-    <meta name="apple-mobile-web-app-description"
-        content=" {{ Auth::user()->branch->name }}">
+    <meta name="apple-mobile-web-app-description" content=" {{ Auth::user()->branch->name }}">
     {{-- Ảnh hiển thị khi thêm vào màn hình Home --}}
     <link href="{{ asset('admin/images/logo/favicon.svg') }}" rel="apple-touch-icon">
 
@@ -65,22 +64,22 @@
     
     <script>
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register(`{{ asset('js/service-worker.js') }}`).then(function(
-                registration) {
+            window.addEventListener('load', function () {
+                navigator.serviceWorker.register(`{{ asset('js/service-worker.js') }}`).then(function (
+                    registration) {
                     // console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                }, function(err) {
+                }, function (err) {
                     // console.error('ServiceWorker registration failed: ', err);
                 });
             });
         }
-        $(document).ready(function() {
-            $(window).on('offline', function() {
+        $(document).ready(function () {
+            $(window).on('offline', function () {
                 $('.loading').removeClass('d-none');
-                Swal.fire("Alert!", 'You are offline', "info");
+                Swal.fire("Alert!", {{ __('messages.you_are_offline') }}, "info");
             });
             // Bắt sự kiện khi có mạng trở lại
-            $(window).on('online', function() {
+            $(window).on('online', function () {
                 $('.loading').addClass('d-none');
                 Swal.close();
             });
@@ -185,7 +184,8 @@
 <script src="{{ asset('admin/vendors/xlsx/xlsx.full.min.js') }}"></script>
 {{-- daterangepicker --}}
 <script type="text/javascript" src="{{ asset('admin/vendors/daterangepicker/daterangepicker.min.js') }}"></script>
-{{-- <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+{{--
+<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
 <script>
     eruda.init();
 </script> --}}
@@ -212,17 +212,17 @@
         canUpdateUser: {{ Auth::user()->can(\App\Models\User::UPDATE_USER) ? 'true' : 'false' }},
         datatable: {
             lang: {
-               "sProcessing": "{{ __('messages.datatable.processing') }}",
-        "sLengthMenu": "{{ __('messages.datatable.length_menu') }}",
-        "sZeroRecords": "{{ __('messages.datatable.zero_records') }}",
-        "sInfo": "{{ __('messages.datatable.info') }}",
-        "sInfoEmpty": "{{ __('messages.datatable.info_empty') }}",
-        "sInfoFiltered": "{{ __('messages.datatable.info_filtered') }}",
-        "searchPlaceholder": "{{ __('messages.datatable.search_placeholder') }}",
-        "sInfoPostFix": "{{ __('messages.datatable.info_postfix') }}",
-        "sSearch": "{{ __('messages.datatable.search') }}",
-        "sUrl": "{{ __('messages.datatable.url') }}",
-        "oPaginate": {
+                "sProcessing": "{{ __('messages.datatable.processing') }}",
+                "sLengthMenu": "{{ __('messages.datatable.length_menu') }}",
+                "sZeroRecords": "{{ __('messages.datatable.zero_records') }}",
+                "sInfo": "{{ __('messages.datatable.info') }}",
+                "sInfoEmpty": "{{ __('messages.datatable.info_empty') }}",
+                "sInfoFiltered": "{{ __('messages.datatable.info_filtered') }}",
+                "searchPlaceholder": "{{ __('messages.datatable.search_placeholder') }}",
+                "sInfoPostFix": "{{ __('messages.datatable.info_postfix') }}",
+                "sSearch": "{{ __('messages.datatable.search') }}",
+                "sUrl": "{{ __('messages.datatable.url') }}",
+                "oPaginate": {
                     "sFirst": "&laquo;",
                     "sPrevious": "&lsaquo;",
                     "sNext": "&rsaquo;",
@@ -292,7 +292,7 @@
                     data: 'created_at',
                     name: 'created_at',
                     searchable: true,
-                    render: function(data, type, row) {
+                    render: function (data, type, row) {
                         return (type == 'display') ? ((data != null) ? moment(data).format("DD/MM/YYYY H:mm") :
                             '') : data;
                     }
@@ -306,15 +306,15 @@
                 },
             },
             columnDefines: [{
-                    target: $(".dataTable thead tr th").length - 2,
-                    sortable: false,
-                    searchable: false
-                },
-                {
-                    target: $(".dataTable thead tr th").length - 1,
-                    sortable: false,
-                    searchable: false,
-                },
+                target: $(".dataTable thead tr th").length - 2,
+                sortable: false,
+                searchable: false
+            },
+            {
+                target: $(".dataTable thead tr th").length - 1,
+                sortable: false,
+                searchable: false,
+            },
             ],
             pageLength: 20,
             lengths: [
@@ -324,19 +324,19 @@
         },
         sweetAlert: {
             confirm: {
-                title: "Attention!",
-                text: "Please confirm before proceeding?",
+                title: "{{ __('messages.sweet_confirm_title') }}",
+                text: "{{ __('messages.sweet_confirm_text') }}",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "var(--bs-danger)",
                 cancelButtonColor: "var(--bs-primary)",
-                confirmButtonText: "Confirm",
-                cancelButtonText: "Back",
+                confirmButtonText: "{{ __('messages.sweet_confirm_button') }}",
+                cancelButtonText: "{{ __('messages.sweet_cancel_button') }}",
                 reverseButtons: false
             },
             delay: {
-                title: "Still processing...",
-                text: "Your action is taking longer to process. Please be patient!",
+                title: "{{ __('messages.sweet_delay_title') }}",
+                text: "{{ __('messages.sweet_delay_text') }}",
                 allowOutsideClick: false,
                 allowEscapeKey: false,
                 showConfirmButton: false,
@@ -348,7 +348,7 @@
         },
         select2: {
             ajax: {
-                processResults: function(data, params) {
+                processResults: function (data, params) {
                     params.page = params.page || 1;
                     return {
                         results: data,
@@ -372,10 +372,10 @@
     /**
      * Xử lý thêm
      */
-    $(document).on('click', '.btn-select-stock', function() {
+    $(document).on('click', '.btn-select-stock', function () {
         const stockQuantity = JSON.parse($(this).attr('data-stock-quantity')),
             tab = $('#order-modal').hasClass('show') ? $('#order-modal') : $('#export-modal').hasClass('show') ?
-            $('#export-modal') : $('.tab-pane.active'),
+                $('#export-modal') : $('.tab-pane.active'),
             stock = {
                 stockId: $(this).attr('data-stock-id'),
                 stockExpired: $(this).attr('data-expired'),
@@ -390,7 +390,7 @@
         let availableStock = false,
             availableUnit = false;
 
-        tab.find(`[name='stock_ids[]'][value=${stock.stockId}]`).each(function() {
+        tab.find(`[name='stock_ids[]'][value=${stock.stockId}]`).each(function () {
             const card = $(this).closest('.detail'),
                 unitId = card.find(`[name='unit_ids[]']`).val(),
                 orderQuantity = parseInt(card.find(`[name='quantities[]']`).val())
@@ -422,11 +422,58 @@
             tab.find('.export-receipt').length ? addCardToExport(stock) : addCardToOrder(stock)
         }
     })
+    /**
+     * CATALOGUE PROCESS
+     */
+    $(document).on('click', '.btn-create-catalogue', function(e) {
+        e.preventDefault();
+        const form = $('#catalogue-form')
+        resetForm(form)
+        form.addClass($(this).hasClass('btn-single') ? 'single' : '')
+        form.find(`[name='status']`).prop('checked', true)
+        form.attr('action', `{{ route('admin.catalogue.create') }}`)
+        form.find('.modal').modal('show').find('.modal-title').text("{{ __('messages.category.new_catalogue') }}");
+    })
+
+    $('.btn-refresh-catalogue').click(function() {
+        const btn = $(this)
+        $.get(`{{ route('admin.catalogue') }}/tree`, function(html) {
+            btn.parents('form').find('.catalogue-select .list-group').html(html);
+        })
+    })
+
+    $(document).on('click', '.btn-update-catalogue', function(e) {
+        e.preventDefault();
+        const id = $(this).attr('data-id'),
+            form = $('#catalogue-form');
+        resetForm(form)
+        $.get(`{{ route('admin.catalogue') }}/${id}`, function(catalogue) {
+            form.find('[name=id]').val(catalogue.id)
+            form.find('[name=name]').val(catalogue.name)
+            form.find('[name=note]').val(catalogue.note)
+            form.find('[name=avatar]').val(catalogue.avatar).change()
+            if (catalogue.parent_id != null) {
+                var option = new Option(catalogue._parent.name, catalogue._parent.id, true, true);
+                form.find('[name=parent_id]').append(option).trigger({
+                    type: 'select2:select'
+                });
+            } else {
+                form.find('[name=parent_id]').val(null).trigger("change")
+            }
+            form.find('[name=status]').prop('checked', catalogue.status)
+            form.attr('action', `{{ route('admin.catalogue.update') }}`)
+            if (catalogue.deleted_at != null) {
+                form.find('.btn[type=submit]:last-child').addClass('d-none')
+            }
+            form.find('.modal').modal('show').find('.modal-title').text(catalogue.name)
+        })
+    })
+    // =========== END CATALOGUE ===========
 
     /**
      * PRODUCT PROCESS
      */
-    $(document).on('click', '.btn-create-product', function(e) {
+    $(document).on('click', '.btn-create-product', function (e) {
         e.preventDefault();
         initCreateProduct()
     })
@@ -440,10 +487,10 @@
         form.find('.modal').modal('show').find('.modal-title').text('New product')
     }
 
-    $(document).on('click', '.btn-update-product', function(e) {
+    $(document).on('click', '.btn-update-product', function (e) {
         e.preventDefault();
         const id = $(this).attr('data-id');
-        $.get(`{{ route('admin.product') }}/${id}`, function(product) {
+        $.get(`{{ route('admin.product') }}/${id}`, function (product) {
             initUpdateProduct(product)
         })
     })
@@ -458,7 +505,7 @@
         form.find('[name=unit]').val(product.unit)
         form.find('[name=status]').val(product.status)
         form.find('[name=avatar]').prev().find('img').attr('src', product.avatarUrl)
-        $.each(product.catalogues, function(i, catalogue) {
+        $.each(product.catalogues, function (i, catalogue) {
             $(`input[type=checkbox][value=${catalogue.id}]`).prop('checked', true)
         })
         sortCheckedInput(form)
@@ -470,7 +517,7 @@
         form.attr('action', `{{ route('admin.product.update') }}`).find('.modal').modal('show').find('.modal-title').text(product.name);
     }
 
-    $(document).on('click', '.btn-create-variable', function(e) {
+    $(document).on('click', '.btn-create-variable', function (e) {
         e.preventDefault();
         const form = $('#variable-form')
         resetForm(form)
@@ -483,10 +530,10 @@
         form.find('.modal').modal('show').find('.modal-title').text('New variant')
     })
 
-    $(document).on('click', '.btn-update-variable', function(e) {
+    $(document).on('click', '.btn-update-variable', function (e) {
         e.preventDefault();
         const id = $(this).attr('data-id');
-        $.get(`{{ route('admin.variable') }}/${id}`, function(variable) {
+        $.get(`{{ route('admin.variable') }}/${id}`, function (variable) {
             initUpdateVariable(variable)
         })
     })
@@ -504,11 +551,11 @@
         if (variable.deleted_at != null) {
             form.find('.btn[type=submit]:last-child').addClass('d-none')
         }
-        $.each(variable.attributes, function(index, attribute) {
+        $.each(variable.attributes, function (index, attribute) {
             form.find(`#variable-attribute-${attribute.id}`).prop('checked', true);
         })
         form.find('#variable-units').empty()
-        $.each(variable.units, function(index, unit) {
+        $.each(variable.units, function (index, unit) {
             form.find('#variable-units').append(`
             <tr class="variable-unit">
                 <td><input class="form-control" name="unit_barcode[]" type="text" value="${unit.barcode ? unit.barcode : ''}" placeholder="Barcode"></td>
@@ -531,15 +578,15 @@
         form.find('.modal').modal('show').find('.modal-title').text(variable.name != null ? variable.name : variable.id)
     }
 
-    $(document).on('change', '.variable-attribute', function() {
+    $(document).on('change', '.variable-attribute', function () {
         $(this).closest('.accordion-body').find('.variable-attribute').not(this).prop('checked', false)
-        const text = $(this).closest('.accordion').find('.variable-attribute:checked').map(function() {
+        const text = $(this).closest('.accordion').find('.variable-attribute:checked').map(function () {
             return $(this).next().text()
         }).get().join(' - ')
         $(this).closest('.modal').find('#variable-name').val(text)
     })
 
-    $(document).on('click', '.btn-append-unit', function(e) {
+    $(document).on('click', '.btn-append-unit', function (e) {
         e.preventDefault();
         const form = $('#variable-form');
         const str = `
@@ -562,7 +609,7 @@
         form.find('#variable-units').append(str);
     })
 
-    $(document).on('click', '.btn-remove-unit', function(e) {
+    $(document).on('click', '.btn-remove-unit', function (e) {
         e.preventDefault();
         const btn = $(this);
         if ($('.variable-unit').length > 1) {
@@ -570,7 +617,7 @@
                 const form = btn.closest('form');
                 Swal.fire(config.sweetAlert.confirm).then((result) => {
                     if (result.isConfirmed) {
-                        submitForm(form).done(function(response) {
+                        submitForm(form).done(function (response) {
                             if (response.status == 'success') {
                                 btn.closest('.variable-unit').remove();
                             }
@@ -590,28 +637,28 @@
     /**
      * IN BARCODE - MÃ VẠCH
      */
-    $('body').on('click', '.btn-barcode-product', function() {
+    $('body').on('click', '.btn-barcode-product', function () {
         var form = $(this).closest('section').find('.batch-form'),
             modal = $('#barcode-modal');
-        var checkedValues = JSON.stringify(form.find('input[name="choices[]"]:checked').map(function() {
+        var checkedValues = JSON.stringify(form.find('input[name="choices[]"]:checked').map(function () {
             return $(this).val();
         }).get());
-        $.get(config.routes.get + '/barcode?ids=' + checkedValues, function(products) {
+        $.get(config.routes.get + '/barcode?ids=' + checkedValues, function (products) {
             let str = ``
-            $.each(products, function(i, product) {
+            $.each(products, function (i, product) {
                 let variables = ``,
                     units = ``
-                $.each(product.variables, function(j, variable) {
-                    $.each(variable.units, function(k, unit) {
-                        units += `<option value="${ unit.barcode }" data-variable="${ unit.variable_id }" data-price="${ unit.price }" data-term="${ unit.term }" ${j ? 'hidden' : ''}>${ unit.term }</option>`
+                $.each(product.variables, function (j, variable) {
+                    $.each(variable.units, function (k, unit) {
+                        units += `<option value="${unit.barcode}" data-variable="${unit.variable_id}" data-price="${unit.price}" data-term="${unit.term}" ${j ? 'hidden' : ''}>${unit.term}</option>`
                     })
-                    variables += `<option value="${ variable.id }">${ variable.name != null ? variable.name : variable.id }</option>`
+                    variables += `<option value="${variable.id}">${variable.name != null ? variable.name : variable.id}</option>`
                 })
                 str += `
             <div class="col-12 col-lg-4">
                 <div class="card card-barcode">
                     <div class="ratio ratio-1x1">
-                        <img src="${ product.avatarUrl }" class="card-img-top object-fit-cover p-1">
+                        <img src="${product.avatarUrl}" class="card-img-top object-fit-cover p-1">
                     </div>
                     <div class="card-body p-2">
                     <label class="form-label" for="variable-${i}">Select a variant</label>
@@ -634,9 +681,9 @@
         })
     })
 
-    $(document).on('click', '.btn-print-barcode', function() {
+    $(document).on('click', '.btn-print-barcode', function () {
         let str = ``
-        $('#barcode-modal').find('.barcode-unit').each(function() {
+        $('#barcode-modal').find('.barcode-unit').each(function () {
             let card = $(this).closest('.card-barcode'),
                 qtt = parseInt(card.find('.barcode-quantity').val()),
                 product = card.find('.barcode-product-name').val(),
@@ -667,7 +714,7 @@
                     </div>
                 </div>
             </div>`)
-        $('#print-wrapper').find('.barcode-value').each(function() {
+        $('#print-wrapper').find('.barcode-value').each(function () {
             JsBarcode('#' + $(this).prev().attr('id'), $(this).val(), {
                 format: "CODE128",
                 lineColor: "#000000",
@@ -689,11 +736,11 @@
         });
     })
 
-    $(document).on('change', '.barcode-variable', function() {
+    $(document).on('change', '.barcode-variable', function () {
         const id = $(this).val()
-        $(this).closest('.card-barcode').find('.barcode-unit').each(function() {
+        $(this).closest('.card-barcode').find('.barcode-unit').each(function () {
             let set = false;
-            $(this).find('option').prop('hidden', false).prop('selected', false).each(function() {
+            $(this).find('option').prop('hidden', false).prop('selected', false).each(function () {
                 if ($(this).attr('data-variable') != id) {
                     $(this).prop('hidden', true)
                 } else {
@@ -709,20 +756,20 @@
     /**
      * BARCODE ONSCAN
      */
-    $(document).ready(function() {
+    $(document).ready(function () {
         onScan.attachTo(document, {
             suffixKeyCodes: [13], // Enter-key expected at the end of a scan
             reactToPaste: false, // Compatibility to built-in scanners in paste-mode (as opposed to keyboard-mode)
-            onScan: function(sCode, iQty) {
+            onScan: function (sCode, iQty) {
                 // console.log('Barcode scanned: ' + sCode); // Check if this runs
                 $('input:focus').val('')
                 if ($('#product-modal').hasClass('show')) {
-                    $.get(`{{ route('admin.variable') }}/scan?barcode=${sCode}`, function(variable) {
+                    $.get(`{{ route('admin.variable') }}/scan?barcode=${sCode}`, function (variable) {
                         if (variable) {
                             pushToastify("Barcode already exists!", 'danger')
                         } else {
                             let available = true;
-                            $(`[name='barcode[]']`).each(function(i, input) {
+                            $(`[name='barcode[]']`).each(function (i, input) {
                                 if (input.value == sCode) {
                                     available = false;
                                     return false;
@@ -740,9 +787,9 @@
                     let btn = $('.btn-create-stock'),
                         existVariable = false
                     btn.prop("disabled", true).html('<span class="spinner-border spinner-border-sm" id="spinner-form" role="status"></span>');
-                    $.get(`{{ route('admin.unit') }}/scan?barcode=${sCode}`, function(unit) {
+                    $.get(`{{ route('admin.unit') }}/scan?barcode=${sCode}`, function (unit) {
                         if (unit) {
-                            $('.import_detail-unit_id').each(function(i, input) {
+                            $('.import_detail-unit_id').each(function (i, input) {
                                 if (input.value == unit.id) {
                                     existVariable = true
                                     let input = $(this).closest('tr').find(`[name='quantities[]']`)
@@ -762,19 +809,19 @@
                     if ($('#export-modal').hasClass('show')) {
                         $('#export-search-input').val(sCode).change().focus()
                     } else {
-                        $.get(`{{ route('admin.stock') }}/scan?barcode=${sCode}&action=export`, function(stocks) {
+                        $.get(`{{ route('admin.stock') }}/scan?barcode=${sCode}&action=export`, function (stocks) {
                             let scanUnit,
                                 availableStock = false,
                                 tab = $('#order-modal').hasClass('show') ? $('#order-modal') : $('#export-modal').hasClass('show') ? $('#export-modal') : $('.tab-pane.active')
                             if (stocks.length) {
-                                $.each(stocks, function(index, stock) {
-                                    $.each(stock.import_detail._variable.units, function(index, unit) {
+                                $.each(stocks, function (index, stock) {
+                                    $.each(stock.import_detail._variable.units, function (index, unit) {
                                         if (unit.barcode === sCode) {
                                             scanUnit = unit
                                         }
                                     });
                                 });
-                                $.each(stocks, function(i, stock) {
+                                $.each(stocks, function (i, stock) {
                                     var nextLoops = true,
                                         availableUnit = false,
                                         newCard = {
@@ -789,7 +836,7 @@
                                             productUnits: stock.import_detail._variable.units
                                         };
                                     if (tab.find(`[name='stock_ids[]'][value=${stock.id}]`).length) {
-                                        tab.find(`[name='stock_ids[]'][value=${stock.id}]`).each(function(i, detail) {
+                                        tab.find(`[name='stock_ids[]'][value=${stock.id}]`).each(function (i, detail) {
                                             const card = $(this).closest('.detail'),
                                                 unitId = card.find(`[name='unit_ids[]']`).val(),
                                                 orderQuantity = parseInt(card.find(`[name='quantities[]']`).val())
@@ -831,13 +878,13 @@
                     $('.dataTables_filter').find('input').val(sCode).change().focus()
                 }
             },
-            onKeyDetect: function(iKeyCode) {
+            onKeyDetect: function (iKeyCode) {
                 // console.log('Pressed: ' + iKeyCode); // Debugging
             },
-            onKeyProcess: function(sChar, oEvent) {
+            onKeyProcess: function (sChar, oEvent) {
                 // console.log('Processed character: ' + sChar); // Debugging
             },
-            onScanError: function(oDebug) {
+            onScanError: function (oDebug) {
                 // console.log('Scan error: ', oDebug); // Debugging
             }
         });
@@ -850,11 +897,11 @@
         }
 
         // Check keydown and keypress events
-        document.addEventListener('keydown', function(event) {
+        document.addEventListener('keydown', function (event) {
             // console.log('Keydown event:', event);
         });
 
-        document.addEventListener('keypress', function(event) {
+        document.addEventListener('keypress', function (event) {
             // console.log('Keypress event:', event);
         });
     });
@@ -862,7 +909,7 @@
     /**
      * CATEGORY PROCESS
      */
-    $(document).on('click', '.btn-create-category', function(e) {
+    $(document).on('click', '.btn-create-category', function (e) {
         e.preventDefault();
         const form = $('#category-form')
         resetForm(form)
@@ -871,12 +918,12 @@
         form.find('.modal').modal('show').find('.modal-title').text('New category')
     })
 
-    $(document).on('click', '.btn-update-category', function(e) {
+    $(document).on('click', '.btn-update-category', function (e) {
         e.preventDefault();
         const id = $(this).attr('data-id'),
             form = $('#category-form');
         resetForm(form)
-        $.get(`{{ route('admin.category') }}/${id}`, function(category) {
+        $.get(`{{ route('admin.category') }}/${id}`, function (category) {
             form.find('[name=id]').val(category.id)
             form.find('[name=name]').val(category.name)
             form.find('[name=note]').val(category.note)
@@ -893,7 +940,7 @@
     /**
      * PROFILE
      */
-    $('.btn-change-branch').on('click', function() {
+    $('.btn-change-branch').on('click', function () {
         Swal.fire({
             title: 'Select branch',
             html: `
@@ -915,11 +962,11 @@
                         main_branch: $('[name=main_branch]').val(),
                         _token: '{{ csrf_token() }}'
                     },
-                    success: function(response) {
+                    success: function (response) {
                         pushToastify(response.msg, response.status)
                         $('nav.navbar .user-name small').text(response.main_branch)
                     },
-                    error: function(error) {
+                    error: function (error) {
                         Swal.fire({
                             icon: 'error',
                             title: 'An error occurred',
@@ -936,58 +983,58 @@
      * LANGUAGES
      */
     $('.btn-change-language').on('click', function () {
-    const currentLocale = '{{ app()->getLocale() }}';
+        const currentLocale = '{{ app()->getLocale() }}';
 
-    Swal.fire({
-        title: '{{ __("messages.lang.select_language") }}',
-        html: `
+        Swal.fire({
+            title: '{{ __("messages.lang.select_language") }}',
+            html: `
             <select id="locale_selector" class="form-select">
                 <option value="vn" ${currentLocale === 'vn' ? 'selected' : ''}>🇻🇳 {{ __("messages.lang.vi") }}</option>
                 <option value="en" ${currentLocale === 'en' ? 'selected' : ''}>🇺🇸 {{ __("messages.lang.en") }}</option>
             </select>
         `,
-        showCancelButton: true,
-        confirmButtonText: '{{ __("messages.save") }}',
-        cancelButtonText: '{{ __("messages.cancel") }}',
-    }).then((result) => {
-        if (result.isConfirmed) {
-            const newLocale = $('#locale_selector').val();
+            showCancelButton: true,
+            confirmButtonText: '{{ __("messages.save") }}',
+            cancelButtonText: '{{ __("messages.cancel") }}',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const newLocale = $('#locale_selector').val();
 
-            // Chỉ gửi request nếu ngôn ngữ thay đổi
-            if (newLocale !== currentLocale) {
-                $.ajax({
-                    url: "{{ route('change.language.ajax') }}",
-                    method: 'POST',
-                    data: {
-                        locale: newLocale,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function () {
-                        Swal.fire({
-                            icon: 'success',
-                            title: '{{ __("messages.lang.language_changed_success") }}',
-                            timer: 1500,
-                            showConfirmButton: false
-                        }).then(() => location.reload());
-                    },
-                    error: function () {
-                        Swal.fire({
-                            icon: 'error',
-                            title: '{{ __("messages.error_occurred") }}',
-                            text: '{{ __("messages.try_again_later") }}'
-                        });
-                    }
-                });
+                // Chỉ gửi request nếu ngôn ngữ thay đổi
+                if (newLocale !== currentLocale) {
+                    $.ajax({
+                        url: "{{ route('change.language.ajax') }}",
+                        method: 'POST',
+                        data: {
+                            locale: newLocale,
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function () {
+                            Swal.fire({
+                                icon: 'success',
+                                title: '{{ __("messages.lang.language_changed_success") }}',
+                                timer: 1500,
+                                showConfirmButton: false
+                            }).then(() => location.reload());
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: '{{ __("messages.error_occurred") }}',
+                                text: '{{ __("messages.try_again_later") }}'
+                            });
+                        }
+                    });
+                }
             }
-        }
+        });
     });
-});
 
 
     /**
      * USER PROCESS
      */
-    $(document).on('click', '.btn-create-user', function(e) {
+    $(document).on('click', '.btn-create-user', function (e) {
         e.preventDefault();
         const form = $('#user-form')
         resetForm(form)
@@ -1005,18 +1052,18 @@
         form.find('.modal').modal('show').find('.modal-title').text('{{ __('messages.user.create_new_account') }}')
     })
 
-    $(document).on('click', '.btn-update-user', function(e) {
+    $(document).on('click', '.btn-update-user', function (e) {
         e.preventDefault();
         const id = $(this).attr('data-id'),
             form = $('#user-form');
         resetForm(form);
-        $.get(`{{ route('admin.user') }}/${id}`, function(user) {
+        $.get(`{{ route('admin.user') }}/${id}`, function (user) {
             form.find('[name=id]').val(user.id)
             form.find('[name=name]').val(user.name)
             form.find('[name=phone]').val(user.phone)
             form.find('[name=email]').val(user.email)
             form.find('[name=scores]').val(user.scores)
-            form.find('[name=birthday]').val(user.birthday)
+        //  form.find('[name=birthday]').val(user.birthday)
             form.find('[name=note]').val(user.note)
             form.find('[name=address]').val(user.address)
             form.find(`[name=gender][value="${user.gender}"]`).prop('checked', true);
@@ -1039,10 +1086,10 @@
         })
     })
 
-    $('#user-local_city').change(function() {
-        $.get(`{{ route('admin.local') }}/districts?city=${$(this).val()}`, function(locals) {
+    $('#user-local_city').change(function () {
+        $.get(`{{ route('admin.local') }}/districts?city=${$(this).val()}`, function (locals) {
             let options = ''
-            $.each(locals, function(i, local) {
+            $.each(locals, function (i, local) {
                 options += `<option value="${local.id}">${local.text}</option>`;
             });
             $('select#user-local_id').html(options).trigger({
@@ -1051,8 +1098,8 @@
         })
     })
 
-    $('#user-local_id').change(function() {
-        $.get(`{{ route('admin.local') }}/${$(this).val()}`).then(function(local) {
+    $('#user-local_id').change(function () {
+        $.get(`{{ route('admin.local') }}/${$(this).val()}`).then(function (local) {
             var option = new Option(local.city);
             $('select#user-local_city').html(option).trigger({
                 type: 'select2:select'
@@ -1060,36 +1107,36 @@
         });
     })
 
-    $(document).on('click', '.select-avatar', function(e) {
+    $(document).on('click', '.select-avatar', function (e) {
         e.preventDefault();
         $(this).parent().find('input[type="file"]').click();
     })
 
-    $(document).on('change', '#user-avatar', function(e) {
+    $(document).on('change', '#user-avatar', function (e) {
         e.preventDefault();
         if (this.files && this.files[0]) {
             var reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 $('#user-avatar-preview').attr('src', e.target.result).show();
             }
             reader.readAsDataURL(this.files[0]);
         }
     })
 
-    $(document).on('click', '.btn-update-user_role', function() {
+    $(document).on('click', '.btn-update-user_role', function () {
         const id = $(this).attr('data-id'),
             form = $('#user_role-form');
         resetForm(form)
-        $.get(`{{ route('admin.user') }}/${id}`).done(function(user) {
+        $.get(`{{ route('admin.user') }}/${id}`).done(function (user) {
             form.attr('action', `{{ route('admin.user.update.role') }}`);
-            form.find('#user_role-modal-label').text('Set role for ' + user.name)
-            $.each(user.roles, function(i, role) {
+            form.find('#user_role-modal-label').text('{{ __('messages.set_role') }}' + user.name)
+            $.each(user.roles, function (i, role) {
                 $('input[name="role_id[]"][value="' + role.id + '"]').prop('checked', true);
             });
-            $.each(user.branches, function(i, branch) {
+            $.each(user.branches, function (i, branch) {
                 $('input[name="branch_id[]"][value="' + branch.id + '"]').prop('checked', true);
             });
-            $.each(user.warehouses, function(i, warehouse) {
+            $.each(user.warehouses, function (i, warehouse) {
                 $('input[name="warehouse_id[]"][value="' + warehouse.id + '"]').prop('checked',
                     true);
             });
@@ -1102,7 +1149,7 @@
         })
     })
 
-    $(document).on('click', '.btn-update-user_password', function() {
+    $(document).on('click', '.btn-update-user_password', function () {
         const id = $(this).attr('data-id'),
             form = $('#user_password-form');
         resetForm(form)
@@ -1115,21 +1162,21 @@
     /**
      * WAREHOUSE PROCESS
      */
-    $(document).on('click', '.btn-create-warehouse', function(e) {
+    $(document).on('click', '.btn-create-warehouse', function (e) {
         e.preventDefault();
         const form = $('#warehouse-form')
         resetForm(form)
         form.find('[name=status]').prop('checked', true);
         form.attr('action', `{{ route('admin.warehouse.create') }}`)
-        form.find('.modal').modal('show').find('.modal-title').text('New warehouse')
+        form.find('.modal').modal('show').find('.modal-title').text(`{{ __('messages.warehouses.new_warehouse') }}`)
     })
 
-    $(document).on('click', '.btn-update-warehouse', function(e) {
+    $(document).on('click', '.btn-update-warehouse', function (e) {
         e.preventDefault();
         const id = $(this).attr('data-id'),
             form = $('#warehouse-form');
         resetForm(form)
-        $.get(`{{ route('admin.warehouse') }}/${id}`, function(warehouse) {
+        $.get(`{{ route('admin.warehouse') }}/${id}`, function (warehouse) {
             form.find('[name=name]').val(warehouse.name)
             form.find('[name=id]').val(warehouse.id)
             form.find('[name=note]').val(warehouse.note)
@@ -1141,7 +1188,7 @@
                     type: 'select2:select'
                 });
             }
-            $.each(warehouse.permissions, function(index, permission) {
+            $.each(warehouse.permissions, function (index, permission) {
                 form.find(`#permission-${permission.id}`).prop('checked', true)
             })
             if (warehouse.deleted_at != null) {
@@ -1156,21 +1203,21 @@
     /**
      * BRANCH PROCESS
      */
-    $(document).on('click', '.btn-create-branch', function(e) {
+    $(document).on('click', '.btn-create-branch', function (e) {
         e.preventDefault();
         const form = $('#branch-form')
         resetForm(form)
         form.find(`[name='status']`).prop('checked', true)
         form.attr('action', `{{ route('admin.branch.create') }}`)
-        form.find('.modal').modal('show').find('.modal-title').text('New branch')
+        form.find('.modal').modal('show').find('.modal-title').text(`{{ __('messages.branches.new_branch') }}`)
     })
 
-    $(document).on('click', '.btn-update-branch', function(e) {
+    $(document).on('click', '.btn-update-branch', function (e) {
         e.preventDefault();
         const id = $(this).attr('data-id'),
             form = $('#branch-form');
         resetForm(form)
-        $.get(`{{ route('admin.branch') }}/${id}`, function(branch) {
+        $.get(`{{ route('admin.branch') }}/${id}`, function (branch) {
             form.find('[name=id]').val(branch.id)
             form.find('[name=name]').val(branch.name)
             form.find('[name=phone]').val(branch.phone)
@@ -1190,7 +1237,7 @@
     /**
      * IMPORT PROCESS
      */
-    $(document).on('click', '.btn-create-import', function(e) {
+    $(document).on('click', '.btn-create-import', function (e) {
         e.preventDefault();
         const form = $('#import-form')
         resetForm(form)
@@ -1202,11 +1249,11 @@
         form.find('.modal').modal('show').find('.modal-title').text('New import')
     })
 
-    $(document).on('click', '.btn-select-variable', function() {
+    $(document).on('click', '.btn-select-variable', function () {
         let unit = JSON.parse($(this).find('input').val()),
             existVariable = false;
 
-        $('.import_detail-unit_id').each(function(i, select) {
+        $('.import_detail-unit_id').each(function (i, select) {
             if (select.value == unit.id) {
                 existVariable = true
                 let quantityInput = $(this).closest('tr').find(`[name='quantities[]']`)
@@ -1223,7 +1270,7 @@
 
     function htmlImportVariable(unit) {
         let options = ``
-        $.each(unit._variable.units, function(i, item) {
+        $.each(unit._variable.units, function (i, item) {
             options +=
                 `<option value="${item.id}" data-rate="${item.rate}" data-price="${item.price}" ${item.rate == unit.rate ? 'selected' : ''}>${item.term}</option>`
         })
@@ -1249,7 +1296,7 @@
                 <td><input type="date" name="expireds[]" class="form-control form-control-plaintext border-bottom fs-5" min="{{ date('Y-m-d') }}" inputmode="numeric" placeholder="Expiration date"></td>
                 <td>
                     <datalist id="unit_prices-${unit.id}">
-                        ${ Object.values(unit.import_prices).map(price => `<option>${number_format(price)}</option>`).join('') }
+                        ${Object.values(unit.import_prices).map(price => `<option>${number_format(price)}</option>`).join('')}
                     </datalist>
                     <input type="hidden" name="import_detail_ids[]" />
                     <input type="hidden" name="stock_ids[]"/>
@@ -1263,10 +1310,10 @@
     }
     //''''''''''''''''''''''''''''''''''''''''''''
 
-    $(document).on('change', `.import_detail-unit_id[name='unit_ids[]']`, function() {
+    $(document).on('change', `.import_detail-unit_id[name='unit_ids[]']`, function () {
         const newUnit = parseInt($(this).val()),
             current = $(this).closest('tr').find(`[name='current_unit_ids[]']`),
-            count = $(".import_detail-unit_id[name='unit_ids[]']").filter(function() {
+            count = $(".import_detail-unit_id[name='unit_ids[]']").filter(function () {
                 return $(this).val() == newUnit;
             }).length;
         if (count > 1) {
@@ -1278,25 +1325,25 @@
         }
     })
 
-    $(document).on('change', `#import-form [name='prices[]'], #import-form [name='quantities[]']`, function() {
+    $(document).on('change', `#import-form [name='prices[]'], #import-form [name='quantities[]']`, function () {
         totalImport()
     })
 
     function totalImport() {
-        const totalImport = $('#import-form').find(`.import-detail`).map(function() {
+        const totalImport = $('#import-form').find(`.import-detail`).map(function () {
             var price = parseFloat($(this).find(`[name='prices[]']`).val().split(',').join('')) || 0;
             var quantity = parseFloat($(this).find(`[name='quantities[]']`).val().split(',').join('')) || 1;
             return price * quantity;
-        }).get().reduce(function(total, value) {
+        }).get().reduce(function (total, value) {
             return total + value;
         }, 0);
         $('#import-summary').val(totalImport)
     }
 
-    $(document).on('click', '.btn-update-import', function() {
+    $(document).on('click', '.btn-update-import', function () {
         const id = $(this).attr('data-id');
 
-        $.get(` {{ route('admin.import') }}/${id}`, function(obj) {
+        $.get(` {{ route('admin.import') }}/${id}`, function (obj) {
             const form = $('#import-form');
             resetForm(form)
             $('#import-form').attr('action', `{{ route('admin.import.update') }}`)
@@ -1359,7 +1406,7 @@
             <td><input type="date" name="expireds[]" class="form-control form-control-plaintext border-bottom fs-5" value="${detail.stock.expired != null ? detail.stock.expired : ''}" inputmode="numeric" placeholder="Expiration Date"></td>
             <td>
                 <datalist id="unit_prices-${detail.unit_id}">
-                    ${ Object.values(detail.import_prices).map(price => `<option>${number_format(price)}</option>`).join('') }
+                    ${Object.values(detail.import_prices).map(price => `<option>${number_format(price)}</option>`).join('')}
                 </datalist>
                 <input type="hidden" name="import_detail_ids[]" value="${detail.id}" />
                 <input type="hidden" name="stock_ids[]" value="${detail.stock.id}" />
@@ -1371,7 +1418,7 @@
     }
 
 
-    $(document).on('click', '.btn-view-import_detail', function() {
+    $(document).on('click', '.btn-view-import_detail', function () {
         const product_id = $(this).data('id')
         resetModalDataTable('import_detail-table');
         showImportDetails(product_id)
@@ -1392,7 +1439,7 @@
     //     $('#import_detail-table tbody').empty();
     // });
 
-    $(document).on('click', '.btn-view-export_detail', function() {
+    $(document).on('click', '.btn-view-export_detail', function () {
         const product_id = $(this).data('id');
         resetModalDataTable('export_detail-table');
         showExportDetails(product_id);
@@ -1406,7 +1453,7 @@
     /**
      * SUPPLIER PROCESS
      */
-    $(document).on('click', '.btn-create-supplier', function(e) {
+    $(document).on('click', '.btn-create-supplier', function (e) {
         e.preventDefault();
         const form = $('#supplier-form')
         resetForm(form)
@@ -1415,12 +1462,12 @@
         form.find('.modal').modal('show')
     })
 
-    $(document).on('click', '.btn-update-supplier', function(e) {
+    $(document).on('click', '.btn-update-supplier', function (e) {
         e.preventDefault();
         const id = $(this).attr('data-id'),
             form = $('#supplier-form');
         resetForm(form)
-        $.get(`{{ route('admin.supplier') }}/${id}`, function(supplier) {
+        $.get(`{{ route('admin.supplier') }}/${id}`, function (supplier) {
             form.find('[name=id]').val(supplier.id)
             form.find('[name=name]').val(supplier.name)
             form.find('[name=phone]').val(supplier.phone)
@@ -1438,12 +1485,12 @@
     /**
      * EXPORT PROCESS
      */
-    $(document).on('click', '.btn-create-export', function(e) {
+    $(document).on('click', '.btn-create-export', function (e) {
         e.preventDefault();
         initCreateExport()
     })
 
-    $(document).on('click', '.btn-submit-export', function(e) {
+    $(document).on('click', '.btn-submit-export', function (e) {
         e.preventDefault();
         const btn = $(this)
         if ($(this).hasClass('is-invalid')) {
@@ -1478,7 +1525,7 @@
         $('[name=status][value=1]').prop('checked', true)
         form.find(`[name='date']`).val(moment().format('YYYY-MM-DD'))
         form.find('.btn-print.print-export').addClass('d-none').removeAttr('data-id')
-        form.find('.modal').modal('show').find('.modal-title').text('New export')
+        form.find('.modal').modal('show').find('.modal-title').text(`{{ __('messages.supplier.new_export') }}`)
     }
 
     function addCardToExport(stock) {
@@ -1504,7 +1551,7 @@
                         <div class="badge bg-light-info">${stock.productSku}</div>
                         ${stock.stockExpired == null || stock.stockExpired == '' ? '' : `<div class="badge bg-light-info">EXP ${moment(stock.stockExpired).format('DD/MM/YYYY')}</div>`}
                         <div class="badge bg-light-info">
-                            Available stock ${stock.stockConvertQuantity}
+                            {{ __('messages.available_stock') }} ${stock.stockConvertQuantity}
                             <input type="hidden" class="export_detail-stock_quantity" name="stock_quantities[]" value="${stock.stockQuantity}"/>
                         </div>
                     </div>
@@ -1543,9 +1590,9 @@
             </div>`)
     }
 
-    $(document).on('click', '.btn-update-export', function() {
+    $(document).on('click', '.btn-update-export', function () {
         const id = $(this).attr('data-id')
-        $.get(` {{ route('admin.export') }}/${id}`, function(obj) {
+        $.get(` {{ route('admin.export') }}/${id}`, function (obj) {
             const form = $('#export-form');
             resetForm(form)
             form.find('.btn.btn-submit-export').removeClass('is-invalid')
@@ -1566,7 +1613,7 @@
                     type: 'select2:select'
                 });
             }
-            $.each(obj.export_details, function(index, export_detail) {
+            $.each(obj.export_details, function (index, export_detail) {
                 export_detail.totalExportQuantity = obj.export_details.reduce((sum, item) => {
                     if (export_detail.stock_id == item.stock_id) {
                         return sum += item.quantity * item._unit.rate;
@@ -1645,11 +1692,11 @@
             </div>`;
     }
 
-    $(document).on('change', '[name=export_warehouse]', function() {
+    $(document).on('change', '[name=export_warehouse]', function () {
         const input = $(this).closest('.modal').find('.search-input')
         input.attr('data-url', '{{ route('admin.stock') }}?key=search&action=export&warehouse_id=' + $(this)
             .val())
-        const debouncedFunction = debounce(function() {
+        const debouncedFunction = debounce(function () {
             handleSearch(input);
         }, 300);
         debouncedFunction();
@@ -1659,7 +1706,7 @@
     /**
      * ORDER PROCESS
      */
-    $(document).on('click', '.btn-create-order', function(e) {
+    $(document).on('click', '.btn-create-order', function (e) {
         e.preventDefault();
         const form = $('#order-form')
         resetForm(form)
@@ -1674,7 +1721,7 @@
         form.find(`[name='branch_name']`).val($('nav.navbar .user-name small').text())
         form.attr('action', `{{ route('admin.order.create') }}`)
         $('[name=status][value=1]').prop('checked', true)
-        $('#order-modal').modal('show').find('.modal-title').text('New order')
+        $('#order-modal').modal('show').find('.modal-title').text(`{{ __('messages.order.new_order') }}`)
     })
 
     function addCardToOrder(stock) {
@@ -1700,7 +1747,7 @@
                         <div class="badge bg-light-info">${stock.productSku}</div>
                         ${stock.stockExpired == null || stock.stockExpired == '' ? '' : `<div class="badge bg-light-info">EXP ${moment(stock.stockExpired).format('DD/MM/YYYY')}</div>`}
                         <div class="badge bg-light-info">
-                            Available stock ${stock.stockConvertQuantity}
+                            {{ __('messages.available_stock') }} ${stock.stockConvertQuantity}
                             <input type="hidden" class="order_detail-stock_quantity" name="stock_quantities[]" value="${stock.stockQuantity}"/>
                         </div>
                     </div>
@@ -1754,7 +1801,7 @@
         totalOrder()
     }
 
-    $(document).on('click', '.btn-quantity-detail', function() {
+    $(document).on('click', '.btn-quantity-detail', function () {
         const card = $(this).closest('.detail'),
             quantity = parseInt(card.find(`[name='quantities[]']`).val().split(',').join(''))
         if ($(this).hasClass('btn-dec')) {
@@ -1769,9 +1816,9 @@
         $(this).closest('.order-receipt').length ? totalOrder() : null
     })
 
-    $(document).on('click', '.btn-update-order', function() {
+    $(document).on('click', '.btn-update-order', function () {
         const id = $(this).attr('data-id')
-        $.get(` {{ route('admin.order') }}/${id}`, function(obj) {
+        $.get(` {{ route('admin.order') }}/${id}`, function (obj) {
             const form = $('#order-form');
             resetForm(form)
             form.find('.order-details').add('.customer-suggestions').empty()
@@ -1795,7 +1842,7 @@
             } else {
                 form.find('[name=customer_id]').empty()
             }
-            $.each(obj.details, function(index, detail) {
+            $.each(obj.details, function (index, detail) {
                 if (detail.stock_id != null) {
                     detail.totalSaleQuantity = obj.details.reduce((sum, item) => {
                         if (detail.stock_id == item.stock_id) {
@@ -1859,7 +1906,7 @@
                         <div class="badge bg-light-info">${detail._stock.import_detail._variable._product.sku}</div>
                         ${detail._stock.expired != null ? '<div class="badge bg-light-info">EXP ' + moment(detail._stock.expired).format('DD/MM/YYYY') + '</div>' : ''}
                         <div class="badge bg-light-info">
-                            Available stock ${detail._stock.quantity}
+                            {{ __('messages.available_stock') }} ${detail._stock.quantity}
                             <input type="hidden" class="order_detail-stock_quantity" name="stock_quantities[]" value="${parseInt(detail.totalSaleQuantity) + parseInt(detail._stock.quantity)}"/>
                         </div>
                     </div>
@@ -1915,12 +1962,12 @@
     }
 
 
-    $(document).on('click', '.btn-note-detail_stock', function(event) {
+    $(document).on('click', '.btn-note-detail_stock', function (event) {
         event.preventDefault();
         var card = $(this).closest('.order-detail, .order-services');
 
         Swal.fire({
-             title: 'Item Note',
+            title: 'Item Note',
             input: 'textarea',
             inputLabel: 'Enter note',
             inputValue: card.find('.order_detail-note').val(),
@@ -1929,8 +1976,8 @@
                 'aria-label': 'Enter your note here'
             },
             showCancelButton: true,
-        confirmButtonText: 'Save',
-        cancelButtonText: 'Cancel'
+            confirmButtonText: 'Save',
+            cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.isConfirmed) {
                 var note = result.value;
@@ -1939,7 +1986,7 @@
         });
     });
 
-    $(document).on('click', '.btn-price-order_detail', function() {
+    $(document).on('click', '.btn-price-order_detail', function () {
         const inputPrice = $(this).parent().find(`[name='prices[]']`),
             inputDiscount = $(this).parent().find(`[name='discounts[]']`),
             inputDiscountedPrice = $(this).parent().find(`[name='discounted_price[]']`),
@@ -1957,7 +2004,7 @@
                 detailAmount = Swal.getPopup().querySelector('#order_detail-amount');
                 detailAmount.value = inputDiscount.val()
                 detailAmount.select();
-                detailAmount.addEventListener('input', function() {
+                detailAmount.addEventListener('input', function () {
                     $(this).val($(this).val().replace(/(?!^-)[^0-9]/g, ''));
                 });
                 detailAmount.addEventListener('keyup', (event) => event.key === 'Enter' && Swal
@@ -1993,11 +2040,11 @@
         });
     })
 
-    $(document).on('change', '.order-discount', function() {
+    $(document).on('change', '.order-discount', function () {
         totalOrder()
     })
 
-    $(document).on('change', `[name='discounted_price[]']`, function() {
+    $(document).on('change', `[name='discounted_price[]']`, function () {
         let badge = $(this).parent().find('.badge'),
             inputDiscount = $(this).parent().find(`[name='discounts[]']`),
             discountedPrice = parseInt($(this).val().split(',').join('')),
@@ -2015,12 +2062,12 @@
         totalOrder()
     })
 
-    $(document).on('change', `.detail [name='quantities[]'], .detail [name='unit_ids[]']`, function() {
+    $(document).on('change', `.detail [name='quantities[]'], .detail [name='unit_ids[]']`, function () {
         const card = $(this).closest('.detail'),
             thisUnit = card.find(`[name='unit_ids[]']`).val(),
             thisStock = card.find(`[name='stock_ids[]']`).val(),
             currentUnit = card.find(`[name='current_unit_ids[]']`).val(),
-            countCheck = $(this).closest('form').find('.detail').filter(function() {
+            countCheck = $(this).closest('form').find('.detail').filter(function () {
                 var loopUnit = $(this).find(`[name='unit_ids[]']`).val(),
                     loopStock = $(this).find(`[name='stock_ids[]']`).val();
                 return loopUnit == thisUnit && loopStock == thisStock;
@@ -2046,12 +2093,12 @@
                 newUnit = card.find(`[name='unit_ids[]']`),
                 newQuantity = card.find(`[name='quantities[]']`),
                 unit_price = card.find(`[name='unit_ids[]'] option:selected`).attr('data-price'),
-                totalQuantity = tab.find(`[name='stock_ids[]'][value=${parseInt(stockId.val())}]`).map(function() {
+                totalQuantity = tab.find(`[name='stock_ids[]'][value=${parseInt(stockId.val())}]`).map(function () {
                     var rate = parseFloat($(this).closest('.detail').find(`[name='unit_ids[]'] option:selected`)
                         .attr('data-rate')) || 0;
                     var quantity = parseFloat($(this).closest('.detail').find(`[name='quantities[]']`).val()) || 0;
                     return rate * quantity;
-                }).get().reduce(function(total, value) {
+                }).get().reduce(function (total, value) {
                     return total + value;
                 }, 0);
             if (stockQuantity < totalQuantity) {
@@ -2076,14 +2123,14 @@
         let tab = '{{ Request::path() }}' == 'quantri/order/new' ? $('.tab-pane.active') : $('#order-form'),
             summary = 0,
             total = 0,
-            pay = $('.order-amount').map(function() {
+            pay = $('.order-amount').map(function () {
                 return parseFloat($(this).val().split(',').join('')) || 0;
-            }).get().reduce(function(sum, value) {
+            }).get().reduce(function (sum, value) {
                 return sum + value;
             }, 0),
             count = 0,
             discount = 0
-        tab.find('.order-detail').each(function() {
+        tab.find('.order-detail').each(function () {
             const quantity = parseInt($(this).find(`.order_detail-quantity`).val().split(',').join('')),
                 price = parseInt($(this).find(`.order_detail-discounted_price`).val().split(',').join(''))
             let sum = quantity * price
@@ -2111,14 +2158,14 @@
         tab.find('.order-due').val(summary - pay).change()
     }
 
-    $(document).on('click', '.btn-print', function() {
+    $(document).on('click', '.btn-print', function () {
         const id = $(this).attr('data-id'),
             url = $(this).attr('data-url'),
             template = $(this).attr('data-template')
 
-        $.get(`${url}/${id}/print?template=${template}`, function(template) {
+        $.get(`${url}/${id}/print?template=${template}`, function (template) {
             $('#print-wrapper').html(template)
-            $('#print-wrapper').find('.barcode-value').each(function() {
+            $('#print-wrapper').find('.barcode-value').each(function () {
                 JsBarcode('#' + $(this).prev().attr('id'), $(this).val(), {
                     format: "CODE128",
                     lineColor: "#000000",
@@ -2146,7 +2193,7 @@
     /**
      * Xử lý thời gian thực
      */
-    $(document).on('change', 'form', function() {
+    $(document).on('change', 'form', function () {
         const id = $(this).find('[name=id]').val()
         if (!id) {
             $(this).find('[name=created_at]').val(moment().format('YYYY-MM-DD HH:mm'));
@@ -2156,7 +2203,7 @@
     /**
      * Xử lý khách hàng
      */
-    $(document).on('change', '[name=customer_id]', function() {
+    $(document).on('change', '[name=customer_id]', function () {
         fillCustomerSuggestions($(this).val())
     })
     /*==================== END ORDER ====================*/
@@ -2164,7 +2211,7 @@
     /**
      *  TRANSACTION PROCESS
      */
-    $(document).on('click', '.btn-create-transaction', function(e) {
+    $(document).on('click', '.btn-create-transaction', function (e) {
         e.preventDefault();
         const form = $('#transaction-form'),
             order_id = $(this).attr('data-order'),
@@ -2173,7 +2220,7 @@
         let note = ''
         resetForm(form)
         if (order_id) {
-            $.get(`{{ route('admin.order') }}/${order_id}`).then(function(order) {
+            $.get(`{{ route('admin.order') }}/${order_id}`).then(function (order) {
                 if (order) {
                     if (order._customer) {
                         var option = new Option(order._customer.name, order._customer.id, true, true);
@@ -2199,7 +2246,7 @@
             });
         } else {
             if (customer_id) {
-                $.get(`{{ route('admin.user') }}/${customer_id}`, function(customer) {
+                $.get(`{{ route('admin.user') }}/${customer_id}`, function (customer) {
                     var option = new Option(customer.name, customer.id, true, true);
                     form.find('[name=customer_id]').html(option).trigger({
                         type: 'select2:select'
@@ -2217,16 +2264,16 @@
         form.find('.send-zns-btns').empty()
         form.find('[name=cashier_id]').val(`{{ Auth::id() }}`)
         form.attr('action', `{{ route('admin.transaction.create') }}`)
-        form.find('.modal').modal('show').find('.modal-title').text('New transaction')
+        form.find('.modal').modal('show').find('.modal-title').text('{{ __('messages.transaction.new_transaction') }}')
     })
 
-    $(document).on('click', '.btn-update-transaction', function() {
+    $(document).on('click', '.btn-update-transaction', function () {
         const id = $(this).attr('data-id'),
             customer_id = $(this).attr('data-customer_id')
         const form = $('#transaction-form');
         resetForm(form)
         form.attr('action', `{{ route('admin.transaction.update') }}`)
-        $.get(` {{ route('admin.transaction') }}/${id}`, function(transaction) {
+        $.get(` {{ route('admin.transaction') }}/${id}`, function (transaction) {
             if (transaction.customer_id != null) {
                 var option = new Option(transaction._customer.name, transaction._customer.id, true,
                     true);
@@ -2257,7 +2304,7 @@
         })
     })
 
-    $(document).on('click', '.btn-convert-scores', function() {
+    $(document).on('click', '.btn-convert-scores', function () {
         const user_scores = $('[name=scores]'),
             original_scores = $('[name=original_scores]'),
             order_discount = $('[name=discount]')
@@ -2275,7 +2322,7 @@
                 convert_scores = Swal.getPopup().querySelector('#convert-scores');
                 convert_scores.value = user_scores.val()
                 convert_scores.select();
-                convert_scores.addEventListener('input', function() {
+                convert_scores.addEventListener('input', function () {
                     $(this).val($(this).val().replace(/(?!^-)[^0-9]/g, ''));
                 });
                 convert_scores.addEventListener('keyup', (event) => event.key === 'Enter' && Swal
@@ -2303,13 +2350,13 @@
 
     function fillCustomerSuggestions(id) {
         if (!id) return;
-        $.get(`{{ route('admin.user') }}/${id}/suggestions`, function(suggest) {
+        $.get(`{{ route('admin.user') }}/${id}/suggestions`, function (suggest) {
             let str =
                 `<span class="badge bg-secondary me-2 mb-2">Account since ${moment(suggest.created_at).format('DD/MM/YYYY')}</span>`
             if (suggest.countOrders) {
-                str +=`<span class="badge bg-secondary me-2 mb-2">Purchased <span class="text-white fw-bold fs-5">${number_format(suggest.countOrders)}</span> times</span>`
+                str += `<span class="badge bg-secondary me-2 mb-2">Purchased <span class="text-white fw-bold fs-5">${number_format(suggest.countOrders)}</span> times</span>`
                 if (suggest.countPayments) {
-                    str +=`<span class="badge bg-secondary me-2 mb-2">Average number of payments per order: <span class="text-white fw-bold fs-5">${number_format(suggest.countPayments)} times</span></span>`
+                    str += `<span class="badge bg-secondary me-2 mb-2">Average number of payments per order: <span class="text-white fw-bold fs-5">${number_format(suggest.countPayments)} times</span></span>`
                 }
             } else {
                 str += `<span class="badge bg-secondary me-2 mb-2">No purchases yet</span>`
@@ -2517,7 +2564,7 @@
             serverSide: true,
             ajax: {
                 url: `{{ route('admin.transaction') }}?order_id=${order_id}`,
-                dataSrc: function(json) {
+                dataSrc: function (json) {
                     const totalOrder = json.totalOrder;
                     const totalAmount = json.totalAmount;
                     const transactionRemain = totalAmount - totalOrder;
@@ -2527,9 +2574,9 @@
                         .html(transactionRemain < 0 ?
                             `<span class="text-danger">${number_format(transactionRemain) + 'VND'}</span>` :
                             transactionRemain > 0 ?
-                            `<span class="text-success">${number_format(transactionRemain) + 'VND'}</span>` :
-                            number_format(transactionRemain) + 'VND')
-                        .prev().text(transactionRemain < 0 ? `Underpaid` : transactionRemain > 0 ? `Overpaid` : `Paid in full`)
+                                `<span class="text-success">${number_format(transactionRemain) + 'VND'}</span>` :
+                                number_format(transactionRemain) + 'VND')
+                        .prev().text(transactionRemain < 0 ? `Underpaid` : transactionRemain > 0 ? `Overpaid` : `{{ __('messages.pay_in_full') }}`);
                     return json.data;
                 }
             },
@@ -2557,7 +2604,7 @@
     /**
      *  EXPENSE PROCESS
      */
-    $(document).on('click', '.btn-create-expense', function(e) {
+    $(document).on('click', '.btn-create-expense', function (e) {
         e.preventDefault();
         const form = $('#expense-form')
         resetForm(form)
@@ -2565,12 +2612,50 @@
         form.find('.modal').modal('show')
     })
 
-    $(document).on('click', '.btn-update-expense', function(e) {
+    /**
+     *  DETAIL LOG
+     */
+
+  $(document).on('click', '.btn-detail-log', function (e) {
+    e.preventDefault();
+    const id = $(this).data('id'),
+        form = $('#log-form');
+
+    resetForm(form); // nếu bạn có hàm resetForm
+
+    $.get(`{{ route('admin.log.show', '') }}/${id}`, function (log) {
+        let before = log.before_change ? JSON.parse(log.before_change) : {};
+        let after = log.after_change ? JSON.parse(log.after_change) : {};
+
+        // Lấy tất cả key của cả 2 object để hiển thị đủ
+        const allKeys = Array.from(new Set([...Object.keys(before), ...Object.keys(after)]));
+
+        let rows = '';
+        allKeys.forEach(key => {
+            const beforeValue = before[key] !== undefined ? before[key] : '-';
+            const afterValue = after[key] !== undefined ? after[key] : '-';
+            rows += `
+                <tr>
+                    <td><strong>${key}</strong>: ${beforeValue}</td>
+                    <td><strong>${key}</strong>: ${afterValue}</td>
+                </tr>
+            `;
+        });
+
+        $('#change-comparison-body').html(rows);
+
+        form.find('.modal').modal('show');
+    });
+});
+
+
+
+    $(document).on('click', '.btn-update-expense', function (e) {
         e.preventDefault();
         const id = $(this).attr('data-id'),
             form = $('#expense-form');
         resetForm(form)
-        $.get(`{{ route('admin.expense') }}/${id}`, function(expense) {
+        $.get(`{{ route('admin.expense') }}/${id}`, function (expense) {
             form.find('[name=id]').val(expense.id)
             form.attr('action', `{{ route('admin.expense.update') }}`)
             form.find('.modal').modal('show')
@@ -2599,7 +2684,7 @@
     //Sắp lịch lấy thứ hai tuần sau
     let nextMonday = moment().endOf('week').add(1, 'days'); // Thứ hai tuần sau
 
-    $(document).on('change', '.btn-change-schedule', function() {
+    $(document).on('change', '.btn-change-schedule', function () {
         const element = $(this),
             user_id = $(this).attr('data-user_id'),
             main_branch = $(this).attr('data-main_branch'),
@@ -2615,7 +2700,7 @@
                 <input type="hidden" name="shift" value="${shift}">
                 <input type="hidden" name="date" value="${date}">
             </form>`);
-        submitForm(form).catch(function(errors) {
+        submitForm(form).catch(function (errors) {
             element.prop("checked", false);
         });
     })
@@ -2623,14 +2708,14 @@
     /**
      * WORK PROCESS
      */
-    $(document).ready(function() {
+    $(document).ready(function () {
         moment.locale('vi');
-        $(document).on('click', '.btn-update-work', function(e) {
+        $(document).on('click', '.btn-update-work', function (e) {
             e.preventDefault();
             const id = $(this).attr('data-id'),
                 form = $('#timekeeping-form');
             resetForm(form)
-            $.get(`{{ route('admin.work') }}/${id}`, function(work) {
+            $.get(`{{ route('admin.work') }}/${id}`, function (work) {
                 form.find('[name="sign_checkin"]').val(moment(work.sign_checkin).format(
                     'HH:mm'))
                 form.find('[name="sign_checkout"]').val(moment(work.sign_checkout).format(
@@ -2648,7 +2733,7 @@
         })
 
         //Tự sắp lịch
-        $(document).on('click', '.btn-self-schedule', function(e) {
+        $(document).on('click', '.btn-self-schedule', function (e) {
             e.preventDefault();
             const modal = $('#self-schedule-modal');
             renderSchedule(nextMonday, $('#self-schedule-table thead'));
@@ -2666,22 +2751,22 @@
             length: 7
         }, (_, i) => monday.clone().add(i, 'days'));
         let html = `<tr class="tr-head">
-                        <th style="min-width: 210px">Name</th>
+                        <th style="min-width: 210px">{{ __('messages.work_schedule.name') }}</th>
                         ${days.map((day, index) => {
-                            const dayName = day.format('ddd');
-                            const date = day.format('DD/MM/YYYY');
-                            const dayClass = index === 5 ? 'text-success': index === 6 ? 'text-danger' : '';
-                            return `<th class="text-center ${dayClass}">${dayName}<br><span class="fw-normal ${dayClass}">${date}</span></th>`;
-                        }).join('')}
+            const dayName = day.format('ddd');
+            const date = day.format('DD/MM/YYYY');
+            const dayClass = index === 5 ? 'text-success' : index === 6 ? 'text-danger' : '';
+            return `<th class="text-center ${dayClass}">${dayName}<br><span class="fw-normal ${dayClass}">${date}</span></th>`;
+        }).join('')}
                     </tr>`;
         target.html(html);
     }
 
     //Fill lịch cho modal chấm đăng ký lịch
     function fillSchedule() {
-        $.get(`{{ route('admin.work', ['key' => 'schedule']) }}`, function(works) {
+        $.get(`{{ route('admin.work', ['key' => 'schedule']) }}`, function (works) {
             //4-1611-4-6
-            $.each(works, function(index, work) {
+            $.each(works, function (index, work) {
                 const classComponent = `${work.branch_id}-${work.user_id}-${work.index}-${work.date}`;
                 $('#schedule-modal').find(`.${classComponent}`).prop('checked', true);
                 $('#self-schedule-modal').find(`.${classComponent}`).prop('checked', true);
@@ -2712,7 +2797,7 @@
 
     /* ====================== PRODUCT ====================== */
 
-$(document).on('click', '.btn-create-variable', function(e) {
+    $(document).on('click', '.btn-create-variable', function (e) {
         e.preventDefault();
         const form = $('#variable-form')
         resetForm(form)
@@ -2725,10 +2810,10 @@ $(document).on('click', '.btn-create-variable', function(e) {
         form.find('.modal').modal('show').find('.modal-title').text('New variant')
     })
 
-    $(document).on('click', '.btn-update-variable', function(e) {
+    $(document).on('click', '.btn-update-variable', function (e) {
         e.preventDefault();
         const id = $(this).attr('data-id');
-        $.get(`{{ route('admin.variable') }}/${id}`, function(variable) {
+        $.get(`{{ route('admin.variable') }}/${id}`, function (variable) {
             initUpdateVariable(variable)
         })
     })
@@ -2746,11 +2831,11 @@ $(document).on('click', '.btn-create-variable', function(e) {
         if (variable.deleted_at != null) {
             form.find('.btn[type=submit]:last-child').addClass('d-none')
         }
-        $.each(variable.attributes, function(index, attribute) {
+        $.each(variable.attributes, function (index, attribute) {
             form.find(`#variable-attribute-${attribute.id}`).prop('checked', true);
         })
         form.find('#variable-units').empty()
-        $.each(variable.units, function(index, unit) {
+        $.each(variable.units, function (index, unit) {
             form.find('#variable-units').append(`
             <tr class="variable-unit">
                 <td><input class="form-control" name="unit_barcode[]" type="text" value="${unit.barcode ? unit.barcode : ''}" placeholder="Barcode"></td>
@@ -2773,7 +2858,7 @@ $(document).on('click', '.btn-create-variable', function(e) {
         form.find('.modal').modal('show').find('.modal-title').text(variable.name != null ? variable.name : variable.id)
     }
 
-    $(document).on('click', '.btn-append-unit', function(e) {
+    $(document).on('click', '.btn-append-unit', function (e) {
         e.preventDefault();
         const form = $('#variable-form');
         const str = `
@@ -2796,7 +2881,7 @@ $(document).on('click', '.btn-create-variable', function(e) {
         form.find('#variable-units').append(str);
     })
 
-    $(document).on('click', '.btn-remove-unit', function(e) {
+    $(document).on('click', '.btn-remove-unit', function (e) {
         e.preventDefault();
         const btn = $(this);
         if ($('.variable-unit').length > 1) {
@@ -2804,7 +2889,7 @@ $(document).on('click', '.btn-create-variable', function(e) {
                 const form = btn.closest('form');
                 Swal.fire(config.sweetAlert.confirm).then((result) => {
                     if (result.isConfirmed) {
-                        submitForm(form).done(function(response) {
+                        submitForm(form).done(function (response) {
                             if (response.status == 'success') {
                                 btn.closest('.variable-unit').remove();
                             }

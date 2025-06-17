@@ -95,7 +95,7 @@
                                 @endif
                                 @if (!empty(Auth::user()->hasAnyPermission(app\Models\User::READ_DISCOUNTS)))
                                     <li class="submenu-item" data-keyword="Discounts">
-                                        <a href="{{ route('admin.discount') }}">Discounts</a>
+                                        <a href="{{ route('admin.discount') }}">{{ __('messages.sidebar.discount') }}</a>
                                     </li>
                                 @endif
                             </ul>

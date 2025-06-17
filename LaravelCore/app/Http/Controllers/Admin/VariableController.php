@@ -15,39 +15,9 @@ use Yajra\DataTables\Facades\DataTables;
 
 class VariableController extends Controller
 {
-    const NAME = 'Variable',
-        MESSAGES = [
-            'name.required' => 'Variable name' . Controller::NOT_EMPTY,
-            'name.string' => 'Variable name' . Controller::DATA_INVALID,
-            'name.max' => 'Variable name' . Controller::MAX,
-            'status.numeric' => 'Status' . Controller::DATA_INVALID,
-            'description.string' => 'Description' . Controller::DATA_INVALID,
-
-            'stock_limit.required' => Controller::NOT_EMPTY,
-            'stock_limit.numeric' => Controller::DATA_INVALID,
-            'variable_id.required' => 'Please create a variant first.',
-            'variable_id.numeric' => 'Variant ' . Controller::DATA_INVALID,
-
-            'unit_term.required' => 'Unit name: ' . Controller::NOT_EMPTY,
-            'unit_term.array' => 'Unit name: ' . Controller::DATA_INVALID,
-            'unit_term.*.required' => 'Unit name: ' . Controller::NOT_EMPTY,
-            'unit_term.*.string' => 'Unit name: ' . Controller::DATA_INVALID,
-
-            'unit_barcode.required' => 'Barcode: ' . Controller::NOT_EMPTY,
-            'unit_barcode.array' => 'Barcode: ' . Controller::DATA_INVALID,
-            'unit_barcode.*.required' => 'Barcode: ' . Controller::NOT_EMPTY,
-            'unit_barcode.*.string' => 'Barcode: ' . Controller::DATA_INVALID,
-
-            'unit_price.required' => 'Price: ' . Controller::NOT_EMPTY,
-            'unit_price.array' => 'Price: ' . Controller::DATA_INVALID,
-            'unit_price.*.required' => 'Price: ' . Controller::NOT_EMPTY,
-            'unit_price.*.numeric' => 'Price: ' . Controller::DATA_INVALID,
-
-            'unit_rate.required' => 'Conversion rate: ' . Controller::NOT_EMPTY,
-            'unit_rate.array' => 'Conversion rate: ' . Controller::DATA_INVALID,
-            'unit_rate.*.required' => 'Conversion rate: ' . Controller::NOT_EMPTY,
-            'unit_rate.*.numeric' => 'Conversion rate: ' . Controller::DATA_INVALID,
-        ];
+    const NAME = 'Variable';
+     public static array $MESSAGES = [];
+        
 
     public function __construct()
     {
@@ -56,6 +26,46 @@ class VariableController extends Controller
             $this->user = Auth::user();
         }
         $this->middleware(['admin', 'auth']);
+
+        $this->middleware(function ($request, $next) {
+        // Locale đã được set xong ở đây
+        Controller::init(); // Gán các biến tĩnh ở đây
+
+       self::$MESSAGES = [
+             'name.required' => 'Variable name' . Controller::$NOT_EMPTY,
+            'name.string' => 'Variable name' . Controller::$DATA_INVALID,
+            'name.max' => 'Variable name' . Controller::$MAX,
+            'status.numeric' => 'Status' . Controller::$DATA_INVALID,
+            'description.string' => 'Description' . Controller::$DATA_INVALID,
+
+            'stock_limit.required' => Controller::$NOT_EMPTY,
+            'stock_limit.numeric' => Controller::$DATA_INVALID,
+            'variable_id.required' => 'Please create a variant first.',
+            'variable_id.numeric' => 'Variant ' . Controller::$DATA_INVALID,
+
+            'unit_term.required' => 'Unit name: ' . Controller::$NOT_EMPTY,
+            'unit_term.array' => 'Unit name: ' . Controller::$DATA_INVALID,
+            'unit_term.*.required' => 'Unit name: ' . Controller::$NOT_EMPTY,
+            'unit_term.*.string' => 'Unit name: ' . Controller::$DATA_INVALID,
+
+            'unit_barcode.required' => 'Barcode: ' . Controller::$NOT_EMPTY,
+            'unit_barcode.array' => 'Barcode: ' . Controller::$DATA_INVALID,
+            'unit_barcode.*.required' => 'Barcode: ' . Controller::$NOT_EMPTY,
+            'unit_barcode.*.string' => 'Barcode: ' . Controller::$DATA_INVALID,
+
+            'unit_price.required' => 'Price: ' . Controller::$NOT_EMPTY,
+            'unit_price.array' => 'Price: ' . Controller::$DATA_INVALID,
+            'unit_price.*.required' => 'Price: ' . Controller::$NOT_EMPTY,
+            'unit_price.*.numeric' => 'Price: ' . Controller::$DATA_INVALID,
+
+            'unit_rate.required' => 'Conversion rate: ' . Controller::$NOT_EMPTY,
+            'unit_rate.array' => 'Conversion rate: ' . Controller::$DATA_INVALID,
+            'unit_rate.*.required' => 'Conversion rate: ' . Controller::$NOT_EMPTY,
+            'unit_rate.*.numeric' => 'Conversion rate: ' . Controller::$DATA_INVALID,
+        ];
+
+        return $next($request);
+    });
     }
 
     public function index(Request $request)
@@ -189,7 +199,7 @@ class VariableController extends Controller
             ],
             'unit_rate.*' => ['required', 'numeric'],
         ];
-        $request->validate($rules, self::MESSAGES);
+        $request->validate($rules, self::$MESSAGES);
 
         if (!empty($this->user->can(User::CREATE_VARIABLE))) {
             DB::beginTransaction();
@@ -202,7 +212,7 @@ class VariableController extends Controller
                     'status' => $request->has('status'),
                 ]);
                 if ($variable) {
-                    LogController::create('create', self::NAME, $variable->id);
+                    LogController::create('1', self::NAME, $variable->id);
                     $variable->assignAttributes($request->input('attributes'));
                     foreach ($request->unit_term as $key => $term) {
                         $unit = Unit::create([
@@ -212,7 +222,7 @@ class VariableController extends Controller
                             'rate' => $request->unit_rate[$key],
                             'price' => $request->unit_price[$key],
                         ]);
-                        LogController::create('create', 'unit', $unit->id);
+                        LogController::create('1', 'unit', $unit->id);
                         $unit->barcode = $request->unit_barcode[$key] ? $request->unit_barcode[$key] : $unit->_variable->_product->code . $unit->id;
                         $unit->save();
                     }
@@ -282,7 +292,7 @@ class VariableController extends Controller
             ],
             'unit_rate.*' => ['required', 'numeric'],
         ];
-        $request->validate($rules, self::MESSAGES);
+        $request->validate($rules, self::$MESSAGES);
         if (!empty($this->user->can(User::UPDATE_VARIABLE))) {
             if ($request->has('id')) {
                 DB::beginTransaction();
@@ -296,7 +306,7 @@ class VariableController extends Controller
                             'stock_limit' => $request->stock_limit,
                             'status' => $request->has('status'),
                         ]);
-                        LogController::create('update', self::NAME, $variable->id);
+                        LogController::create('2', self::NAME, $variable->id);
 
                         $variable->syncAttributes($request->input('attributes'));
                         foreach ($request->unit_id as $key => $id) {
@@ -308,7 +318,7 @@ class VariableController extends Controller
                             $unit->save();
                             $unit->barcode = $request->unit_barcode[$key] ? $request->unit_barcode[$key] : $variable->_product->code . $unit->id;
                             $unit->save();
-                            LogController::create($id ? 'update' : 'create', 'unit', $unit->id);
+                            LogController::create($id ? '2' : '1', 'unit', $unit->id);
                         }
 
                         DB::commit();
@@ -380,7 +390,7 @@ class VariableController extends Controller
                 } else {
                     $obj->delete();
                 }
-                LogController::create("delete", self::NAME, $obj->id);
+                LogController::create("3", self::NAME, $obj->id);
                 $response = array(
                     'status' => 'success',
                     'msg' => 'Successfully deleted ' . self::NAME . ' ' . $obj->name . '!'
