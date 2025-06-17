@@ -1088,7 +1088,7 @@ function resetForm(frm) {
         .end()
         .find("[type=submit]")
         .prop("disabled", false)
-        .html("Save")
+         .html('<i class="bi bi-floppy"></i>').addClass("px-4")
         .removeClass("d-none")
         .end()
         .find('[type=hidden]')
@@ -1135,8 +1135,8 @@ $(".save-form").on("submit", function (e) {
                         type: "select2:select",
                     });
                     //Đối với ajax-search
-                    fillCustomer(response.user.id, response.user.name + ' - ' + response.user.phone)
-                    fillListPet(response.user.id)
+                    // fillCustomer(response.user.id, response.user.name + ' - ' + response.user.phone)
+                    // fillListPet(response.user.id)
                 }
                 break;
             case "login-form":
@@ -1175,7 +1175,7 @@ function submitForm(frm) {
         .next()
         .remove("span.response");
     let str = `<span class="${btn.text() == "" ? "" : "text-white"
-        }"><i class="bi bi-exclamation-circle-fill mt-1"></i>${btn.text() == "" ? "" : " Try again"
+        }"><i class="bi bi-arrow-repeat"></i></i>${btn.text() == "" ? "" : " Try again"
         }</span>`;
     btn.prop("disabled", true).html(
         '<span class="spinner-border spinner-border-sm" id="spinner-form" role="status"></span>'

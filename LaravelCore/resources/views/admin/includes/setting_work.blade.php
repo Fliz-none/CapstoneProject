@@ -2,18 +2,18 @@
     <form id="work-form" action="{{ route('admin.setting.work') }}" method="post">
         @csrf
         <div class="card-header d-flex justify-content-between">
-            <h3>Shift settings</h3>
-            <button class="btn btn-primary" type="submit">Save</button>
+            <h3>{{ __('messages.shift_setting.shift_setting') }}</h3>
+            <button class="btn btn-primary" type="submit">{{ __('messages.save') }}</button>
         </div>
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-hover table-striped table-shift">
                     <thead>
                         <tr>
-                            <th>Shift Name</th>
-                            <th>Check-in Time</th>
-                            <th>Check-out Time</th>
-                            <th>Staff Count/Shift</th>
+                            <th>{{ __('messages.shift_setting.name') }}</th>
+                            <th>{{ __('messages.shift_setting.checkin') }}</th>
+                            <th>{{ __('messages.shift_setting.checkout') }}</th>
+                            <th>{{ __('messages.shift_setting.staff') }}</th>
                             <th style="width: 5%"></th>
                         </tr>
                     </thead>
@@ -81,7 +81,7 @@
                         @else
                             <tr class="text-center fst-italic text-primary">
                                 <th colspan="5">
-                                    <h6 class="pt-2">No shifts available</h6>
+                                    <h6 class="pt-2">{{ __('messages.shift_setting.no_shift') }}</h6>
                                 </th>
                             </tr>
                         @endif
@@ -94,8 +94,8 @@
         <div class="card-body">
             <div class="mb-3 row">
                 <label class="col-sm-4 col-form-label" for="allow_self_register">
-                    Allow employees to self-register shifts<br />
-                    <small class="form-text text-muted">If disabled, only admin can register shifts for employees</small>
+                    {{ __('messages.shift_setting.allow') }}<br />
+                    <small class="form-text text-muted">{{ __('messages.shift_setting.allow_placeholder') }}</small>
                 </label>
                 <div class="col-sm-2">
                     <input name="allow_self_register" type="hidden" value="0">
@@ -108,8 +108,8 @@
                     @enderror
                 </div>
                 <label class="col-sm-4 col-form-label" for="require_attendance_on_company_wifi">
-                    Require attendance on company Wi-Fi<br />
-                    <small class="form-text text-muted">If enabled, employees will be required to check in and check out on company Wi-Fi</small>
+                    {{ __('messages.shift_setting.wifi_require') }}<br />
+                    <small class="form-text text-muted">{{ __('messages.shift_setting.wifi_require_placeholder') }}</small>
                 </label>
                 <div class="col-sm-2">
                     <input name="require_attendance_on_company_wifi" type="hidden" value="0">

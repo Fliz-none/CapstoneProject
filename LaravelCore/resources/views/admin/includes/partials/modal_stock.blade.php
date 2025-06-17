@@ -62,13 +62,13 @@
                         <div class="row">
                             <div class="col-12 col-lg-3">
                                 <div class="mb-3">
-                                    <select class="form-control select2" id="render_stock-catalogue_id" data-ajax--url="{{ route('admin.catalogue', ['key' => 'select2']) }}" data-placeholder="Select a category">
+                                    <select class="form-control select2" id="render_stock-catalogue_id" data-ajax--url="{{ route('admin.catalogue', ['key' => 'select2']) }}" data-placeholder="{{ __('messages.stock.select_category') }}">
                                     </select>
                                 </div>
                             </div>
                             <div class="col-12 col-lg-3">
                                 <div class="mb-3">
-                                    <select class="form-control select2" id="render_stock-warehouse_id" name="warehouse_id" data-ajax--url="{{ route('admin.warehouse', ['key' => 'select2']) }}" data-placeholder="Select a warehouse">
+                                    <select class="form-control select2" id="render_stock-warehouse_id" name="warehouse_id" data-ajax--url="{{ route('admin.warehouse', ['key' => 'select2']) }}" data-placeholder="{{ __('messages.stock.warehouse_select') }}">
                                     </select>
                                 </div>
                             </div>
@@ -80,10 +80,10 @@
                             <div class="col-12 col-lg-3">
                                 <div class="btn-group w-100 gap-2" role="group">
                                     @if (!empty(Auth::user()->can(App\Models\User::PRINT_STOCK)))
-                                        <button class="btn btn-primary btn-print-stock" type="button"><i class="bi bi-printer-fill"></i> Print</button>
+                                        <button class="btn btn-primary btn-print-stock" type="button"><i class="bi bi-printer-fill"></i> {{ __('messages.stock.print') }}</button>
                                     @endif
                                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_IMPORT)) && !empty(Auth::user()->can(App\Models\User::CREATE_EXPORT)))
-                                        <button class="btn btn-primary btn-sync-stock" type="button"><i class="bi bi-repeat"></i> Sync Stock</button>
+                                        <button class="btn btn-primary btn-sync-stock" type="button"><i class="bi bi-repeat"></i> {{ __('messages.stock.sync') }}</button>
                                     @endif
                                 </div>
                             </div>
@@ -91,19 +91,19 @@
                         <table class="table table-bordered table-hover table-render-stock">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Product Name</th>
-                                    <th>Opening Stock</th>
-                                    <th>Stock In</th>
-                                    <th>Stock Out</th>
-                                    <th>Closing Stock</th>
-                                    <th>Actual Stock</th>
-                                    <th>Minimum Stock</th>
+                                    <th>{{ __('messages.datatable.code') }}</th>
+                                    <th>{{ __('messages.product.product_name') }}</th>
+                                    <th>{{ __('messages.stock.opening_stock') }}</th>
+                                    <th>{{ __('messages.stock.stock_in') }}</th>
+                                    <th>{{ __('messages.stock.stock_out') }}</th>
+                                    <th>{{ __('messages.stock.closed_stock') }}</th>
+                                    <th>{{ __('messages.stock.actual_stock') }}</th>
+                                    <th>{{ __('messages.stock.minimum_stock') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="text-center" colspan="8">Select a category and warehouse to list</td>
+                                    <td class="text-center" colspan="8">{{ __('messages.stock.select_warehouse_and_category') }}</td>
                                 </tr>
                             </tbody>
                         </table>

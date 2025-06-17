@@ -24,17 +24,9 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    const NAME = 'Product',
-        MESSAGES = [
-            'sku.string' => Controller::DATA_INVALID,
-            'sku.max' => Controller::MAX,
-            'name.required' => Controller::NOT_EMPTY,
-            'name.string' => Controller::DATA_INVALID,
-            'name.max' => Controller::MAX,
-            'status.numeric' => Controller::DATA_INVALID,
-            'catalogues.required' => 'Category can not be empty',
-            'catalogues.array' => 'Category: ' . Controller::DATA_INVALID,
-        ];
+    const NAME = 'Product';
+    public static array $MESSAGES = [];
+       
 
     public function __construct()
     {
@@ -43,6 +35,25 @@ class ProductController extends Controller
             $this->user = Auth::user();
         }
         $this->middleware(['admin', 'auth']);
+        $this->middleware(function ($request, $next) {
+        // Locale đã được set xong ở đây
+        Controller::init();
+         self::$MESSAGES = [
+            'sku.required'=> Controller::$NOT_EMPTY,
+            'sku.unique'=> __('messages.product.product_sku_unique'),
+            'sku.string' => Controller::$DATA_INVALID,
+            'sku.max' => Controller::$MAX,
+            'name.required' => Controller::$NOT_EMPTY,
+            'name.string' => Controller::$DATA_INVALID,
+            'name.max' => Controller::$MAX,
+            'status.numeric' => Controller::$DATA_INVALID,
+            'catalogues.required' => __('messages.category.category_required'),
+            'catalogues.array' => __('messages.category.category_array') . Controller::$DATA_INVALID,
+        ];
+
+        return $next($request);
+        });
+       
     }
 
     /**
@@ -60,8 +71,8 @@ class ProductController extends Controller
                         'columns' => 'required',
                         'catalogue_id' => 'required|numeric',
                     ], [
-                        'columns.required' => 'Please select at least one column',
-                        'catalogue_id.required' => 'Category can not be empty',
+                        'columns.required' => Controller::$MIN,
+                        'catalogue_id.required' => __('messages.category.category_required'),
                     ]);
                     $catalogue_ids = Controller::getDescendantIds($request->catalogue_id);
                     $catalogue_ids[] = $request->catalogue_id;
@@ -313,18 +324,18 @@ class ProductController extends Controller
             DB::statement($sql, $idArray);
         }
 
-        return response()->json(['msg' => 'The sort order has been updated successfully!'], 200);
+        return response()->json(['msg' => __('messages.sort_success')], 200);
     }
 
     public function save(Request $request)
     {
         $rules = [
-            'sku' => ['nullable', 'string', 'max:125'],
+            'sku' => ['required','unique', 'string', 'max:125'],
             'name' => ['required', 'string', 'max:125'],
             'status' => ['nullable', 'numeric'],
             'catalogues' => ['required'],
         ];
-        $request->validate($rules, self::MESSAGES);
+        $request->validate($rules, self::$MESSAGES);
 
         if (!empty($this->user->can(User::CREATE_PRODUCT, User::UPDATE_PRODUCT))) {
             try {
@@ -346,18 +357,17 @@ class ProductController extends Controller
                 if ($product) {
                     $product->syncCatalogues($request->catalogues);
                 }
-                $action = ($request->id) ? 'update' : 'create';
-                LogController::create($action, self::NAME, $product->id);
+                $action = ($request->id) ? __('messages.updated') : __('messages.created');
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Successfully ' . $action . ' ' . self::NAME . ' ' . $product->name
+                    'msg' =>  $action . ' ' . __('messages.product') . ' ' . $product->name
                 );
             } catch (\Exception $e) {
                 log_exception($e);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.product.error') . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.product.role')]]], 422);
         }
         return redirect()->route('admin.product', ['key' => $product->id])->with('response', $response);
     }
@@ -365,13 +375,13 @@ class ProductController extends Controller
     public function create(Request $request)
     {
         $rules = [
-            'sku' => ['nullable', 'string', 'max:125'],
+            'sku' => ['required','unique', 'string', 'max:125'],
             'name' => ['required', 'string', 'max:125'],
             'status' => ['nullable', 'numeric'],
             'catalogues' => ['required', 'array'],
         ];
 
-        $request->validate($rules, self::MESSAGES);
+        $request->validate($rules, self::$MESSAGES);
 
         if (!empty($this->user->can(User::CREATE_PRODUCT, User::UPDATE_PRODUCT))) {
             DB::beginTransaction();
@@ -389,7 +399,7 @@ class ProductController extends Controller
                     'status' => $request->status,
                 ]);
                 if ($product) {
-                    LogController::create('create', self::NAME, $product->id);
+                    LogController::create('1', self::NAME, $product->id);
                     if ($request->avatar) {
                         $image = $request->file('avatar');
                         $imageName = $image->getClientOriginalName();
@@ -402,7 +412,7 @@ class ProductController extends Controller
                             'name' => $imageName,
                             'author_id' => Auth::user()->id
                         ]);
-                        LogController::create('create', 'Image ' . $image->name, $image->id);
+                        LogController::create('1', 'Image ' . $image->name, $image->id);
                         $product->update(['gallery' => '|' . $imageName]);
                     }
                     $product->syncCatalogues($request->catalogues);
@@ -410,16 +420,16 @@ class ProductController extends Controller
                 DB::commit();
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Created ' . self::NAME . ' ' . $product->name
+                    'msg' => __('messages.created') . ' ' . __('messages.product.product') . ' ' . $product->name
                 );
             } catch (\Exception $e) {
                 DB::rollBack();
                 log_exception($e);
                 Controller::resetAutoIncrement(['products', 'images']);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.product.error') . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.product.role')]]], 422);
         }
         return response()->json($response, 200);
     }
@@ -427,13 +437,13 @@ class ProductController extends Controller
     public function update(Request $request)
     {
         $rules = [
-            'sku' => ['nullable', 'string', 'max:125'],
+            'sku' => ['required', 'string', 'max:125'],
             'name' => ['required', 'string', 'max:125'],
             'status' => ['nullable', 'numeric'],
             'catalogues' => ['required', 'array'],
         ];
 
-        $request->validate($rules, self::MESSAGES);
+        $request->validate($rules, self::$MESSAGES);
 
         if (!empty($this->user->can(User::CREATE_PRODUCT, User::UPDATE_PRODUCT))) {
             if ($request->has('id')) {
@@ -466,39 +476,39 @@ class ProductController extends Controller
                                 'name' => $imageName,
                                 'author_id' => Auth::user()->id
                             ]);
-                            LogController::create('create', 'Image ' . $image->name, $image->id);
+                            LogController::create('1', 'Image ' . $image->name, $image->id);
                             $product->update(['gallery' => '|' . $imageName]);
                         }
 
                         $product->syncCatalogues($request->catalogues);
 
-                        LogController::create('update', self::NAME, $product->id);
+                        LogController::create('2', self::NAME, $product->id);
                         DB::commit();
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Updated ' . self::NAME . ' ' . $product->name
+                            'msg' => __('messages.updated') . ' ' . __('messages.product.product') . ' ' . $product->name
                         );
                     } else {
                         DB::rollBack();
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'An error occurred, please reload the page and try again!'
+                            'msg' => __('messages.product.msg')
                         );
                     }
                 } catch (\Exception $e) {
                     DB::rollBack();
                     log_exception($e);
                     Controller::resetAutoIncrement(['products', 'images']);
-                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => [__('messages.product.error') . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'An error occurred, please reload the page and try again!'
+                    'msg' => __('messages.product.msg')
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.product.role')]]], 422);
         }
         return response()->json($response, 200);
     }
@@ -538,13 +548,13 @@ class ProductController extends Controller
                             DB::table('catalogue_product')->where('product_id', $obj->id)->delete();
                             $obj->forceDelete();
                         }
-                        LogController::create("delete", self::NAME, $obj->id);
+                        LogController::create("3", self::NAME, $obj->id);
                         array_push($success, $obj->name);
                     }
                 }
                 $msg = '';
                 if (count($success)) {
-                    $msg .= 'Deleted ' . self::NAME . ' ' . implode(', ', $success) . '. ';
+                    $msg .= __('messages.deleted') . self::NAME . ' ' . implode(', ', $success) . '. ';
                 }
                 $response = array(
                     'status' => 'success',
@@ -555,10 +565,10 @@ class ProductController extends Controller
                 DB::rollBack();
                 log_exception($e);
                 Controller::resetAutoIncrement(['units', 'variables', 'products', 'medicines', 'dosages']);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.product.error') . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.product.role')]]], 422);
         }
         return response()->json($response, 200);
     }
@@ -578,10 +588,10 @@ class ProductController extends Controller
                 $invalidRow[] = $row['ten_san_pham'] . ' - ' . $row['unit_id'];
             }
         }
-        $msg = 'File imported successfully';
+        $msg = __('messages.product.import_success');
         $status = '';
         if (count($invalidRow)) {
-            $msg .= ', but there are ' . count($invalidRow) . ' items that could not be updated. ' . implode(', ', $invalidRow);
+            $msg .= __('messages.product.but') . count($invalidRow) . __('messages.product.but_end') . implode(', ', $invalidRow);
         } else {
             $status = 'success';
         }
@@ -594,7 +604,7 @@ class ProductController extends Controller
 
     public function remove_catalogues(Request $request)
     {
-        if (!$request->choices || count($request->choices) <= 1) return response()->json(['errors' => ['catalogue' => ['You must select more than one category!']]], 422);
+        if (!$request->choices || count($request->choices) <= 1) return response()->json(['errors' => ['catalogue' => [__('messages.category.category_min')]]], 422);
         $success = [];
         if ($this->user->can(User::UPDATE_PRODUCT)) {
             try {
@@ -618,7 +628,7 @@ class ProductController extends Controller
                             $obj->catalogues()->detach($common_categories);
                         }
                     }
-                    $msg = 'Deleted common categories of ' . implode(', ', $success) . '.';
+                    $msg = __('messages.category.category_delete') . self::NAME . ' ' . implode(', ', $success) . '.';
                     $response = [
                         'status' => 'success',
                         'msg' => $msg,
@@ -627,7 +637,7 @@ class ProductController extends Controller
                     // Không có danh mục chung
                     $response = [
                         'status' => 'error',
-                        'msg' => 'No common categories found between products.',
+                        'msg' => __('messages.category.category_none_common'),
                     ];
                 }
                 DB::commit();
@@ -635,10 +645,10 @@ class ProductController extends Controller
                 DB::rollBack();
                 log_exception($e);
                 Controller::resetAutoIncrement(['units', 'variables', 'products', 'medicines', 'dosages']);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.product.error') . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.product.role')]]], 422);
         }
 
         return response()->json($response, 200);
@@ -651,7 +661,7 @@ class ProductController extends Controller
                 DB::beginTransaction();
                 $catalogue = Catalogue::find($request->catalogue_id);
                 if (!$catalogue) {
-                    return response()->json(['errors' => ['catalogue' => ['This category does not exist!']]], 422);
+                    return response()->json(['errors' => ['catalogue' => [__('messages.category.category_not_found')]]], 422);
                 }
 
                 // Thêm danh mục vào tất cả các sản phẩm trong choices mà không xóa danh mục cũ
@@ -667,10 +677,10 @@ class ProductController extends Controller
             } catch (\Exception $e) {
                 DB::rollBack();
                 log_exception($e);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.product.error') . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.product.role')]]], 422);
         }
     }
 }

@@ -9,29 +9,29 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3 form-group">
-                        <label class="form-label fw-bold" for="warehouse-name" data-bs-toggle="tooltip" data-bs-title="Name of the warehouse">Warehouse Name</label>
-                        <input class="form-control" id="warehouse-name" name="name" type="text" placeholder="Warehouse Name" autocomplete="off" required>
+                        <label class="form-label fw-bold" for="warehouse-name" data-bs-toggle="tooltip" data-bs-title="Name of the warehouse">{{ __('messages.warehouses.name') }}</label>
+                        <input class="form-control" id="warehouse-name" name="name" type="text" placeholder="{{ __('messages.warehouses.name') }}" autocomplete="off" required>
                     </div>
                     <div class="mb-3 form-group">
-                        <label class="form-label fw-bold" for="warehouse-branch_id" data-bs-toggle="tooltip" data-bs-title="Branch to which the warehouse belongs">Branch</label>
-                        <select class="form-select select2" id="warehouse-branch_id" data-ajax--url="{{ route('admin.branch', ['key' => 'select2']) }}" data-placeholder="Select a branch" name="branch_id">
+                        <label class="form-label fw-bold" for="warehouse-branch_id" data-bs-toggle="tooltip" data-bs-title="Branch to which the warehouse belongs">{{ __('messages.branches.branch') }}</label>
+                        <select class="form-select select2" id="warehouse-branch_id" data-ajax--url="{{ route('admin.branch', ['key' => 'select2']) }}" data-placeholder="{{ __('messages.warehouses.select_branch') }}" name="branch_id">
                         </select>
                     </div>
                     <div class="mb-3 form-group">
-                        <label class="form-label fw-bold" for="warehouse-address" data-bs-toggle="tooltip" data-bs-title="Address of the warehouse">Address</label>
-                        <input class="form-control" id="warehouse-address" name="address" type="text" autocomplete="off" placeholder="Enter address">
+                        <label class="form-label fw-bold" for="warehouse-address" data-bs-toggle="tooltip" data-bs-title="Address of the warehouse">{{ __('messages.warehouses.address') }}</label>
+                        <input class="form-control" id="warehouse-address" name="address" type="text" autocomplete="off" placeholder="{{ __('messages.warehouses.address') }}">
                     </div>
                     <div class="mb-3 form-group">
-                        <label class="form-label fw-bold" for="warehouse-status" data-bs-toggle="tooltip" data-bs-title="Warehouse status">Status</label>
+                        <label class="form-label fw-bold" for="warehouse-status" data-bs-toggle="tooltip" data-bs-title="Warehouse status">{{ __('messages.warehouses.status') }}</label>
                         <select name="status" id="warehouse-status" class="form-control">
-                            <option value="2">On Sale</option>
-                            <option value="1">Internal Use</option>
-                            <option value="0">Locked</option>
+                            <option value="2">{{ __('messages.warehouses.on_sale') }}  </option>
+                            <option value="1">{{ __('messages.warehouses.internal') }}  </option>
+                            <option value="0">{{ __('messages.warehouses.lock') }}  </option>
                         </select>
                     </div>
                     <div class="mb-3 form-group">
-                        <label class="form-label fw-bold" for="warehouse-note" data-bs-toggle="tooltip" data-bs-title="Notes or reminders about the warehouse">Note</label>
-                        <textarea class="form-control" id="warehouse-note" name="note" autocomplete="off" placeholder="Enter notes"></textarea>
+                        <label class="form-label fw-bold" for="warehouse-note" data-bs-toggle="tooltip" data-bs-title="Notes or reminders about the warehouse">{{ __('messages.note') }}</label>
+                        <textarea class="form-control" id="warehouse-note" name="note" autocomplete="off" placeholder="{{ __('messages.note') }}"></textarea>
                     </div>
                     <hr class="px-5">
                     <div class="mb-3 form-group">

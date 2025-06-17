@@ -22,17 +22,17 @@
                         </div>
                         <div class="col-12 col-lg-6">
                             <div class="mb-3">
-                                <label class="form-label" for="catalogue-name" data-bs-toggle="tooltip" data-bs-title="The name used to group or categorize">Name</label>
+                                <label class="form-label" for="catalogue-name" data-bs-toggle="tooltip" data-bs-title="The name used to group or categorize">{{ __('messages.category.category_name') }}</label>
                                 <input class="form-control" id="catalogue-name" name="name" type="text" placeholder="Catalogue Name" autocomplete="off">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label" for="catalogue-parent_id" data-bs-toggle="tooltip" data-bs-title="A parent catalogue that may contain subcategories">Parent Catalogue</label>
-                                <select class="form-control select2" id="catalogue-parent_id" name="parent_id" data-ajax--url="{{ route('admin.catalogue', ['key' => 'select2']) }}" data-placeholder="Select parent catalogue" type="text">
+                                <label class="form-label" for="catalogue-parent_id" data-bs-toggle="tooltip" data-bs-title="A parent catalogue that may contain subcategories">{{ __('messages.category.category_parent') }}</label>
+                                <select class="form-control select2" id="catalogue-parent_id" name="parent_id" data-ajax--url="{{ route('admin.catalogue', ['key' => 'select2']) }}" data-placeholder="{{ __('messages.category.select_category_parent') }}" type="text">
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label" for="catalogue-note" data-bs-toggle="tooltip" data-bs-title="Detailed description of this catalogue">Description</label>
-                                <textarea class="form-control" id="catalogue-note" name="note" rows="6" placeholder="Enter description"></textarea>
+                                <label class="form-label" for="catalogue-note" data-bs-toggle="tooltip" data-bs-title="Detailed description of this catalogue">{{ __('messages.datatable.description') }}</label>
+                                <textarea class="form-control" id="catalogue-note" name="note" rows="6" placeholder="{{ __('messages.datatable.description') }}"></textarea>
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                             <div class="col-12 col-lg-6">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" id="catalogue-status" name="status" type="checkbox" checked>
-                                    <label class="form-check-label" for="catalogue-status" data-bs-toggle="tooltip" data-bs-title="Status of the catalogue; if disabled, adding products, importing and selling is not allowed">Active</label>
+                                    <label class="form-check-label" for="catalogue-status" data-bs-toggle="tooltip" data-bs-title="Status of the catalogue; if disabled, adding products, importing and selling is not allowed">{{ __('messages.active') }}</label>
                                 </div>
                             </div>
                             <div class="col-12 col-lg-6 text-end">

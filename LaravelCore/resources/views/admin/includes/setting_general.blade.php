@@ -2,54 +2,54 @@
     <form id="image-form" action="{{ route('admin.setting.image') }}" method="post">
         @csrf
         <div class="card-header d-flex justify-content-between">
-            <h3>Logo settings</h3>
-            <button class="btn btn-primary btn-save" type="submit">Save</button>
+            <h3>{{ __('messages.setting.logo_setting') }}</h3>
+            <button class="btn btn-primary btn-save" type="submit">{{ __('messages.save') }}</button>
         </div>
         <div class="card-body">
             <div class="row justify-content-between align-items-stretch">
                 <div class="col-12 col-md-4 col-lg mb-3">
-                    <h6 class="text-secondary">Website icon</h6>
+                    <h6 class="text-secondary">{{ __('messages.setting.website_icon') }}</h6>
                     <label class="form-label select-image" for="favicon" style="height: 19rem !important"> <img
                             class="img-fluid rounded-4 object-fit-cover" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/favicon_key.png') }}';">
                     </label>
                     <input class="hidden-image" id="favicon" name="favicon" type="hidden" value="{{ $settings['favicon'] ?? old('favicon') }}">
-                    <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">Delete</button>
+                    <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{__('messages.delete')}}</button>
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg mb-3">
-                    <h6 class="text-secondary">Colored Logo</h6>
+                    <h6 class="text-secondary">{{ __('messages.setting.color') }}</h6>
                     <label class="form-label select-image" for="logo_horizon" style="height: 19rem !important"> <img
                             class="img-fluid rounded-4 object-fit-cover" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/logo_horizon_key.png') }}';">
                     </label>
                     <input class="hidden-image" id="logo_horizon" name="logo_horizon" type="hidden" value="{{ $settings['logo_horizon'] ?? old('logo_horizon') }}">
-                    <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">Delete</button>
+                    <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{__('messages.delete')}}</button>
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg mb-3">
-                    <h6 class="text-secondary">Colored Logo - Square</h6>
+                    <h6 class="text-secondary">{{ __('messages.setting.square') }}</h6>
                     <label class="form-label select-image" for="logo_square" style="height: 19rem !important"> <img
                             class="img-fluid rounded-4 object-fit-cover" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/logo_square.png') }}';">
                     </label>
                     <input class="hidden-image" id="logo_square" name="logo_square" type="hidden" value="{{ $settings['logo_square'] ?? old('logo_square') }}">
-                    <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">Delete</button>
+                    <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{__('messages.delete')}}</button>
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg mb-3">
-                    <h6 class="text-secondary">Black and white Logo</h6>
+                    <h6 class="text-secondary">{{ __('messages.setting.black_and_white') }}</h6>
                     <label class="form-label select-image" for="logo_horizon_bw" style="height: 19rem !important"> <img
                             class="img-fluid rounded-4 object-fit-cover" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/logo_horizon_bw_key.png') }}';">
                     </label>
                     <input class="hidden-image" id="logo_horizon_bw" name="logo_horizon_bw" type="hidden" value="{{ $settings['logo_horizon_bw'] ?? old('logo_square') }}">
-                    <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">Delete</button>
+                    <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{__('messages.delete')}}</button>
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg mb-3">
-                    <h6 class="text-secondary">Black and white logo - Square</h6>
+                    <h6 class="text-secondary">{{ __('messages.setting.black_and_white_square') }}</h6>
                     <label class="form-label select-image" for="logo_square_bw" style="height: 19rem !important"> <img
                             class="img-fluid rounded-4 object-fit-cover" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/logo_square_bw_key.png') }}';">
                     </label>
                     <input class="hidden-image" id="logo_square_bw" name="logo_square_bw" type="hidden" value="{{ $settings['logo_square_bw'] ?? old('logo_square') }}">
-                    <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">Delete</button>
+                    <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{__('messages.delete')}}</button>
                     </div>
                 </div>
             </div>
@@ -62,12 +62,12 @@
         <div class="card-header">
             <div class="row justify-content-between">
                 <div class="col-12 col-md-4 col-lg-7">
-                    <h3>Payment settings</h3>
+                    <h3>{{ __('messages.setting.payment_setting') }}</h3>
                 </div>
                 <div class="col-12 col-md-4 col-lg-5 d-flex justify-content-between">
-                    <button class="ms-auto btn btn-outline-primary btn-add-bank-account" type="button"><i class="bi bi-plus"></i> Add</button>
-                    <button class="ms-2 btn btn-outline-primary btn-remove-bank-account" type="button"><i class="bi bi-dash"></i> Delete</button>
-                    <button class="ms-2 btn btn-primary btn-save-pay_setting" type="submit">Save</button>
+                    <button class="ms-auto btn btn-outline-primary btn-add-bank-account" type="button"><i class="bi bi-plus"></i> {{ __('messages.add') }}</button>
+                    <button class="ms-2 btn btn-outline-primary btn-remove-bank-account" type="button"><i class="bi bi-dash"></i> {{ __('messages.delete') }}</button>
+                    <button class="ms-2 btn btn-primary btn-save-pay_setting" type="submit">{{ __('messages.save') }}</button>
                 </div>
             </div>
         </div>
@@ -91,15 +91,15 @@
                         @endif
                         <div class="mb-3 row">
                             <label class="col-sm-4 col-form-label" for="bank_id-{{ $i }}">
-                                Bank<br />
-                                <small class="form-text text-muted" id="bank_id-help-{{ $i }}"> Use QR code to pay for the order </small>
+                                {{ __('messages.setting.bank') }}<br />
+                                <small class="form-text text-muted" id="bank_id-help-{{ $i }}"> {{ __('messages.setting.placeholder') }} </small>
                             </label>
                             <div class="col-sm-8">
                                 <div class="d-none bank-names-hidden">
                                     <input name="bank_names[{{ $i }}]" type="hidden" value="{{ optional($acc)->bank_name }}">
                                 </div>
                                 <select class="bank-selected form-select @error('bank_ids.' . $i) is-invalid @enderror" id="bank_id-{{ $i }}" name="bank_ids[{{ $i }}]">
-                                    <option selected disabled hidden>Please select a bank</option>
+                                    <option selected disabled hidden>{{ __('messages.setting.bank_select') }}</option>
                                     @foreach ($banks['data'] as $bank)
                                         @if ($bank['transferSupported'] == 1)
                                             <option data-bank_name="{{ $bank['short_name'] }}" value="{{ $bank['bin'] }}" {{ optional($acc)->bank_id == $bank['bin'] ? 'selected' : '' }}>
@@ -117,8 +117,8 @@
                         </div>
                         <div class="mb-3 row">
                             <label class="col-sm-4 col-form-label" for="bank_account-{{ $i }}">
-                                Account name<br />
-                                <small class="form-text text-muted" id="bank_account-help-{{ $i }}">Use QR code for order payment </small>
+                                {{ __('messages.setting.account') }}<br />
+                                <small class="form-text text-muted" id="bank_account-help-{{ $i }}">{{ __('messages.setting.placeholder') }} </small>
                             </label>
                             <div class="col-sm-8">
                                 <input class="form-control @error('bank_accounts.' . $i) is-invalid @enderror" id="bank_account-{{ $i }}" name="bank_accounts[{{ $i }}]" type="text"
@@ -132,8 +132,8 @@
                         </div>
                         <div class="mb-3 row">
                             <label class="col-sm-4 col-form-label" for="bank_number-{{ $i }}">
-                                Account number<br />
-                                <small class="form-text text-muted" id="bank_number-help-{{ $i }}">Use QR code for order payment </small>
+                                {{ __('messages.setting.account_number') }}<br />
+                                <small class="form-text text-muted" id="bank_number-help-{{ $i }}">{{ __('messages.setting.placeholder') }} </small>
                             </label>
                             <div class="col-sm-8">
                                 <input class="form-control @error('bank_numbers.' . $i) is-invalid @enderror" id="bank_number-{{ $i }}" name="bank_numbers[{{ $i }}]" type="text"
@@ -157,13 +157,13 @@
         <form id="email-form" action="{{ route('admin.setting.email') }}" method="post">
             @csrf
             <div class="card-header d-flex justify-content-between">
-                <h3>Email ssettings</h3>
-                <button class="btn btn-primary btn-save" type="submit">Save</button>
+                <h3>{{ __('messages.setting.email_setting') }}</h3>
+                <button class="btn btn-primary btn-save" type="submit">{{ __('messages.save') }}</button>
             </div>
             <div class="card-body">
                 <div class="mb-3 row">
-                    <label class="col-sm-4 col-form-label" for="app_name">Application name<br />
-                        <small class="form-text text-muted" id="app_name-help">Displayed on the website and email subject</small>
+                    <label class="col-sm-4 col-form-label" for="app_name">{{ __('messages.setting.application_name') }}<br />
+                        <small class="form-text text-muted" id="app_name-help">{{ __('messages.setting.application_placeholder') }}</small>
                     </label>
                     <div class="col-sm-8">
                         <input class="form-control @error('app_name') is-invalid @enderror" id="app_name" name="app_name" type="text" value="{{ config('app.name') }}">
@@ -175,9 +175,8 @@
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label class="col-sm-4 col-form-label" for="mail_from_address">Email notifications<br />
-                        <small class="form-text text-muted" id="mail_from_address-help">Used to send notifications
-                            for order placement and service booking</small>
+                    <label class="col-sm-4 col-form-label" for="mail_from_address">{{ __('messages.setting.noti_email') }}<br />
+                        <small class="form-text text-muted" id="mail_from_address-help">{{ __('messages.setting.noti_email_placeholder') }}</small>
                     </label>
                     <div class="col-sm-8">
                         <input class="form-control @error('mail_from_address') is-invalid @enderror" id="mail_from_address" name="mail_from_address" type="text" value="{{ config('mail.from.address') }}">
@@ -188,9 +187,9 @@
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label class="col-sm-4 col-form-label" for="mail_username">Username<br />
+                    <label class="col-sm-4 col-form-label" for="mail_username">{{ __('messages.setting.user_email') }}<br />
                         <small class="form-text text-muted" id="mail_username-help">
-                            The username for the email sending server of the entire email system
+                            {{ __('messages.setting.user_email_placeholder') }}
                         </small>
                     </label>
                     <div class="col-sm-8">
@@ -202,9 +201,9 @@
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label class="col-sm-4 col-form-label" for="mail_password">Application password<br />
+                    <label class="col-sm-4 col-form-label" for="mail_password">{{ __('messages.setting.password') }}<br />
                         <small class="form-text text-muted" id="mail_password-help">
-                            The password for the email sending server of the entire email system
+                         {{ __('messages.setting.password_placeholder') }}
                         </small>
                     </label>
                     <div class="col-sm-8">
@@ -216,9 +215,9 @@
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label class="col-sm-4 col-form-label" for="mail_encryption">Encryption<br />
+                    <label class="col-sm-4 col-form-label" for="mail_encryption">{{ __('messages.setting.smtp_encryption') }}<br />
                         <small class="form-text text-muted" id="mail_encryption-help">
-                            Used for secure email sending
+                            {{ __('messages.setting.smtp_encryption_placeholder') }}
                         </small>
                     </label>
                     <div class="col-sm-8">
@@ -230,9 +229,9 @@
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label class="col-sm-4 col-form-label" for="mail_driver">Email sending protocol<br />
+                    <label class="col-sm-4 col-form-label" for="mail_driver">{{ __('messages.setting.mail_sending_protocol') }}<br />
                         <small class="form-text text-muted" id="mail_driver-help">
-                            Protocol used for sending all system emails
+                           {{ __('messages.setting.mail_sending_protocol_placeholder') }}
                         </small>
                     </label>
                     <div class="col-sm-8">
@@ -244,9 +243,9 @@
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label class="col-sm-4 col-form-label" for="mail_port">Mail port<br />
+                    <label class="col-sm-4 col-form-label" for="mail_port">{{ __('messages.setting.port') }}<br />
                         <small class="form-text text-muted" id="mail_port-help">
-                            Port for accessing the email server
+                            {{{ __('messages.setting.port_placeholder') }}}
                         </small>
                     </label>
                     <div class="col-sm-8">
@@ -258,9 +257,8 @@
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label class="col-sm-4 col-form-label" for="mail_host">Mail server<br />
-                        <small class="form-text text-muted" id="mail_host-help">
-                            The server that handles all email sending for the system
+                    <label class="col-sm-4 col-form-label" for="mail_host">{{ __('messages.setting.mail_server') }}<br />
+                        <small class="form-text text-muted" id="mail_host-help">{{ __('messages.setting.mail_server_placeholder') }}
                         </small>
                     </label>
                     <div class="col-sm-8">
@@ -272,9 +270,9 @@
                     </div>
                 </div>
                 <div class="mb-3 row">
-                    <label class="col-sm-4 col-form-label" for="expired_notification_frequency-preview">Frequency of automatic email sending<br />
+                    <label class="col-sm-4 col-form-label" for="expired_notification_frequency-preview">{{ __('messages.setting.mail_auto') }}<br />
                         <small class="form-text text-muted" id="expired_notification_frequency-preview-help">
-                            Frequency of email notifications for products nearing expiration
+                            {{ __('messages.setting.mail_auto_placeholder') }}
                         </small>
                     </label>
                     <div class="col-sm-8">
@@ -295,14 +293,14 @@
     <form id="social-form" action="{{ route('admin.setting.social') }}" method="post">
         @csrf
         <div class="card-header d-flex justify-content-between">
-            <h3>Configure social media channels</h3>
+            <h3>{{ __('messages.setting.social_setting') }}</h3>
             <button class="btn btn-primary btn-save" type="submit">Save</button>
         </div>
         <div class="card-body">
             <div class="mb-3 row">
                 <label class="col-sm-4 col-form-label" for="social_facebook">Facebook<br />
                     <small class="form-text text-muted" id="social_facebook-help">
-                        Link to the Facebook page
+                       {{ __('messages.setting.facebook') }}
                     </small>
                 </label>
                 <div class="col-sm-8">
@@ -316,7 +314,7 @@
             <div class="mb-3 row">
                 <label class="col-sm-4 col-form-label" for="social_zalo">Zalo<br />
                     <small class="form-text text-muted" id="social_zalo-help">
-                        Enter the phone number registered with Zalo
+                        {{ __('messages.setting.zalo') }}
                     </small>
                 </label>
                 <div class="col-sm-8">
@@ -330,7 +328,7 @@
             <div class="mb-3 row">
                 <label class="col-sm-4 col-form-label" for="social_youtube">Youtube<br />
                     <small class="form-text text-muted" id="social_youtube-help">
-                        Link to the Youtube channel
+                        {{ __('messages.setting.youtube') }}
                     </small>
                 </label>
                 <div class="col-sm-8">
@@ -344,7 +342,7 @@
             <div class="mb-3 row">
                 <label class="col-sm-4 col-form-label" for="social_telegram">Telegram<br />
                     <small class="form-text text-muted" id="social_telegram-help">
-                        Link to the Telegram channel
+                        {{ __('messages.setting.telegram') }}
                     </small>
                 </label>
                 <div class="col-sm-8">
@@ -358,7 +356,7 @@
             <div class="mb-3 row">
                 <label class="col-sm-4 col-form-label" for="social_tiktok">TikTok<br />
                     <small class="form-text text-muted" id="social_tiktok-help">
-                        Link to the TikTok channel
+                        {{ __('messages.setting.tiktok') }}
                     </small>
                 </label>
                 <div class="col-sm-8">

@@ -380,7 +380,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $address = $this->address ? $this->address . ', ' : '';
         $location = $this->local ? ($this->local->district . ', ' . $this->local->city) : '';
         $fullAddress = $address . $location;
-        return $fullAddress ?: "Unknown";
+        return $fullAddress ?: __('messages.unknown');
     }
 
     public function getAvatarUrlAttribute()
@@ -407,7 +407,7 @@ class User extends Authenticatable implements MustVerifyEmail
                 $result = 'Male';
                 break;
             default:
-                $result = 'Unknown';
+                $result = __('messages.unknown');
                 break;
         }
         return $result;

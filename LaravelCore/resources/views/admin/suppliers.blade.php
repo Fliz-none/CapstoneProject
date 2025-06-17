@@ -7,10 +7,10 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <h5 class="text-uppercase">{{ $pageName }}</h5>
+                    <h5 class="text-uppercase">{{ __('messages.supplier.supplier_management') }}</h5>
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.supplier.supplier_management') }}</li>
                         </ol>
                     </nav>
                 </div>
@@ -24,7 +24,7 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_SUPPLIER)))
                         <a class="btn btn-info mb-3 block btn-create-supplier">
                             <i class="bi bi-plus-circle"></i>
-                            Add
+                            {{ __('messages.add') }}
                         </a>
                     @endif
                     <div class="d-inline-block process-btns d-none">
@@ -46,11 +46,11 @@
                                 <table class="table table-striped table-bordered key-table" id="supplier-table">
                                     <thead>
                                         <tr>
-                                            <th>Code</th>
-                                            <th>Supplier name</th>
-                                            <th>Phone</th>
-                                            <th>Address</th>
-                                            <th>Status</th>
+                                            <th>{{ __('messages.datatable.code') }}</th>
+                                            <th>{{ __('messages.supplier.name') }}</th>
+                                            <th>{{ __('messages.supplier.phone') }}</th>
+                                            <th>{{ __('messages.supplier.address') }}</th>
+                                            <th>{{ __('messages.datatable.status') }}</th>
                                             <th></th>
                                             <th>
                                                 <input class="form-check-input all-choices" type="checkbox">

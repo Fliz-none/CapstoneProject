@@ -7,11 +7,11 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <h5 class="text-uppercase">{{ $pageName }}</h5>
+                    <h5 class="text-uppercase">{{ __('messages.post.new_post') }}</h5>
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.post') }}">Posts</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.post') }}">{{ __('messages.post.post') }}</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.post.new_post') }}</li>
                         </ol>
                     </nav>
                 </div>
@@ -51,7 +51,7 @@
                         <div class="col-12 col-lg-9 mx-auto">
                             <div class="card card-body">
                                 <div class="form-group">
-                                    <label class="form-label" for="post-title">Title</label>
+                                    <label class="form-label" for="post-title">{{ __('messages.post.title') }}</label>
                                     <input class="form-control @error('title') is-invalid @enderror" id="post-title" name="title" type="text" value="{{ old('title') != null ? old('title') : (isset($post) ? $post->title : '') }}">
                                     @error('title')
                                         <span class="invalid-feedback d-block" role="alert">
@@ -60,7 +60,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="post-excerpt">Short description</label>
+                                    <label for="post-excerpt">{{ __('messages.post.short') }}</label>
                                     <textarea class="form-control @error('excerpt') is-invalid @enderror" id="post-excerpt" name="excerpt" rows="3">{{ old('excerpt') != null ? old('excerpt') : (isset($post) ? $post->excerpt : '') }}</textarea>
                                     @error('excerpt')
                                         <span class="invalid-feedback d-block" role="alert">
@@ -69,7 +69,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="post-content">Content</label>
+                                    <label for="post-content">{{ __('messages.post.content') }}</label>
                                     @error('content')
                                         <span class="invalid-feedback d-inline-block" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -82,17 +82,17 @@
                         <div class="col-12 col-lg-3 mx-auto">
                             <!-- Publish card -->
                             <div class="card card-body mb-3">
-                                <h6 class="mb-0">Publish post</h6>
+                                <h6 class="mb-0">{{ __('messages.post.puslish_post') }}</h6>
                                 <hr class="horizontal dark">
                                 <div class="form-group">
-                                    <label class="form-label mt-1" for="post-status">Status</label>
+                                    <label class="form-label mt-1" for="post-status">{{ __('messages.post.status') }}</label>
                                     <select class="form-select @error('status') is-invalid @enderror" id="post-status" name="status">
                                         <option value="1" {{ (isset($post) && $post->status == 1) || old('status') === '1' ? 'selected' : '' }}>
-                                            Published</option>
+                                            {{ __('messages.post.publish') }}</option>
                                         <option value="2" {{ (isset($post) && $post->status == 2) || old('status') === '2' ? 'selected' : '' }}>
-                                           Featured</option>
+                                           {{ __('messages.post.feature') }}</option>
                                         <option value="0" {{ (isset($post) && $post->status == 0) || old('status') === '0' ? 'selected' : '' }}>
-                                            Not displayed</option>
+                                            {{ __('messages.post.hide') }}</option>
                                     </select>
                                     @error('status')
                                         <span class="invalid-feedback d-block" role="alert">
@@ -101,7 +101,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="post-date">Time</label>
+                                    <label class="form-label" for="post-date">{{ __('messages.post.time') }}</label>
                                     <div class="input-group">
                                         <input class="form-control @error('date') is-invalid @enderror" id="post-date" name="date" type="date"
                                             value="{{ old('date') != null ? old('date') : (isset($post) ? $post->createdDate() : Carbon\Carbon::now()->format('Y-m-d')) }}" aria-label="Date">
@@ -121,12 +121,12 @@
                                 @enderror
                                 <input id="post-deleted_at" name="deleted_at" type="hidden" value="{{ isset($post) ? $post->deleted_at : '' }}">
                                 <input id="post-id" name="id" type="hidden" value="{{ isset($post) ? ($post->revision ? $post->revision : $post->id) : '' }}">
-                                <button class="btn btn-info" type="submit">{{ isset($post) ? 'Cập nhật' : 'Đăng bài' }}</button>
+                                <button class="btn btn-info" type="submit">{{ isset($post) ? __('messages.update') : __('messages.post.publish') }}</button>
                             </div>
                             <!-- END Publish card -->
                             <!-- Catalog card -->
                             <div class="card card-body mb-3">
-                                <h6 class="mb-0">Category</h6>
+                                <h6 class="mb-0">{{ __('messages.post.category') }}</h6>
                                 <hr class="horizontal dark">
                                 <div class="category-select">
                                     <ul class="list-group">
@@ -144,12 +144,12 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
-                                <a class="btn btn-sm btn-link mt-3 btn-create-category">Add category</a>
+                                <a class="btn btn-sm btn-link mt-3 btn-create-category">{{ __('messages.add') }}</a>
                             </div>
                             <!-- END Catalog card -->
                             <!-- Image card -->
                             <div class="card card-body mb-3">
-                                <h6 class="mb-0">Featured image</h6>
+                                <h6 class="mb-0">{{ __('messages.post.image_feature') }}</h6>
                                 <hr class="horizontal dark my-3">
                                 <label class="form-label select-image" for="post-image">
                                     <div class="ratio ratio-1x1">

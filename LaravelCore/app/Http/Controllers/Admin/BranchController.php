@@ -13,21 +13,10 @@ use Yajra\DataTables\Facades\DataTables;
 
 class BranchController extends Controller
 {
-    const NAME = 'Branch',
-        MESSAGES = [
-            'name.required' => Controller::NOT_EMPTY,
-            'name.string' => Controller::DATA_INVALID,
-            'name.max' => Controller::MAX,
-            'phone.required' => Controller::NOT_EMPTY,
-            'phone.numeric' => Controller::DATA_INVALID,
-            'phone.digits' => 'The phone does not have enough digits!',
-            'phone.regex' => Controller::DATA_INVALID,
-            'phone.unique' => 'The phone has already been taken!',
-            'address.required' => Controller::NOT_EMPTY,
-            'address.string' => Controller::DATA_INVALID,
-            'address.min' => Controller::MIN,
-            'address.max' => Controller::MAX,
-        ];
+    const NAME = 'Branch';
+
+    public static array $MESSAGES = [];
+
 
     public function __construct()
     {
@@ -36,6 +25,29 @@ class BranchController extends Controller
             $this->user = Auth::user();
         }
         $this->middleware(['admin', 'auth']);
+
+        $this->middleware(function ($request, $next) {
+            // Locale đã được set xong ở đây
+           Controller::init();
+            self::$MESSAGES = [
+                'name.required' => Controller::$NOT_EMPTY,
+                'name.string' => Controller::$DATA_INVALID,
+                'name.max' => Controller::$MAX,
+                'phone.required' => Controller::$NOT_EMPTY,
+                'phone.numeric' => Controller::$DATA_INVALID,
+                'phone.digits' => __('messages.branches.phone_regex'),
+                'phone.regex' => Controller::$DATA_INVALID,
+                'phone.unique' => __('messages.branches.phone_unique'),
+                'address.required' => Controller::$NOT_EMPTY,
+                'address.string' => Controller::$DATA_INVALID,
+                'address.min' => Controller::$MIN,
+                'address.max' => Controller::$MAX,
+            ];
+
+            return $next($request);
+        });
+
+        
     }
 
     /**
@@ -157,7 +169,7 @@ class BranchController extends Controller
                     ->rawColumns(['checkboxes', 'code', 'name', 'address', 'status', 'action'])
                     ->make(true);
             } else {
-                $pageName = self::NAME . ' management';
+                $pageName = __('messages.branch.branch') . ' management';
                 return view('admin.branches', compact('pageName'));
             }
         }
@@ -170,7 +182,7 @@ class BranchController extends Controller
             'phone' => ['required', 'numeric', 'digits:10', 'regex:/^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/', 'unique:branches'],
             'address' => ['required', 'string', 'min:2', 'max:125'],
         ];
-        $request->validate($rules, self::MESSAGES);
+        $request->validate($rules, self::$MESSAGES);
 
         if (!empty($this->user->can(User::CREATE_BRANCH))) {
             try {
@@ -182,18 +194,17 @@ class BranchController extends Controller
                     'status' => $request->has('status'),
                 ]);
 
-                LogController::create('create', self::NAME, $branch->id);
                 cache()->forget('branches');
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Created ' . self::NAME . ' ' . $branch->name
+                    'msg' => __('messages.created') . __('messages.branch.branch') . ' ' . $branch->name
                 );
             } catch (\Exception $e) {
                 log_exception($e);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 403);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 403);
         }
         return response()->json($response, 200);
     }
@@ -205,7 +216,7 @@ class BranchController extends Controller
             'phone' => ['required', 'numeric', 'digits:10', 'regex:/^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/', Rule::unique('suppliers')->ignore($request->id)],
             'address' => ['required', 'string', 'min:2', 'max:125'],
         ];
-        $request->validate($rules, self::MESSAGES);
+        $request->validate($rules, self::$MESSAGES);
 
         if (!empty($this->user->can(User::UPDATE_BRANCH))) {
             if ($request->has('id')) {
@@ -219,31 +230,29 @@ class BranchController extends Controller
                             'note' => $request->note,
                             'status' => $request->has('status'),
                         ]);
-
-                        LogController::create('sửa', self::NAME, $branch->id);
                         cache()->forget('branches');
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Updated ' . self::NAME . ' ' . $branch->name
+                            'msg' => __('messages.updated') . __('messages.branch.branch') . ' ' . $branch->name
                         );
                     } else {
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'An error occurred, please reload the page and try again!'
+                            'msg' => __('messages.msg')
                         );
                     }
                 } catch (\Exception $e) {
                     log_exception($e);
-                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'An error occurred, please reload the page and try again!'
+                    'msg' => __('messages.msg')
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 403);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 403);
         }
         return response()->json($response, 200);
     }
@@ -256,19 +265,18 @@ class BranchController extends Controller
                 $obj = Branch::find($id);
                 $obj->delete();
                 cache()->forget('branches');
-                LogController::create("delete", self::NAME, $obj->id);
                 array_push($success, $obj->name);
             }
             $msg = '';
             if (count($success)) {
-                $msg .= 'Deleted ' . self::NAME . ' ' . implode(', ', $success) . '. ';
+                $msg .= __('messages.deleted') . __('messages.branch.branch') . ' ' . implode(', ', $success) . '. ';
             }
             $response = array(
                 'status' => 'success',
                 'msg' => $msg
             );
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 403);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 403);
         }
         return response()->json($response, 200);
     }

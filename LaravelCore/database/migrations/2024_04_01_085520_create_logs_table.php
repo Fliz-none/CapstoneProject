@@ -13,19 +13,23 @@ class CreateLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('logs', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('action');
-            $table->string('type');
-            $table->string('object');
-            $table->text('geolocation');
-            $table->string('agent');
-            $table->string('platform');
-            $table->string('device');
-            $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users');
-        });
+       Schema::create('logs', function (Blueprint $table) {
+        $table->id();
+        $table->unsignedBigInteger('user_id');
+        $table->string('action');       // thao tác: create, update, delete
+        $table->string('type');         // loại đối tượng: user, product,...
+        $table->string('object');       // ID đối tượng
+        $table->text('before_change')->nullable(); // thêm
+        $table->text('after_change')->nullable();  // thêm
+        $table->text('geolocation');
+        $table->string('agent');
+        $table->string('platform');
+        $table->string('device');
+      
+        $table->timestamps();
+        
+        $table->foreign('user_id')->references('id')->on('users');
+    }  );
     }
 
     /**

@@ -7,12 +7,12 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-4 col-lg-6 order-md-1 order-last">
-                    <h5 class="text-uppercase">{{ $pageName }}</h5>
+                    <h5 class="text-uppercase">{{ __('messages.setting.setting_management') }}</h5>
                 </div>
                 <div class="col-12 col-md-4 col-lg-6 order-md-2 order-first">
                     <nav class="breadcrumb-header float-start float-lg-end" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.setting.setting_management') }}</li>
                         </ol>
                     </nav>
                 </div>
@@ -39,22 +39,22 @@
                     <ul class="nav nav-pills mb-3">
                         <li class="nav-item">
                             <a class="nav-link{!! Request::path() === 'quantri/setting/general' ? ' active" aria-current="page' : '' !!}" href="{{ route('admin.setting', ['key' => 'general']) }}">
-                                General settings
+                                {{ __('messages.setting.general_setting') }}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link{!! Request::path() === 'quantri/setting/shop' ? ' active" aria-current="page' : '' !!}" href="{{ route('admin.setting', ['key' => 'shop']) }}">
-                                Shop settings
+                                 {{ __('messages.setting.shop_setting') }}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link{!! Request::path() === 'quantri/setting/website' ? ' active" aria-current="page' : '' !!}" href="{{ route('admin.setting', ['key' => 'website']) }}">
-                                Website settings
+                                 {{ __('messages.setting.website_setting') }}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link{!! Request::path() === 'quantri/setting/work' ? ' active" aria-current="page' : '' !!}" href="{{ route('admin.setting', ['key' => 'work']) }}">
-                                Work shift settings
+                                 {{ __('messages.setting.work_shift') }}
                             </a>
                         </li>
                     </ul>
@@ -106,7 +106,7 @@
                                     </label>
                                     <div class="col-sm-8">
                                         <div class="d-none bank-names-hidden"></div>
-                                        <select name="bank_ids[${number_accounts}]" id="bank_id-${number_accounts}" class="bank-selected form-select @error('bank_ids.${number_accounts}') is-invalid @enderror"> <option selected disabled hidden>Please select a bank</option> @foreach ($banks['data'] as $bank)     @if ($bank['transferSupported'] == 1)         <option data-bank_name="{{ $bank['short_name'] }}" value="{{ $bank['bin'] }}">             {{ $bank['short_name'] }} - {{ $bank['name'] }}         </option>     @endif @endforeach
+                                        <select name="bank_ids[${number_accounts}]" id="bank_id-${number_accounts}" class="bank-selected form-select @error('bank_ids.${number_accounts}') is-invalid @enderror"> <option selected disabled hidden>{{ __('messages.setting.bank_select') }}</option> @foreach ($banks['data'] as $bank)     @if ($bank['transferSupported'] == 1)         <option data-bank_name="{{ $bank['short_name'] }}" value="{{ $bank['bin'] }}">             {{ $bank['short_name'] }} - {{ $bank['name'] }}         </option>     @endif @endforeach
                                         </select>
                                         @error('bank_ids.${number_accounts}') <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong> </span>
                                         @enderror
@@ -172,10 +172,10 @@
                 const index = $('.work-shift').length;
                 var newRow = `
                     <tr class="work-shift">
-                        <td><input class="form-control form-control-plaintext w-auto" name="shift_name[${index}]" type="text" placeholder="Shift name"></td>
+                        <td><input class="form-control form-control-plaintext w-auto" name="shift_name[${index}]" type="text" placeholder="{{ __('messages.shift_setting.name') }}"></td>
                         <td><input class="form-control-plaintext" name="sign_checkin[${index}]" type="time"></td>
                         <td><input class="form-control-plaintext" name="sign_checkout[${index}]" type="time"></td>
-                        <td><input class="form-control form-control-plaintext w-auto" name="staff_number[${index}]" type="text" placeholder="Number of staff in shift"></td>
+                        <td><input class="form-control form-control-plaintext w-auto" name="staff_number[${index}]" type="text" placeholder="{{ __('messages.shift_setting.staff') }}"></td>
                         <td>
                             <button class="btn btn-link text-decoration-none btn-remove-shift cursor-pointer" type="button">
                                 <i class="bi bi-trash"></i>

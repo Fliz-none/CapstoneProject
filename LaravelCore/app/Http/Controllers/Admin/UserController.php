@@ -278,8 +278,9 @@ class UserController extends Controller
 
     public function create(Request $request)
     {
+        Controller::init();
         $rules = [
-            'name' => ['required', 'string', 'min:2', 'max:125'],
+            'name' => ['required', 'string', 'min:2', 'max:50'],
             'phone' => [
                 'nullable',
                 'numeric',
@@ -287,7 +288,7 @@ class UserController extends Controller
                 'regex:/^0[0-9]{9,10}$/',
                 function ($attribute, $value, $fail) use ($request) {
                     if (User::where('phone', $value)->count()) {
-                        $fail('Phone number must not be duplicated with another account');
+                        $fail(__('messages.user.unique'));
                     }
                 }
             ],
@@ -301,40 +302,40 @@ class UserController extends Controller
                 'max:125',
                 function ($attribute, $value, $fail) use ($request) {
                     if (User::where('email', $value)->count()) {
-                        $fail('Email must not be duplicated with another account');
+                        $fail(__('messages.user.email_unique'));
                     }
                 }
             ],
-            'birthday' => ['nullable', 'date', 'date_format:Y-m-d'],
+            // 'birthday' => ['nullable', 'date', 'date_format:Y-m-d'],
             'address' => ['nullable', 'string', 'min:2', 'max:125'],
             'note' => ['nullable', 'string', 'min:2', 'max:125'],
         ];
         $messages = [
-            'name.required' => Controller::NOT_EMPTY,
-            'name.string' => Controller::DATA_INVALID,
-            'name.min' => Controller::MIN,
-            'name.max' => Controller::MAX,
-            'phone.numeric' => Controller::DATA_INVALID,
-            'phone.digits' => 'Phone number must have 10 digits!',
-            'phone.unique' => 'Phone number has already been used!',
-            'phone.regex' => 'Phone number is not in the correct format!',
-            'gender.required' => 'Please select a gender!',
-            'gender.integer' => 'Gender: ' . Controller::DATA_INVALID,
-            'gender.between' => 'Gender: ' . Controller::DATA_INVALID,
-            'email.required' => Controller::NOT_EMPTY,
-            'email.string' => Controller::DATA_INVALID,
-            'email.max' => Controller::MAX,
-            'email.min' => 'Minimum must be 2 characters',
-            'email.unique' => 'Email you entered is not available!',
-            'birthday.date' => Controller::DATA_INVALID,
-            'birthday.date_format' => Controller::DATA_INVALID,
-            'address.string' => Controller::DATA_INVALID,
-            'address.min' => Controller::MIN,
-            'address.max' => Controller::MAX,
-            'local_id.numeric' => Controller::DATA_INVALID,
-            'note.string' => Controller::DATA_INVALID,
-            'note.min' => Controller::MIN,
-            'note.max' => Controller::MAX,
+            'name.required' => Controller::$NOT_EMPTY,
+            'name.string' => Controller::$DATA_INVALID,
+            'name.min' => Controller::$MIN,
+            'name.max' => __('messages.user.max_name'),
+            'phone.numeric' => Controller::$DATA_INVALID,
+            'phone.digits' => __('messages.user.digits'),
+            'phone.unique' =>  __('messages.user.unique'),
+            'phone.regex' =>  __('messages.user.regex'),
+            'gender.required' =>  __('messages.user.required_gender'),
+            'gender.integer' => 'Gender: ' . Controller::$DATA_INVALID,
+            'gender.between' => 'Gender: ' . Controller::$DATA_INVALID,
+            'email.required' => Controller::$NOT_EMPTY,
+            'email.string' => Controller::$DATA_INVALID,
+            'email.max' => Controller::$MAX,
+            'email.min' =>  __('messages.user.min_2'),
+            'email.unique' =>  __('messages.user.email_unique'),
+            // 'birthday.date' => Controller::$DATA_INVALID,
+            // 'birthday.date_format' => Controller::$DATA_INVALID,
+            'address.string' => Controller::$DATA_INVALID,
+            'address.min' => Controller::$MIN,
+            'address.max' => Controller::$MAX,
+            'local_id.numeric' => Controller::$DATA_INVALID,
+            'note.string' => Controller::$DATA_INVALID,
+            'note.min' => Controller::$MIN,
+            'note.max' => Controller::$MAX,
         ];
         $request->validate($rules, $messages);
         if (!empty($this->user->can(User::CREATE_USER))) {
@@ -343,7 +344,7 @@ class UserController extends Controller
                     'name' => $request->name,
                     'phone' => $request->phone,
                     'email' => $request->email,
-                    'birthday' => $request->birthday,
+                    // 'birthday' => $request->birthday,
                     'address' => $request->address,
                     'scores' => $request->scores,
                     'gender' => $request->gender,
@@ -359,25 +360,25 @@ class UserController extends Controller
                     $user->update(['avatar' => $filename]);
                 }
 
-                LogController::create('create', self::NAME, $user->id);
                 $response = array(
                     'user' => $user,
                     'status' => 'success',
-                    'msg' => 'Created ' . self::NAME . ' ' . $user->name
+                    'msg' => __('messages.created') . ' ' . $user->name
                 );
                 cache()->forget('users');
             } catch (\Exception $e) {
                 log_exception($e);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
 
     public function update(Request $request)
     {
+         Controller::init();
         $rules = [
             'name' => ['required', 'string', 'min:2', 'max:125'],
             'phone' => [
@@ -387,7 +388,7 @@ class UserController extends Controller
                 'regex:/^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/',
                 function ($attribute, $value, $fail) use ($request) {
                     if (User::where('phone', $value)->where('id', '!=', $request->id)->count()) {
-                        $fail('Phone number cannot be duplicated with another account');
+                        $fail(__('messages.user.unique'));
                     }
                 }
             ],
@@ -401,40 +402,40 @@ class UserController extends Controller
                 'max:125',
                 function ($attribute, $value, $fail) use ($request) {
                     if (User::where('email', $value)->where('id', '!=', $request->id)->count()) {
-                        $fail('Email must not be duplicated with another account');
+                        $fail(__('messages.user.email_unique'));
                     }
                 }
             ],
-            'birthday' => ['nullable', 'date', 'date_format:Y-m-d'],
+           // 'birthday' => ['nullable', 'date', 'date_format:Y-m-d'],
             'address' => ['nullable', 'string', 'min:2', 'max:125'],
             'note' => ['nullable', 'string', 'min:2', 'max:125'],
         ];
         $messages = [
-            'name.required' => Controller::NOT_EMPTY,
-            'name.string' => Controller::DATA_INVALID,
-            'name.min' => Controller::MIN,
-            'name.max' => Controller::MAX,
-            'phone.numeric' => Controller::DATA_INVALID,
-            'phone.digits' => 'Phone number must have 10 digits!',
-            'phone.unique' => 'Phone number has already been used!',
-            'phone.regex' => 'Phone number is not in the correct format!',
-            'gender.required' => 'Please select a gender!',
-            'gender.integer' => 'Gender: ' . Controller::DATA_INVALID,
-            'gender.between' => 'Gender: ' . Controller::DATA_INVALID,
-            'email.required' => Controller::NOT_EMPTY,
-            'email.string' => Controller::DATA_INVALID,
-            'email.max' => Controller::MAX,
-            'email.min' => 'Minimum must be 2 characters',
-            'email.unique' => 'Email you entered is not available!',
-            'birthday.date' => Controller::DATA_INVALID,
-            'birthday.date_format' => Controller::DATA_INVALID,
-            'address.string' => Controller::DATA_INVALID,
-            'address.min' => Controller::MIN,
-            'address.max' => Controller::MAX,
-            'local_id.numeric' => Controller::DATA_INVALID,
-            'note.string' => Controller::DATA_INVALID,
-            'note.min' => Controller::MIN,
-            'note.max' => Controller::MAX,
+            'name.required' => Controller::$NOT_EMPTY,
+            'name.string' => Controller::$DATA_INVALID,
+            'name.min' => Controller::$MIN,
+            'name.max' => __('messages.user.max_name'),
+            'phone.numeric' => Controller::$DATA_INVALID,
+            'phone.digits' => __('messages.user.digits'),
+            'phone.unique' =>  __('messages.user.unique'),
+            'phone.regex' =>  __('messages.user.regex'),
+            'gender.required' =>  __('messages.user.required_gender'),
+            'gender.integer' => 'Gender: ' . Controller::$DATA_INVALID,
+            'gender.between' => 'Gender: ' . Controller::$DATA_INVALID,
+            'email.required' => Controller::$NOT_EMPTY,
+            'email.string' => Controller::$DATA_INVALID,
+            'email.max' => Controller::$MAX,
+            'email.min' =>  __('messages.user.min_2'),
+            'email.unique' =>  __('messages.user.email_unique'),
+            // 'birthday.date' => Controller::$DATA_INVALID,
+            // 'birthday.date_format' => Controller::$DATA_INVALID,
+            'address.string' => Controller::$DATA_INVALID,
+            'address.min' => Controller::$MIN,
+            'address.max' => Controller::$MAX,
+            'local_id.numeric' => Controller::$DATA_INVALID,
+            'note.string' => Controller::$DATA_INVALID,
+            'note.min' => Controller::$MIN,
+            'note.max' => Controller::$MAX,
         ];
         $request->validate($rules, $messages);
         if (!empty($this->user->can(User::UPDATE_USER))) {
@@ -446,7 +447,7 @@ class UserController extends Controller
                             'name' => $request->name,
                             'phone' => $request->phone,
                             'email' => $request->email,
-                            'birthday' => $request->birthday,
+                           // 'birthday' => $request->birthday,
                             'address' => $request->address,
                             'scores' => $request->scores,
                             'gender' => $request->gender,
@@ -462,37 +463,36 @@ class UserController extends Controller
                             User::find($user->id)->update(['avatar' => $filename]);
                         }
 
-
-                        LogController::create('update', self::NAME, $user->id);
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Updated ' . $user->name
+                            'msg' => __('messages.updated'). ' ' . $user->name
                         );
                         cache()->forget('users');
                     } else {
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'An error occurred, please reload the page and try again!'
+                            'msg' => __('messages.msg')
                         );
                     }
                 } catch (\Exception $e) {
                     log_exception($e);
-                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => [__('messages.error')  . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'An error occurred, please reload the page and try again!'
+                    'msg' => __('messages.msg')
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
 
     public function updateRole(Request $request)
     {
+        Controller::init();
         $rules = [
             'id' => ['required', 'numeric'],
             'role_id' => ['required', 'array'],
@@ -515,10 +515,9 @@ class UserController extends Controller
         cache()->forget('dealers');
         cache()->forget('cashiers');
         $roles = $user->getRoleNames()->implode(', ');
-        LogController::create('update ' . $roles, self::NAME, $user->id);
         $response = array(
             'status' => 'success',
-            'msg' => 'Updated roles ' . $roles . ' for ' . $user->name . '!'
+            'msg' => __('messages.msg_update_role') . $roles . __('messages.for') . $user->name . '!'
         );
         cache()->forget('users');
         return response()->json($response, 200);
@@ -526,6 +525,7 @@ class UserController extends Controller
 
     public function updatePassword(ChangePasswordRequest $request)
     {
+        Controller::init();
         $rules = [
             'id' => ['required', 'numeric'],
             'password' => ['required'],
@@ -534,21 +534,21 @@ class UserController extends Controller
 
         $user = User::find($request->id);
         if (!$user) {
-            return back()->withErrors(['user_id' => 'User does not exist']);
+            return back()->withErrors(['user_id' => __('messages.user_not_exist')])->withInput();
         }
         $user->password = Hash::make($request->password);
         $user->save();
 
-        LogController::create('update password', "account", $user->id);
         $response = array(
             'status' => 'success',
-            'msg' => 'Updated password for ' . $user->name . '!'
+            'msg' => __('messages.user.update_password'). ' ' . $user->name . '!'
         );
         return response()->json($response, 200);
     }
 
     public function remove(Request $request)
     {
+        Controller::init();
         $success = [];
         $fail = [];
         $msg = '';
@@ -556,32 +556,31 @@ class UserController extends Controller
             foreach ($request->choices as $key => $id) {
                 $obj = User::find($id);
                 if ($obj->id == Auth::id()) {
-                    return response()->json(['errors' => ['role' => ['You cannot delete your own account!']]], 422);
+                    return response()->json(['errors' => ['role' => [__('messages.user.self_delete')]]], 422);
                 }
                 if ($obj->getRoleNames()->contains('Super Admin')) {
-                    return response()->json(['errors' => ['role' => ['You cannot delete this account!']]], 422);
+                    return response()->json(['errors' => ['role' => [__('messages.user.account_not_delete')]]], 422);
                 }
                 if ($obj->canRemove()) {
                     $obj->delete();
-                    LogController::create("delete", self::NAME, $obj->id);
                     array_push($success, $obj->name);
                 } else {
                     array_push($fail, $obj->name);
                 }
             }
             if (count($success)) {
-                $msg = 'Deleted ' . self::NAME . ' ' . implode(', ', $success) . '. ';
+                $msg = __('messages.deleted') . ' ' . implode(', ', $success) . '. ';
                 cache()->forget('users');
             }
             if (count($fail)) {
-                $msg .= implode(', ', $fail) . ' could not be deleted!';
+                $msg .= implode(', ', $fail) . __('messages.user.not_delete');
             }
             $response = array(
                 'status' => 'success',
                 'msg' => $msg
             );
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
@@ -597,7 +596,6 @@ class UserController extends Controller
             'name' => $imageName,
             'author_id' => $this->user->id
         ]);
-        LogController::create('create', self::NAME . ' ' . $image->name, $image->id);
     }
 
     static function parseQueryStr($q)

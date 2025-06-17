@@ -113,7 +113,7 @@ class DetailController extends Controller
                     DB::rollBack();
                     log_exception($e);
                     Controller::resetAutoIncrement(['imports', 'import_details', 'stocks', 'exports', 'export_details']);
-                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
                 }
             }
         }

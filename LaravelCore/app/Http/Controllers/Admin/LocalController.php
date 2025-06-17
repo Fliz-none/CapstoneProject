@@ -16,17 +16,9 @@ class LocalController extends Controller
         RULES = [
             'city' => ['required', 'string', 'min:2', 'max:125'],
             'district' => ['required', 'string', 'min:2', 'max:125'],
-        ],
-        MESSAGES = [
-            'city.required' => Controller::NOT_EMPTY,
-            'city.string' => Controller::DATA_INVALID,
-            'city.min' => Controller::MIN,
-            'city.max' => Controller::MAX,
-            'district.required' => Controller::NOT_EMPTY,
-            'district.string' => Controller::DATA_INVALID,
-            'district.min' => Controller::MIN,
-            'district.max' => Controller::MAX,
         ];
+
+        public static array $MESSAGES = [];
 
     public function __construct()
     {
@@ -35,6 +27,26 @@ class LocalController extends Controller
             $this->user = Auth::user();
         }
         $this->middleware(['admin', 'auth']);
+
+
+        $this->middleware(function ($request, $next) {
+        // Locale đã được set xong ở đây
+       
+        Controller::init();
+
+        self::$MESSAGES = [
+            'city.required' => Controller::$NOT_EMPTY,
+            'city.string' => Controller::$DATA_INVALID,
+            'city.min' => Controller::$MIN,
+            'city.max' => Controller::$MAX,
+            'district.required' => Controller::$NOT_EMPTY,
+            'district.string' => Controller::$DATA_INVALID,
+            'district.min' => Controller::$MIN,
+            'district.max' => Controller::$MAX,
+        ];
+
+        return $next($request);
+        });
     }
 
     /**
@@ -131,7 +143,7 @@ class LocalController extends Controller
 
     public function create(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES, self::$MESSAGES);
         if (!empty($this->user->can(User::CREATE_LOCAL))) {
             try {
                 $local = Local::create([
@@ -139,24 +151,23 @@ class LocalController extends Controller
                     'district' => $request->district,
                 ]);
 
-                LogController::create('create', self::NAME, $local->id);
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Created ' . self::NAME . ': ' . $local->city . ' ' . $local->district
+                    'msg' =>__('messages.created') . ' ' . __('messages.local.local') . ': ' . $local->city . ' ' . $local->district
                 );
             } catch (\Exception $e) {
                 log_exception($e);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
 
     public function update(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES, self::$MESSAGES);
         if (!empty($this->user->can(User::UPDATE_LOCAL))) {
             if ($request->has('id')) {
                 try {
@@ -167,29 +178,29 @@ class LocalController extends Controller
                             'district' => $request->district,
                         ]);
 
-                        LogController::create('update', self::NAME, $local->id);
+                        LogController::create('2', self::NAME, $local->id);
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Updated ' . self::NAME . ': ' . $local->city . ' ' . $local->district
+                            'msg' => __('messages.updated') . ' ' . __('messages.local.local') . ': ' . $local->city . ' ' . $local->district
                         );
                     } else {
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'An error occurred, please reload the page and try again!'
+                            'msg' => __('messages.msg')
                         );
                     }
                 } catch (\Exception $e) {
                     log_exception($e);
-                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'An error occurred, please reload the page and try again!'
+                    'msg' => __('messages.msg')
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
@@ -200,12 +211,11 @@ class LocalController extends Controller
         foreach ($request->choices as $key => $id) {
             $obj = Local::find($id);
             $obj->delete();
-            LogController::create("delete", self::NAME, $obj->id);
             array_push($msg, $obj->city . ' ' . $obj->district);
         }
         $response = array(
             'status' => 'success',
-            'msg' => 'Deleted ' . self::NAME . ' ' . implode(', ', $msg)
+            'msg' => __('messages.deleted') . ' ' . __('messages.local.local') . ' ' . implode(', ', $msg)
         );
         return  response()->json($response, 200);
     }

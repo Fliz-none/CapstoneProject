@@ -7,10 +7,10 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-9">
-                    <h5 class="text-uppercase">{{ $pageName }}</h5>
+                    <h5 class="text-uppercase">{{ __('messages.work_schedule.work_schedule_management') }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.work_schedule.work_schedule_management') }}</li>
                         </ol>
                     </nav>
                 </div>
@@ -24,19 +24,19 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_WORK)))
                         <a class="btn btn-info block btn-work-schedule">
                             <i class="bi bi-calendar2-range"></i>
-                            Schedule
+                            {{ __('messages.work_schedule.work_schedule') }}
                         </a>
                     @endif
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_WORK)))
                         <a class="btn btn-info block btn-work-summary">
                             <i class="bi bi-calendar-plus"></i>
-                            Summary
+                            {{ __('messages.work_schedule.summary') }}
                         </a>
                     @endif
                 </div>
                 <div class="col-12 col-lg-6 d-flex align-items-center justify-content-end">
                     <select class="form-control form-control-plaintext text-center w-auto ms-2 calendar-list-branches">
-                        <option selected hidden disabled>Your branch</option>
+                        <option selected hidden disabled>{{ __('messages.work_schedule.your_branch') }}</option>
                         @foreach (Auth::user()->branches as $branch)
                             <option value="{{ $branch->id }}" {{ isset($_GET['branch_id']) && $_GET['branch_id'] == $branch->id ? 'selected' : '' }}>{{ $branch->name }}</option>
                         @endforeach
@@ -59,9 +59,9 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><i class="bi bi-chat-right-fill text-info"></i> Shift Checked In</li>
-                            <li class="breadcrumb-item"><i class="bi bi-chat-right text-info"></i> Not Checked In Yet</li>
-                            <li class="breadcrumb-item"><i class="bi bi-chat-right text-secondary"></i> No Attendance</li>
+                            <li class="breadcrumb-item"><i class="bi bi-chat-right-fill text-info"></i> {{ __('messages.work_schedule.shift_checked') }}</li>
+                            <li class="breadcrumb-item"><i class="bi bi-chat-right text-info"></i> {{ __('messages.work_schedule.not_checked') }}</li>
+                            <li class="breadcrumb-item"><i class="bi bi-chat-right text-secondary"></i> {{ __('messages.work_schedule.absent') }}</li>
                         </ul>
                         <div class="btn-group btn-group-sm">
                             <button class="btn btn-outline-secondary border-0 btn-prev-week" type="button"><i class="bi bi-caret-left-fill"></i></button>
@@ -168,7 +168,7 @@
             renderSchedule(nextMonday, $('#schedule-table thead'));
             $('#schedule-table').find('.btn-change-schedule').prop('checked', false);
             fillSchedule();
-            modal.modal('show').find('.modal-title').text(`Schedule work shifts (${nextMonday.format('DD/MM')} - ${nextMonday.clone().add(6, 'days').format('DD/MM')})`);
+            modal.modal('show').find('.modal-title').text(`{{ __('messages.work_schedule.work_shift') }} (${nextMonday.format('DD/MM')} - ${nextMonday.clone().add(6, 'days').format('DD/MM')})`);
         })
 
         $(document).on('change', '.schedule-list-branches', function() {

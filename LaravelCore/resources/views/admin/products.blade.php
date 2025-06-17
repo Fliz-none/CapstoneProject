@@ -7,10 +7,10 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <h5 class="text-uppercase">{{ $pageName }}</h5>
+                    <h5 class="text-uppercase">{{ __('messages.product.product_management') }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.product.product_management') }}</li>
                         </ol>
                     </nav>
                 </div>
@@ -24,7 +24,7 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_PRODUCT)))
                         <a class="btn btn-info mb-3 block" href="{{ route('admin.product', ['key' => 'new']) }}">
                             <i class="bi bi-plus-circle"></i>
-                            Add
+                            {{ __('messages.add') }}
                         </a>
                         {{-- <a class="btn btn-success ms-2 mb-3 block btn-create-product">
                             <i class="bi bi-plus-circle"></i>
@@ -34,7 +34,7 @@
                     @if (!empty(Auth::user()->can(App\Models\User::UPDATE_PRODUCT)))
                         <button class="btn btn-primary mb-3 btn-sort ms-2" type="button">
                             <i class="bi bi-filter-left"></i>
-                            Sort
+                            {{ __('messages.product.sort') }}
                         </button>
                     @endif
                     <div class="d-inline-block process-btns d-none">
@@ -69,7 +69,7 @@
                         <form action="" method="post">
                             <button class="btn k-btn-info mb-3 btn-refill-product" type="button">
                                 <i class="bi bi-box-arrow-down"></i>
-                                Import from Excel
+                                {{ __('messages.product.import_excel') }}
                             </button>
                             <input class="d-none" id="refill-file" name="refill_file" type="file" accept=".xlsx, .xls">
                         </form>
@@ -77,7 +77,7 @@
                     @if (!empty(Auth::user()->can(App\Models\User::READ_PRODUCTS)))
                         <button class="btn btn-warning mb-3 ms-2 btn-render-product" type="button">
                             <i class="bi bi-box-arrow-in-up"></i>
-                            Export to Excel
+                            {{ __('messages.product.export_excel') }}
                         </button>
                     @endif
                 </div>
@@ -91,13 +91,13 @@
                                 <table class="table table-striped table-bordered key-table" id="products-datatable">
                                     <thead>
                                         <tr>
-                                            <th>Code</th>
-                                            <th>Image</th>
-                                            <th>Product Name</th>
-                                            <th>Category</th>
-                                            <th>Variants</th>
-                                            <th>Status</th>
-                                            <th>Order</th>
+                                            <th>{{ __('messages.datatable.code') }}</th>
+                                            <th>{{ __('messages.product.product_gallery') }}</th>
+                                            <th>{{ __('messages.product.product_name') }}</th>
+                                            <th>{{ __('messages.category.category') }}</th>
+                                            <th>{{ __('messages.variable.variable') }}</th>
+                                            <th>{{ __('messages.datatable.status') }}</th>
+                                            <th>{{ __('messages.datatable.order') }}</th>
                                             <th></th>
                                             <th>
                                                 <input class="form-check-input all-choices" type="checkbox">

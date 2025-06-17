@@ -17,17 +17,10 @@ class AttributeController extends Controller
         RULES = [
             'key' => ['required', 'string', 'min: 3', 'max:125'],
             'value' => ['required', 'string', 'min: 3', 'max:125'],
-        ],
-        MESSAGES = [
-            'key.required' => Controller::NOT_EMPTY,
-            'key.string' => Controller::DATA_INVALID,
-            'key.min' => Controller::MIN,
-            'key.max' => Controller::MAX,
-            'value.required' => Controller::NOT_EMPTY,
-            'value.string' => Controller::DATA_INVALID,
-            'value.min' => Controller::MIN,
-            'value.max' => Controller::MAX,
         ];
+
+        public static array $MESSAGES = [];
+        
 
     public function __construct()
     {
@@ -36,6 +29,21 @@ class AttributeController extends Controller
             $this->user = Auth::user();
         }
         $this->middleware(['admin', 'auth']);
+            $this->middleware(function ($request, $next) {
+            // Locale đã được set xong ở đây
+             Controller::init();
+          self::$MESSAGES = [
+            'key.required' => Controller::$NOT_EMPTY,
+            'key.string' => Controller::$DATA_INVALID,
+            'key.min' => Controller::$MIN,
+            'key.max' => Controller::$MAX,
+            'value.required' => Controller::$NOT_EMPTY,
+            'value.string' => Controller::$DATA_INVALID,
+            'value.min' => Controller::$MIN,
+            'value.max' => Controller::$MAX,
+        ];
+             return $next($request);
+        });
     }
 
     /**
@@ -97,7 +105,7 @@ class AttributeController extends Controller
 
     public function create(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES, self::$MESSAGES);
         if (!empty($this->user->can(User::CREATE_ATTRIBUTE))) {
             $values = explode(',', $request->value);
             DB::beginTransaction();
@@ -114,23 +122,23 @@ class AttributeController extends Controller
                 cache()->forget('attributes');
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Created ' . self::NAME
+                    'msg' => __('messages.created') . ' '. __('messages.attribute' )
                 );
             } catch (\Exception $e) {
                 DB::rollBack();
                 Controller::resetAutoIncrement(['attributes', 'logs']);
                 log_exception($e);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 403);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 403);
         }
         return response()->json($response, 200);
     }
 
     public function update(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES, self::$MESSAGES);
         if (!empty($this->user->can(User::UPDATE_ATTRIBUTE))) {
             if ($request->has('id')) {
                 try {
@@ -142,30 +150,29 @@ class AttributeController extends Controller
                         ]);
 
                         cache()->forget('attributes');
-                        LogController::create('update', self::NAME, $attribute->id);
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Updated ' . $attribute->key
+                            'msg' => __('messages.updated') . $attribute->key
                         );
                     } else {
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'An error occurred, please reload the page and try again!'
+                            'msg' => __('messages.msg')
                         );
                     }
                 } catch (\Exception $e) {
                     Controller::resetAutoIncrement(['attributes', 'logs']);
                     log_exception($e);
-                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'An error occurred, please reload the page and try again!'
+                    'msg' => __('messages.msg')
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 403);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 403);
         }
         return response()->json($response, 200);
     }
@@ -178,10 +185,9 @@ class AttributeController extends Controller
             $obj->delete();
             array_push($msg, $obj->key . ': ' . $obj->value);
         }
-        LogController::create("delete", self::NAME, $obj->id);
         $response = array(
             'status' => 'success',
-            'msg' => 'Deleted ' . self::NAME . ' ' . implode(', ', $msg)
+            'msg' => __('messages.deleted') . ' '.__('messages.attribute') . ' ' . implode(', ', $msg)
         );
         return response()->json($response, 200);
     }

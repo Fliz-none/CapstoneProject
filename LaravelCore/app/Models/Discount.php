@@ -58,13 +58,13 @@ class Discount extends Model
     {
         switch ($this->status) {
             case '0':
-                $name = 'Locked';
+                $name = __('messages.inactive');
                 break;
             case '1':
-                $name = 'Active';
+                $name = __('messages.active');
                 break;
             default:
-                $name = 'Unknown';
+                $name = __('messages.unknown');
                 break;
         }
         return $name;

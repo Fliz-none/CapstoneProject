@@ -12,27 +12,9 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ExpenseController extends Controller
 {
-    const NAME = 'Expense',
-        MESSAGES = [
-            'avatar.image' => Controller::DATA_INVALID,
-            'avatar.max' => 'The image may not be greater than 3 MB.',
-
-            'receiver_id.required' => 'Please select a receiver.',
-            'receiver_id.numeric' => Controller::DATA_INVALID,
-            'receiver_id.exists' => 'Receiver does not exist.',
-
-            'payment.required' => 'Please select a payment method.',
-            'payment.numeric' => Controller::DATA_INVALID,
-            'payment.between' => Controller::DATA_INVALID,
-
-            'amount.required' => 'Please enter an amount.',
-            'amount.numeric' => 'The amount must be a number.',
-            'amount.min' => 'The amount must be greater than or equal to 0.',
-            'amount.max' => 'The amount of the voucher is too large.',
-            'note.required' => 'Please enter a note',
-            'note.max' => 'Minimum 255 characters',
-
-        ];
+    const NAME = 'Expense';
+    public static array $MESSAGES = [];
+        
     /**
      * Create a new controller instance.
      *
@@ -46,6 +28,35 @@ class ExpenseController extends Controller
             $this->user = Auth::user();
         }
         $this->middleware(['auth']);
+
+         $this->middleware(function ($request, $next) {
+        // Locale đã được set xong ở đây
+        Controller::init(); // Gán các biến tĩnh ở đây
+
+       self::$MESSAGES = [
+            'avatar.image' => Controller::$DATA_INVALID,
+            'avatar.max' => __('messages.expense.avatar_max_size'),
+
+            'receiver_id.required' => __('messages.expense.receiver_required'),
+            'receiver_id.numeric' => Controller::$DATA_INVALID,
+            'receiver_id.exists' => __('messages.expense.receiver_not_found'),
+
+            'payment.required' => __('messages.expense.payment_required'),
+            'payment.numeric' => Controller::$DATA_INVALID,
+            'payment.between' => Controller::$DATA_INVALID,
+
+            'amount.required' => __('messages.expense.amount_required'),
+            'amount.numeric' => __('messages.expense.amount_not_number'),
+            'amount.min' => __('messages.expense.amount_too_small'),
+            'amount.max' => __('messages.expense.amount_too_large'),
+
+            'note.required' => __('messages.expense.note_required'),
+            'note.max' => __('messages.expense.note_too_long'),
+        ];
+
+        return $next($request);
+    });
+        
     }
 
     /**
@@ -218,7 +229,7 @@ class ExpenseController extends Controller
             'amount' => ['required', 'numeric', 'min:0', 'max:100000000'],
             'note' => ['required', 'string', 'min:0', 'max:255'],
         ];
-        $request->validate($rules, self::MESSAGES);
+        $request->validate($rules, self::$MESSAGES);
         $settings = cache()->get('settings');
         if ($settings && $settings['expense_image_required'] == 1 && !$request->hasFile('avatar')) {
             return response()->json(['errors' => ['avatar' => ['Hãy bổ sung thêm hình ảnh hóa đơn']]], 422);
@@ -243,17 +254,17 @@ class ExpenseController extends Controller
                     Expense::find($expense->id)->update(['avatar' => $filename]);
                 }
 
-                LogController::create("create", self::NAME, $expense->id);
+                LogController::create("1", self::NAME, $expense->id);
                 $response = [
                     'status' => 'success',
-                    'msg' => 'Created ' . self::NAME . ' ' . $expense->code,
+                    'msg' => __('messages.created') . __('messages.expense.expense_voucher') . ' ' . $expense->code,
                 ];
             } catch (\Exception $e) {
                 log_exception($e);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.expense.error') . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.expense.role')]]], 422);
         }
         return response()->json($response, 200);
     }
@@ -267,13 +278,13 @@ class ExpenseController extends Controller
             'amount' => ['required', 'numeric', 'min:0', 'max:100000000'],
             'note' => ['required', 'string', 'min:0', 'max:255'],
         ];
-        $request->validate($rules, self::MESSAGES);
+        $request->validate($rules, self::$MESSAGES);
 
         if (!empty($this->user->can(User::UPDATE_EXPENSE))) {
             if ($request->has('id')) {
                 try {
                     if (!$this->user->can(User::APPROVE_EXPENSE) && $request->has('status')) {
-                        return response()->json(['errors' => ['role' => ['You do not have permission or this expense has been approved!']]], 422);
+                        return response()->json(['errors' => ['role' => [__('messages.expense.role')]]], 422);
                     }
                     $expense = Expense::find($request->id);
                     if ($expense) {
@@ -293,7 +304,7 @@ class ExpenseController extends Controller
                             $expense->update(['avatar' => $filename]);
                         }
 
-                        LogController::create("update", self::NAME, $expense->id);
+                        LogController::create("2", self::NAME, $expense->id);
                         $response = [
                             'status' => 'success',
                             'msg' => 'Updated ' . self::NAME . ' ' . $expense->code,
@@ -301,21 +312,21 @@ class ExpenseController extends Controller
                     } else {
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'An error occurred, please reload the page and try again!'
+                            'msg' => __('messages.expense.msg')
                         );
                     }
                 } catch (\Exception $e) {
                     log_exception($e);
-                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => [__('messages.expense.error') . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'An error occurred, please reload the page and try again!'
+                    'msg' => __('messages.expense.msg')
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.expense.role')]]], 422);
         }
         return response()->json($response, 200);
     }
@@ -327,7 +338,7 @@ class ExpenseController extends Controller
             $expense = Expense::find($id);
             $expense->delete();
             array_push($names, $expense->name);
-            LogController::create("delete", self::NAME, $expense->id);
+            LogController::create("3", self::NAME, $expense->id);
         }
         return response()->json([
             'status' => 'success',

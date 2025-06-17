@@ -2,14 +2,14 @@
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header bg-info">
-                <h1 class="modal-title fs-5 text-white" id="schedule-modal-label">Work Schedule</h1>
+                <h1 class="modal-title fs-5 text-white" id="schedule-modal-label">{{ __('messages.work_schedule.work_schedule') }}</h1>
                 <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="row mb-3">
                     <div class="col-4 ms-auto d-flex justify-content-end">
                         <select class="form-control form-control-plaintext text-center w-auto ms-2 schedule-list-branches">
-                            <option value="all" selected>All Branches</option>
+                            <option value="all" selected>{{ __('messages.work_schedule.all_branch') }}</option>
                             @foreach (Auth::user()->branches as $branch)
                                 <option value="{{ $branch->id }}" {{ isset($_GET['branch_id']) && $_GET['branch_id'] == $branch->id ? 'selected' : '' }}>{{ $branch->name }}</option>
                             @endforeach
@@ -39,7 +39,7 @@
                                                         id="schedule-{{ $user->main_branch }}-{{ $user->id }}-{{ $index }}-{{ $i }}" data-user_id="{{ $user->id }}" data-main_branch="{{ $user->main_branch }}"
                                                         data-shift="{{ $work->sign_checkin }}-{{ $work->sign_checkout }}" data-date="{{ $i }}" data-branch_id="{{ $user->main_branch }}" type="checkbox">
                                                     <label class="btn p-1 px-2 btn-outline-info shadow-none" data-bs-toggle="tooltip" data-bs-title="{{ $work->shift_name . ' (' . $work->sign_checkin . ' - ' . $work->sign_checkout . ')' }}"
-                                                        for="schedule-{{ $user->main_branch }}-{{ $user->id }}-{{ $index }}-{{ $i }}">Shift {{ $index + 1 }}</label>
+                                                        for="schedule-{{ $user->main_branch }}-{{ $user->id }}-{{ $index }}-{{ $i }}">{{ __('messages.work_schedule.shift') }} {{ $index + 1 }}</label>
                                                 @endforeach
                                             </div>
                                         </td>

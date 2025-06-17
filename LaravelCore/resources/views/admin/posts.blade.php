@@ -7,10 +7,10 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <h5 class="text-uppercase">{{ $pageName }}</h5>
+                    <h5 class="text-uppercase">{{ __('messages.post.post_management') }}</h5>
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.post.post_management') }}</li>
                         </ol>
                     </nav>
                 </div>
@@ -24,7 +24,7 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_POST)))
                         <a class="btn k-btn-info mb-3 block" href="{{ route('admin.post', ['key' => 'new']) }}">
                             <i class="bi bi-plus-circle"></i>
-                            Add
+                            {{ __('messages.add') }}
                         </a>
                     @endif
                     <div class="d-inline-block process-btns d-none">
@@ -45,15 +45,15 @@
                             <table class="table table-striped table-bordered key-table" id="post-table">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Title</th>
-                                        <th>Content</th>
-                                        <th>Image</th>
-                                        <th>Author</th>
-                                        <th>Category</th>
-                                        <th>Type</th>
-                                        <th>Status</th>
-                                        <th>Created At</th>
+                                        <th>{{ __('messages.datatable.code') }}</th>
+                                        <th>{{ __('messages.post.title') }}</th>
+                                        <th>{{ __('messages.post.content') }}</th>
+                                        <th>{{ __('messages.post.image') }}</th>
+                                        <th>{{ __('messages.post.author') }}</th>
+                                        <th>{{ __('messages.post.category') }}</th>
+                                        <th>{{ __('messages.post.type') }}</th>
+                                        <th>{{ __('messages.datatable.status') }}</th>
+                                        <th>{{ __('messages.post.created_at') }}</th>
                                         <th></th>
                                         <th>
                                             <input class="form-check-input all-choices" type="checkbox">

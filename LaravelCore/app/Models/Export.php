@@ -81,13 +81,13 @@ class Export extends Model
     {
         switch ($this->status) {
             case '1':
-                $result = 'Done';
+                $result = __('messages.complete');
                 break;
             case '0':
-                $result = 'Waiting';
+                $result = __('messages.stock.waiting');
                 break;
             default:
-                $result = 'Unknown';
+                $result = __('messages.unknown');
                 break;
         }
         return $result;

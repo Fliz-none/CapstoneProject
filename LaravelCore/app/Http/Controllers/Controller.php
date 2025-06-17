@@ -28,6 +28,7 @@ class Controller extends BaseController
      */
     public function __construct()
     {
+        Controller::init();
         $this->middleware(function ($request, $next) {
             if (Auth::check()) {
                 $this->user = Auth::user();
@@ -39,11 +40,23 @@ class Controller extends BaseController
     }
 
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    const DATA_INVALID = 'Invalid data';
-    const NOT_EMPTY = 'Please do not leave this field empty';
-    const ONE_LEAST = 'At least one item is required';
-    const MIN = 'Must meet the minimum quantity';
-    const MAX = 'Cannot exceed the maximum quantity';
+    
+    public static string $DATA_INVALID;
+    public static string $NOT_EMPTY;
+    public static string $ONE_LEAST;
+    public static string $MIN;
+    public static string $MAX;
+
+    
+
+    public static function init()
+    {
+        self::$DATA_INVALID = __('messages.data_invalid');
+        self::$NOT_EMPTY = __('messages.not_empty');
+        self::$ONE_LEAST = __('messages.one_least');
+        self::$MIN = __('messages.min');
+        self::$MAX = __('messages.max');
+    }
 
 
     // public function options()

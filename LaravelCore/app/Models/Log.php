@@ -13,14 +13,8 @@ class Log extends Model
     protected $appends = ['code', 'ip'];
 
     protected $fillable = [
-        'user_id',
-        'action',
-        'type',
-        'object',
-        'geolocation',
-        'agent',
-        'platform',
-        'device',
+        'user_id', 'action', 'type', 'object', 'geolocation',
+        'agent', 'platform', 'device', 'before_change', 'after_change',
     ];
 
     public function branch()

@@ -4,32 +4,32 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="discount-modal-label">Discount</h1>
+                    <h1 class="modal-title fs-5" id="discount-modal-label">{{ __('messages.discount_.discount') }}</h1>
                     <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3 form-group">
-                        <label class="form-label fw-bold" for="discount-name">Promotion Name</label>
-                        <input class="form-control" id="discount-name" name="name" type="text" placeholder="Promotion Name" required autocomplete="off">
+                        <label class="form-label fw-bold" for="discount-name">{{ __('messages.discount_.discount_name') }}</label>
+                        <input class="form-control" id="discount-name" name="name" type="text" placeholder="{{ __('messages.discount_.discount_name') }}" required autocomplete="off">
                     </div>
                     <div class="mb-3 form-group">
-                        <label class="form-label fw-bold" for="discount-branch_id">Branch</label>
-                        <select class="form-select select2" id="discount-branch_id" name="branch_id" data-ajax--url="{{ route('admin.branch', ['key' => 'select2']) }}" data-placeholder="Select a branch">
+                        <label class="form-label fw-bold" for="discount-branch_id">{{ __('messages.datatable.branch') }}</label>
+                        <select class="form-select select2" id="discount-branch_id" name="branch_id" data-ajax--url="{{ route('admin.branch', ['key' => 'select2']) }}" data-placeholder="{{ __('messages.discount_.select_branch') }}">
                         </select>
                     </div>
                     <div class="mb-3 form-group">
-                        <label class="form-label fw-bold" for="discount-type">Discount type</label>
+                        <label class="form-label fw-bold" for="discount-type">{{ __('messages.discount_.type') }}</label>
                         <select class="form-select" id="discount-type" name="type">
-                            <option selected hidden disabled>Select discount type</option>
-                            <option value="0">Percent Discount</option>
-                            <option value="1">Fixed Amount Discount</option>
-                            <option value="2">Buy X Get Y Free</option>
+                            <option selected hidden disabled>{{ __('messages.discount_.select_type') }}</option>
+                            <option value="0">{{ __('messages.discount_.percent') }}</option>
+                            <option value="1">{{ __('messages.discount_.fix_discount') }}</option>
+                            <option value="2">{{ __('messages.discount_.buy') }}</option>
                         </select>
                     </div>
                     <div class="row d-none discount-type discount-price">
                         <div class="col-12 col-md-6 mb-3 form-group">
                             <label class="form-label fw-bold" for="discount-value">
-                                Value
+                                {{ __('messages.discount_.value') }}
                             </label>
                             <div class="input-group">
                                 <input class="form-control" id="discount-value" name="value" type="text" placeholder="Enter discount value" autocomplete="off">
@@ -38,7 +38,7 @@
                         </div>
                         <div class="col-12 col-md-6 mb-3 form-group">
                             <label class="form-label fw-bold" for="discount-min_quantity">
-                                Quantity
+                                {{ __('messages.discount_.quantity') }}
                             </label>
                             <input class="form-control" id="discount-min_quantity" name="min_quantity" type="number" value="1" min="1" placeholder="Buy at least..." autocomplete="off">
                         </div>
@@ -47,7 +47,7 @@
                     <div class="row d-none discount-type discount-buy-get">
                         <div class="col-12 col-md-6 mb-3 form-group">
                             <label class="form-label fw-bold" for="discount-buy_quantity">
-                                Buy Quantity
+                              {{ __('messages.discount_.quantity') }}
                             </label>
                             <div class="input-group">
                                 <input class="form-control" id="discount-buy_quantity" name="buy_quantity" type="number" min="1" placeholder="E.g. Buy 2" autocomplete="off">
@@ -55,18 +55,18 @@
                         </div>
                         <div class="col-12 col-md-6 mb-3 form-group">
                             <label class="form-label fw-bold" for="discount-get_quantity">
-                                Free Quantity
+                                {{ __('messages.discount_.free') }}  {{ __('messages.discount_.quantity') }}
                             </label>
                             <input class="form-control" id="discount-get_quantity" name="get_quantity" type="number" min="1" placeholder="E.g. Get 1 free" autocomplete="off">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12 col-md-6 mb-3 form-group">
-                            <label class="form-label fw-bold" for="discount-start_date">Start Date</label>
+                            <label class="form-label fw-bold" for="discount-start_date">{{ __('messages.discount_.start') }}</label>
                             <input class="form-control" id="discount-start_date" name="start_date" type="date">
                         </div>
                         <div class="col-12 col-md-6 mb-3 form-group">
-                            <label class="form-label fw-bold" for="discount-end_date">End Date</label>
+                            <label class="form-label fw-bold" for="discount-end_date">{{ __('messages.discount_.end') }}</label>
                             <input class="form-control" id="discount-end_date" name="end_date" type="date">
                         </div>
                     </div>
@@ -75,13 +75,13 @@
                             <div class="row">
                                 <div class="col-12 mb-2 form-group">
                                     <label class="form-label fw-bold" for="discount_unit-search-input">
-                                        Apply
+                                        {{ __('messages.discount_.apply') }}
                                     </label>
                                     <div class="dropdown ajax-search">
                                         <div class="form-group mb-0 has-icon-left">
                                             <div class="position-relative search-form">
                                                 <input class="form-control form-control-lg search-input" id="discount_unit-search-input" data-url="{{ route('admin.unit') }}?key=search" type="text" autocomplete="off"
-                                                    placeholder="Search goods">
+                                                    placeholder="{{ __('messages.datatable.search_placeholder') }}">
                                                 <div class="form-control-icon">
                                                     <i class="bi bi-search"></i>
                                                 </div>
@@ -104,7 +104,7 @@
                             <div class="col-12 col-md-6">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" id="discount-status" name="status" type="checkbox" checked>
-                                    <label class="form-check-label" for="discount-status">Active</label>
+                                    <label class="form-check-label" for="discount-status">{{ __('messages.active') }}</label>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 text-end">

@@ -19,15 +19,10 @@ class VersionController extends Controller
         RULES = [
             'name' => ['required', 'string', 'min:2', 'max:125'],
             'description' => ['required', 'string'],
-        ],
-        MESSAGES = [
-            'name.required' => Controller::NOT_EMPTY,
-            'name.string' => Controller::DATA_INVALID,
-            'name.min' => Controller::MIN,
-            'name.max' => Controller::MAX,
-            'description.required' => Controller::NOT_EMPTY,
-            'description.string' => Controller::DATA_INVALID,
         ];
+
+        public static array $MESSAGES = [];
+       
 
     public function __construct()
     {
@@ -36,6 +31,22 @@ class VersionController extends Controller
             $this->user = Auth::user();
         }
         $this->middleware(['admin', 'auth']);
+
+        $this->middleware(function ($request, $next) {
+        // Locale đã được set xong ở đây
+        Controller::init();
+         self::$MESSAGES = [
+            'name.required' => Controller::$NOT_EMPTY,
+            'name.string' => Controller::$DATA_INVALID,
+            'name.min' => Controller::$MIN,
+            'name.max' => Controller::$MAX,
+            'description.required' => Controller::$NOT_EMPTY,
+            'description.string' => Controller::$DATA_INVALID,
+        ];
+
+        return $next($request);
+        });
+        
     }
 
     /**
@@ -124,7 +135,7 @@ class VersionController extends Controller
 
     public function create(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES, self::$MESSAGES);
         if (!empty($this->user->can(User::CREATE_VERSION))) {
             $version = Version::create([
                 'name' => $request->name,
@@ -157,17 +168,17 @@ class VersionController extends Controller
             DB::table('notification_user')->insert($data_noti);
             $response = array(
                 'status' => 'success',
-                'msg' => 'Created ' . self::NAME . ': ' . $version->name
+                'msg' => __('messages.created') . __('messages.version.version') . ': ' . $version->name
             );
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
 
     public function update(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES, self::$MESSAGES);
         if (!empty($this->user->can(User::UPDATE_VERSION))) {
             if ($request->has('id')) {
                 $version = Version::updateOrCreate([
@@ -180,16 +191,16 @@ class VersionController extends Controller
 
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Updated ' . self::NAME . ': ' . $version->name
+                    'msg' =>  __('messages.updated') . __('messages.version.version') . ': ' . $version->name
                 );
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'An error occurred, please reload the page and try again!'
+                    'msg' => __('messages.msg')
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
@@ -206,7 +217,7 @@ class VersionController extends Controller
         }
         $response = array(
             'status' => 'success',
-            'msg' => 'Successfully deleted ' . self::NAME . ' ' . implode(', ', $msg)
+            'msg' =>  __('messages.deleted') . __('messages.version.version') . ' ' . implode(', ', $msg)
         );
         return  response()->json($response, 200);
     }

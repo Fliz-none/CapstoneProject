@@ -75,13 +75,13 @@ class Import extends Model
         switch ($this->status) {
             case '1':
                 //  đang bán hoac da nhap kho
-                $result = $this->checkLoss() ? 'Selling' : 'Imported';
+                $result = $this->checkLoss() ? __('messages.import.selling') : __('messages.import.imported');
                 break;
             case '0':
-                $result = 'Waiting';
+                $result = __('messages.stock.waiting');
                 break;
             default:
-                $result = 'Unknown';
+                $result = __('messages.unknown');
                 break;
         }
         return $result;

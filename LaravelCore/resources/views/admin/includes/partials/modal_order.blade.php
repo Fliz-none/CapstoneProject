@@ -17,7 +17,7 @@
                                             <div class="dropdown ajax-search">
                                                 <div class="form-group mb-0 has-icon-left">
                                                     <div class="position-relative search-form">
-                                                        <input class="form-control form-control-lg search-input" data-url="{{ route('admin.stock') }}?key=search" type="text" autocomplete="off" placeholder="Select a product">
+                                                        <input class="form-control form-control-lg search-input" data-url="{{ route('admin.stock') }}?key=search" type="text" autocomplete="off" placeholder="{{ __('messages.order.select_a_product') }}">
                                                         <div class="form-control-icon">
                                                             <i class="bi bi-search"></i>
                                                         </div>
@@ -37,14 +37,14 @@
                                 <div class="card-header">
                                     <div class="row">
                                         <div class="col-9">
-                                            <h5 class="text-secondary">Transactions</h5>
+                                            <h5 class="text-secondary">{{ __('messages.transaction.transaction') }}</h5>
                                         </div>
                                         <div class="col-3">
                                             @if (Auth::user()->can(App\Models\User::CREATE_TRANSACTION))
                                                 <div class="d-grid gap-2">
                                                     <div class="btn-group btn-group-lg">
                                                         <button class="btn btn-outline-primary btn-create-transaction pay">
-                                                            <i class="bi bi-plus-circle"></i> Add Payment
+                                                            <i class="bi bi-plus-circle"></i> {{ __('messages.transaction.add_transaction') }}
                                                         </button>
                                                     </div>
                                                 </div>
@@ -57,12 +57,12 @@
                                         <table class="table table-striped table-wide table-bordered key-table" id="transactions-datatable">
                                             <thead>
                                                 <tr>
-                                                    <th>Code</th>
-                                                    <th>Description</th>
-                                                    <th class="text-center">Method</th>
-                                                    <th>Customer</th>
-                                                    <th>Cashier</th>
-                                                    <th class="text-end">Amount</th>
+                                                    <th>{{ __('messages.datatable.code') }}</th>
+                                                    <th>{{ __('messages.datatable.description') }}</th>
+                                                    <th class="text-center">{{ __('messages.datatable.method') }}</th>
+                                                    <th>{{ __('messages.datatable.customer') }}</th>
+                                                    <th>{{ __('messages.datatable.cashier') }}</th>
+                                                    <th class="text-end">{{ __('messages.datatable.amount') }}</th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -70,12 +70,12 @@
                                             </tbody>
                                             <tfoot>
                                                 <tr>
-                                                    <td class="text-end" colspan="5">Total order value</td>
+                                                    <td class="text-end" colspan="5">{{ __('messages.datatable.total_order') }}</td>
                                                     <td class="text-end order-sum"></td>
                                                     <td></td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="text-end" colspan="5">Total amount paid</td>
+                                                    <td class="text-end" colspan="5">{{ __('messages.datatable.total_amount') }}</td>
                                                     <td class="text-end transaction-sum"></td>
                                                     <td></td>
                                                 </tr>
@@ -104,14 +104,14 @@
                                     </div>
                                     <div class="row">
                                         <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Customer who purchased" for="order-customer_id">
-                                            Customer&nbsp;
+                                            {{ __('messages.datatable.customer') }} &nbsp;
                                             <a class="btn btn-link btn-create-user rounded-pill p-0" type="button">
                                                 <i class="bi bi-plus-circle"></i>
                                             </a>
                                         </label>
                                         <div class="col-sm-8">
                                             <select class="form-control-plaintext form-control select2 order-customer_id" id="order-customer_id" name="customer_id" data-ajax--url="{{ route('admin.user', ['key' => 'select2']) }}"
-                                                data-placeholder="Select customer (F4)" autocomplete="off">
+                                                data-placeholder="{{ __('messages.datatable.select_customer') }} (F4)" autocomplete="off">
                                             </select>
                                         </div>
                                     </div>
@@ -121,20 +121,20 @@
                                         <div class="d-grid gap-2">
                                             <div class="btn-group" role="group">
                                                 <input class="btn-check" id="order-status-waiting" name="status" type="radio" value="1">
-                                                <label class="btn btn-outline-primary" for="order-status-waiting">New</label>
+                                                <label class="btn btn-outline-primary" for="order-status-waiting">{{ __('messages.new') }}</label>
                                                 <input class="btn-check" id="order-status-processing" name="status" type="radio" value="2">
-                                                <label class="btn btn-outline-info" for="order-status-processing">Processing</label>
+                                                <label class="btn btn-outline-info" for="order-status-processing">{{ __('messages.processing') }}</label>
                                                 <input class="btn-check" id="order-status-done" name="status" type="radio" value="3">
-                                                <label class="btn btn-outline-success" for="order-status-done">Completed</label>
+                                                <label class="btn btn-outline-success" for="order-status-done">{{ __('messages.complete') }}</label>
                                                 <input class="btn-check" id="order-status-cancel" name="status" type="radio" value="0">
-                                                <label class="btn btn-outline-danger" for="order-status-cancel">Canceled</label>
+                                                <label class="btn btn-outline-danger" for="order-status-cancel">{{ __('messages.cancel') }}</label>
                                             </div>
                                         </div>
                                     </div>
                                     <hr />
                                     <div class="row mb-3 row-total">
-                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Total quantity of items" for="order-total">Total <span class="order-count px-1">0</span>
-                                            items</label>
+                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Total quantity of items" for="order-total">{{ __('messages.dashboard_table_total') }} <span class="order-count px-1">0</span>
+                                            {{ __('messages.item') }}</label>
                                         <div class="col-sm-8">
                                             <input class="form-control-lg bg-white text-end form-control bg-white money order-total" id="order-total" name="total" type="text" value="0" placeholder="Order total amount"
                                                 autocomplete="off" readonly>
@@ -142,7 +142,7 @@
                                     </div>
                                     <div class="row row-discount">
                                         <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Product discount (value less or equal to 100 will be treated as % discount on the order total)" 
-                                            for="order-discount">Discount</label>
+                                            for="order-discount">{{ __('messages.discount') }}</label>
                                         <div class="col-sm-8">
                                             <input class="form-control-lg text-end form-control bg-white money order-discount" id="order-discount" name="discount" type="text" value="0" onclick="this.select()"
                                                 placeholder="Amount or percentage" autocomplete="off">
@@ -150,7 +150,7 @@
                                     </div>
                                     <hr />
                                     <div class="row mb-3 row-summary">
-                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Amount the customer has to pay" for="order-summary">Amount Due</label>
+                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Amount the customer has to pay" for="order-summary">{{ __('messages.datatable.amount_due') }}</label>
                                         <div class="col-sm-8">
                                             <input class="form-control-lg text-end form-control bg-white money order-summary" id="order-summary" name="summary" type="text" value="0" placeholder="Amount" autocomplete="off" readonly>
                                         </div>
@@ -170,7 +170,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <textarea class="form-control" id="order-note" name="note" rows="2" placeholder="Order notes"></textarea>
+                                        <textarea class="form-control" id="order-note" name="note" rows="2" placeholder="{{ __('messages.note') }}"></textarea>
                                     </div>
                                     <div class="form-group mb-0">
                                         @if (!empty(Auth::user()->hasAnyPermission(App\Models\User::UPDATE_ORDER, App\Models\User::CREATE_ORDER)))
@@ -184,7 +184,7 @@
                                                         <li><a class="dropdown-item cursor-pointer btn-print print-order" data-id="" data-url="{{ getPath(route('admin.order')) }}" data-template="a5">A5 size</a></li>
                                                         <li><a class="dropdown-item cursor-pointer btn-print print-order" data-id="" data-url="{{ getPath(route('admin.order')) }}" data-template="c80">80mm size</a></li>
                                                     </ul>
-                                                    <button class="btn btn-lg btn-info w-75 btn-submit" type="submit">Save</button>
+                                                    <button class="btn btn-lg btn-info w-75 btn-submit" type="submit">{{ __('messages.save') }}</button>
                                                 </div>
                                             </div>
                                         @endif

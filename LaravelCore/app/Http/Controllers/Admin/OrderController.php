@@ -24,6 +24,9 @@ class OrderController extends Controller
 
     public function __construct()
     {
+        
+        Controller::init();
+        //dd(app()->getLocale()); 
         parent::__construct();
         if ($this->user === null) {
             $this->user = Auth::user();
@@ -145,7 +148,8 @@ class OrderController extends Controller
                             }
                             return '<span class="fw-bold">' . $obj->_customer->name . '</span>';
                         } else {
-                            return '<span class="px-3">Unknown</span>';
+                                return '<span class="px-3">' . __('messages.unknown') . '</span>';
+
                         }
                     })
                     ->filterColumn('customer', function ($query, $keyword) {
@@ -196,7 +200,7 @@ class OrderController extends Controller
                             $minus = 'Excess ' . number_format($obj->paid - $obj->total);
                         } else {
                             $color = 'primary';
-                            $minus = 'Paid in full';
+                            $minus = __('messages.pay_in_full');
                         }
                         return '<div class="row justify-content-end">
                             <div class="col-6 border-end text-' . $color . '"><a data-bs-toggle="tooltip" data-bs-title="' . $minus . '">' . number_format($obj->paid) . '</a></div>
@@ -214,10 +218,10 @@ class OrderController extends Controller
                     })
                     ->filterColumn('status', function ($query, $keyword) {
                         $statusMap = [
-                            'completed' => 3,
-                            'processing' => 2,
-                            'queued' => 1,
-                            'cancelled' => 0,
+                            __('messages.complete') => 3,
+                            __('messages.processing') => 2,
+                            __('messages.queued') => 1,
+                            __('messages.cancel') => 0,
                         ];
                         if (isset($statusMap[Str::lower($keyword)])) {
                             $query->where('status', $statusMap[Str::lower($keyword)]);
@@ -272,6 +276,7 @@ class OrderController extends Controller
 
     public function create(Request $request)
     {
+        Controller::init();
         $rules = [
             //Đơn hàng
             'customer_id' => [
@@ -302,50 +307,50 @@ class OrderController extends Controller
         ];
         $messages = [
             // Order
-            'customer_id.numeric' => 'Customer: ' . Controller::DATA_INVALID,
-            'discount.numeric' => 'Order discount: ' . Controller::DATA_INVALID,
-            'note.string' => 'Order note: ' . Controller::DATA_INVALID,
-            'note.max' => 'Order note: ' . Controller::MAX,
-            'id.numeric' => 'Order: ' . Controller::DATA_INVALID,
+            'customer_id.numeric' => __('messages.order_controller.customer').': ' . Controller::$DATA_INVALID,
+            'discount.numeric' =>  __('messages.order_controller.discount').': ' . Controller::$DATA_INVALID,
+            'note.string' =>  __('messages.order_controller.order_note').': ' . Controller::$DATA_INVALID,
+            'note.max' =>  __('messages.order_controller.order_note').': ' . Controller::$MAX,
+            'id.numeric' =>  __('messages.order_controller.order').': ' . Controller::$DATA_INVALID,
 
             // Order Details
-            'unit_ids.required' => 'Unit: ' . Controller::ONE_LEAST,
-            'unit_ids.array' => 'Unit: ' . Controller::DATA_INVALID,
-            'prices.required' => 'Product price: ' . Controller::ONE_LEAST,
-            'prices.array' => 'Product price: ' . Controller::DATA_INVALID,
-            'discounts.required' => 'Product discount: ' . Controller::ONE_LEAST,
-            'discounts.array' => 'Product discount: ' . Controller::DATA_INVALID,
-            'quantities.required' => 'Product quantity: ' . Controller::ONE_LEAST,
-            'quantities.array' => 'Product quantity: ' . Controller::DATA_INVALID,
-            'rates.required' => 'Unit rate: ' . Controller::ONE_LEAST,
-            'rates.array' => 'Unit rate: ' . Controller::DATA_INVALID,
-            'notes.array' => 'Product note: ' . Controller::DATA_INVALID,
-            'ids.required' => 'Order detail: ' . Controller::ONE_LEAST,
-            'ids.array' => 'Order detail: ' . Controller::DATA_INVALID,
+            'unit_ids.required' => __('messages.order_controller.unit').': ' . Controller::$ONE_LEAST,
+            'unit_ids.array' => __('messages.order_controller.unit').': ' . Controller::$DATA_INVALID,
+            'prices.required' => __('messages.order_controller.product_price').': ' . Controller::$ONE_LEAST,
+            'prices.array' => __('messages.order_controller.product_price').': ' . Controller::$DATA_INVALID,
+            'discounts.required' => __('messages.order_controller.product_discount').': ' . Controller::$ONE_LEAST,
+            'discounts.array' => __('messages.order_controller.product_discount').': ' . Controller::$DATA_INVALID,
+            'quantities.required' => __('messages.order_controller.product_quantity').': ' . Controller::$ONE_LEAST,
+            'quantities.array' => __('messages.order_controller.product_quantity').': ' . Controller::$DATA_INVALID,
+            'rates.required' => __('messages.order_controller.unit_rate').': ' . Controller::$ONE_LEAST,
+            'rates.array' => __('messages.order_controller.unit_rate').': ' . Controller::$DATA_INVALID,
+            'notes.array' => __('messages.order_controller.product_note').': ' . Controller::$DATA_INVALID,
+            'ids.required' => __('messages.order_controller.order_detail').': ' . Controller::$ONE_LEAST,
+            'ids.array' => __('messages.order_controller.order_detail').': ' . Controller::$DATA_INVALID,
 
-            'unit_ids.*.required' => 'Unit: ' . Controller::DATA_INVALID,
-            'unit_ids.*.numeric' => 'Unit: ' . Controller::DATA_INVALID,
-            'prices.*.required' => 'Product price: ' . Controller::DATA_INVALID,
-            'prices.*.numeric' => 'Product price: ' . Controller::DATA_INVALID,
-            'discounts.*.numeric' => 'Product discount: ' . Controller::DATA_INVALID,
-            'quantities.*.required' => 'Product quantity: ' . Controller::DATA_INVALID,
-            'quantities.*.numeric' => 'Product quantity: ' . Controller::DATA_INVALID,
-            'quantities.*.min' => 'Product quantity: Cannot be negative!',
-            'rates.*.required' => 'Unit rate: ' . Controller::DATA_INVALID,
-            'rates.*.numeric' => 'Unit rate: ' . Controller::DATA_INVALID,
-            'notes.*.string' => 'Product note: ' . Controller::DATA_INVALID,
-            'ids.*.numeric' => 'Order detail: ' . Controller::DATA_INVALID,
+            'unit_ids.*.required' => __('messages.order_controller.unit').': ' . Controller::$DATA_INVALID,
+            'unit_ids.*.numeric' => __('messages.order_controller.unit').': ' . Controller::$DATA_INVALID,
+            'prices.*.required' => __('messages.order_controller.product_price').': ' . Controller::$DATA_INVALID,
+            'prices.*.numeric' => __('messages.order_controller.product_price').': ' . Controller::$DATA_INVALID,
+            'discounts.*.numeric' => __('messages.order_controller.product_discount').': ' . Controller::$DATA_INVALID,
+            'quantities.*.required' => __('messages.order_controller.product_quantity').': ' . Controller::$DATA_INVALID,
+            'quantities.*.numeric' => __('messages.order_controller.product_quantity').': ' . Controller::$DATA_INVALID,
+            'quantities.*.min' => __('messages.order.min_product'),
+            'rates.*.required' => __('messages.order_controller.unit_rate').': ' . Controller::$DATA_INVALID,
+            'rates.*.numeric' => __('messages.order_controller.unit_rate').': ' . Controller::$DATA_INVALID,
+            'notes.*.string' => __('messages.order_controller.product_note').': ' . Controller::$DATA_INVALID,
+            'ids.*.numeric' => __('messages.order_controller.order_detail').': ' . Controller::$DATA_INVALID,
 
             // Payment
-            'transaction_payments.array' => 'Payment method: ' . Controller::DATA_INVALID,
-            'transaction_amounts.array' => 'Payment amount: ' . Controller::DATA_INVALID,
-            'transaction_refund.array' => 'Refund status: ' . Controller::DATA_INVALID,
+            'transaction_payments.array' => __('messages.order_controller.payment_method').': ' . Controller::$DATA_INVALID,
+            'transaction_amounts.array' => __('messages.order_controller.payment_amount').': ' . Controller::$DATA_INVALID,
+            'transaction_refund.array' => __('messages.order_controller.status').': ' . Controller::$DATA_INVALID,
 
-            'transaction_payments.*.required' => 'Payment method: ' . Controller::NOT_EMPTY,
-            'transaction_refund.*.required' => 'Refund status: ' . Controller::NOT_EMPTY,
-            'transaction_refund.*.numeric' => 'Refund status: ' . Controller::DATA_INVALID,
-            'transaction_amounts.*.required' => 'Payment amount: ' . Controller::NOT_EMPTY,
-            'transaction_amounts.*.numeric' => 'Payment amount: ' . Controller::DATA_INVALID,
+            'transaction_payments.*.required' => __('messages.order_controller.payment_method').': ' . Controller::$NOT_EMPTY,
+            'transaction_refund.*.required' => __('messages.order_controller.status').': ' . Controller::$NOT_EMPTY,
+            'transaction_refund.*.numeric' => __('messages.order_controller.status').': ' . Controller::$DATA_INVALID,
+            'transaction_amounts.*.required' => __('messages.order_controller.payment_amount').': ' . Controller::$NOT_EMPTY,
+            'transaction_amounts.*.numeric' => __('messages.order_controller.payment_amount').': ' . Controller::$DATA_INVALID,
         ];
 
         $request->validate($rules, $messages);
@@ -366,12 +371,12 @@ class OrderController extends Controller
         // }
 
         if (!$request->filled('customer_id') && !$request->filled('id') && !$request->has('transaction_payments')) {
-            return response()->json(['errors' => ['role' => ['Please select a customer to save the order!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.order.customer_required')]]], 422);
         }
         if (!empty($this->user->can(User::CREATE_ORDER))) {
             if ($this->user->branch) {
                 if (!$request->has('id') && !$request->has('transaction_payments') && !$request->has('customer_id')) {
-                    return response()->json(['errors' => ['customer_required' => ['Customer: Please select a customer to save the order!']]], 422);
+                    return response()->json(['errors' => ['customer_required' => [__('messages.order.customer_required')]]], 422);
                 }
                 DB::beginTransaction();
                 try {
@@ -458,33 +463,33 @@ class OrderController extends Controller
                         }
                         $order->sync_scores($order->paid);
 
-                        LogController::create('create', self::NAME, $order->id);
                         $response = array(
                             'id' => $order->id,
                             'status' => 'success',
-                            'msg' => 'Created ' . self::NAME . ' ' . $order->code
+                            'msg' => __('messages.created') .' '. $order->code
                         );
                         DB::commit();
                     } else {
-                        return response()->json(['errors' => ['role' => ['An error occurred! Please reload the page and try again!']]], 422);
+                        return response()->json(['errors' => ['role' => [__('messages.msg')]]], 422);
                     }
                 } catch (\Exception $e) {
                     DB::rollBack();
                     log_exception($e);
                     Controller::resetAutoIncrement(['orders', 'details', 'imports', 'import_details', 'stocks', 'transactions']);
-                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
                 }
             } else {
-                return response()->json(['errors' => ['branch_id' => ['Account has not been set up with a branch']]], 422);
+                return response()->json(['errors' => ['branch_id' => [__('messages.role')]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
 
     public function update(Request $request)
     {
+        Controller::init();
         $rules = [
             //Đơn hàng
             'customer_id' => [
@@ -517,61 +522,61 @@ class OrderController extends Controller
         ];
         $messages = [
             // Order
-            'customer_id.numeric' => 'Customer: ' . Controller::DATA_INVALID,
-            'discount.numeric' => 'Order discount: ' . Controller::DATA_INVALID,
-            'note.string' => 'Order note: ' . Controller::DATA_INVALID,
-            'note.max' => 'Order note: ' . Controller::MAX,
-            'id.numeric' => 'Order: ' . Controller::DATA_INVALID,
+            'customer_id.numeric' => __('messages.order_controller.customer').': ' . Controller::$DATA_INVALID,
+            'discount.numeric' => __('messages.order_controller.order_discount').': ' . Controller::$DATA_INVALID,
+            'note.string' => __('messages.order_controller.order_note').': ' . Controller::$DATA_INVALID,
+            'note.max' => __('messages.order_controller.order_note').': ' . Controller::$MAX,
+            'id.numeric' =>  __('messages.order_controller.order').': ' . Controller::$DATA_INVALID,
 
             // Order Details
-            'stock_ids.required' => 'Product: ' . Controller::ONE_LEAST,
-            'stock_ids.array' => 'Product: ' . Controller::DATA_INVALID,
-            'unit_ids.required' => 'Unit: ' . Controller::ONE_LEAST,
-            'unit_ids.array' => 'Unit: ' . Controller::DATA_INVALID,
-            'prices.required' => 'Product price: ' . Controller::ONE_LEAST,
-            'prices.array' => 'Product price: ' . Controller::DATA_INVALID,
-            'discounts.required' => 'Product discount: ' . Controller::ONE_LEAST,
-            'discounts.array' => 'Product discount: ' . Controller::DATA_INVALID,
-            'quantities.required' => 'Product quantity: ' . Controller::ONE_LEAST,
-            'quantities.array' => 'Product quantity: ' . Controller::DATA_INVALID,
-            'rates.required' => 'Product unit rate: ' . Controller::ONE_LEAST,
-            'rates.array' => 'Product unit rate: ' . Controller::DATA_INVALID,
-            'notes.array' => 'Product note: ' . Controller::DATA_INVALID,
-            'ids.required' => 'Order detail: ' . Controller::ONE_LEAST,
-            'ids.array' => 'Order detail: ' . Controller::DATA_INVALID,
+            'stock_ids.required' => __('messages.order_controller.product').': ' . Controller::$ONE_LEAST,
+            'stock_ids.array' => __('messages.order_controller.product').': ' . Controller::$DATA_INVALID,
+            'unit_ids.required' => __('messages.order_controller.unit') .': ' . Controller::$ONE_LEAST,
+            'unit_ids.array' => __('messages.order_controller.unit') .': ' . Controller::$DATA_INVALID,
+            'prices.required' => __('messages.order_controller.product_price') .': ' . Controller::$ONE_LEAST,
+            'prices.array' => __('messages.order_controller.product_price') .': ' . Controller::$DATA_INVALID,
+            'discounts.required' => __('messages.order_controller.product_discount') .': ' . Controller::$ONE_LEAST,
+            'discounts.array' => __('messages.order_controller.product_discount') .': ' . Controller::$DATA_INVALID,
+            'quantities.required' => __('messages.order_controller.product_quantity') .': ' . Controller::$ONE_LEAST,
+            'quantities.array' => __('messages.order_controller.product_quantity') .': ' . Controller::$DATA_INVALID,
+            'rates.required' => __('messages.order_controller.unit_rate') .': ' . Controller::$ONE_LEAST,
+            'rates.array' => __('messages.order_controller.unit_rate') .': ' . Controller::$DATA_INVALID,
+            'notes.array' => __('messages.order_controller.product_note').': ' . Controller::$DATA_INVALID,
+            'ids.required' => __('messages.order_controller.order_detail') .': ' . Controller::$ONE_LEAST,
+            'ids.array' => __('messages.order_controller.order_detail') .': ' . Controller::$DATA_INVALID,
 
-            'stock_ids.*.required' => 'Product: ' . Controller::DATA_INVALID,
-            'stock_ids.*.numeric' => 'Product: ' . Controller::DATA_INVALID,
-            'unit_ids.*.required' => 'Unit: ' . Controller::DATA_INVALID,
-            'unit_ids.*.numeric' => 'Unit: ' . Controller::DATA_INVALID,
-            'prices.*.required' => 'Product price: ' . Controller::DATA_INVALID,
-            'prices.*.numeric' => 'Product price: ' . Controller::DATA_INVALID,
-            'discounts.*.numeric' => 'Product discount: ' . Controller::DATA_INVALID,
-            'quantities.*.required' => 'Product quantity: ' . Controller::DATA_INVALID,
-            'quantities.*.numeric' => 'Product quantity: ' . Controller::DATA_INVALID,
-            'quantities.*.min' => 'Product quantity: Cannot be negative!',
-            'rates.*.required' => 'Product unit rate: ' . Controller::DATA_INVALID,
-            'rates.*.numeric' => 'Product unit rate: ' . Controller::DATA_INVALID,
-            'notes.*.string' => 'Product note: ' . Controller::DATA_INVALID,
-            'ids.*.numeric' => 'Order detail: ' . Controller::DATA_INVALID,
+            'stock_ids.*.required' => __('messages.order_controller.product').': ' . Controller::$DATA_INVALID,
+            'stock_ids.*.numeric' => __('messages.order_controller.product').': ' . Controller::$DATA_INVALID,
+            'unit_ids.*.required' => __('messages.order_controller.unit') .': ' . Controller::$DATA_INVALID,
+            'unit_ids.*.numeric' => __('messages.order_controller.unit') .': ' . Controller::$DATA_INVALID,
+            'prices.*.required' => __('messages.order_controller.product_price') .': ' . Controller::$DATA_INVALID,
+            'prices.*.numeric' => __('messages.order_controller.product_price') .': ' . Controller::$DATA_INVALID,
+            'discounts.*.numeric' => __('messages.order_controller.product_discount') .': ' . Controller::$DATA_INVALID,
+            'quantities.*.required' => __('messages.order_controller.product_quantity') .': ' . Controller::$DATA_INVALID,
+            'quantities.*.numeric' => __('messages.order_controller.product_quantity') .': ' . Controller::$DATA_INVALID,
+            'quantities.*.min' => __('messages.order.min_product'),
+            'rates.*.required' => __('messages.order_controller.unit_rate') .': ' . Controller::$DATA_INVALID,
+            'rates.*.numeric' => __('messages.order_controller.unit_rate') .': ' . Controller::$DATA_INVALID,
+            'notes.*.string' => __('messages.order_controller.product_note').': ' . Controller::$DATA_INVALID,
+            'ids.*.numeric' => __('messages.order_controller.order_detail') .': ' . Controller::$DATA_INVALID,
 
             // Payment
-            'transaction_payments.array' => 'Payment method: ' . Controller::DATA_INVALID,
-            'transaction_amounts.array' => 'Payment amount: ' . Controller::DATA_INVALID,
-            'transaction_refund.array' => 'Refund status: ' . Controller::DATA_INVALID,
+            'transaction_payments.array' => __('messages.order_controller.payment_method').': ' . Controller::$DATA_INVALID,
+            'transaction_amounts.array' => __('messages.order_controller.payment_amount').': ' . Controller::$DATA_INVALID,
+            'transaction_refund.array' => __('messages.order_controller.status').': ' . Controller::$DATA_INVALID,
 
-            'transaction_payments.*.required' => 'Payment method: ' . Controller::NOT_EMPTY,
-            'transaction_refund.*.required' => 'Refund status: ' . Controller::NOT_EMPTY,
-            'transaction_refund.*.numeric' => 'Refund status: ' . Controller::DATA_INVALID,
-            'transaction_amounts.*.required' => 'Payment amount: ' . Controller::NOT_EMPTY,
-            'transaction_amounts.*.numeric' => 'Payment amount: ' . Controller::DATA_INVALID,
+            'transaction_payments.*.required' => __('messages.order_controller.payment_method').': ' . Controller::$NOT_EMPTY,
+            'transaction_refund.*.required' => __('messages.order_controller.status').': ' . Controller::$NOT_EMPTY,
+            'transaction_refund.*.numeric' => __('messages.order_controller.status').': ' . Controller::$DATA_INVALID,
+            'transaction_amounts.*.required' => __('messages.order_controller.payment_amount').': ' . Controller::$NOT_EMPTY,
+            'transaction_amounts.*.numeric' => __('messages.order_controller.payment_amount').': ' . Controller::$DATA_INVALID,
         ];
 
         $request->validate($rules, $messages);
         if (!empty($this->user->can(User::UPDATE_ORDER))) {
             if ($request->has('id')) {
                 if (!$request->has('id') && !$request->has('transaction_payments') && !$request->has('customer_id')) {
-                    return response()->json(['errors' => ['customer_required' => ['Customer: Please select a customer to save order!']]], 422);
+                    return response()->json(['errors' => ['customer_required' => [__('messages.order.customer_required')]]], 422);
                 }
                 DB::beginTransaction();
                 try {
@@ -664,40 +669,41 @@ class OrderController extends Controller
                             }
                         }
                         $order->update(['total' => $order->total()]);
-                        LogController::create('update', self::NAME, $order->id);
+                        LogController::create('2', self::NAME, $order->id);
                         $response = array(
                             'id' => $order->id,
                             'status' => 'success',
-                            'msg' => 'Updated ' . self::NAME . ' ' . $order->code
+                            'msg' => __('messages.updated').' '  . $order->code
                         );
                         DB::commit();
                     } else {
                         DB::rollBack();
                         $response = [
                             'status' => 'error',
-                            'msg' => 'An error occurred, please try again!',
+                            'msg' => __('messages.msg'),
                         ];
                     }
                 } catch (\Exception $e) {
                     DB::rollBack();
                     log_exception($e);
                     Controller::resetAutoIncrement(['orders', 'details', 'imports', 'import_details', 'stocks']);
-                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e]]], 422);
+                    return response()->json(['errors' => ['error' => [__('messages.error') . $e]]], 422);
                 }
             } else {
                 $response = [
                     'status' => 'error',
-                    'msg' => 'An error occurred, please try again!',
+                    'msg' => __('messages.msg'),
                 ];
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
 
     public function remove(Request $request)
     {
+        Controller::init();
         $orders = [];
         foreach ($request->choices as $key => $id) {
             $obj = Order::find($id);
@@ -731,15 +737,15 @@ class OrderController extends Controller
                     DB::rollBack();
                     log_exception($e);
                     Controller::resetAutoIncrement(['imports', 'import_details', 'stocks', 'exports', 'export_details']);
-                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
                 }
             } else {
-                return response()->json(['errors' => ['message' => ['Cannot delete completed order']]], 422);
+                return response()->json(['errors' => ['message' => [__('messages.cannot_delete')]]], 422);
             }
         }
         $response = array(
             'status' => 'success',
-            'msg' => 'Deleted order ' . implode(', ', $orders)
+            'msg' => __('messages.deleted') . implode(', ', $orders)
         );
         return  response()->json($response, 200);
     }

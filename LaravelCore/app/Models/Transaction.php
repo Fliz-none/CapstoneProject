@@ -58,13 +58,13 @@ class Transaction extends Model
     {
         switch (true) {
             case $this->payment == '0':
-                $result = 'Other';
+                $result = __('massages.datatable.other');
                 break;
             case $this->payment == '1':
-                $result = 'Cash';
+                $result = __('massages.datatable.cash');
                 break;
             default:
-                $result = 'Bank Transfer';
+                $result = __('massages.datatable.transfer');
                 break;
         }
         return $result;
@@ -85,9 +85,9 @@ class Transaction extends Model
     public function getStatusStrAttribute()
     {
         if ($this->amount > 0) {
-            $result = 'Pay';
+            $result = __('messages.datatable.paid');
         } else {
-            $result = 'Receive';
+            $result = __('messages.datatable.received');
         }
         return $result;
     }

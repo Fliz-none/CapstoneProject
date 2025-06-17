@@ -108,19 +108,19 @@ class Order extends Model
     {
         switch ($this->status) {
             case '3':
-                $result = ['color' => 'success', 'string' => 'Completed'];
+                $result = ['color' => 'success', 'string' => __('messages.complete')];
                 break;
             case '2':
-                $result = ['color' => 'info', 'string' => 'Processing'];
+                $result = ['color' => 'info', 'string' => __('messages.processing')];
                 break;
             case '1':
-                $result = ['color' => 'primary', 'string' => 'Queued'];
+                $result = ['color' => 'primary', 'string' => __('messages.queued')];
                 break;
             case '0':
-                $result = ['color' => 'danger', 'string' => 'Cancelled'];
+                $result = ['color' => 'danger', 'string' => __('messages.cancel')];
                 break;
             default:
-                $result = ['color' => 'secondary', 'string' => 'Unknown'];
+                $result = ['color' => 'secondary', 'string' => __('messages.unknown')];
                 break;
         }
         return $result;

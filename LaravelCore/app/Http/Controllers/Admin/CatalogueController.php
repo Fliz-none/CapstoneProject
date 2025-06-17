@@ -13,18 +13,9 @@ use Yajra\DataTables\Facades\DataTables;
 
 class CatalogueController extends Controller
 {
-    const NAME = 'Catalogue',
-        MESSAGES = [
-            'name.required' => Controller::NOT_EMPTY,
-            'name.string' => Controller::DATA_INVALID,
-            'name.min' => Controller::MIN,
-            'name.max' => Controller::MAX,
-            'note.string' => Controller::DATA_INVALID,
-            'note.min' => Controller::MIN,
-            'note.max' => Controller::MAX,
-            'parent_id.numeric' => Controller::DATA_INVALID,
-            'avatar.string' => Controller::DATA_INVALID,
-        ];
+    const NAME = 'Catalogue';
+    public static array $MESSAGES = [];
+
 
     public function __construct()
     {
@@ -33,6 +24,26 @@ class CatalogueController extends Controller
             $this->user = Auth::user();
         }
         $this->middleware(['admin', 'auth']);
+
+
+        $this->middleware(function ($request, $next) {
+            // Locale đã được set xong ở đây
+            Controller::init();
+            self::$MESSAGES = [
+                'name.required' => Controller::$NOT_EMPTY,
+                'name.string' => Controller::$DATA_INVALID,
+                'name.min' => Controller::$MIN,
+                'name.max' => Controller::$MAX,
+                'note.string' => Controller::$DATA_INVALID,
+                'note.min' => Controller::$MIN,
+                'note.max' => Controller::$MAX,
+                'parent_id.numeric' => Controller::$DATA_INVALID,
+                'avatar.string' => Controller::$DATA_INVALID,
+            ];
+             return $next($request);
+        });
+        
+
     }
 
     /**
@@ -87,7 +98,7 @@ class CatalogueController extends Controller
                         if ($this->user->can(User::UPDATE_CATALOGUE)) {
                             $code = '<a class="btn btn-link text-decoration-none btn-update-catalogue fw-bold p-0" data-id="' . $obj->id . '">' . $obj->code . '</a>';
                         } else {
-                            $code =  '<span class="fw-bold">' . $obj->code . '</span>';
+                            $code = '<span class="fw-bold">' . $obj->code . '</span>';
                         }
                         return $code . '<br/><small>' . $obj->created_at->format('d/m/Y H:i') . '</small>';
                     })
@@ -124,7 +135,7 @@ class CatalogueController extends Controller
                         $query->orderBy('status', $order);
                     })
                     ->addColumn('parent', function ($obj) {
-                        return $obj->_parent ? $obj->_parent->name : 'N/A';
+                        return $obj->_parent ? $obj->_parent->name : __('messages.unknown');
                     })
                     ->filterColumn('parent', function ($query, $keyword) {
                         $query->whereHas('parent', function ($parentQuery) use ($keyword) {
@@ -136,7 +147,7 @@ class CatalogueController extends Controller
                             return '
                         <form action="' . route('admin.catalogue.remove') . '" method="post" class="save-form">
                             <input type="hidden" name="_token" value="' . csrf_token() . '"/>
-                            <input type="hidden" name="choices[]" value="' . $obj->id . '" data-id="'  . $obj->id . '"/>
+                            <input type="hidden" name="choices[]" value="' . $obj->id . '" data-id="' . $obj->id . '"/>
                             <button type="submit" class="btn btn-link text-decoration-none btn-remove">
                                 <i class="bi bi-trash3"></i>
                             </button>
@@ -166,7 +177,7 @@ class CatalogueController extends Controller
                 Catalogue::find($ids[$index])->update(['sort' => $index + 1]);
             }
         }
-        return response()->json(['msg' => 'The sort order has been updated successfully!'], 200);
+        return response()->json(['msg' => __('messages.category.sort_success')], 200);
     }
 
     public function create(Request $request)
@@ -177,7 +188,7 @@ class CatalogueController extends Controller
             'parent_id' => ['nullable', 'numeric'],
             'avatar' => ['nullable', 'string'],
         ];
-        $request->validate($rules, self::MESSAGES);
+        $request->validate($rules, self::$MESSAGES);
         if (!empty($this->user->can(User::CREATE_CATALOGUE))) {
             try {
                 $catalogue = Catalogue::create([
@@ -189,18 +200,18 @@ class CatalogueController extends Controller
                     'avatar' => $request->avatar,
                 ]);
 
-                LogController::create('create', self::NAME, $catalogue->id);
+                LogController::create('1', self::NAME, $catalogue->id);
                 cache()->forget('catalogues');
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Created ' . self::NAME . ' ' . $catalogue->name
+                    'msg' => __('messages.created') . ' ' . __('messages.category.category') . ' ' . $catalogue->name
                 );
             } catch (\Exception $e) {
                 log_exception($e);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 403);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 403);
         }
         return response()->json($response, 200);
     }
@@ -210,14 +221,18 @@ class CatalogueController extends Controller
         $rules = [
             'name' => ['required', 'string', 'min:2', 'max:125'],
             'note' => ['nullable', 'string', 'min:2', 'max:320'],
-            'parent_id' => ['nullable', 'numeric', function ($attribute, $value, $fail) use ($request) {
-                if ($request->has('id') && $value > $request->id) {
-                    $fail('The parent category must be created before the child category');
+            'parent_id' => [
+                'nullable',
+                'numeric',
+                function ($attribute, $value, $fail) use ($request) {
+                    if ($request->has('id') && $value > $request->id) {
+                        $fail(__('messages.category.parent_error'));
+                    }
                 }
-            }],
+            ],
             'avatar' => ['nullable', 'string'],
         ];
-        $request->validate($rules, self::MESSAGES);
+        $request->validate($rules, self::$MESSAGES);
         if (!empty($this->user->can(User::UPDATE_CATALOGUE))) {
             if ($request->has('id')) {
                 try {
@@ -225,7 +240,7 @@ class CatalogueController extends Controller
                     if ($request->id == $request->parent_id) {
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'The parent category must be different from the current category!'
+                            'msg' => __('messages.category.parent_diffirent')
                         );
                         return response()->json($response, 200);
                     }
@@ -241,24 +256,23 @@ class CatalogueController extends Controller
                     } else {
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'An error occurred, please reload the page and try again!'
+                            'msg' => __('messages.category.msg')
                         );
                     }
 
-                    LogController::create('update', self::NAME, $catalogue->id);
                     cache()->forget('catalogues');
                     $response = array(
                         'status' => 'success',
-                        'msg' => 'Updated ' . self::NAME . ' ' . $catalogue->name
+                        'msg' => __('messages.updated') . ' ' . __('messages.category.category') . ' ' . $catalogue->name
                     );
                 } catch (\Exception $e) {
                     log_exception($e);
-                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
                 }
             } else {
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 403);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 403);
         }
         return response()->json($response, 200);
     }
@@ -271,12 +285,11 @@ class CatalogueController extends Controller
             $obj->delete();
             cache()->forget('catalogues');
             array_push($msg, $obj->name);
-            LogController::create("delete", self::NAME, $obj->id);
         }
         $response = array(
             'status' => 'success',
-            'msg' => 'Deleted ' . self::NAME . ' ' . implode(', ', $msg)
+            'msg' => __('messages.deleted') . ' ' . __('messages.category.category') . ' ' . implode(', ', $msg)
         );
-        return  response()->json($response, 200);
+        return response()->json($response, 200);
     }
 }

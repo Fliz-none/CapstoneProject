@@ -7,10 +7,10 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <h5 class="text-uppercase">{{ $pageName }}</h5>
+                    <h5 class="text-uppercase">{{ __('messages.stock.stock_management') }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.stock.stock_management') }}</li>
                         </ol>
                     </nav>
                 </div>
@@ -23,17 +23,17 @@
                 <div class="col-12 col-lg-10">
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_IMPORT)))
                         <a class="btn btn-info mb-3 block btn-create-import" type="button">
-                            <i class="bi bi-box-arrow-in-right"></i> Import
+                            <i class="bi bi-box-arrow-in-right"></i> {{ __('messages.import.import') }}
                         </a>
                     @endif
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_EXPORT)))
                         <a class="btn btn-info mb-3 block btn-create-export">
-                            <i class="bi bi-box-arrow-left"></i> Export
+                            <i class="bi bi-box-arrow-left"></i> {{ __('messages.export.export') }}
                         </a>
                     @endif
                     @if (!empty(Auth::user()->can(App\Models\User::PRINT_STOCK)))
                         <a class="btn btn-info mb-3 block btn-render-stock">
-                            <i class="bi bi-card-checklist"></i> Inventory export
+                            <i class="bi bi-card-checklist"></i> {{ __('messages.stock.stock_export') }}
                         </a>
                     @endif
                 </div>
@@ -41,7 +41,7 @@
                     @if (Auth::user()->warehouses->count())
                         <select
                             class="form-control form-control-lg form-control-plaintext bg-transparent text-end list-warehouses" required autocomplete="off">
-                            <option selected hidden disabled>Your warehouses</option>
+                            <option selected hidden disabled>{{ __('messages.stock.your_warehouse') }}</option>
                             @foreach (Auth::user()->warehouses as $warehouse)
                                 <option value="{{ $warehouse->id }}" {{ isset($_GET['warehouse_id']) && $_GET['warehouse_id'] == $warehouse->id ? 'selected' : '' }}>
                                     {{ $warehouse->name }}</option>
@@ -58,14 +58,14 @@
                                 <table class="table table-striped table-bordered key-table" id="stock-table">
                                     <thead>
                                         <tr>
-                                            <th>Code</th>
-                                            <th>Image</th>
-                                            <th>Product Name</th>
-                                            <th>Quantity</th>
-                                            <th>Import Price</th>
-                                            <th>Import Receipt</th>
+                                            <th>{{ __('messages.datatable.code') }}</th>
+                                            <th>{{ __('messages.stock.image') }}</th>
+                                            <th>{{ __('messages.product.product_name') }}</th>
+                                            <th>{{ __('messages.stock.quantity') }}</th>
+                                            <th>{{ __('messages.stock.price') }}</th>
+                                            <th>{{ __('messages.stock.stock_import') }}</th>
                                             <th>Lot</th>
-                                            <th>Expiration Date</th>
+                                            <th>{{ __('messages.stock.exp') }}</th>
                                             <th></th>
                                         </tr>
                                     </thead>

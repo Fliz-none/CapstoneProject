@@ -15,10 +15,10 @@ class CreateImportsTable extends Migration
     {
         Schema::create('imports', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('warehouse_id');
             $table->unsignedBigInteger('export_id')->nullable();
-            $table->unsignedBigInteger('supplier_id')->nullable();
+            $table->unsignedBigInteger('supplier_id') ;
             $table->text('note')->nullable();
             $table->unsignedTinyInteger('status')->default(0)->comment('0:waiting; 1:imported');
             $table->softDeletes();

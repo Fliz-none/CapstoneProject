@@ -3,7 +3,7 @@
     <div class="card-header">
         @if (!empty(Auth::user()->can(App\Models\User::CREATE_IMAGE)))
             <a class="btn btn-primary btn-upload-quick_images cursor-pointer" type="button">
-                <i class="bi bi-plus-circle-dotted"></i> Add
+                <i class="bi bi-plus-circle-dotted"></i> {{ __('messages.add') }}
             </a>
         @endif
         @if (!empty(Auth::user()->can(App\Models\User::DELETE_IMAGES)))

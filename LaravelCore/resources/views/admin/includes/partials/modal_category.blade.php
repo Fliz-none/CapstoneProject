@@ -9,12 +9,12 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label" for="category-name">Name</label>
-                        <input class="form-control" id="category-name" name="name" type="text" placeholder="Category name" autocomplete="off" required>
+                        <label class="form-label" for="category-name">{{ __('messages.categories.name') }}</label>
+                        <input class="form-control" id="category-name" name="name" type="text" placeholder="{{ __('messages.categories.name') }}" autocomplete="off" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label" for="category-note">Description</label>
-                        <textarea class="form-control" id="category-note" name="note" rows="6" placeholder="Enter description"></textarea>
+                        <label class="form-label" for="category-note">{{ __('messages.datatable.description') }}</label>
+                        <textarea class="form-control" id="category-note" name="note" rows="6" placeholder="{{ __('messages.datatable.description') }}"></textarea>
                     </div>
                     <hr class="px-5">
                     <div class="mb-3">
@@ -22,7 +22,7 @@
                             <div class="col-12 col-lg-6">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" id="category-status" name="status" type="checkbox" checked>
-                                    <label class="form-check-label" for="category-status">Active</label>
+                                    <label class="form-check-label" for="category-status">{{ __('messages.active') }}</label>
                                 </div>
                             </div>
                             <div class="col-12 col-lg-6 text-end">

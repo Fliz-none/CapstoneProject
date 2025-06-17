@@ -41,7 +41,7 @@ class SettingController extends Controller
             log_exception($e);
             return redirect()->back()->with('response', [
                 'status' => 'error',
-                'msg' => 'An error occurred. Please check your internet connection!'
+                'msg' => __('messages.msg')
             ]);
         }
     }
@@ -70,14 +70,14 @@ class SettingController extends Controller
 
             $response = [
                 'status' => 'success',
-                'msg' => 'Invoice print settings updated successfully!'
+                'msg' => __('messages.shop_setting.print_success')
             ];
         } catch (\Throwable $e) {
             log_exception($e);
 
             $response = [
                 'status' => 'error',
-                'msg' => 'An error occurred. Please try again later!'
+                'msg' => __('messages.msg')
             ];
         }
 
@@ -96,13 +96,13 @@ class SettingController extends Controller
 
             $response = [
                 'status' => 'success',
-                'msg' => 'Images updated successfully'
+                'msg' => __('messages.images.image') . ' ' . __('messages.updated')
             ];
         } catch (\Throwable $e) {
             log_exception($e);
             $response = [
                 'status' => 'error',
-                'msg' => 'An error occurred. Please try again later!'
+                'msg' => __('messages.msg')
             ];
         }
         return redirect()->back()->with('response', $response);
@@ -154,13 +154,13 @@ class SettingController extends Controller
             $this->updateSetting('expired_notification_frequency', $request->expired_notification_frequency);
             $response = [
                 'status' => 'success',
-                'msg' => 'Mail settings saved successfully!'
+                'msg' => __('messages.setting_controller.setting_email')
             ];
         } catch (\Throwable $e) {
             log_exception(($e));
             $response = [
                 'status' => 'error',
-                'msg' => 'An error occurred. Please try again later!'
+                'msg' => __('messages.msg')
             ];
         }
         return redirect()->back()->with('response', $response);
@@ -185,13 +185,13 @@ class SettingController extends Controller
             cache()->forget('settings');
             $response = [
                 'status' => 'success',
-                'msg' => 'Social media links have been saved successfully.'
+                'msg' => __('messages.setting_controller.setting_social')
             ];
         } catch (\Throwable $e) {
             log_exception($e);
             $response = [
                 'status' => 'error',
-                'msg' => 'An error occurred. Please try again later.'
+                'msg' => __('messages.msg')
             ];
         }
         return redirect()->back()->with('response', $response);
@@ -203,11 +203,11 @@ class SettingController extends Controller
             'expense_group' => 'required|array',
             'expense_group.*' => 'required|string|max:255',
         ], [
-            'expense_group.required' => 'The expense list must not be empty.',
-            'expense_group.array' => 'The expense list format is invalid.',
-            'expense_group.*.required' => 'Please enter the expense description.',
-            'expense_group.*.string' => 'The expense description must be a string.',
-            'expense_group.*.max' => 'The expense description must not exceed 255 characters.',
+            'expense_group.required' => __('messages.setting_controller.expense_group_required'),
+            'expense_group.array' => __('messages.setting_controller.expense_group_array'),
+            'expense_group.*.required' => __('messages.setting_controller.expense_group__required'),
+            'expense_group.*.string' => __('messages.setting_controller.expense_group__string'),
+            'expense_group.*.max' => __('messages.setting_controller.expense_group__max'),
         ]);
 
         try {
@@ -217,13 +217,13 @@ class SettingController extends Controller
 
             return redirect()->back()->with('response', [
                 'status' => 'success',
-                'msg' => 'Expense group list saved successfully.',
+                'msg' => __('messages.setting_controller.expense_group__list_saved_successfully'),
             ]);
         } catch (\Throwable $e) {
             log_exception($e);
             return redirect()->back()->with('response', [
                 'status' => 'error',
-                'msg' => 'An error occurred. Please try again!',
+                'msg' => __('messages.msg'),
             ]);
         }
     }
@@ -238,19 +238,19 @@ class SettingController extends Controller
             'bank_accounts.*' => 'required|string|max:255',
             'bank_numbers.*' => 'required|numeric',
         ], [
-            'bank_ids.required' => 'Please select at least one bank.',
-            'bank_ids.array' => 'Invalid bank list format.',
-            'bank_numbers.required' => 'Please enter at least one bank account number.',
-            'bank_numbers.array' => 'Invalid bank account number list format.',
-            'bank_accounts.required' => 'Please enter at least one account holder name.',
-            'bank_accounts.array' => 'Invalid account holder name list format.',
+            'bank_ids.required' => __('messages.setting_controller.bank_ids__required'),
+            'bank_ids.array' => __('messages.setting_controller.bank_ids__array'),
+            'bank_numbers.required' => __('messages.setting_controller.bank_numbers__required'),
+            'bank_numbers.array' => __('messages.setting_controller.bank_numbers__array'),
+            'bank_accounts.required' => __('messages.setting_controller.bank_accounts__required'),
+            'bank_accounts.array' => __('messages.setting_controller.bank_accounts__array'),
 
-            'bank_ids.*.required' => 'Please select a bank.',
-            'bank_accounts.*.required' => 'Please enter the account holder name.',
-            'bank_accounts.*.string' => 'The account holder name must be a string.',
-            'bank_accounts.*.max' => 'The account holder name must not exceed 255 characters.',
-            'bank_numbers.*.required' => 'Please enter the bank account number.',
-            'bank_numbers.*.numeric' => 'The bank account number must be numeric.',
+            'bank_ids.*.required' => __('messages.setting_controller.bank_ids__*__required'),
+            'bank_accounts.*.required' => __('messages.setting_controller.bank_accounts__*__required'),
+            'bank_accounts.*.string' => __('messages.setting_controller.bank_accounts__*__string'),
+            'bank_accounts.*.max' => __('messages.setting_controller.bank_accounts__*__max'),
+            'bank_numbers.*.required' => __('messages.setting_controller.bank_numbers__*__required'),
+            'bank_numbers.*.numeric' => __('messages.setting_controller.bank_numbers__*__numeric'),
         ]);
 
         try {
@@ -269,13 +269,13 @@ class SettingController extends Controller
 
             $response = [
                 'status' => 'success',
-                'msg' => 'Payment settings saved successfully.',
+                'msg' => __('messages.setting_controller.payment_setting'),
             ];
         } catch (\Throwable $e) {
             log_exception($e);
             $response = [
                 'status' => 'error',
-                'msg' => 'An error occurred. Please try again later.',
+                'msg' => __('messages.msg'),
             ];
         }
 
@@ -291,7 +291,7 @@ class SettingController extends Controller
                 'array',
                 function ($attribute, $value, $fail) {
                     if (count($value) !== count(array_unique($value))) {
-                        $fail('Shift names must be unique!');
+                        $fail(__('messages.shift_setting.shift_unique'));
                     }
                 },
             ],
@@ -304,24 +304,25 @@ class SettingController extends Controller
             'sign_checkout.*' => 'required|date_format:H:i|after:sign_checkin.*',
             'staff_number.*' => 'required|integer|min:1',
         ], [
-            'shift_name.required' => 'Please set at least one shift.',
-            'sign_checkin.required' => 'Please set at least one shift.',
-            'sign_checkout.required' => 'Please set at least one shift.',
-            'staff_number.required' => 'Please set at least one shift.',
+            'shift_name.required' => __('messages.setting_controller.shift_name__required'),
+            'sign_checkin.required' => __('messages.setting_controller.sign_checkin__required'),
+            'sign_checkout.required' => __('messages.setting_controller.sign_checkout__required'),
+            'staff_number.required' => __('messages.setting_controller.staff_number__required'),
 
-            'shift_name.*.required' => 'Please enter a shift name.',
-            'shift_name.*.string' => 'Invalid shift name.',
-            'shift_name.*.min' => 'Shift name cannot be empty.',
+            'shift_name.*.required' => __('messages.setting_controller.shift_name__*__required'),
+            'shift_name.*.string' => __('messages.setting_controller.shift_name__*__string'),
+            'shift_name.*.min' => __('messages.setting_controller.shift_name__*__min'),
 
-            'sign_checkin.*.required' => 'Please select a check-in time.',
-            'sign_checkout.*.required' => 'Please select a check-out time.',
-            'sign_checkin.*.date_format' => 'Invalid check-in time format.',
-            'sign_checkout.*.date_format' => 'Invalid check-out time format.',
-            'sign_checkout.*.after' => 'Check-out time must be after check-in time.',
+            'sign_checkin.*.required' => __('messages.setting_controller.sign_checkin__*__required'),
+            'sign_checkout.*.required' => __('messages.setting_controller.sign_checkout__*__required'),
+            'sign_checkin.*.date_format' => __('messages.setting_controller.sign_checkin__*__date_format'),
+            'sign_checkout.*.date_format' => __('messages.setting_controller.sign_checkout__*__date_format'),
+            'sign_checkout.*.after' => __('messages.setting_controller.sign_checkout__*__after'),
 
-            'staff_number.*.required' => 'Please enter the number of staff.',
-            'staff_number.*.integer' => 'Number of staff must be an integer.',
-            'staff_number.*.min' => 'Number of staff must be at least 1.',
+            'staff_number.*.required' => __('messages.setting_controller.staff_number__*__required'),
+            'staff_number.*.integer' => __('messages.setting_controller.staff_number__*__integer'),
+            'staff_number.*.min' => __('messages.setting_controller.staff_number__*__min'),
+
         ]);
 
         try {
@@ -351,7 +352,7 @@ class SettingController extends Controller
             if ($has_conflict) {
                 $response = [
                     'status' => 'error',
-                    'msg' => 'Some employees have already registered for these shifts! Cannot update the settings.',
+                    'msg' => __('messages.setting_controller.shift_setting'),
                 ];
                 return redirect()->back()->with('response', $response);
             }
@@ -371,13 +372,13 @@ class SettingController extends Controller
 
             $response = [
                 'status' => 'success',
-                'msg' => 'Work shift settings saved successfully.',
+                'msg' => __('messages.setting_controller.work_setting'),
             ];
         } catch (\Throwable $e) {
             log_exception($e);
             $response = [
                 'status' => 'error',
-                'msg' => 'An error occurred. Please try again later.',
+                'msg' => __('messages.msg'),
             ];
         }
 

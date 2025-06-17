@@ -7,10 +7,10 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <h5 class="text-uppercase">{{ $pageName }}</h5>
+                    <h5 class="text-uppercase">{{ __('messages.work_schedule.attendance_management') }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.work_schedule.attendance_management') }}</li>
                         </ol>
                     </nav>
                 </div>
@@ -24,7 +24,7 @@
                 </div>
                 <div class="col-12 col-lg-6 d-flex align-items-center justify-content-end">
                     <select class="form-control form-control-plaintext text-center w-auto ms-2 list-branches">
-                        <option selected hidden disabled>Your branch</option>
+                        <option selected hidden disabled>{{ __('messages.work_schedule.your_branch') }}</option>
                         @foreach (Auth::user()->branches as $branch)
                             <option value="{{ $branch->id }}" {{ isset($_GET['branch_id']) && $_GET['branch_id'] == $branch->id ? 'selected' : '' }}>{{ $branch->name }}</option>
                         @endforeach
@@ -51,11 +51,11 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Code</th>
-                                        <th>Name</th>
+                                        <th>{{ __('messages.datatable.code') }}</th>
+                                        <th>{{ __('messages.work_schedule.name') }}</th>
                                         <th>Check-in</th>
                                         <th>Check-out</th>
-                                        <th>Images</th>
+                                        <th>{{ __('messages.work_schedule.image') }}</th>
                                         <th></th>
                                     </tr>
                                 </thead>

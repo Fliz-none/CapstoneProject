@@ -7,10 +7,10 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <h5 class="text-uppercase">{{ $pageName }}</h5>
+                    <h5 class="text-uppercase">{{ __('messages.transaction.transaction_mana') }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.transaction.transaction_mana') }}</li>
                         </ol>
                     </nav>
                 </div>
@@ -24,7 +24,7 @@
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_TRANSACTION)))
                         <a class="btn btn-info mb-3 block btn-create-transaction">
                             <i class="bi bi-plus-circle"></i>
-                            Add
+                            {{ __('messages.add') }}
                         </a>
                     @endif
                 </div>
@@ -33,7 +33,7 @@
                         <select
                             class="form-control form-control-lg form-control-plaintext bg-transparent text-end list-branches"
                             required autocomplete="off">
-                            <option selected hidden disabled>Your branch</option>
+                            <option selected hidden disabled>{{ __('messages.datatable.your_branch') }}</option>
                             @foreach (Auth::user()->branches as $branch)
                                 <option value="{{ $branch->id }}"
                                     {{ isset($_GET['branch_id']) && $_GET['branch_id'] == $branch->id ? 'selected' : '' }}>
@@ -51,15 +51,15 @@
                                 <table class="table table-bordered key-table" id="transaction-table">
                                     <thead>
                                         <tr>
-                                            <th>Code</th>
-                                            <th>Time</th>
-                                            <th>Customer</th>
-                                            <th>Cash</th>
-                                            <th>Transfer</th>
-                                            <th>Order</th>
-                                            <th>Note</th>
-                                            <th>Cashier</th>
-                                            <th>Status</th>
+                                            <th>{{ __('messages.datatable.code') }}</th>
+                                            <th>{{ __('messages.datatable.time') }}</th>
+                                            <th>{{ __('messages.datatable.customer') }}</th>
+                                            <th>{{ __('messages.datatable.cash') }}</th>
+                                            <th>{{ __('messages.datatable.transfer') }}</th>
+                                            <th>{{ __('messages.datatable.order') }}</th>
+                                            <th>{{ __('messages.note') }}</th>
+                                            <th>{{ __('messages.datatable.cashier') }}</th>
+                                            <th>{{ __('messages.datatable.status') }}</th>
                                             <th></th>
                                             <th>
                                                 <input class="form-check-input" id="all-choices" type="checkbox">
@@ -154,9 +154,9 @@
                                     `<tr class="group bg-light-primary text-white">
                                         <td>${counting_date}</td>
                                         <td></td>
-                                        <td class="text-end"><span class="fw-bold ${(cash_amount > 0 ? 'text-success">+' + number_format(cash_amount) : 'text-danger">' + number_format(cash_amount))}đ</span></td>
-                                        <td class="text-end"><span class="fw-bold ${(transfer_amount > 0 ? 'text-success">+' + number_format(transfer_amount) : 'text-danger">' + number_format(transfer_amount))}đ</span></td>
-                                        <td class="fw-bold text-end">${(number_format(cash_amount + transfer_amount))}đ</td>
+                                        <td class="text-end"><span class="fw-bold ${(cash_amount > 0 ? 'text-success">+' + number_format(cash_amount) : 'text-danger">' + number_format(cash_amount))}VND</span></td>
+                                        <td class="text-end"><span class="fw-bold ${(transfer_amount > 0 ? 'text-success">+' + number_format(transfer_amount) : 'text-danger">' + number_format(transfer_amount))}VND</span></td>
+                                        <td class="fw-bold text-end">${(number_format(cash_amount + transfer_amount))}VND</td>
                                         <td colspan="7"></td>
                                     </tr>`);
                                 last = counting_date;
