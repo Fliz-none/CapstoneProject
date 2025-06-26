@@ -24,7 +24,6 @@ class Work extends Model
         'sign_checkout',
         'real_checkout',
         'image_checkout',
-        'serve_time',
         'note',
     ];
 

@@ -89,7 +89,7 @@ class CategoryController extends Controller
                         }
                     })
                     ->editColumn('status', function ($obj) {
-                        return '<span class="badge bg-' . ($obj->status ? 'success' : 'danger') . '">' . $obj->statusName() . '</span>';
+                        return '<span class="badge bg-' . ($obj->status ? 'success' : 'danger') . '">' . $obj->statusStr . '</span>';
                     })
                     ->orderColumn('status', function ($query, $order) {
                         $query->orderBy('status', $order);

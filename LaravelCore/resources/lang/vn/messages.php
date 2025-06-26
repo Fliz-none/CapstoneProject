@@ -539,7 +539,7 @@ return [
         'export' => 'Xuất hàng',
         'export_management' => 'Quản lý xuất hàng',
         'export_date' => 'Ngày xuất',
-        'for_sale' => 'Bán ngoài',
+        'for_sale' => 'Xuất bán',
         'internal_export' => 'Xuất nội bộ',
         'cancel' => 'Đã hủy',
         'content' => 'Nội dung xuất hàng',

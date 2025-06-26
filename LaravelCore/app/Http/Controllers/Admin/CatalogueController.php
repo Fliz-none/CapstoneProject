@@ -42,7 +42,7 @@ class CatalogueController extends Controller
             ];
              return $next($request);
         });
-        
+
 
     }
 
@@ -129,7 +129,7 @@ class CatalogueController extends Controller
                         return '<img src="' . $obj->avatarUrl . '" class="thumb cursor-pointer object-fit-cover" style="width: 60px; height: 60px">';
                     })
                     ->editColumn('status', function ($obj) {
-                        return '<span class="badge bg-' . ($obj->status ? 'success' : 'danger') . '">' . $obj->statusName() . '</span>';
+                        return '<span class="badge bg-' . ($obj->status ? 'success' : 'danger') . '">' . $obj->statusStr . '</span>';
                     })
                     ->orderColumn('status', function ($query, $order) {
                         $query->orderBy('status', $order);

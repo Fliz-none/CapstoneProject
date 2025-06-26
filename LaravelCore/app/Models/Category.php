@@ -12,7 +12,7 @@ class Category extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'categories';
-    protected $appends = ['fullName'];
+    protected $appends = ['fullName', 'statusStr'];
     protected $fillable = [
         'slug',
         'name',
@@ -26,15 +26,15 @@ class Category extends Model
         return $this->hasMany(Post::class);
     }
 
-    public function statusName()
+    public function getStatusStrAttribute()
     {
         switch ($this->status) {
             case '1':
-                $name = 'Active';
+                $name = __('messages.active');
                 break;
 
             default:
-                $name = 'Inactive';
+                $name = __('messages.inactive');
                 break;
         }
         return $name;

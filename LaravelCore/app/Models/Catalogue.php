@@ -12,7 +12,7 @@ class Catalogue extends Model
 
     use HasFactory, SoftDeletes;
     protected $table = 'catalogues';
-    protected $appends = array('code', 'fullName', 'avatarUrl');
+    protected $appends = array('code', 'fullName', 'avatarUrl', 'statusStr');
     protected $fillable = [
         'slug',
         'name',
@@ -54,7 +54,7 @@ class Catalogue extends Model
         return $this->belongsTo(Catalogue::class, 'parent_id')->withTrashed();
     }
 
-    public function statusName()
+    public function getStatusStrAttribute()
     {
         switch ($this->status) {
             case '1':

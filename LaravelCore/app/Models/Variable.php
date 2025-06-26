@@ -72,11 +72,11 @@ class Variable extends Model
     {
         switch ($this->status) {
             case '1':
-                $name = 'Active';
+                $name = __('messages.active');
                 break;
 
             default:
-                $name = 'Inactive';
+                $name = __('messages.inactive');
                 break;
         }
         return $name;
