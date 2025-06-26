@@ -21,8 +21,8 @@ class VersionController extends Controller
             'description' => ['required', 'string'],
         ];
 
-        public static array $MESSAGES = [];
-       
+    public static array $MESSAGES = [];
+
 
     public function __construct()
     {
@@ -33,20 +33,19 @@ class VersionController extends Controller
         $this->middleware(['admin', 'auth']);
 
         $this->middleware(function ($request, $next) {
-        // Locale đã được set xong ở đây
-        Controller::init();
-         self::$MESSAGES = [
-            'name.required' => Controller::$NOT_EMPTY,
-            'name.string' => Controller::$DATA_INVALID,
-            'name.min' => Controller::$MIN,
-            'name.max' => Controller::$MAX,
-            'description.required' => Controller::$NOT_EMPTY,
-            'description.string' => Controller::$DATA_INVALID,
-        ];
+            // Locale đã được set xong ở đây
+            Controller::init();
+            self::$MESSAGES = [
+                'name.required' => Controller::$NOT_EMPTY,
+                'name.string' => Controller::$DATA_INVALID,
+                'name.min' => Controller::$MIN,
+                'name.max' => Controller::$MAX,
+                'description.required' => Controller::$NOT_EMPTY,
+                'description.string' => Controller::$DATA_INVALID,
+            ];
 
-        return $next($request);
+            return $next($request);
         });
-        
     }
 
     /**
@@ -137,12 +136,13 @@ class VersionController extends Controller
     {
         $request->validate(self::RULES, self::$MESSAGES);
         if (!empty($this->user->can(User::CREATE_VERSION))) {
-            $version = Version::create([
-                'name' => $request->name,
-                'description' => $request->description,
-                'user_id' => Auth::id(),
-            ]);
-            $str = '<div class="row">
+            try {
+                $version = Version::create([
+                    'name' => $request->name,
+                    'description' => $request->description,
+                    'user_id' => Auth::id(),
+                ]);
+                $str = '<div class="row">
                         <a class="d-flex align-items-center cursor-pointer fw-bold btn-preview preview-version text-primary py-2" data-url="' . getPath(route('admin.version')) . '" data-id="' . $version->id . '">
                             <div class="col-2 px-0 d-flex justify-content-center">
                                 <div class="notification-icon bg-primary">
@@ -157,19 +157,23 @@ class VersionController extends Controller
                             </div>
                         </a>
                     </div>';
-            $noti = NotificationController::create(cleanStr($str));
-            $data_noti = User::permission(User::ACCESS_ADMIN)->get()->map(function ($user) use ($noti) {
-                return [
-                    'notification_id' => $noti->id,
-                    'user_id' => $user->id,
-                    'status' => 0,
-                ];
-            })->toArray();
-            DB::table('notification_user')->insert($data_noti);
-            $response = array(
-                'status' => 'success',
-                'msg' => __('messages.created') . __('messages.version.version') . ': ' . $version->name
-            );
+                $noti = NotificationController::create(cleanStr($str));
+                $data_noti = User::permission(User::ACCESS_ADMIN)->get()->map(function ($user) use ($noti) {
+                    return [
+                        'notification_id' => $noti->id,
+                        'user_id' => $user->id,
+                        'status' => 0,
+                    ];
+                })->toArray();
+                DB::table('notification_user')->insert($data_noti);
+                $response = array(
+                    'status' => 'success',
+                    'msg' => __('messages.created') . __('messages.version.version') . ': ' . $version->name
+                );
+            } catch (\Exception $e) {
+                log_exception($e);
+                return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
+            }
         } else {
             return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
@@ -180,24 +184,29 @@ class VersionController extends Controller
     {
         $request->validate(self::RULES, self::$MESSAGES);
         if (!empty($this->user->can(User::UPDATE_VERSION))) {
-            if ($request->has('id')) {
-                $version = Version::updateOrCreate([
-                    'id' => $request->id
-                ], [
-                    'name' => $request->name,
-                    'description' => $request->description,
-                    'user_id' => Auth::id(),
-                ]);
+            try {
+                if ($request->has('id')) {
+                    $version = Version::updateOrCreate([
+                        'id' => $request->id
+                    ], [
+                        'name' => $request->name,
+                        'description' => $request->description,
+                        'user_id' => Auth::id(),
+                    ]);
 
-                $response = array(
-                    'status' => 'success',
-                    'msg' =>  __('messages.updated') . __('messages.version.version') . ': ' . $version->name
-                );
-            } else {
-                $response = array(
-                    'status' => 'error',
-                    'msg' => __('messages.msg')
-                );
+                    $response = array(
+                        'status' => 'success',
+                        'msg' =>  __('messages.updated') . __('messages.version.version') . ': ' . $version->name
+                    );
+                } else {
+                    $response = array(
+                        'status' => 'error',
+                        'msg' => __('messages.msg')
+                    );
+                }
+            } catch (\Exception $e) {
+                log_exception($e);
+                return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
             }
         } else {
             return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);

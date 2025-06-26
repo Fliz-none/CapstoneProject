@@ -103,12 +103,17 @@ class RoleController extends Controller
     public function create(Request $request)
     {
         $rules = [
-            'name' => ['required', 'string', 'min: 3', 'max:125', 
-            function ($attribute, $value, $fail) use ($request) {
-                if(Role::where('name', $value)->count()){
-                    $fail('This role has already been created.');
+            'name' => [
+                'required',
+                'string',
+                'min: 3',
+                'max:125',
+                function ($attribute, $value, $fail) use ($request) {
+                    if (Role::where('name', $value)->count()) {
+                        $fail('This role has already been created.');
+                    }
                 }
-            }],
+            ],
         ];
         $messages = [
             'name.unique' => __('messages.roles.unique'),
@@ -159,15 +164,20 @@ class RoleController extends Controller
     public function update(Request $request)
     {
         $rules = [
-            'name' => ['required', 'string', 'min: 3', 'max:125', 
-            function ($attribute, $value, $fail) use ($request) {
-                if(Role::where('name', $value)->where('id', '!=', $request->id)->count()){
-                    $fail(__('messages.roles.role') . ' ' . __('messages.created'));
+            'name' => [
+                'required',
+                'string',
+                'min: 3',
+                'max:125',
+                function ($attribute, $value, $fail) use ($request) {
+                    if (Role::where('name', $value)->where('id', '!=', $request->id)->count()) {
+                        $fail(__('messages.roles.role') . ' ' . __('messages.created'));
+                    }
                 }
-            }],
+            ],
         ];
 
-         $messages = [
+        $messages = [
             'name.unique' => __('messages.roles.unique'),
             'name.required' => __('messages.roles.required'),
             'name.string' => __('messages.roles.string'),
@@ -204,7 +214,6 @@ class RoleController extends Controller
                         cache()->forget('dealers');
                         cache()->forget('cashiers');
 
-                        LogController::create('2', self::NAME, $role->id);
                         DB::commit();
                         $response = [
                             'status' => 'success',
@@ -234,16 +243,32 @@ class RoleController extends Controller
     public function remove(Request $request)
     {
         $names = [];
-        foreach ($request->choices as $key => $id) {
-            $role = Role::find($id);
-            $role->delete();
-            array_push($names, $role->name);
-            LogController::create("3", "role", $role->id);
+
+        DB::beginTransaction();
+        try {
+            foreach ($request->choices as $key => $id) {
+                $role = Role::find($id);
+                if ($id == 1 || $role->users) {
+                    DB::rollBack();
+                    return response()->json([
+                        'status' => 'danger',
+                        'msg' => __('messages.roles.error'),
+                    ], 200);
+                }
+                $role->delete();
+                array_push($names, $role->name);
+            }
+            DB::commit();
+            cache()->forget('roles');
+            return response()->json([
+                'status' => 'success',
+                'msg' => __('messages.deleted') . __('messages.roles.role') . ' ' . implode(', ', $names),
+            ], 200);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            log_exception($e);
+            Controller::resetAutoIncrement(['roles', 'permissions']);
+            return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
         }
-        cache()->forget('roles');
-        return response()->json([
-            'status' => 'success',
-            'msg' => __('messages.deleted') . __('messages.roles.role'). ' ' . implode(', ', $names),
-        ], 200);
     }
 }

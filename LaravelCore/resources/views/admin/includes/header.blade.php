@@ -5,24 +5,23 @@
                 <i class="bi bi-justify fs-3"></i>
             </a>
             @php
-            $user = Auth::user();
-                $notis = $user
-                    ->notifications()
-                    ->wherePivot('status', 0)
-                    ->orderBy('id', 'DESC')
-                    ->get();
+                $user = Auth::user();
+                $notis = $user->notifications()->wherePivot('status', 0)->orderBy('id', 'DESC')->get();
             @endphp
             <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" type="button" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-lg-0">
+                    <a class="btn btn-change-language" style="margin-top: .35rem">
+                        <i class="bi bi-translate fs-5 text-primary" data-bs-toggle="tooltip" data-bs-title="{{ __('messages.profile.language') }}"></i>
+                    </a>
                     <li class="nav-item dropdown me-3 nav-notifications">
                         @include('admin.includes.notifications', ['notis' => $notis, 'hide' => false])
                     </li>
                 </ul>
                 <div class="dropdown">
-                    <a data-bs-toggle="dropdown" class="cursor-pointer" aria-expanded="false">
+                    <a class="cursor-pointer" data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="user-menu d-flex align-items-start">
                             <div class="user-name text-end me-3">
                                 <h6 class="mb-0 mt-1 text-gray-600">{{ Auth::user()->name }}</h6>
@@ -57,12 +56,6 @@
                                 </a>
                             </li>
                         @endif
-                         <li>
-                            <a class="dropdown-item cursor-pointer btn-change-language">
-                                    <i class="bi bi-translate"></i>
-                                     {{ __('messages.profile.language') }}
-                                </a>
-                            </li>
                         <li><a class="dropdown-item" href="{{ route('admin.profile', ['key' => 'password']) }}">
                                 <i class="bi bi-shield-lock-fill me-2"></i>
                                 {{ __('messages.profile.changepassword') }}

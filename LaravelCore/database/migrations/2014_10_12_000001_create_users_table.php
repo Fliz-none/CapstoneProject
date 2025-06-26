@@ -22,7 +22,6 @@ class CreateUsersTable extends Migration
             $table->unsignedTinyInteger('gender')->comment('0:male; 1:female; 2:other')->default(0);
             $table->string('password')->nullable();
             $table->string('address')->nullable();
-            $table->unsignedBigInteger('local_id')->nullable();
             $table->unsignedBigInteger('main_branch')->nullable();
             $table->UnsignedInteger('scores')->nullable();
             $table->unsignedTinyInteger('status')->comment('0:block; 1:active')->default(1);

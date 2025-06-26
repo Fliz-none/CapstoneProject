@@ -16,11 +16,10 @@ class CreateExpensesTable extends Migration
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('receiver_id');
-            $table->unsignedBigInteger('branch_id')->nullable();
-           $table->unsignedTinyInteger('payment')->comment('1: Cash; 2: Bank Transfer')->default(1);
-            $table->unsignedDecimal('amount',10,0);
-            $table->string('avatar')->nullable();
+            $table->unsignedBigInteger('branch_id');
+            $table->unsignedTinyInteger('payment')->comment('1: Cash; 2: Bank Transfer')->default(1);
+            $table->unsignedDecimal('amount',10,2);
+            $table->string('image')->nullable();
             $table->string('group')->nullable();
             $table->string('note')->nullable();
             $table->unsignedTinyInteger('status')->default(0)->comment('0:waiting; 1:accepted');
@@ -28,7 +27,6 @@ class CreateExpensesTable extends Migration
             $table->timestamps();
             $table->foreign('branch_id')->references('id')->on('branches');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('receiver_id')->references('id')->on('users');
         });
     }
 

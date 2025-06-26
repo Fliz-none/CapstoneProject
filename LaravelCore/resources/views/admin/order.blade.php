@@ -133,21 +133,11 @@
                                         <div class="form-group mb-3 mt-auto p-2 bg-light rounded-3 money-suggestion">
                                         </div>
                                         <div class="form-group mb-3">
-                                            <div class="btn-group btn-group-lg dropup" role="group">
+                                            <div class="btn-group btn-group-lg dropup w-100" role="group">
                                                 <input class="btn-check order-payment" id="order-${nextCount}-payment-1" type="radio" value="1" autocomplete="off" name="payment">
                                                 <label class="btn btn-outline-info" for="order-${nextCount}-payment-1">Cash</label>
                                                 <input class="btn-check order-payment" id="order-${nextCount}-payment-2" type="radio" value="2" autocomplete="off" name="payment">
                                                 <label class="btn btn-outline-info" for="order-${nextCount}-payment-2">Bank Transfer</label>
-                                                <input class="btn-check order-payment" id="order-${nextCount}-payment-3" type="radio" value="3" autocomplete="off" name="payment">
-                                                <label class="btn btn-outline-info" for="order-${nextCount}-payment-3">Card</label>
-                                                <button class="btn btn-outline-info order-payment dropdown-toggle dropdown-toggle-split" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="bi bi-plus-circle"></i>
-                                                </button>
-                                                <div class="dropdown-menu" style="">
-                                                    <a class="dropdown-item btn-create-payment fw-bold fs-5" data-value="3">Swipe Card</a>
-                                                    <a class="dropdown-item btn-create-payment fw-bold fs-5" data-value="2">Bank Transfer</a>
-                                                    <a class="dropdown-item btn-create-payment fw-bold fs-5" data-value="1">Cash</a>
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-group mb-0">

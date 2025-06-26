@@ -20,6 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
     const READ_DASHBOARD = 'Read dashboard';
     const READ_CHATS = 'Read chats';
     const ACCESS_ADMIN = 'Access admin panel';
+    const UPDATE_ADMIN = 'Update admin information';
     const READ_SETTINGS = 'Access settings page';
     const READ_LOGS = 'Read system logs';
 
@@ -290,11 +291,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Local::class);
     }
 
-    public function _local()
-    {
-        return $this->belongsTo(Local::class, 'local_id')->withTrashed();
-    }
-
     public function orders()
     {
         return $this->hasMany(Order::class, 'customer_id');
@@ -327,7 +323,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->orders->sum('total') - $this->orders->sum('paid');
     }
 
-    
+
     /**
      * Các cuộc trò chuyện mà user là customer (one-to-many)
      */

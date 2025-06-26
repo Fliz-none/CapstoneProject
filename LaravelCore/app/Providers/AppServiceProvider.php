@@ -28,10 +28,10 @@ class AppServiceProvider extends ServiceProvider
      * @return void
      */
     public function boot()
-    {   
+    {
         User::observe(UserObserver::class);
         Controller::init();
-        Schema::defaultStringLength(191);
+        Schema::defaultStringLength(125);
         Detail::observe(DetailObserver::class);
     }
 }

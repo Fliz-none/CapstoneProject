@@ -22,7 +22,7 @@ class ImageController extends Controller
         if ($this->user === null) {
             $this->user = Auth::user();
         }
-        $this->middleware(['admin','auth']);
+        $this->middleware(['admin', 'auth']);
     }
 
     /**
@@ -56,6 +56,14 @@ class ImageController extends Controller
 
     public function upload(Request $request)
     {
+         $request->validate([
+            'image' => 'required|image|max:5120',
+        ], [
+            'image.required' => 'Vui lòng chọn ảnh để tải lên.',
+            'image.image' => 'Tệp tải lên phải là hình ảnh.',
+            'image.max' => 'Dung lượng ảnh không được vượt quá 5MB.',
+        ]);
+
         try {
             $image = $request->file('image');
             $imageName = $image->getClientOriginalName();
@@ -150,7 +158,7 @@ class ImageController extends Controller
             }
             $response = array(
                 'status' => 'success',
-                'msg' => __('messages.deleted') . ' ' . __('messages.images.image'). ' ' . implode(', ', $names)
+                'msg' => __('messages.deleted') . ' ' . __('messages.images.image') . ' ' . implode(', ', $names)
             );
         } else {
             $response = array(

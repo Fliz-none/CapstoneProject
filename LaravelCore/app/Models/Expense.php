@@ -16,7 +16,6 @@ class Expense extends Model
     protected $fillable = [
         'user_id',
         'branch_id',
-        'receiver_id',
         'payment',
         'amount',
         'note',

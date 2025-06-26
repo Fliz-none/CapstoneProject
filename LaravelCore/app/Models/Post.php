@@ -73,7 +73,7 @@ class Post extends Model
     {
         $path = 'public/' . $this->image;
         if ($this->image && Storage::exists($path)) {
-            $image = asset(env('FILE_STORAGE', '/storage/') . $this->image);
+            $image = asset(env('FILE_STORAGE', '/storage/') .'/' .$this->image);
         } else {
             $image = asset('admin/images/placeholder_key.png');
         }

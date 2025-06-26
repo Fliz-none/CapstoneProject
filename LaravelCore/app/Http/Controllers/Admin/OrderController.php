@@ -24,9 +24,9 @@ class OrderController extends Controller
 
     public function __construct()
     {
-        
+
         Controller::init();
-        //dd(app()->getLocale()); 
+        //dd(app()->getLocale());
         parent::__construct();
         if ($this->user === null) {
             $this->user = Auth::user();
@@ -108,7 +108,7 @@ class OrderController extends Controller
                         $color = $obj->total > $obj->paid ? 'danger' : ($obj->total < $obj->paid ? 'success' : 'primary');
                         if ($can_update_order) {
                             $code = '<a class="btn btn-link text-decoration-none text-' . $color . ' fw-bold p-0 btn-update-order" data-id="' . $obj->id . '">' . $obj->code . '</a> ';
-                            $code .= $obj->discount || $obj->details->where('discount', '!=', 0)->count() ? '<small><i class="bi bi-info-circle text-danger" data-bs-toggle="tooltip" data-bs-title="Order with price adjustment"></i></small>' : '';
+                            $code .= $obj->discount || $obj->details->where('discount', '!=', 0)->count() ? '<small><i class="bi bi-info-circle text-danger"></i></small>' : '';
                         } else {
                             if ($can_read_order) {
                                 $code =  '<a class="btn btn-link text-decoration-none text-' . $color . ' btn-preview preview-order fw-bold p-0" data-id="' . $obj->id . '" data-url="' . getPath(route('admin.order')) . '">' . $obj->code . '</a>';
@@ -389,6 +389,7 @@ class OrderController extends Controller
                         'status' => $request->has('status') ? $request->status : 0,
                         'note' => $request->note,
                     ]);
+                    $order->update(['total' => $order->total()]);
                     if ($request->has('scores')) {
                         optional($order->customer)->update(['scores' => $request->scores]);
                     }
@@ -669,7 +670,6 @@ class OrderController extends Controller
                             }
                         }
                         $order->update(['total' => $order->total()]);
-                        LogController::create('2', self::NAME, $order->id);
                         $response = array(
                             'id' => $order->id,
                             'status' => 'success',

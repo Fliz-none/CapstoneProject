@@ -31,7 +31,7 @@
                         @if (!empty(Auth::user()->can(App\Models\User::DELETE_BRANCHES)))
                             <a class="btn btn-danger btn-removes mb-3 ms-2" type="button">
                                 <i class="bi bi-trash"></i>
-                                Delete
+                                {{ __('messages.delete') }}
                             </a>
                         @endif
                     </div>

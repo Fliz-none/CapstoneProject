@@ -21,6 +21,7 @@ class PermissionSeeder extends Seeder
             ['Read dashboard', 'web', 'Dashboard'],
             ['Read chats', 'web', 'Dashboard'],
             ['Access admin panel', 'web', 'Access admin'],
+            ['Update admin information', 'web', 'Access admin'],
             ['Access settings page', 'web', 'Access settings'],
             ['Read system logs', 'web', 'Logs'],
             ['Read roles list', 'web', 'Roles'],

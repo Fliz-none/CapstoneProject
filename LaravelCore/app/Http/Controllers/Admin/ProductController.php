@@ -21,12 +21,13 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
     const NAME = 'Product';
     public static array $MESSAGES = [];
-       
+
 
     public function __construct()
     {
@@ -41,8 +42,8 @@ class ProductController extends Controller
          self::$MESSAGES = [
             'sku.required'=> Controller::$NOT_EMPTY,
             'sku.unique'=> __('messages.product.product_sku_unique'),
-            'sku.string' => Controller::$DATA_INVALID,
-            'sku.max' => Controller::$MAX,
+            'sku.string' =>  'SKU: ' . Controller::$DATA_INVALID,
+            'sku.max' => 'SKU: ' . Controller::$MAX,
             'name.required' => Controller::$NOT_EMPTY,
             'name.string' => Controller::$DATA_INVALID,
             'name.max' => Controller::$MAX,
@@ -53,7 +54,7 @@ class ProductController extends Controller
 
         return $next($request);
         });
-       
+
     }
 
     /**
@@ -330,10 +331,10 @@ class ProductController extends Controller
     public function save(Request $request)
     {
         $rules = [
-            'sku' => ['required','unique', 'string', 'max:125'],
+            'sku' => ['nullable', 'string', 'max:125', Rule::unique('products', 'sku')->ignore($request->id)],
             'name' => ['required', 'string', 'max:125'],
             'status' => ['nullable', 'numeric'],
-            'catalogues' => ['required'],
+            'catalogues' => ['required', 'array'],
         ];
         $request->validate($rules, self::$MESSAGES);
 
@@ -360,7 +361,7 @@ class ProductController extends Controller
                 $action = ($request->id) ? __('messages.updated') : __('messages.created');
                 $response = array(
                     'status' => 'success',
-                    'msg' =>  $action . ' ' . __('messages.product') . ' ' . $product->name
+                    'msg' =>  $action . ' ' . __('messages.product.product') . ' ' . $product->name
                 );
             } catch (\Exception $e) {
                 log_exception($e);
@@ -374,8 +375,9 @@ class ProductController extends Controller
 
     public function create(Request $request)
     {
+        dd($request->all());
         $rules = [
-            'sku' => ['required','unique', 'string', 'max:125'],
+            'sku' => ['nullable','unique:products', 'string', 'max:125'],
             'name' => ['required', 'string', 'max:125'],
             'status' => ['nullable', 'numeric'],
             'catalogues' => ['required', 'array'],
@@ -564,7 +566,7 @@ class ProductController extends Controller
             } catch (\Exception $e) {
                 DB::rollBack();
                 log_exception($e);
-                Controller::resetAutoIncrement(['units', 'variables', 'products', 'medicines', 'dosages']);
+                Controller::resetAutoIncrement(['units', 'variables', 'products']);
                 return response()->json(['errors' => ['error' => [__('messages.product.error') . $e->getMessage()]]], 422);
             }
         } else {
@@ -644,7 +646,7 @@ class ProductController extends Controller
             } catch (\Exception $e) {
                 DB::rollBack();
                 log_exception($e);
-                Controller::resetAutoIncrement(['units', 'variables', 'products', 'medicines', 'dosages']);
+                Controller::resetAutoIncrement(['units', 'variables', 'products']);
                 return response()->json(['errors' => ['error' => [__('messages.product.error') . $e->getMessage()]]], 422);
             }
         } else {

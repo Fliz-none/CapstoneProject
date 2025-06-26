@@ -157,7 +157,7 @@
                                     </div>
                                 </label>
                                 <input class="hidden-image" id="post-image" name="image" type="hidden" value="{{ old('image') != null ? old('image') : (isset($post) ? $post->image : '') }}">
-                                <button class="btn btn-outline-primary btn-remove-image d-none" type="button">Delete</button>
+                                <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{ __('messages.delete') }}</button>
                                 @error('image')
                                     <span class="invalid-feedback d-block" role="alert">
                                         <strong>{{ $message }}</strong>

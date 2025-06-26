@@ -217,16 +217,6 @@
                 @enderror
                 <div class="keyword-list"></div>
             </div>
-            <div class="form-group">
-                <label class="form-label mt-1" for="product-stock_limit" data-bs-toggle="tooltip" data-bs-title="Minimum stock quantity. If less than this amount, a notification will be received">{{ __('messages.product.minimum_stock') }}</label>
-                <input class="form-control @error('stock_limit') is-invalid @enderror" id="product-stock_limit" name="stock_limit" type="text" value="{{ old('stock_limit') != null ? old('stock_limit') : (isset($product) ? $product->stock_limit : '0') }}"
-                    placeholder="{{ __('messages.product.minimum_stock') }}" autocomplete="off">
-                @error('stock_limit')
-                    <span class="invalid-feedback d-block" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
             <div class="form-group mt-3">
                 <div class="form-check">
                     <input class="form-check-input form-check-info form-check-glow @error('allow_review') is-invalid @enderror" id="product-allow_review" name="allow_review" type="checkbox"

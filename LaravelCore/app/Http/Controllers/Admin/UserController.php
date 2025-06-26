@@ -110,10 +110,10 @@ class UserController extends Controller
                 case 'search':
                     $result = $objs->where(function ($query) use ($request) {
                         $query
-                        ->where('id', 'LIKE', '' . $request->q . '%')
-                        ->orWhere('name', 'LIKE', '%' . $request->q . '%')
-                        ->orWhere('phone', 'LIKE', '%' . $request->q . '%')
-                        ->orWhere('email', 'LIKE', '%' . $request->q . '%');
+                            ->where('id', 'LIKE', '' . $request->q . '%')
+                            ->orWhere('name', 'LIKE', '%' . $request->q . '%')
+                            ->orWhere('phone', 'LIKE', '%' . $request->q . '%')
+                            ->orWhere('email', 'LIKE', '%' . $request->q . '%');
                     })->orderBy('id', 'DESC')
                         ->take(20)->get()->map(function ($obj) {
                             $text = $obj->name . ($obj->phone ? ' - ' . $obj->phone : '');
@@ -378,7 +378,7 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
-         Controller::init();
+        Controller::init();
         $rules = [
             'name' => ['required', 'string', 'min:2', 'max:125'],
             'phone' => [
@@ -406,7 +406,7 @@ class UserController extends Controller
                     }
                 }
             ],
-           // 'birthday' => ['nullable', 'date', 'date_format:Y-m-d'],
+            // 'birthday' => ['nullable', 'date', 'date_format:Y-m-d'],
             'address' => ['nullable', 'string', 'min:2', 'max:125'],
             'note' => ['nullable', 'string', 'min:2', 'max:125'],
         ];
@@ -443,11 +443,14 @@ class UserController extends Controller
                 try {
                     $user = User::find($request->id);
                     if ($user) {
+                        if ($user->hasRole('Super Admin') && !$this->user->can(User::UPDATE_ADMIN)) {
+                            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
+                        }
                         $user->update([
                             'name' => $request->name,
                             'phone' => $request->phone,
                             'email' => $request->email,
-                           // 'birthday' => $request->birthday,
+                            // 'birthday' => $request->birthday,
                             'address' => $request->address,
                             'scores' => $request->scores,
                             'gender' => $request->gender,
@@ -465,7 +468,7 @@ class UserController extends Controller
 
                         $response = array(
                             'status' => 'success',
-                            'msg' => __('messages.updated'). ' ' . $user->name
+                            'msg' => __('messages.updated') . ' ' . $user->name
                         );
                         cache()->forget('users');
                     } else {
@@ -536,12 +539,15 @@ class UserController extends Controller
         if (!$user) {
             return back()->withErrors(['user_id' => __('messages.user_not_exist')])->withInput();
         }
+        if ($user->hasRole('Super Admin') && !$this->user->can(User::UPDATE_ADMIN)) {
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
+        }
         $user->password = Hash::make($request->password);
         $user->save();
 
         $response = array(
             'status' => 'success',
-            'msg' => __('messages.user.update_password'). ' ' . $user->name . '!'
+            'msg' => __('messages.user.update_password') . ' ' . $user->name . '!'
         );
         return response()->json($response, 200);
     }
@@ -552,14 +558,17 @@ class UserController extends Controller
         $success = [];
         $fail = [];
         $msg = '';
+        DB::beginTransaction();
         if ($this->user->can(User::DELETE_USER)) {
             foreach ($request->choices as $key => $id) {
                 $obj = User::find($id);
                 if ($obj->id == Auth::id()) {
+                    DB::rollBack();
                     return response()->json(['errors' => ['role' => [__('messages.user.self_delete')]]], 422);
                 }
                 if ($obj->getRoleNames()->contains('Super Admin')) {
-                    return response()->json(['errors' => ['role' => [__('messages.user.account_not_delete')]]], 422);
+                    DB::rollBack();
+                    return response()->json(['errors' => ['role' => [__('messages.user.admin_not_delete')]]], 422);
                 }
                 if ($obj->canRemove()) {
                     $obj->delete();
@@ -568,6 +577,7 @@ class UserController extends Controller
                     array_push($fail, $obj->name);
                 }
             }
+            DB::commit();
             if (count($success)) {
                 $msg = __('messages.deleted') . ' ' . implode(', ', $success) . '. ';
                 cache()->forget('users');

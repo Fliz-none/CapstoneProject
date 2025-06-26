@@ -29,7 +29,7 @@
                         @if (!empty(Auth::user()->can(App\Models\User::DELETE_ORDERS)))
                             <a class="btn btn-danger btn-removes mb-3 ms-2" type="button">
                                 <i class="bi bi-trash"></i>
-                                Delete
+                                {{ __('messages.delete') }}
                             </a>
                         @endif
                     </div>
@@ -37,12 +37,10 @@
                 <div class="col-12 col-lg-2">
                     @if (Auth::user()->branches->count())
                         <select
-                            class="form-control form-control-lg form-control-plaintext bg-transparent text-end list-branches"
-                            required autocomplete="off">
+                            class="form-control form-control-lg form-control-plaintext bg-transparent text-end list-branches" required autocomplete="off">
                             <option selected hidden disabled>{{ __('messages.datatable.your_branch') }}</option>
                             @foreach (Auth::user()->branches as $branch)
-                                <option value="{{ $branch->id }}"
-                                    {{ isset($_GET['branch_id']) && $_GET['branch_id'] == $branch->id ? 'selected' : '' }}>
+                                <option value="{{ $branch->id }}" {{ isset($_GET['branch_id']) && $_GET['branch_id'] == $branch->id ? 'selected' : '' }}>
                                     {{ $branch->name }}</option>
                             @endforeach
                         </select>

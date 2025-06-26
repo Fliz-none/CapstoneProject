@@ -1151,12 +1151,6 @@ $(".save-form").on("submit", function (e) {
                             : "No branches found"
                     );
                 break;
-            case 'export-form':
-                const path = window.location.pathname;
-                if (path.startsWith('/quantri/info')) {
-                    location.reload();
-                }
-                break;
             case 'render_stock-form':
                 $('.btn-sync-stock').attr('disabled', false);
                 break;

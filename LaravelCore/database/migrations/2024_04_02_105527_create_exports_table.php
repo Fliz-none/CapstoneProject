@@ -15,7 +15,7 @@ class CreateExportsTable extends Migration
     {
         Schema::create('exports', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('receiver_id')->nullable();
             $table->unsignedBigInteger('order_id')->nullable();
             $table->unsignedBigInteger('to_warehouse_id')->nullable();

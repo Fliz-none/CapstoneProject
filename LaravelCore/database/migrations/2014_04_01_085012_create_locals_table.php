@@ -17,8 +17,6 @@ class CreateLocalsTable extends Migration
             $table->id();
             $table->string('city');
             $table->string('district')->nullable();
-            $table->softDeletes();
-            $table->timestamps();
         });
     }
 

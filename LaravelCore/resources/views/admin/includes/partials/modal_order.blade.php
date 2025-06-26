@@ -121,7 +121,7 @@
                                         <div class="d-grid gap-2">
                                             <div class="btn-group" role="group">
                                                 <input class="btn-check" id="order-status-waiting" name="status" type="radio" value="1">
-                                                <label class="btn btn-outline-primary" for="order-status-waiting">{{ __('messages.new') }}</label>
+                                                <label class="btn btn-outline-primary" for="order-status-waiting">{{ __('messages.queued') }}</label>
                                                 <input class="btn-check" id="order-status-processing" name="status" type="radio" value="2">
                                                 <label class="btn btn-outline-info" for="order-status-processing">{{ __('messages.processing') }}</label>
                                                 <input class="btn-check" id="order-status-done" name="status" type="radio" value="3">
@@ -141,7 +141,7 @@
                                         </div>
                                     </div>
                                     <div class="row row-discount">
-                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Product discount (value less or equal to 100 will be treated as % discount on the order total)" 
+                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Product discount (value less or equal to 100 will be treated as % discount on the order total)"
                                             for="order-discount">{{ __('messages.discount') }}</label>
                                         <div class="col-sm-8">
                                             <input class="form-control-lg text-end form-control bg-white money order-discount" id="order-discount" name="discount" type="text" value="0" onclick="this.select()"

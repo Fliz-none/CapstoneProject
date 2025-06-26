@@ -140,7 +140,7 @@ return [
         'image' => 'Thư viện ảnh',
         'setting' => 'Cài đặt',
         'system' => 'Cấu hình hệ thống',
-        'local' => 'Ngôn ngữ & Địa phương',
+        'local' => 'Địa phương',
         'branch' => 'Chi nhánh',
         'warehouse' => 'Kho hàng',
         'supplier' => 'Nhà cung cấp',
@@ -248,6 +248,7 @@ return [
         'not_delete' => ' không thể bị xóa!',
         'self_delete' => 'Bạn không thể xóa tài khoản của chính mình!',
         'account_not_delete' => 'Bạn không thể xóa tài khoản này!',
+        'admin_not_delete' => 'Bạn không thể xóa tài khoản Admin!',
     ],
 
     //Log
@@ -743,7 +744,7 @@ return [
         'string' => 'Vai trò phải bằng chữ',
         'min' => 'Vai trò phải bằng nhất 3 ký tự',
         'max' => 'Vai trò trong 125 ký tự',
-
+        'error' => 'Đã xảy ra lỗi, vui lòng tải lại trang và thử lại!',
     ],
 
     //Version
@@ -768,7 +769,7 @@ return [
         'general_setting' => 'Cài đặt chung',
         'shop_setting' => 'Cài đặt cửa hàng',
         'website_setting' => 'Cài đặt website',
-        'work_shift' => 'Cài đặt ca làm',
+        'work_shift' => 'Cài đặt ca làm việc',
 
         'logo_setting' => 'Cài đặt logo',
         'website_icon' => 'Biểu tượng website',
@@ -834,7 +835,7 @@ return [
     ],
 
     'shift_setting' => [
-        'shift_setting' => 'Cài đặt ca',
+        'shift_setting' => 'Cài đặt ca làm việc',
         'name' => 'Tên ca',
         'checkin' => 'Thời gian vào ca',
         'checkout' => 'Thời gian ra ca',

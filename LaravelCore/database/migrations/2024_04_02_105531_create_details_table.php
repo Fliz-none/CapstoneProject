@@ -16,8 +16,8 @@ class CreateDetailsTable extends Migration
         Schema::create('details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('stock_id')->nullable();
-            $table->unsignedBigInteger('unit_id')->nullable();
+            $table->unsignedBigInteger('stock_id');
+            $table->unsignedBigInteger('unit_id');
             $table->unsignedInteger('quantity');
             $table->unsignedDouble('price', 10, 0)->default(0);
             $table->decimal('discount', 10, 0)->nullable();

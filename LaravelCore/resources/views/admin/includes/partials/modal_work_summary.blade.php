@@ -30,7 +30,7 @@
                             </tr>
                         @empty
                             <tr class="text-center">
-                                <td colspan="3"><span class="text-primary fw-bold"> {{ __('messages.work_schedule.no_shift') }}</span></td>
+                                <td colspan="4"><span class="text-primary fw-bold"> {{ __('messages.work_schedule.no_shift') }}</span></td>
                             </tr>
                         @endforelse
                     </tbody>

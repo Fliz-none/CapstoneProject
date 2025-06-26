@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-12 col-md-6">
                     <h5 class="text-uppercase">{{ $pageName }}</h5>
-                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start">
+                    <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
                         </ol>
@@ -48,7 +48,7 @@
                 }
             }
         </style>
-        <button id="toggle-fullscreen" class="btn btn-sm btn-outline-primary float-end">
+        <button class="btn btn-sm btn-outline-primary float-end" id="toggle-fullscreen">
             <i class="bi bi-arrows-fullscreen"></i>
         </button>
         <section>
@@ -60,10 +60,8 @@
                             <div class="card-body d-flex flex-column" style="height: 100vh;">
                                 <!-- Input search: cố định -->
                                 <div class="form-outline position-relative p-0 mb-3">
-                                    <i class="bi bi-search position-absolute"
-                                        style="top: 45%; left: 10px; transform: translateY(-50%); z-index: 2;"></i>
-                                    <input type="search" id="search" class="form-control ps-5"
-                                        placeholder="Search conversations..." />
+                                    <i class="bi bi-search position-absolute" style="top: 45%; left: 10px; transform: translateY(-50%); z-index: 2;"></i>
+                                    <input class="form-control ps-5" id="search" type="search" placeholder="Search conversations..." />
                                 </div>
 
                                 <!-- Danh sách conversations-->
@@ -80,26 +78,24 @@
                             </ul>
                         </div>
                         {{-- Preview file --}}
-                        <div id="preview-attachments" class="gap-2"></div>
-                        <form id="send-message" method="POST" action="{{ route('admin.chat.broadcast') }}"
-                            class="border-top bg-white p-2" enctype="multipart/form-data">
+                        <div class="gap-2" id="preview-attachments"></div>
+                        <form class="border-top bg-white p-2" id="send-message" method="POST" action="{{ route('admin.chat.broadcast') }}" enctype="multipart/form-data">
                             @csrf
                             <!-- Dòng icon trên đầu -->
                             <div class="d-flex align-items-center gap-2 mb-2 px-2">
-                                <button type="button" class="btn btn-link text-muted p-1" title="Emoji">
+                                <button class="btn btn-link text-muted p-1" type="button" title="Emoji">
                                     <i class="bi bi-emoji-smile fs-5"></i>
                                 </button>
-                                <label for="attachments" class="btn btn-link text-muted p-1 m-0" title="Attachment">
+                                <label class="btn btn-link text-muted p-1 m-0" for="attachments" title="Attachment">
                                     <i class="bi bi-paperclip fs-5"></i>
                                 </label>
-                                <input type="file" id="attachments" name="attachments[]" class="d-none" multiple />
+                                <input class="d-none" id="attachments" name="attachments[]" type="file" multiple />
                                 <!-- Thêm các icon khác nếu cần -->
                             </div>
                             <!-- Textarea + nút gửi -->
                             <div class="d-flex align-items-end gap-2 px-3 pb-3">
-                                <textarea class="form-control border-0 rounded-3 bg-light px-3 py-2" id="message" name="message" rows="2"
-                                    placeholder="Nhập @, tin nhắn tới..." style="resize: none;"></textarea>
-                                <button type="submit" class="btn btn-primary">
+                                <textarea class="form-control border-0 rounded-3 bg-light px-3 py-2" id="message" name="message" style="resize: none;" rows="2" placeholder="Nhập @, tin nhắn tới..."></textarea>
+                                <button class="btn btn-primary" type="submit">
                                     <i class="bi bi-send"></i>
                                 </button>
                             </div>
@@ -111,6 +107,8 @@
     </div>
 @endsection
 @push('scripts')
+    {{-- Laravel Mix --}}
+    <script src="{{ asset('js/app.js') }}"></script>
     {{-- <script src="{{ asset('js/pusher.min.js') }}"></script> --}}
     <script>
         let conversationId = null;

@@ -159,7 +159,7 @@ return [
         'language' => 'Language',
         'changepassword' => 'Change Password',
         'timekeeping' => 'Timekeeping',
-        'schedule' => 'Skedule Work',
+        'schedule' => 'Schedule Work',
         'activity' => 'Activity Log',
         'point' => 'Point',
         'logout' => 'Logout',
@@ -247,6 +247,7 @@ return [
         'not_delete' => ' could not be deleted!',
         'self_delete' => 'You cannot delete your own account!',
         'account_not_delete' => 'You cannot delete this account!',
+        'admin_not_delete' => 'You cannot delete admin account!',
     ],
     //Log
     'log' => [
@@ -731,6 +732,7 @@ return [
         'string' => 'Role must be a string',
         'min' => 'Role must be at least 3 characters',
         'max' => 'Role must be within 125 characters',
+        'error' => 'An error occurred, please reload the page and try again!',
     ],
 
     // Version

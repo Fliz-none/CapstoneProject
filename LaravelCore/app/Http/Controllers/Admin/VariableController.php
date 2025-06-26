@@ -17,7 +17,7 @@ class VariableController extends Controller
 {
     const NAME = 'Variable';
      public static array $MESSAGES = [];
-        
+
 
     public function __construct()
     {
@@ -368,24 +368,10 @@ class VariableController extends Controller
                         $unit->delete();
                     }
                 });
-                if ($obj->medicine) { // Nếu biến thể có thuốc
-                    if ($obj->medicine->prescription_details->count()) { // Nếu thuốc có chi tiết đơn thuốc thì xóa mềm hết
-                        $obj->medicine->dosages->each(function ($dosage) {
-                            $dosage->delete();
-                        });
-                        $obj->medicine->delete();
-                    } else { // Nếu không có chi tiết đơn thuốc nào thì xóa cứng luôn
-                        $obj->medicine->dosages->each(function ($dosage) {
-                            $dosage->forceDelete();
-                        });
-                        $obj->medicine->forceDelete();
-                    }
-                }
                 $units = $obj->units()->withTrashed()->count();
-                $medicine = $obj->medicine;
                 $import_details = $obj->import_details()->withTrashed()->count();
                 DB::table('attribute_variable')->where('variable_id', $obj->id)->delete();
-                if (!$units && !$medicine && !$import_details) {
+                if (!$units && !$import_details) {
                     $obj->forceDelete();
                 } else {
                     $obj->delete();
@@ -399,7 +385,7 @@ class VariableController extends Controller
             } catch (\Exception $e) {
                 DB::rollBack();
                 log_exception($e);
-                Controller::resetAutoIncrement(['variables', 'units', 'medicines', 'dosages']);
+                Controller::resetAutoIncrement(['variables', 'units']);
                 return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
             }
         } else {

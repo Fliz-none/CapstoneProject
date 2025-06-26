@@ -19,7 +19,7 @@ class CreateTransactionsTable extends Migration
             $table->unsignedBigInteger('customer_id')->nullable();
             $table->unsignedBigInteger('cashier_id');
             $table->unsignedTinyInteger('payment')->comment('0:card; 1:cash; 2:transfer')->default(1);
-            $table->double('amount', 10, 0);
+            $table->double('amount', 10, 2);
             $table->dateTime('date');
             $table->string('note')->nullable();
             $table->softDeletes();
