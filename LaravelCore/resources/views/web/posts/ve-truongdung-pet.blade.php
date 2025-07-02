@@ -160,8 +160,8 @@
                         <a class="vision-cta cta-bg" href="{{ route('contact') }}" title="Cơ hội việc làm từ TruongDung Pet">
                             Cơ hội việc làm từ TruongDung Pet
                         </a>
-                        <a class="vision-cta" href="{{ route('post', ['sub' => 'benh-vien-thu-y']) }}" title="Tham quan cơ sở">
-                            Tham quan cơ sở
+                        <a class="vision-cta" href="{{ route('shop') }}" title="Cửa hàng TruongDung Pet">
+                            Cửa hàng TruongDung Pet
                         </a>
                     </div>
                 </div>

@@ -20,6 +20,7 @@ class CreateCataloguesTable extends Migration
             $table->string('avatar')->nullable();
             $table->unsignedInteger('sort')->nullable();
             $table->unsignedBigInteger('parent_id')->nullable();
+            $table->boolean('is_featured')->default(false)->comment('0: no; 1: yes');
             $table->unsignedTinyInteger('status')->coment('0: block; 1: active')->default(1);
             $table->text('note')->nullable();
             $table->softDeletes();

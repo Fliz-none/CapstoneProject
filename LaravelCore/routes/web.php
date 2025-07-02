@@ -40,6 +40,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\ProductController as WebProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
@@ -326,11 +327,13 @@ Route::get('tai-khoan', [ProfileController::class, 'profile'])->name('profile');
 Route::get('don-hang', [ProfileController::class, 'orders'])->name('orders');
 Route::get('gio-hang/thanh-toan', [CartController::class, 'index'])->name('checkout');
 Route::get('gio-hang/thanh-toan/hoan-thanh', [CartController::class, 'index'])->name('checkout');
-Route::get('cua-hang/{catalogue?}/{slug?}', [ShopController::class, 'index'])->name('shop');
+// Đã xóa benh-vien-thu-y
+Route::get('shop', [ShopController::class, 'index'])->name('shop');
+Route::get('san-pham/{catalogue?}/{slug?}', [WebProductController::class, 'index'])->name('product');
 Route::post('/change-language', [LanguageController::class, 'changeLanguage'])
     ->name('change.language.ajax')
     ->middleware('web');
-Route::get('ajax/{type}{key?}', [ShopController::class, 'getAjax'])->name('ajax');
+Route::get('ajax/{type}{key?}', [WebProductController::class, 'getAjax'])->name('ajax');
 Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'gio-hang'], function () {
         Route::get('/', [CartController::class, 'index'])->name('cart.index');

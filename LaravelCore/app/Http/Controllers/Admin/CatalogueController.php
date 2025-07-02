@@ -197,6 +197,7 @@ class CatalogueController extends Controller
                     'parent_id' => $request->parent_id ? $request->parent_id : null,
                     'note' => $request->note,
                     'status' => $request->has('status'),
+                    'is_featured' => $request->has('is_featured'),
                     'avatar' => $request->avatar,
                 ]);
 
@@ -250,7 +251,7 @@ class CatalogueController extends Controller
                             'slug' => Str::slug($request->name),
                             'parent_id' => $request->parent_id ? $request->parent_id : null,
                             'note' => $request->note,
-                            'status' => $request->has('status'),
+                            'is_featured' => $request->has('is_featured'),
                             'avatar' => $request->avatar,
                         ]);
                     } else {

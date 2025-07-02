@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Catalogue;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Nette\Utils\Random;
 
 class CatalogueSeeder extends Seeder
 {
@@ -160,6 +161,7 @@ class CatalogueSeeder extends Seeder
                 'sort' => $catalogue[4],
                 'parent_id' => $catalogue[5],
                 'status' => $catalogue[6],
+                'is_featured' => collect([0, 0, 0, 0, 0, 0, 0, 0, 1])->random(),
                 'note' => $catalogue[7],
                 'deleted_at' => $catalogue[8],
                 'created_at' => $catalogue[9],

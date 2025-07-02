@@ -116,7 +116,7 @@
                                     </a>
                                 <li>
                                 <li>
-                                    <a href="{{ route('shop') }}" title=" Giới thiệu">
+                                    <a href="{{ route('product') }}" title=" Giới thiệu">
                                         PetShop
                                     </a>
                                 <li>

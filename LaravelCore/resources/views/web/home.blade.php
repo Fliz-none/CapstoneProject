@@ -61,13 +61,12 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-10 col-lg-3 col-md-6 text-center text-dark p-2 p-md-3">
-                        <a class="story-list-item" href="{{ route('post', ['sub' => 'benh-vien-thu-y']) }}" title="Dịch vụ thú y">
+                        <a class="story-list-item" href="{{ route('shop') }}" title="Cửa hàng">
                             <div class="d-flex justify-content-center align-items-center rounded-4 p-4 pin-bg h-200">
-                                <img class="img-fluid" src="{{ asset('images/dich-vu-thu-y_1.png') }}" alt="Dịch vụ thú y" style="width: 100px; height: auto;">
+                                <img class="img-fluid" src="{{ asset('images/dich-vu-thu-y_1.png') }}" alt="Cửa hàng" style="width: 100px; height: auto;">
                             </div>
-                            <p class="text-dark fw-semibold mt-3 text-uppercase">Dịch vụ thú y</p>
+                            <p class="text-dark fw-semibold mt-3 text-uppercase">Cửa hàng</p>
                         </a>
-
                     </div>
                     <div class="col-10 col-lg-3 col-md-6 text-center text-dark p-2 p-md-3">
                         <a class="story-list-item" href="{{ route('post', ['sub' => 'spa-&-grooming']) }}" title="SPA & GROOMING">
@@ -88,7 +87,7 @@
 
                     </div>
                     <div class="col-10 col-lg-3 col-md-6 text-center text-dark p-2 p-md-3">
-                        <a class="story-list-item" href="{{ route('post', ['sub' => 'cua-hang']) }}" title="PETSHOP">
+                        <a class="story-list-item" href="{{ route('post', ['sub' => 'san-pham']) }}" title="PETSHOP">
                             <div class="d-flex justify-content-center align-items-center rounded-4 p-4 teal-bg h-200">
                                 <img class="img-fluid" src="{{ asset('images/petshop_1.png') }}" alt="PETSHOP" style="width: 100px; height: auto;">
                             </div>
@@ -119,7 +118,7 @@
                                     TruongDungPet <br />
                                     Cung cấp những sản phẩm chất lượng và an toàn sức khỏe của thú cưng, mang lại cho khách hàng sự hài lòng và yên tâm.
                                 </p>
-                                <a class="cta-btn" href="{{ route('shop') }}">
+                                <a class="cta-btn" href="{{ route('product') }}">
                                     Xem tất cả sản phẩm
                                 </a>
                                 <div class="custom-slide-nav">

@@ -149,7 +149,7 @@
                                     TruongDungPet <br />
                                     Cung cấp những sản phẩm chất lượng và an toàn sức khỏe của thú cưng, mang lại cho khách hàng sự hài lòng và yên tâm.
                                 </p>
-                                <a class="cta-btn" href="{{ route('shop') }}">
+                                <a class="cta-btn" href="{{ route('product') }}">
                                     Xem tất cả sản phẩm
                                 </a>
                                 <div class="custom-slide-nav">

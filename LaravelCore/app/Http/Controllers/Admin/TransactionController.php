@@ -273,7 +273,8 @@ class TransactionController extends Controller
 
     public function create(Request $request)
     {
-        //dd(app()->getLocale());
+        // Check type of amount
+        // dd($request->all(), gettype(floatval($request->amount)));
         Controller::init();
         $request->validate(self::RULES, self::$MESSAGES);
         if (!empty($this->user->can(User::CREATE_TRANSACTION))) {

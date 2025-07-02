@@ -28,8 +28,8 @@
                     </a>
                     <ul class="header-list">
                         <li class="header-list-item">
-                            <a class="header-item-link {{ $pageName == __('Bệnh viện thú y') ? 'active' : '' }}" href="{{ route('post', ['sub' => 'benh-vien-thu-y']) }}" title="Bệnh viện thú y">
-                                Bệnh viện thú y
+                            <a class="header-item-link {{ $pageName == __('Cửa hàng') ? 'active' : '' }}" href="{{ route('shop') }}" title="Cửa hàng">
+                                Cửa hàng
                             </a>
                         </li>
                         <li class="header-list-item">
@@ -38,8 +38,8 @@
                             </a>
                         </li>
                         <li class="header-list-item">
-                            <a class="header-item-link {{ $pageName == __('Tất cả sản phẩm') ? 'active' : '' }}" href="{{ route('shop') }}" title="Cửa hàng">
-                                Cửa hàng
+                            <a class="header-item-link {{ $pageName == __('Tất cả sản phẩm') ? 'active' : '' }}" href="{{ route('product') }}" title="Sản phẩm">
+                                Sản phẩm
                             </a>
                         </li>
                     </ul>
@@ -118,15 +118,15 @@
                 <ul class="mb-header-list">
                     <li class="mb-header-list-item">
                         <div class="list-item-head">
-                            <a class="header-item-link {{ $pageName == __('Trang chủ') ? 'active' : '' }}" href="{{ route('home') }}" title="Bệnh viện thú y">
+                            <a class="header-item-link {{ $pageName == __('Trang chủ') ? 'active' : '' }}" href="{{ route('home') }}" title="Shop">
                                 Trang chủ
                             </a>
                         </div>
                     </li>
                     <li class="mb-header-list-item">
                         <div class="list-item-head">
-                            <a class="header-item-link {{ $pageName == __('Bệnh viện thú y') ? 'active' : '' }}" href="{{ route('post', ['sub' => 'benh-vien-thu-y']) }}" title="Bệnh viện thú y">
-                                Bệnh viện thú y
+                            <a class="header-item-link {{ $pageName == __('Cửa hàng') ? 'active' : '' }}" href="{{ route('shop') }}" title="Cửa hàng">
+                                Cửa hàng
                             </a>
                         </div>
                     </li>
@@ -139,8 +139,8 @@
                     </li>
                     <li class="mb-header-list-item ">
                         <div class="list-item-head">
-                            <a class="header-item-link {{ $pageName == __('Tất cả sản phẩm') ? 'active' : '' }}" href="{{ route('shop') }}" title="Cửa hàng">
-                                Cửa hàng
+                            <a class="header-item-link {{ $pageName == __('Tất cả sản phẩm') ? 'active' : '' }}" href="{{ route('product') }}" title="Sản phẩm">
+                                Sản phẩm
                             </a>
                         </div>
                     </li>

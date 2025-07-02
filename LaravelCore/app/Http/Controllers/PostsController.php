@@ -41,9 +41,6 @@ class PostsController extends Controller
                 }
             }
             switch ($request->sub) {
-                case 'benh-vien-thu-y':
-                    $pageName = 'Bệnh viện thú y';
-                    return view('web.posts.benh-vien-thu-y', compact('pageName', 'products'));
                 case 'spa-&-grooming':
                     $pageName = 'Spa & Grooming';
                     return view('web.posts.spa-&-grooming', compact('pageName', 'products'));

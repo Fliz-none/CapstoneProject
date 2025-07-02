@@ -145,28 +145,27 @@ class Product extends Model
 
     public function displayPrice()
     {
-        if ($this->variables->min('price') == $this->variables->max('price')) {
-            $price = number_format($this->variables->min('price')) . 'VND';
-        } else {
-            $price = number_format($this->variables->min('price')) . 'VND - ' . number_format($this->variables->max('price')) . 'VND';
+        $currency = cache()->get('currency', 'VND');
+        $prices = $this->variables->flatMap(function ($variable) {
+            return $variable->units->pluck('price');
+        })->filter(function ($price) {
+            return $price !== null;
+        });
+        
+        if ($prices->isEmpty()) {
+            return '0 ' . $currency;
         }
-        return $price;
+
+        $min = $prices->min();
+        $max = $prices->max();
+
+        if ($min == $max) {
+            return number_format($min) . ' ' . $currency;
+        }
+
+        return number_format($min) . ' ' . $currency . ' - ' . number_format($max) . ' ' . $currency;
     }
 
-    public function minPrice()
-    {
-        return number_format($this->variables->min('price')) . 'VND';
-    }
-
-    public function maxPrice()
-    {
-        return number_format($this->variables->max('price')) . 'VND';
-    }
-
-    public function salePrice()
-    {
-        return number_format($this->variables->min('price')) . 'VND';
-    }
     public function relatedProducts()
     {
         $relatedProducts = [];
@@ -183,7 +182,7 @@ class Product extends Model
     {
         $catalogues = [];
         foreach ($this->catalogues->pluck('name', 'slug') as $slug => $name) {
-            $text = '<a class"text-capitalize" href="' . route('shop', ['catalogue' => $slug]) . '">' . $name . '</a>';
+            $text = '<a class"text-capitalize" href="' . route('product', ['catalogue' => $slug]) . '">' . $name . '</a>';
             array_push($catalogues, $text);
         }
         return implode(', ', $catalogues);

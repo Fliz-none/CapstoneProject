@@ -39,10 +39,14 @@
                     <hr class="px-5">
                     <div class="mb-3">
                         <div class="row">
-                            <div class="col-12 col-lg-6">
+                            <div class="col-12 col-lg-6 d-flex align-items-center gap-2">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" id="catalogue-status" name="status" type="checkbox" checked>
                                     <label class="form-check-label" for="catalogue-status" data-bs-toggle="tooltip" data-bs-title="Status of the catalogue; if disabled, adding products, importing and selling is not allowed">{{ __('messages.active') }}</label>
+                                </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" id="catalogue-is_featured" name="is_featured" type="checkbox" checked>
+                                    <label class="form-check-label" for="catalogue-is_featured" data-bs-toggle="tooltip" data-bs-title="Mark this catalogue as featured">Featured</label>
                                 </div>
                             </div>
                             <div class="col-12 col-lg-6 text-end">

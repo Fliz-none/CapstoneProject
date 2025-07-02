@@ -3,17 +3,13 @@
 namespace App\Http\Middleware;
 
 use App\Http\Controllers\Controller;
-use App\Models\Animal;
 use App\Models\Attribute;
 use App\Models\Branch;
-use App\Models\Disease;
-use App\Models\Medicine;
-use App\Models\Service;
-use App\Models\Symptom;
 use Closure;
 use Illuminate\Http\Request;
 use App\Models\Catalogue;
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\Version;
@@ -67,6 +63,9 @@ class GlobalSettings
             }
             if (!Cache::has('catalogues')) {
                 Cache::put('catalogues', Controller::getCatalogueChildren(Catalogue::where('status', '>', 0)->with('children')->get()), now()->addHours(60));
+            }
+            if(!Cache::has('products')) {
+                Cache::put('products', Product::where('status', 1)->get(), now()->addHours(12));
             }
             if (!Cache::has('settings')) {
                 $settings = Setting::pluck('value', 'key');

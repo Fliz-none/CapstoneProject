@@ -459,6 +459,7 @@
                 form.find('[name=parent_id]').val(null).trigger("change")
             }
             form.find('[name=status]').prop('checked', catalogue.status)
+            form.find('[name=is_featured]').prop('checked', catalogue.is_featured)
             form.attr('action', `{{ route('admin.catalogue.update') }}`)
             if (catalogue.deleted_at != null) {
                 form.find('.btn[type=submit]:last-child').addClass('d-none')

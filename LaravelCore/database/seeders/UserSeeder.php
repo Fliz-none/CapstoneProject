@@ -233,7 +233,7 @@ class UserSeeder extends Seeder
                 
                 'address' => $user[8],
                 'scores' => $user[9],
-                'local_id' => $user[10],
+                // 'local_id' => $user[10],
                 'main_branch' => $user[11],
                 'status' => $user[14],
                 //'last_login_at' => $user[15],

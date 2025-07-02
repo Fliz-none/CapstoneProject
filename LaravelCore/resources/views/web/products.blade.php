@@ -85,15 +85,15 @@
                                                             <div class="col-12">
                                                                 <div class="product-item product-item-verical">
                                                                     <div class="product-image">
-                                                                        <a href="{{ route('shop', ['catalogue' => $cat->slug, 'slug' => $product->slug]) }}" title="{{ $product->name }}">
+                                                                        <a href="{{ route('product', ['catalogue' => $cat->slug, 'slug' => $product->slug]) }}" title="{{ $product->name }}">
                                                                             <img class="img-fluid" src="{{ $product->avatarUrl }}">
                                                                         </a>
                                                                     </div>
                                                                     <div class="product-content text-start">
-                                                                        <a class="product-name" href="{{ route('shop', ['catalogue' => $cat->slug, 'slug' => $product->slug]) }}" title="{{ $product->name }}">
+                                                                        <a class="product-name" href="{{ route('product', ['catalogue' => $cat->slug, 'slug' => $product->slug]) }}" title="{{ $product->name }}">
                                                                             {{ $product->name }}
                                                                         </a>
-                                                                        <p class="short">Quy cách: {{ $product->unit }} </p>
+                                                                        <p class="short">Quy cách: {{ $product->variables->pluck('name')->take(3)->implode(', ') }}{{ $product->variables->count() > 3 ? '...' : '' }} </p>
                                                                         <p class="price">Giá: <span>{!! $product->displayPrice() !!}</span></p>
                                                                     </div>
                                                                 </div>
@@ -159,15 +159,15 @@
                                                         <div class="col-12">
                                                             <div class="product-item product-item-verical">
                                                                 <div class="product-image">
-                                                                    <a href="{{ route('shop', ['catalogue' => $cat->slug, 'slug' => $product->slug]) }}" title="{{ $product->name }}">
+                                                                    <a href="{{ route('product', ['catalogue' => $cat->slug, 'slug' => $product->slug]) }}" title="{{ $product->name }}">
                                                                         <img class="img-fluid" src="{{ $product->avatarUrl }}">
                                                                     </a>
                                                                 </div>
                                                                 <div class="product-content text-start">
-                                                                    <a class="product-name" href="{{ route('shop', ['catalogue' => $cat->slug, 'slug' => $product->slug]) }}" title="{{ $product->name }}">
+                                                                    <a class="product-name" href="{{ route('product', ['catalogue' => $cat->slug, 'slug' => $product->slug]) }}" title="{{ $product->name }}">
                                                                         {{ $product->name }}
                                                                     </a>
-                                                                    <p class="short">Quy cách: {{ $product->unit }} </p>
+                                                                    <p class="short">Quy cách: {{ $product->variables->pluck('name')->take(3)->implode(', ') }}{{ $product->variables->count() > 3 ? '...' : '' }} </p>
                                                                     <p class="price">Giá: <span>{!! $product->displayPrice() !!}</span></p>
                                                                 </div>
                                                             </div>
@@ -212,15 +212,15 @@
                                     <div class="col-6 col-md-4">
                                         <div class="product-item product-item-row">
                                             <div class="product-image">
-                                                <a href="{{ route('shop', ['catalogue' => $product->catalogues->first()->slug, 'slug' => $product->slug]) }}" title="{{ $product->name }}">
+                                                <a href="{{ route('product', ['catalogue' => $product->catalogues->first()->slug, 'slug' => $product->slug]) }}" title="{{ $product->name }}">
                                                     <img class="img-fluid" src="{{ $product->avatarUrl }}">
                                                 </a>
                                             </div>
                                             <div class="product-content text-start">
-                                                <a class="product-name" href="{{ route('shop', ['catalogue' => $product->catalogues->first()->slug, 'slug' => $product->slug]) }}" title="{{ $product->name }}">
+                                                <a class="product-name" href="{{ route('product', ['catalogue' => $product->catalogues->first()->slug, 'slug' => $product->slug]) }}" title="{{ $product->name }}">
                                                     {{ $product->name }}
                                                 </a>
-                                                <p class="short">Quy cách: {{ $product->unit }} </p>
+                                                <p class="short">Quy cách: {{ $product->variables->pluck('name')->take(3)->implode(', ') }}{{ $product->variables->count() > 3 ? '...' : '' }} </p>
                                                 <p class="price">Giá: <span>{!! $product->displayPrice() !!}</span></p>
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <div class="product-ratting">
@@ -233,7 +233,7 @@
                                                         </ul>
                                                     </div>
                                                     <div>
-                                                        <a class="detail" href="{{ route('shop', ['catalogue' => $product->catalogues->first()->slug, 'slug' => $product->slug]) }}"><i class="bi bi-bag-check"></i></a>
+                                                        <a class="detail" href="{{ route('product', ['catalogue' => $product->catalogues->first()->slug, 'slug' => $product->slug]) }}"><i class="bi bi-bag-check"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -339,15 +339,15 @@
                     <div class="col-6 col-md-4">
                         <div class="product-item product-item-row">
                             <div class="product-image">
-                                <a href="{{ route('shop') }}/${product.catalogues[0].slug}/${product.slug}" title="${product.name}">
+                                <a href="{{ route('product') }}/${product.catalogues[0].slug}/${product.slug}" title="${product.name}">
                                     <img class="img-fluid" src="${product.avatarUrl}">
                                 </a>
                             </div>
                             <div class="product-content text-start">
-                                <a class="product-name" href="{{ route('shop') }}/${product.catalogues[0].slug}/${product.slug}" title="${product.name}">
+                                <a class="product-name" href="{{ route('product') }}/${product.catalogues[0].slug}/${product.slug}" title="${product.name}">
                                     ${product.name}
                                 </a>
-                                <p class="short">Quy cách: ${product.unit} </p>
+                                <p class="short">Quy cách: ${product.variables.map(variable => variable.name).join(', ')} </p>
                                 <p class="price">Giá: <span>${product.price}</span></p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="product-ratting">
@@ -360,7 +360,7 @@
                                         </ul>
                                     </div>
                                     <div>
-                                        <a class="detail" href="{{ route('shop') }}/${product.catalogues[0].slug}/${product.slug}"><i class="bi bi-bag-check"></i></a>
+                                        <a class="detail" href="{{ route('product') }}/${product.catalogues[0].slug}/${product.slug}"><i class="bi bi-bag-check"></i></a>
                                     </div>
                                 </div>
                             </div>

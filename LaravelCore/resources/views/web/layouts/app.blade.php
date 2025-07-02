@@ -63,7 +63,7 @@
         <script src="{{ asset('admin/vendors/momentjs/moment.min.js') }}"></script>
         <script src="{{ asset('admin/vendors/momentjs/moment-with-locales.js') }}"></script>
     </div>
-    
+
     <script>
         moment.locale('vi');
 
@@ -127,13 +127,34 @@
         }
 
         $(document).ready(function() {
-            @if(auth()->check())
+            @if (auth()->check())
                 loadMessages(true);
             @endif
 
-            $(document).on('click', '.btn-login', function() {
+            $(document).on('click', '.btn-login', function(event) {
                 let form = $('#loginForm');
-                submitForm(form);
+                submitForm(form).done(function(response) {
+                    if (response.status == "success") {
+                        form.find('.modal').modal('hide');
+                    }
+                });
+            });
+
+            function submitLogoutForm() {
+                const form = $("#logout-form");
+                form.attr("action", "/logout");
+                submitForm(form).done(function(response) {
+                    showLoginForm();
+                    updateCsrfToken(response.token);
+                });
+            }
+
+            //Tổ hợp phím Ctrl + End
+            $(document).on("keydown", function(e) {
+                if (e.ctrlKey && e.key === "End") {
+                    e.preventDefault();
+                    submitLogoutForm();
+                }
             });
 
             $(document).on('click', '.btn-register', function() {

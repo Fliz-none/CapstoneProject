@@ -17,7 +17,7 @@
                                     <label class="col-form-label" for="login-email">Email</label>
                                 </div>
                                 <div class="col-8">
-                                    <input class="form-control" id="login-email" name="email" type="email" value="{{ old('email') }}" required autocomplete="off" autofocus placeholder="Email đăng nhập">
+                                    <input class="form-control" id="login-email" name="email" type="email" value="{{ old('email') }}" required autofocus placeholder="Email đăng nhập">
                                 </div>
                             </div>
                         </div>
@@ -27,7 +27,7 @@
                                     <label class="col-form-label" for="login-password">Mật khẩu</label>
                                 </div>
                                 <div class="col-8">
-                                    <input class="form-control" id="login-password" name="password" type="password" required autocomplete="off" placeholder="Mật khẩu">
+                                    <input class="form-control" id="login-password" name="password" type="password" required placeholder="Mật khẩu">
                                     <div class="form-check mt-2">
                                         <input class="form-check-input cursor-pointer" id="showPasswordCheckbox" type="checkbox" value="">
                                         <label class="form-check-label cursor-pointer" for="showPasswordCheckbox">

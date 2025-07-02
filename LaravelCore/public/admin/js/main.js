@@ -234,14 +234,14 @@ function sortCheckedInput(form) {
 }
 
 //Input mask money
-$(document).on("focus", ".money", function () {
-    $(".money").mask("#,##0", {
-        reverse: true,
-    });
-});
-$(document).on("blur", ".money", function () {
-    $(".money").unmask();
-});
+// $(document).on("focus", ".money", function () {
+//     $(".money").mask("#,##0", {
+//         reverse: true,
+//     });
+// });
+// $(document).on("blur", ".money", function () {
+//     $(".money").unmask();
+// });
 
 /**
  * Select2 Init()
@@ -402,7 +402,8 @@ $(document).on("click", "img.thumb", function () {
     Swal.fire({
         imageUrl: $(this).attr("src"),
         padding: 0,
-        width: '60vw',
+        width: '50vw',
+        height: 'auto',
         showConfirmButton: false,
         background: "transparent",
     });

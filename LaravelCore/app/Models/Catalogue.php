@@ -21,6 +21,7 @@ class Catalogue extends Model
         'parent_id',
         'status',
         'note',
+        'is_featured',
     ];
 
     public function products()
