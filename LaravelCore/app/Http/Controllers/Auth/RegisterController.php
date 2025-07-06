@@ -46,7 +46,7 @@ class RegisterController extends Controller
     public function index()
     {
         $pageName = 'Login';
-        $settings = Setting::pluck('value', 'key');
+        $settings = cache()->get('settings');
         return view('auth.register', compact('pageName', 'settings'));
     }
 

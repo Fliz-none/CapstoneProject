@@ -17,6 +17,16 @@
                                     <h2>{{ $pageName }}</h2>
                                 </div>
                             </div>
+                            <div class="swiper-slide">
+                                <div class="home-banner-slide">
+                                    <img class="img-fluid" src="{{ asset('images/banner/banner-shop.jpg') }}" alt="Trang chủ"
+                                        loading="lazy">
+                                </div>
+                                <div class="text-box-banner top text-center">
+                                    <h2> Dịch vụ TruongDung Pet cung cấp </h2>
+                                    <p> TruongDung Pet đặt tình yêu và sự chân thành đến với sức khỏe của Pet cưng của bạn. </p>
+                                </div>
+                            </div>
                         </div>
                         <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
                     </div>

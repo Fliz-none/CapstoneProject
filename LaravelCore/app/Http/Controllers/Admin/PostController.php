@@ -58,29 +58,26 @@ class PostController extends Controller
         if (isset($request->key)) {
             switch ($request->key) {
                 case 'new':
-                    $pageName = 'New ' . self::NAME;
+                    $pageName = __('messages.post.new_post');
                     return view('admin.post', compact('pageName', 'categories'));
-                    break;
                 case 'list':
                     $ids = json_decode($request->ids);
                     $obj = Post::orderBy('sort', 'ASC')->when(count($ids), function ($query) use ($ids) {
                         $query->whereIn('id', $ids);
                     })->get();
                     return response()->json($obj, 200);
-                    break;
                 default:
                     $post = Post::find($request->key);
                     if ($post) {
                         if ($request->ajax()) {
                             return response()->json($post, 200);
                         } else {
-                            $pageName = $post->name;
-                            return view('admin.post', compact('pageName', 'post', 'categories'));
+                            $pageName = $post->title;
+                            return view('admin.post', compact('pageName', 'post'));
                         }
                     } else {
                         return redirect()->route('admin.post', ['key' => 'new'],);
                     }
-                    break;
             }
         } else {
             $objs = Post::with('category');
@@ -119,6 +116,16 @@ class PostController extends Controller
                         } else {
                             return $obj->title;
                         }
+                    })
+                    ->filterColumn('title', function ($query, $keyword) {
+                        $query->where('posts.title', 'like', "%" . $keyword . "%");
+                    })
+                    ->orderColumn('title', function ($query, $order) {
+                        $query->orderBy('title', $order);
+                    })
+                    ->editColumn('content', function ($obj) {
+                        // nếu quá dài thì hiện ...
+                        return Str::limit($obj->content, 200, '...');
                     })
                     ->editColumn('author', function ($obj) {
                         if (!empty($this->user->can(User::UPDATE_POST))) {
@@ -167,7 +174,7 @@ class PostController extends Controller
                         }
                         return $str;
                     })
-                    ->rawColumns(['checkboxes', 'title', 'author', 'category', 'image', 'status', 'action'])
+                    ->rawColumns(['checkboxes', 'title', 'author', 'category', 'image', 'status', 'action', 'content'])
                     ->setTotalRecords($objs->count())
                     ->make(true);
             } else {
@@ -181,7 +188,7 @@ class PostController extends Controller
     {
         $rules = [
             'title' => ['required', 'string', 'max:125'],
-            'excerpt' => ['nullable', 'string', 'max:125'],
+            'excerpt' => ['nullable', 'string', 'max:191'],
             'status' => ['required', 'numeric'],
             'image' => ['nullable', 'string'],
             'category_id' => ['required', 'numeric'],
@@ -197,7 +204,7 @@ class PostController extends Controller
                         'title' => $request->title,
                         'slug' => Str::slug($request->title),
                         'excerpt' => $request->excerpt,
-                        'content' => strip_tags($request->input('content')),  //Loại bỏ các thẻ html
+                        'content' => $request->input('content'),
                         'category_id' => $request->category_id,
                         'status' => $request->status,
                         'author_id' => Auth::user()->id,
@@ -210,7 +217,7 @@ class PostController extends Controller
                 $action = ($request->id) ? __('messages.update') : __('messages.add');
                 $response = array(
                     'status' => 'success',
-                    'msg' => __('messages.post.success').' ' . $action . ' ' . __('messages.post.post') . ' ' . $post->name
+                    'msg' => __('messages.post.success').' ' . $action . ' ' . __('messages.post.post') . ' ' . $post->title
                 );
             } catch (\Exception $e) {
                 log_exception($e);

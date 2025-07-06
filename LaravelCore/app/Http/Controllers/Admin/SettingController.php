@@ -48,7 +48,7 @@ class SettingController extends Controller
 
     public function updateSetting($key, $value)
     {
-        $settings = Setting::pluck('value', 'key');
+        $settings = cache()->get('settings');
         if (array_key_exists($key, $settings->toArray())) {
             if ($value != $settings[$key]) {
                 Setting::where('key', $key)->update([

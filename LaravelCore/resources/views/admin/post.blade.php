@@ -7,11 +7,11 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <h5 class="text-uppercase">{{ __('messages.post.new_post') }}</h5>
-                    <nav aria-label="breadcrumb" class="breadcrumb-header float-start">
+                    <h5 class="text-uppercase">{{ $pageName }}</h5>
+                    <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('admin.post') }}">{{ __('messages.post.post') }}</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.post.new_post') }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
                         </ol>
                     </nav>
                 </div>
@@ -90,7 +90,7 @@
                                         <option value="1" {{ (isset($post) && $post->status == 1) || old('status') === '1' ? 'selected' : '' }}>
                                             {{ __('messages.post.publish') }}</option>
                                         <option value="2" {{ (isset($post) && $post->status == 2) || old('status') === '2' ? 'selected' : '' }}>
-                                           {{ __('messages.post.feature') }}</option>
+                                            {{ __('messages.post.feature') }}</option>
                                         <option value="0" {{ (isset($post) && $post->status == 0) || old('status') === '0' ? 'selected' : '' }}>
                                             {{ __('messages.post.hide') }}</option>
                                     </select>
@@ -124,19 +124,24 @@
                                 <button class="btn btn-info" type="submit">{{ isset($post) ? __('messages.update') : __('messages.post.publish') }}</button>
                             </div>
                             <!-- END Publish card -->
+                            @php
+                                $selected_id = old('category_id') != null ? old('category_id') : (isset($post) ? $post->category_id : null);
+                            @endphp
                             <!-- Catalog card -->
                             <div class="card card-body mb-3">
-                                <h6 class="mb-0">{{ __('messages.post.category') }}</h6>
+                                <div class="d-flex">
+
+
+
+                                    <h6 class="mb-0">{{ __('messages.post.category') }}</h6>
+                                    <button class="ms-auto btn btn-link btn-reload-categories" type="button">
+                                        <i class="bi bi-arrow-clockwise"></i>
+                                    </button>
+                                </div>
                                 <hr class="horizontal dark">
                                 <div class="category-select">
-                                    <ul class="list-group">
-                                        @foreach ($categories as $key => $category)
-                                            <li class="list-group-item border border-0" id="category-group-{{ $category->id }}">
-                                                <input class="form-check-input me-1 @error('category') is-invalid @enderror" id="category-{{ $category->id }}" name="category_id" type="radio" value="{{ $category->id }}"
-                                                    {{ (isset($post) && $post->category->pluck('id')->contains($category->id)) || collect(old('categories'))->contains($category->id) ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="category-{{ $category->id }}">{{ $category->name }}</label>
-                                            </li>
-                                        @endforeach
+                                    <ul class="list-group category-select-ul">
+                                        @include('admin.includes.categories', ['selected_id' => $selected_id])
                                     </ul>
                                 </div>
                                 @error('categories')
@@ -174,3 +179,18 @@
         @endif
     </div>
 @endsection
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('.btn-reload-categories').on('click', function() {
+                $.ajax({
+                    url: `{{ route('admin.category', ['key' => 'reload', 'selected_id' => $selected_id ?? null]) }}`,
+                    type: 'GET',
+                    success: function(data) {
+                        $('.category-select-ul').html(data);
+                    }
+                });
+            });
+        });
+    </script>
+@endpush

@@ -113,7 +113,7 @@
                                                                         data-price="{{ $unit->price }}"
                                                                         data-unit_id="{{ $unit->id }}">{{ $unit->term }}
                                                                         <span class="unit-price text-"
-                                                                            data-price="{{ $unit->price }}">{{ number_format($unit->price, 0, ',', '.') . cache('settings')->get('currency', 'VND') }}</span>
+                                                                            data-price="{{ $unit->price }}">{{ number_format($unit->price, 0, ',', '.') . cache('settings')->get('currency') }}</span>
                                                                     </a>
                                                                 </div>
                                                             @empty
@@ -127,7 +127,7 @@
                                                     data-variable-id="{{ $variable->id }}">
                                                     <i class="bi bi-currency-exchange fs-4 text-warning"></i>
                                                     <h4 class="text-dark mb-0 preview-price">
-                                                        0 {{ cache('settings')->get('currency', 'VND') }}
+                                                        0 {{ cache('settings')->get('currency') }}
                                                     </h4>
                                                 </div>
                                                 <div class="d-flex mb-4 align-items-center">
@@ -357,7 +357,7 @@
                 var newPrice = currentQuantity * variablePrice;
                 if (priceElement.length) {
                     priceElement.text(newPrice.toLocaleString() +
-                        `{{ cache('settings')->get('currency', 'VND') }}`);
+                        `{{ cache('settings')->get('currency') }}`);
                 }
             }
 
@@ -386,7 +386,7 @@
                 var quantity = $('.quantityInput[data-variable-id="' + variableId + '"]').val();
                 if (previewPriceElement.length) {
                     previewPriceElement.text((price * quantity).toLocaleString() +
-                        `{{ cache('settings')->get('currency', 'VND') }}`);
+                        `{{ cache('settings')->get('currency') }}`);
                 }
             });
 

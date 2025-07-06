@@ -17,7 +17,7 @@ class HomeController extends Controller
         $pageName = 'Home';
         try {
             DB::select('select 1');
-            $settings = Setting::pluck('value', 'key');
+            $settings = cache()->get('settings');
             $products = Product::where('status', '>', 0)
                 ->orderBy('sort', 'ASC')
                 ->paginate(12);
@@ -43,7 +43,7 @@ class HomeController extends Controller
 
         try {
             DB::select('select 1');
-            $settings = Setting::pluck('value', 'key');
+            $settings = cache()->get('settings');
         } catch (\Exception $e) {
             log_exception($e);
             $settings = collect();

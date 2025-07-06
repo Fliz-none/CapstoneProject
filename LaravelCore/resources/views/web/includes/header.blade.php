@@ -33,8 +33,8 @@
                             </a>
                         </li>
                         <li class="header-list-item">
-                            <a class="header-item-link {{ $pageName == __('Spa & Grooming') ? 'active' : '' }}" href="{{ route('post', ['sub' => 'spa-&-grooming']) }}" title="Dịch vụ thú cưng">
-                                Dịch vụ thú cưng
+                            <a class="header-item-link {{ $pageName == __('Bài viết') ? 'active' : '' }}" href="{{ route('post', ['sub' => 'posts']) }}" title="Bài viết">
+                                Bài viết
                             </a>
                         </li>
                         <li class="header-list-item">
@@ -132,8 +132,8 @@
                     </li>
                     <li class="mb-header-list-item">
                         <div class="list-item-head">
-                            <a class="header-item-link {{ $pageName == __('Spa & Grooming') ? 'active' : '' }}" href="{{ route('post', ['sub' => 'spa-&-grooming']) }}" title="Dịch vụ thú cưng">
-                                Dịch vụ thú cưng
+                            <a class="header-item-link {{ $pageName == __('Bài viết') ? 'active' : '' }}" href="{{ route('post', ['sub' => 'posts']) }}" title="Bài viết">
+                                Bài viết
                             </a>
                         </div>
                     </li>

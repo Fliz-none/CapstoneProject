@@ -177,7 +177,7 @@
                             chăm sóc boss
                         </h4>
                     </div>
-                    <a class="recipe-cta" href="{{ route('post', ['sub' => 'posts', 'category' => 'cham-soc-boss']) }}">
+                    <a class="recipe-cta" href="{{ route('post', ['sub' => 'posts', 'category' => 'promotion']) }}">
                         Xem tất cả
                         <img class="img-fluid" src="{{ asset('images/img/arrow-right.png') }}" alt="">
                     </a>
@@ -187,7 +187,7 @@
                     @for ($i = 0; $i < 4; $i++)
                         <div class="recipe-item-column">
                             @php
-                                $category = $categories->where('slug', 'cham-soc-boss')->first();
+                                $category = $categories->where('slug', 'promotion')->first();
                             @endphp
                             @if ($category && $category->posts->count())
                                 @foreach ($category->posts()->orderBy('created_at', 'DESC')->offset($i * 2)->limit(2)->get() as $post)
@@ -218,12 +218,12 @@
                         </div>
                     @endfor
                 </div>
-
+                {{-- Mobile --}}
                 <div class="recipe-list mb-recipe-list">
                     @for ($i = 0; $i < 2; $i++)
                         <div class="recipe-item-column">
                             @php
-                                $category = $categories->where('slug', 'cham-soc-boss')->first();
+                                $category = $categories->where('slug', 'promotion')->first();
                             @endphp
                             @if ($category && $category->posts->count())
                                 @foreach ($category->posts()->orderBy('created_at', 'DESC')->offset($i * 3)->limit(3)->get() as $post)
@@ -254,7 +254,7 @@
                     @endfor
                 </div>
                 <div class="mb-show mb-recipe">
-                    <a class="recipe-cta" href="{{ route('post', ['sub' => 'posts', 'category' => 'cham-soc-boss']) }}">
+                    <a class="recipe-cta" href="{{ route('post', ['sub' => 'posts', 'category' => 'promotion']) }}">
                         Xem tất cả
                         <img class="img-fluid" src="{{ asset('images/img/arrow-right.png') }}" alt="">
                     </a>

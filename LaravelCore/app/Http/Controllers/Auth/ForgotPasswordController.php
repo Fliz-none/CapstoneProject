@@ -25,7 +25,7 @@ class ForgotPasswordController extends Controller
     public function index()
     {
         $pageName = 'Quên mật khẩu';
-        $settings = Setting::pluck('value', 'key');
+        $settings = cache()->get('settings');
         return view('auth.passwords.email', compact('pageName', 'settings'));
     }
 

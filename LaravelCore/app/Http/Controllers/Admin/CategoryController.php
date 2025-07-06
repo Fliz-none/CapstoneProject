@@ -44,8 +44,6 @@ class CategoryController extends Controller
 
             return $next($request);
         });
-
-
     }
 
     /**
@@ -63,8 +61,10 @@ class CategoryController extends Controller
                         $query->whereIn('id', $ids);
                     })->get();
                     return response()->json($obj, 200);
-                    break;
-
+                case 'reload':
+                    $selected_id = $request->selected_id ?? null;
+                    $html = view('admin.includes.categories', ['selected_id' => $selected_id])->render();
+                    return response()->json($html, 200);
                 default:
                     $category = Category::find($request->key);
                     if ($category) {
@@ -72,7 +72,6 @@ class CategoryController extends Controller
                     } else {
                         abort(404);
                     }
-                    break;
             }
         } else {
             if ($request->ajax()) {

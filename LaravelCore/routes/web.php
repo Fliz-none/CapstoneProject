@@ -41,6 +41,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ProductController as WebProductController;
+use App\Http\Controllers\PostController as WebPostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
@@ -327,8 +328,8 @@ Route::get('tai-khoan', [ProfileController::class, 'profile'])->name('profile');
 Route::get('don-hang', [ProfileController::class, 'orders'])->name('orders');
 Route::get('gio-hang/thanh-toan', [CartController::class, 'index'])->name('checkout');
 Route::get('gio-hang/thanh-toan/hoan-thanh', [CartController::class, 'index'])->name('checkout');
-// Đã xóa benh-vien-thu-y
 Route::get('shop', [ShopController::class, 'index'])->name('shop');
+Route::get('{sub?}/{category?}/{post?}', [WebPostController::class, 'index'])->name('post');
 Route::get('san-pham/{catalogue?}/{slug?}', [WebProductController::class, 'index'])->name('product');
 Route::post('/change-language', [LanguageController::class, 'changeLanguage'])
     ->name('change.language.ajax')
@@ -345,4 +346,3 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('clear', [CartController::class, 'clear'])->name('cart.clear');
     });
 });
-Route::get('{sub?}/{category?}/{post?}', [PostsController::class, 'post'])->name('post');

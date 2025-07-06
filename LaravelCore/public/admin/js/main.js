@@ -1391,15 +1391,14 @@ $(".summernote").summernote({
         theme: "monokai",
     },
     toolbar: [
-        // [groupName, [list of button]]
-        ["style", ["style", "bold", "italic", "underline", "clear"]],
+        ["style", ["style", "bold", "italic", "underline", "clear", "color", "background", "fontsize", "fontname"]],
         ["font", ["strikethrough", "superscript", "subscript"]],
         ["para", ["ul", "ol", "paragraph"]],
         ["height", ["height"]],
 
         ["table", ["table"]],
-        ["insert", ["link", "image", "video"]],
-        ["view", ["fullscreen", "codeview"]],
+        ["insert", ["link", "image", "video", "hr"]],
+        ["view", ["fullscreen", "codeview", "help", "undo", "redo"]],
     ],
     buttons: {
         image: selectImage,

@@ -58,7 +58,7 @@
     {{-- Print JS --}}
     <link href="{{ asset('admin/vendors/print/print.min.css') }}" rel="stylesheet">
     {{-- Include Summernote Editor --}}
-    <link href="{{ asset('admin/vendors/summernote/summernote-lite.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('admin/vendors/summernote/summernote-bs5.min.css') }}" rel="stylesheet">
     {{-- daterangepicker --}}
     <link type="text/css" href="{{ asset('admin/vendors/daterangepicker/daterangepicker.css') }}" rel="stylesheet" />
 
@@ -171,7 +171,7 @@
 <script src="{{ asset('admin/vendors/select2/js/select2.full.js') }}"></script>
 <script src="{{ asset('admin/vendors/select2/js/i18n/vi.js') }}"></script>
 {{-- Include Summernote Editor --}}
-<script src="{{ asset('admin/vendors/summernote/summernote-lite.min.js') }}"></script>
+<script src="{{ asset('admin/vendors/summernote/summernote-bs5.min.js') }}"></script>
 {{-- input mask js --}}
 <script src="{{ asset('admin/vendors/jquery-mask/jquery.mask.js') }}"></script>
 {{-- scanner-detection --}}
@@ -206,6 +206,7 @@
                 messages: `{{ route('admin.chat', ['key' => 'messages']) }}`
             }
         },
+        defaultLanguage: "{{ session()->get('locale') ?? 'en' }}",
         auth_id: @json(auth()->id()),
         canUpdateUser: {{ Auth::user()->can(\App\Models\User::UPDATE_USER) ? 'true' : 'false' }},
         datatable: {
@@ -2794,8 +2795,6 @@
 
         return `${hours}:${minutes}`;
     }
-
-
 </script>
 <script src="{{ asset('admin/js/main.js') }}?v={{ $version_name }}"></script>
 @stack('quick_images')

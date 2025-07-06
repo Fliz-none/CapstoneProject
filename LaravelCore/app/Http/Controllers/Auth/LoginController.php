@@ -31,7 +31,7 @@ class LoginController extends Controller
     public function index()
     {
         $pageName = 'Đăng nhập';
-        $settings = Setting::pluck('value', 'key');
+        $settings = cache()->get('settings');
         return view('auth.login', compact('pageName', 'settings'));
     }
 
@@ -60,7 +60,6 @@ class LoginController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-
         // Nếu validation thất bại, trả về lỗi
         if ($validator->fails()) {
             return response()->json([
@@ -77,7 +76,7 @@ class LoginController extends Controller
             ], 200);
         }
         // Thử đăng nhập
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
+        if ($this->attemptLogin($request)) {
             // Nếu đăng nhập thành công
             if($request->ajax()) {
                 return response()->json([
@@ -164,7 +163,7 @@ class LoginController extends Controller
      * Get the failed login response instance.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     protected function sendFailedLoginResponse(Request $request)
     {

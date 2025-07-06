@@ -17,7 +17,7 @@ class ProfileController extends Controller
     public function profile()
     {
         $pageName = 'Account ' . Auth::user()->name;
-        $settings = Setting::pluck('value', 'key');
+        $settings = cache()->get('settings');
         return view('web.profile', compact('pageName', 'settings'));
     }
 }

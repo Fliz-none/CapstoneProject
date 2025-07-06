@@ -105,7 +105,7 @@
                         <li class="sidebar-item has-sub" data-keyword="Stocks">
                             <a class='sidebar-link' href="#">
                                 <i class="bi bi-grid-1x2"></i>
-                                <span>Stock management</span>
+                                <span>Stock</span>
                             </a>
                             <ul class="submenu">
                                 @if (!empty(Auth::user()->hasAnyPermission(app\Models\User::READ_STOCKS)))

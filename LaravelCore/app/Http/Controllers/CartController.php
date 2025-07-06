@@ -10,7 +10,7 @@ class CartController extends Controller
     public function cart()
     {
         $pageName = 'Cart';
-        $settings = Setting::pluck('value', 'key');
+        $settings = cache()->get('settings');
         return view('web.cart', compact('pageName', 'settings'));
     }
 }

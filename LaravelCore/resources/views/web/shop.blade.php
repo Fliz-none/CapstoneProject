@@ -244,7 +244,6 @@
     <script>
         $(document).ready(function() {
             $(document).on('change', '.catalogue-radio', function() {
-                // Code ngắn gọn
                 let url = new URL(window.location.href);
                 url.searchParams.set('catalogue_slug', $(this).val());
                 url.searchParams.delete('page');
