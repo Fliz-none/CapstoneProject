@@ -414,13 +414,13 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         switch ($this->gender) {
             case '2':
-                $result = 'Other';
+                $result = __('messages.profile.other');
                 break;
             case '1':
-                $result = 'Female';
+                $result = __('messages.profile.female');
                 break;
             case '0':
-                $result = 'Male';
+                $result = __('messages.profile.male');
                 break;
             default:
                 $result = __('messages.unknown');

@@ -8,6 +8,7 @@ use Jenssegers\Agent\Agent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Models\Log;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class LogController extends Controller
@@ -42,10 +43,10 @@ class LogController extends Controller
 
                 case 'search':
                     $result = Log::where(function ($query) use ($request) {
-                            $query->where('action', 'like', "%{$request->q}%")
-                                ->orWhere('type', 'like', "%{$request->q}%")
-                                ->orWhere('object', 'like', "%{$request->q}%");
-                        })
+                        $query->where('action', 'like', "%{$request->q}%")
+                            ->orWhere('type', 'like', "%{$request->q}%")
+                            ->orWhere('object', 'like', "%{$request->q}%");
+                    })
                         ->get()
                         ->map(function ($log) {
                             return '<li class="list-group-item list-group-item-action cursor-pointer rounded-3 border-0">
@@ -63,7 +64,7 @@ class LogController extends Controller
                 $logs = Log::with(['_user', 'branch'])->orderByDesc('created_at');
                 return DataTables::of($logs)
                     ->addColumn('code', function ($log) {
-                         $code = '<a class="cursor-pointer btn-detail-log text-primary fw-bold" data-id="' . $log->id . '">' . $log->code . '</a>';
+                        $code = '<a class="cursor-pointer btn-detail-log text-primary fw-bold" data-id="' . $log->id . '">' . $log->code . '</a>';
                         return $code . '<br/><small>' . optional($log->created_at)->format('d/m/Y H:i') . '</small>';
                     })
                     ->filterColumn('code', function ($query, $keyword) {
@@ -99,22 +100,22 @@ class LogController extends Controller
                     //     return '<span class="fw-bold">' . $log->action . '</span>';
                     // })
                     ->editColumn('action', function ($log) {
-                    switch ($log->action) {
-                        case 1:
-                            $actionText = __('messages.create');
-                            break;
-                        case 2:
-                            $actionText = __('messages.update');
-                            break;
-                        case 3:
-                            $actionText = __('messages.delete');
-                            break;
-                        default:
-                            $actionText = __('messages.unknown');
-                            break;
-                    }
-                    return '<span class="fw-bold">' . $actionText . '</span>';
-                })
+                        switch ($log->action) {
+                            case 1:
+                                $actionText = __('messages.create');
+                                break;
+                            case 2:
+                                $actionText = __('messages.update');
+                                break;
+                            case 3:
+                                $actionText = __('messages.delete');
+                                break;
+                            default:
+                                $actionText = __('messages.unknown');
+                                break;
+                        }
+                        return '<span class="fw-bold">' . $actionText . '</span>';
+                    })
 
                     ->filterColumn('action', function ($query, $keyword) {
                         $query->where('action', 'like', '%' . $keyword . '%');
@@ -146,11 +147,14 @@ class LogController extends Controller
                     ->rawColumns(['code', 'user_id', 'action', 'type'])
                     ->make(true);
             } else {
-                $pageName =self::NAME . ' management';
+                $pageName = self::NAME . ' management';
                 return view('admin.logs', compact('pageName'));
             }
         }
     }
+
+
+
 
     static function create($action, $object, $object_id, $ip = null)
     {
@@ -174,6 +178,35 @@ class LogController extends Controller
         if (!$log) {
             return response()->json(['error' => 'Log not found'], 404);
         }
+
+        $beforeChange = $log->before_change ? self::hydrateModelFromLog($log->type, $log->before_change) : null;
+        $afterChange = $log->after_change ? self::hydrateModelFromLog($log->type, $log->after_change) : null;
+
+        $log->before_change = $beforeChange;
+        $log->after_change = $afterChange;
         return response()->json($log);
+    }
+
+
+    private static function getModelClassFromType(string $type): ?string
+    {
+        $className = 'App\\Models\\' . Str::studly($type);
+
+        return class_exists($className) ? $className : null;
+    }
+
+    private static function hydrateModelFromLog(string $type, ?string $jsonData): ?\Illuminate\Database\Eloquent\Model
+    {
+        if (!$jsonData)
+            return null;
+        $modelClass = self::getModelClassFromType($type);
+        if (!$modelClass)
+            return null;
+
+        $dataArray = json_decode($jsonData, true);
+        if (!$dataArray)
+            return null;
+
+        return (new $modelClass)->newFromBuilder($dataArray);
     }
 }
