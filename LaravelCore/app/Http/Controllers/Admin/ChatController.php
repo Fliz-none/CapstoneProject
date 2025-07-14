@@ -85,12 +85,12 @@ class ChatController extends Controller
             'attachments' => 'nullable|array|max:5', // Tối đa 5 files
             'attachments.*' => 'file|max:10240',     // Mỗi file ≤ 10MB
         ], [
-            'conversation_id.required' => 'The conversation has not been found.',
-            'message.required' => 'The message field is required.',
-            'message.string' => 'The message field must be a string.',
-            'message.max' => 'The message field must not be greater than 192 characters.',
-            'attachments.max' => 'You can only upload up to 5 attachments.',
-            'attachments.*.max' => 'Each attachment must not be greater than 10MB.',
+            'conversation_id.required' => __('messages.chat.conversation_id.required'),
+            'message.required' => __('messages.chat.message.required'),
+            'message.string' => __('messages.chat.message.string'),
+            'message.max' => __('messages.chat.message.max'),
+            'attachments.max' => __('messages.chat.attachments.max'),
+            'attachments.*.max' => __('messages.chat.attachments.*.max'),
         ]);
 
         try {
@@ -99,7 +99,7 @@ class ChatController extends Controller
             $attachments = $request->file('attachments', []);
 
             if (empty($messageText) && count($attachments) === 0) {
-                return response()->json(['message' => 'The message field is required if no attachment is provided.'], 422);
+                return response()->json(['message' => __('messsages.chat.message.error')], 422);
             }
 
             DB::beginTransaction();
@@ -135,7 +135,7 @@ class ChatController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             log_exception($e);
-            return response()->json(['message' => 'An error occurred while sending the message!'], 500);
+            return response()->json(['message' => __('messsages.chat.message.send_error')], 500);
         }
     }
     protected function handleAttachments(array $files, Message $message): void

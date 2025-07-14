@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Unit extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $appends = ['bestDiscount'];
     protected $fillable = [
         'term',
         'variable_id',
@@ -44,6 +46,60 @@ class Unit extends Model
 
     public function discounts()
     {
-        return $this->belongsToMany(Discount::class);
+        $today = now()->toDateString();
+
+        return $this->belongsToMany(Discount::class)
+            ->whereDate('start_date', '<=', $today)
+            ->whereDate('end_date', '>=', $today);
+    }
+
+
+    public function getBestDiscountAttribute()
+    {
+        $discounts = $this->discounts()
+            ->where('branch_id', Auth::user()->main_branch)
+            ->where('status', 1)
+            ->get();
+        if ($discounts->isEmpty()) {
+            return null;
+        }
+
+        $result = $discounts->first();
+
+        if (count($discounts) > 1) {
+            foreach ($discounts as $discount) {
+                switch ($result->type) {
+                    case 2: // Mua X tặng Y
+                        if ($discount->type === 2 && $result->get_quantity && $discount->get_quantity) {
+                            $old = $result->buy_quantity / $result->get_quantity;
+                            $new = $discount->buy_quantity / $discount->get_quantity;
+
+                            if ($new < $old) {
+                                $result = $discount;
+                            }
+                        }
+                        break;
+                    default:
+                        if ($discount->type == 2) {
+                            $result = $discount;
+                        } else {
+                            $price = $this->price;
+                            $old = $price - ($result->type === 0 ? $price * ($result->value / 100) : $result->value);
+                            $new = $price - ($discount->type === 0 ? $price * ($discount->value / 100) : $discount->value);
+
+                            if ($new < $old) {
+                                $result = $discount;
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+        return $result;
+    }
+
+    public function _discounts()
+    {
+        return $this->belongsToMany(Discount::class, 'discount_unit');
     }
 }

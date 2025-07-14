@@ -239,7 +239,6 @@ class PostController extends Controller
                 $obj = Post::find($id);
                 if ($obj->canRemove()) {
                     $obj->delete();
-                    LogController::create("3", self::NAME, $obj->id);
                     array_push($success, $obj->name);
                 } else {
                     array_push($fail, $obj->name);

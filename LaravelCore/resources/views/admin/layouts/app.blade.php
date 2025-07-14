@@ -535,7 +535,7 @@
         form.find(`[name=stock_limit]`).val(0)
         form.find(`[name='product_id']`).val($(this).attr('data-product'))
         form.attr('action', `{{ route('admin.variable.create') }}`)
-        form.find('.modal').modal('show').find('.modal-title').text('New variant')
+        form.find('.modal').modal('show').find('.modal-title').text(`{{ __('messages.variables.new_variable') }}`)
     })
 
     $(document).on('click', '.btn-update-variable', function (e) {
@@ -1729,7 +1729,7 @@
     function addCardToOrder(stock) {
         let tab = $('#order-modal').hasClass('show') ? $('#order-modal') : $('.tab-pane.active'),
             units = stock.productUnits.map((item) => {
-                return `<option value="${item.id}" data-rate="${item.rate}" data-price="${item.price}" ${item.rate == stock.productUnit.rate ? 'selected' : ''}>${item.term}</option>`
+                return `<option value="${item.id}" data-rate="${item.rate}" data-price="${item.price}" ${item.rate == stock.productUnit.rate ? 'selected' : ''}  data-discount='${JSON.stringify(item.bestDiscount)}'>${item.term}</option>`
             }).join('')
         if (!units.length) {
             units =
@@ -1738,7 +1738,7 @@
         tab.find('.order-details').prepend(`
             <div class="card border shadow-none mb-2 p-3 detail order-detail">
                 <div class="row">
-                    <div class="col 12 col-lg-7">
+                    <div class="col 12 col-lg-5">
                         <p class="card-title mb-0">
                             ${stock.productName}
                             <input type="hidden" class="order_detail-stock_id" name="stock_ids[]" value="${stock.stockId}"/>
@@ -1746,23 +1746,23 @@
                                 <i class="bi bi-info-circle"></i>
                             </a>
                         </p>
-                        <div class="badge bg-light-info">${stock.productSku}</div>
+                        <div class="badge bg-light-info">${stock.productSku ?? ''}</div>
                         ${stock.stockExpired == null || stock.stockExpired == '' ? '' : `<div class="badge bg-light-info">EXP ${moment(stock.stockExpired).format('DD/MM/YYYY')}</div>`}
                         <div class="badge bg-light-info">
                             {{ __('messages.available_stock') }} ${stock.stockConvertQuantity}
                             <input type="hidden" class="order_detail-stock_quantity" name="stock_quantities[]" value="${stock.stockQuantity}"/>
                         </div>
                     </div>
-                    <div class="col-12 col-lg-5">
+                    <div class="col-12 col-lg-7">
                         <div class="row">
-                            <div class="col-7 col-md-4 d-flex justify-content-between position-relative">
+                            <div class="col-7 col-md-3 d-flex justify-content-between position-relative">
                                 <input class="order_detail-price" name="prices[]" type="hidden" value="${stock.productUnit.price}">
                                 <span class="position-absolute top-100 start-50 mt-2 translate-middle badge bg-danger d-none"></span>
                                 <input class="form-control form-control-plaintext form-control-lg order_detail-discounted_price text-end money" name="discounted_price[]" onclick="this.select()" type="text" value="${stock.productUnit.price}" inputmode="numeric" placeholder="Price">
                                 <input class="order_detail-discount" name="discounts[]" type="hidden" value="0">
                                 <button type="button" class="btn btn-link rounded-pill btn-price-order_detail"><i class="bi bi-info-circle"></i></button>
                             </div>
-                            <div class="col-5 col-md-2">
+                            <div class="col-5 col-md-2 px-0">
                                 <select name="unit_ids[]" class="form-control form-control-lg form-control-plaintext order_detail-unit_id">${units}</select>
                                 <input type="hidden" class="order_detail-current_unit_id" name="current_unit_ids[]" value="${stock.productUnit.id}">
                                 <input type="hidden" class="order_detail-current-quantity" name="current_quantities[]" value="1">
@@ -1772,8 +1772,9 @@
                                 <input class="form-control-plaintext form-control-lg order_detail-quantity text-center" name="quantities[]" type="text" value="1" onclick="this.select()">
                                 <button type="button" class="btn btn-link btn-sm rounded-pill btn-quantity-detail btn-inc"><i class="bi bi-plus-circle fs-5 fw-bold"></i></button>
                             </div>
-                            <div class="col-6 col-md-3">
+                            <div class="col-6 col-md-4">
                                 <input class="form-control-plaintext form-control-lg order_detail-total text-end money" type="text" value="${stock.productUnit.price}" readonly>
+                                <input type="hidden" name="discount_programs[]" class="order_detail-discount_program" value="0">
                             </div>
                         </div>
                     </div>
@@ -1787,7 +1788,6 @@
                         <i class="bi bi-three-dots-vertical"></i>
                     </button>
                     <ul class="dropdown-menu shadow-lg p-2" style="z-index: 9999">
-                        <li><a class="dropdown-item btn-history-detail_stock" data-variable-id="${stock.variableId}" href="#">Sales History</a></li>
                         <li><a class="dropdown-item btn-note-detail_stock" data-variable-id="${stock.variableId}" href="#">Item Note</a></li>
                         <hr class="dropdown-divider" />
                         <li>
@@ -1800,8 +1800,61 @@
                     </ul>
                 </div>
             </div>`)
+        checkDiscount($(tab.find('.detail.order-detail')[0]));
         totalOrder()
     }
+
+    function checkDiscount(card){
+        const discount = JSON.parse(card.find('select option:selected').attr('data-discount'))
+        if (discount) {
+            const price = Number(card.find('.order_detail-discounted_price').val()),
+                quantity = Number(card.find('.order_detail-quantity').val())
+                value = discount.value,
+                type = discount.type,
+                minQ = discount.min_quantity,
+                buyQ = discount.buy_quantity,
+                getQ = discount.get_quantity,
+                groupSize = buyQ + getQ
+                discountPrice = 0
+                note = ``;
+            switch (type) {
+                case 2:
+                    if(quantity >= groupSize) {
+                        const freeItem = Math.floor(quantity / groupSize) * getQ;
+                        discountPrice = freeItem * price
+                        note = `Tặng miễn phí ${freeItem} sản phẩm (${discount.typeStr})`
+                        card.find('.order_detail-note').val(note).prev().text('Note: ' + note)
+                    }
+                    break;
+                default:
+                    if(quantity >= minQ) {
+                        const apply_type = discount.apply_type,
+                            freeItem = Math.floor(quantity / minQ);
+                        if (type == 1) {
+                            discountPrice = apply_type === 'once' ? value : (value * freeItem)
+                        } else {
+                            let perPrice = (value/100) * price
+                            discountPrice = apply_type === 'once' ? perPrice : (perPrice * freeItem)
+                        }
+                        note = `${discount.name} giảm ${discountPrice}`
+                        card.find('.order_detail-note').val(note).prev().text('Note: ' + note)
+                    }
+                    break;
+            }
+
+            card.find('.order_detail-discount_program').val(discountPrice)
+        }
+    }
+
+    $(document).on('change', '.order_detail-unit_id', function () {
+        const unit = $(this),
+            price = Number(unit.find('option:selected').attr('data-price')),
+            card = unit.closest('.detail.order-detail');
+        card.find('.order_detail-discounted_price').val(price).prev().text('')
+        card.find('.order_detail-discount').val(0).end().find('.order_detail-price').val(price)
+                                                .end().find('.order_detail-discounted_price').val(price)
+        checkDiscount($(card))
+    })
 
     $(document).on('click', '.btn-quantity-detail', function () {
         const card = $(this).closest('.detail'),
@@ -1815,6 +1868,7 @@
         } else {
             card.find(`[name='quantities[]']`).val(quantity + 1).change()
         }
+        checkDiscount($(card))
         $(this).closest('.order-receipt').length ? totalOrder() : null
     })
 
@@ -1897,7 +1951,7 @@
         return `
             <div class="card border shadow-none mb-2 p-3 detail order-detail">
                 <div class="row">
-                    <div class="col 12 col-lg-7">
+                    <div class="col 12 col-lg-5">
                         <p class="card-title mb-0">
                             ${detail._stock.import_detail._variable._product.name}${(detail._stock.import_detail._variable.name) ? ' - ' + detail._stock.import_detail._variable.name : ''}
                             <input type="hidden" class="order_detail-stock_id" name="stock_ids[]" value="${detail._stock.id}"/>
@@ -1905,23 +1959,23 @@
                                 <i class="bi bi-info-circle"></i>
                             </a> -->
                         </p>
-                        <div class="badge bg-light-info">${detail._stock.import_detail._variable._product.sku}</div>
+                        <div class="badge bg-light-info">${detail._stock.import_detail._variable._product.sku ?? ''}</div>
                         ${detail._stock.expired != null ? '<div class="badge bg-light-info">EXP ' + moment(detail._stock.expired).format('DD/MM/YYYY') + '</div>' : ''}
                         <div class="badge bg-light-info">
                             {{ __('messages.available_stock') }} ${detail._stock.quantity}
                             <input type="hidden" class="order_detail-stock_quantity" name="stock_quantities[]" value="${parseInt(detail.totalSaleQuantity) + parseInt(detail._stock.quantity)}"/>
                         </div>
                     </div>
-                    <div class="col-12 col-lg-5">
+                    <div class="col-12 col-lg-7">
                         <div class="row">
-                            <div class="col-7 col-md-4 d-flex justify-content-between position-relative">
+                            <div class="col-7 col-md-3 d-flex justify-content-between position-relative">
                                 <input class="order_detail-price" name="prices[]" type="hidden" value="${detail.price}">
                                 <span class="position-absolute top-100 start-50 mt-2 translate-middle badge ${className}">${number}</span>
                                 <input class="form-control form-control-plaintext form-control-lg order_detail-discounted_price text-end money" name="discounted_price[]" onclick="this.select()" type="text" value="${discountedPrice}" inputmode="numeric" placeholder="Price">
                                 <input class="order_detail-discount" name="discounts[]" type="hidden" value="${detail.discount}">
                                 <button type="button" class="btn btn-link rounded-pill btn-price-order_detail"><i class="bi bi-info-circle"></i></button>
                             </div>
-                            <div class="col-5 col-md-2">
+                            <div class="col-5 col-md-2 px-0">
                                 <select name="unit_ids[]" class="form-control form-control-lg form-control-plaintext order_detail-unit_id">
                                     <option value="${detail._unit.id}" data-rate="${detail._unit.rate}" data-price="${detail._unit.price}" selected>${detail._unit.term}</option>
                                 </select>
@@ -1933,8 +1987,9 @@
                                 <input class="form-control-plaintext form-control-lg order_detail-quantity text-center" name="quantities[]" type="text" value="${number_format(detail.quantity)}" onclick="this.select()">
                                 <button type="button" class="btn btn-link btn-sm rounded-pill btn-quantity-detail btn-inc"><i class="bi bi-plus-circle fs-5 fw-bold"></i></button>
                             </div>
-                            <div class="col-6 col-md-3">
+                            <div class="col-6 col-md-4">
                                 <input class="form-control-plaintext form-control-lg order_detail-total text-end money" type="text" value="" readonly>
+                                <input type="hidden" name="discount_programs[]" class="order_detail-discount_program" value="${detail.discount_program}">
                             </div>
                         </div>
                     </div>
@@ -1948,7 +2003,6 @@
                         <i class="bi bi-three-dots-vertical"></i>
                     </button>
                     <ul class="dropdown-menu shadow-lg p-2" style="z-index: 9999">
-                        <li><a class="dropdown-item btn-history-detail_stock" data-variable-id="${stock.variableId}" href="#">Sales History</a></li>
                         <li><a class="dropdown-item btn-note-detail_stock" data-variable-id="${stock.variableId}" href="#">Item Note</a></li>
                         <hr class="dropdown-divider" />
                         <li>
@@ -2013,13 +2067,13 @@
                     .clickConfirm());
             },
             preConfirm: () => {
-                const amount = parseInt(detailAmount.value)
+                const amount = parseInt(detailAmount.value),
+                        price = parseInt(inputPrice.val())
                 // Kiểm tra xem cả hai trường đều được nhập và trường số tiền chỉ chứa giá trị số
-                if (!amount || isNaN(parseFloat(amount)) || amount < 0) {
+                if (!amount || isNaN(parseFloat(amount)) || amount < 0 || amount > price) {
                     Swal.showValidationMessage(`Invalid data!`);
                 } else {
-                    let d = 0,
-                        price = parseInt(inputPrice.val())
+                    let d = 0
                     if (amount != 0) {
                         if (amount != 0 && amount <= 100) {
                             d = price - amount / 100 * price
@@ -2134,8 +2188,11 @@
             discount = 0
         tab.find('.order-detail').each(function () {
             const quantity = parseInt($(this).find(`.order_detail-quantity`).val().split(',').join('')),
-                price = parseInt($(this).find(`.order_detail-discounted_price`).val().split(',').join(''))
-            let sum = quantity * price
+                price = parseInt($(this).find(`.order_detail-discounted_price`).val().split(',').join('')),
+                discount_program = parseInt($(this).find(`.order_detail-discount_program`).val())
+                console.log(discount_program);
+
+            let sum = quantity * price - discount_program
             $(this).find('.order_detail-total').val(sum)
             total += sum
             count += parseInt($(this).find(`.order_detail-quantity`).val().split(',').join(''))
@@ -2156,7 +2213,7 @@
         }
 
         summary = total - discount
-        tab.find('.order-summary').val(summary).change()
+        tab.find('.order-summary').val(summary > 0 ? summary : 0).change()
         tab.find('.order-due').val(summary - pay).change()
     }
 
@@ -2384,7 +2441,7 @@
                     'string': 'Has '
                 }
                 str +=
-                    `<span class="badge bg-${$format['color']} me-2 mb-2">${$format['string']} <span class="text-white fw-bold fs-5">${$format['sign']}${number_format(Math.abs(suggest.debt))}VND</span></span>`
+                    `<span class="badge bg-${$format['color']} me-2 mb-2">${$format['string']} <span class="text-white fw-bold fs-5">${$format['sign']}${number_format(Math.abs(suggest.debt))} VND</span></span>`
             }
             if (suggest.averagePaymentDelay) {
                 str +=
@@ -2570,14 +2627,14 @@
                     const totalOrder = json.totalOrder;
                     const totalAmount = json.totalAmount;
                     const transactionRemain = totalAmount - totalOrder;
-                    $('.order-sum').text(number_format(totalOrder) + 'VND');
-                    $('.transaction-sum').text(number_format(totalAmount) + 'VND');
+                    $('.order-sum').text(number_format(totalOrder) + ' VND');
+                    $('.transaction-sum').text(number_format(totalAmount) + ' VND');
                     $('.transaction-remain')
                         .html(transactionRemain < 0 ?
-                            `<span class="text-danger">${number_format(transactionRemain) + 'VND'}</span>` :
+                            `<span class="text-danger">${number_format(transactionRemain) + ' VND'}</span>` :
                             transactionRemain > 0 ?
-                                `<span class="text-success">${number_format(transactionRemain) + 'VND'}</span>` :
-                                number_format(transactionRemain) + 'VND')
+                                `<span class="text-success">${number_format(transactionRemain) + ' VND'}</span>` :
+                                number_format(transactionRemain) + ' VND')
                         .prev().text(transactionRemain < 0 ? `Underpaid` : transactionRemain > 0 ? `Overpaid` : `{{ __('messages.pay_in_full') }}`);
                     return json.data;
                 }

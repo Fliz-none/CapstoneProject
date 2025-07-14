@@ -37,7 +37,7 @@ class SettingController extends Controller
             $settings = cache()->get('settings');
             $banks = Http::get('https://api.vietqr.io/v2/banks')->json();
             return view('admin.settings', compact('pageName', 'settings', 'banks'));
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             log_exception($e);
             return redirect()->back()->with('response', [
                 'status' => 'error',
@@ -72,7 +72,7 @@ class SettingController extends Controller
                 'status' => 'success',
                 'msg' => __('messages.shop_setting.print_success')
             ];
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             log_exception($e);
 
             $response = [
@@ -98,7 +98,7 @@ class SettingController extends Controller
                 'status' => 'success',
                 'msg' => __('messages.images.image') . ' ' . __('messages.updated')
             ];
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             log_exception($e);
             $response = [
                 'status' => 'error',
@@ -155,7 +155,7 @@ class SettingController extends Controller
                 'status' => 'success',
                 'msg' => __('messages.setting_controller.setting_email')
             ];
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             log_exception(($e));
             $response = [
                 'status' => 'error',
@@ -186,7 +186,7 @@ class SettingController extends Controller
                 'status' => 'success',
                 'msg' => __('messages.setting_controller.setting_social')
             ];
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             log_exception($e);
             $response = [
                 'status' => 'error',
@@ -218,7 +218,7 @@ class SettingController extends Controller
                 'status' => 'success',
                 'msg' => __('messages.setting_controller.expense_group__list_saved_successfully'),
             ]);
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             log_exception($e);
             return redirect()->back()->with('response', [
                 'status' => 'error',
@@ -270,7 +270,7 @@ class SettingController extends Controller
                 'status' => 'success',
                 'msg' => __('messages.setting_controller.payment_setting'),
             ];
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             log_exception($e);
             $response = [
                 'status' => 'error',
@@ -381,7 +381,7 @@ class SettingController extends Controller
                 'status' => 'success',
                 'msg' => __('messages.setting_controller.work_setting'),
             ];
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             log_exception($e);
             $response = [
                 'status' => 'error',

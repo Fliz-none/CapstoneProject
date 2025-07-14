@@ -119,6 +119,8 @@ return [
 
     //Sidebar
     'sidebar' => [
+        'customer_support' => 'Hỗ trợ khách hàng',
+        'catelogue' => 'Danh mục',
         'findsomething' => 'Tìm kiếm...',
         'possales' => 'Bán hàng POS',
         'general' => 'Quản lý chung',
@@ -257,11 +259,14 @@ return [
         'user' => 'Người dùng',
         'action' => 'Hành động',
         'object' => 'Đối tượng',
-        'code_user' => 'Mã người dùng',
+        'code_user' => 'Mã',
         'browser' => 'Trình duyệt',
         'location' => 'Vị trí',
         'platform' => 'Nền tảng',
         'device' => 'Thiết bị',
+        'before_change' => 'Trước khi thay đổi',
+        'after_change' => 'Sau khi thay đổi',
+        'log' =>'Nhật kí'
     ],
 
     // Đơn hàng
@@ -380,12 +385,13 @@ return [
         'product' => 'Sản phẩm',
         'product_name' => 'Tên sản phẩm',
         'product_management' => 'Quản lí sản phẩm',
+        'short_description' => 'Mô tả ngắn',
         'online_and_offline' => 'Bán trực tuyến và bán trực tiếp',
         'online' => 'Bán trực tuyến',
         'offline' => 'Bán trực tiếp',
-        'locked' => 'Khóa bán',
-        'feature' => 'Vừa ra mắt',
-        'product_sku' => 'Sản phẩm SKU',
+        'locked' => 'Khóa',
+        'feature' => 'Nổi bật',
+        'product_sku' => 'SKU',
         'exp' => 'Hạn sử dụng',
         'technical' => 'Thông số kỹ thuật',
         'product_gallery' => 'Trưng bày ảnh sản phẩm',
@@ -458,14 +464,17 @@ return [
         'discount' => 'Giảm giá',
         'discount_management' => 'Quản lý Giảm giá',
         'discount_name' => 'Tên Giảm giá',
-        'vality' => 'Hợp lệ',
+        'vality' => 'Thời gian áp dụng',
         'type' => 'Loại Giảm giá',
+        'apply_type' => 'Aplly for',
+        'once' => 'Một lần / Đơn hàng',
+        'multiple' => 'Nhiều lần / Đơn hàng',
         'select_type' => 'Chọn loại Giảm giá',
         'your_branch' => 'Chi nhánh của bạn',
         'select_branch' => 'Chọn chi nhánh',
         'percent' => 'Giảm giá theo %',
         'fix_discount' => 'Giảm giá cố định',
-        'buy' => 'Mua X tặng Y miễn phí ',
+        'buy' => 'Mua X tặng Y ',
         'value' => 'Giá trị',
         'quantity' => 'Số lượng',
         'free' => 'Tặng',
@@ -553,6 +562,9 @@ return [
 
     //Work schedule
     'work_schedule' => [
+        'your_phone'=>'Vui lòng dùng điện thoại của bạn để check-in hoặc check-out',
+        'success_atendance'=>'Bạn đã hoàn thành chấm công ngày hôm nay',
+        'salary' => 'Lương',
         'work_schedule' => 'Lịch làm việc',
         'summary' => 'Tổng kết',
         'work_schedule_management' => 'Quản lý lịch làm việc',
@@ -653,7 +665,7 @@ return [
         'name' => 'Tên hình ảnh',
         'created_at' => 'Ngày tạo',
         'being_used' => ' đang được sử dụng!',
-        'upload_success' => 'Tạo hình ảnh thành công',
+        'upload_success' => 'Tải lên thành công!',
         'regex' => 'Tên chỉ được chứa chữ thường, chữ hoa, số và dấu gạch nối.'
     ],
     //Local
@@ -928,10 +940,61 @@ return [
         'payment_method'=> 'Phương thức thanh toán',
         'payment_amount'=> 'Số tiền thanh toán',
         'status'=> 'Trạng thái trả về',
+    ],
 
+    //Varriable
+    'variables' => [
+        'variable' => 'Biến thể',
+        'new_variable' => 'Biến thể mới',
+        'name' => 'Tên biến thể',
+        'customer' => 'Khách hàng',
+        'description' => 'Mô tả',
+        'product' => 'Sản phẩm',
+        'price' => 'Giá',
+        'rate' => 'Tỉ lệ',
+        'unit' => 'Đơn vị',
+        'minimum_stock' => 'Tồn kho tối thiểu',
+        'add_unit' => 'Thêm đơn vị',
+        'order' => 'Đơn hàng',
+        'payment_method' => 'Phương thức thanh toán',
+        'payment_amount' => 'Số tiền thanh toán',
+        'status' => 'Trạng thái',
+        'barcode' => 'Mã vạch',
+
+        'variable_first' => 'Vui lòng tạo 1 biến thể.',
+        'used' => ' đã được sử dụng',
+        'duplicated' => ' đã được sử dụng, vui lòng thử lại!',
+        'conversation_rate' => 'Tỷ giá chuyển đổi phải có một và chỉ một giá trị bằng 1',
+        'conversation_duplicated' => 'Tỷ lệ chuyển đổi không được trùng lặp.',
+    ],
+
+    //Chat
+    'chat' => [
+        'chat' => 'Tin nhắn',
+        'chat_management' => 'Quản lý tin nhắn',
+        'conversations' => 'Cuộc trò chuyện',
+        'sender' => 'Người gửi',
+        'receiver' => 'Người nhắn',
+        'no_chat' => 'Không có tin nhắn',
+        'not_yet_chat' => 'Bạn chưa có cuộc trò chuyện nào. ',
+        'search' => 'Tìm kiếm cuộc trò chuyện...',
+        '@' => 'Nhập @, tin nhắn tới...',
+        'with_us' => 'Tin nhắn với chúng tôi',
+        'send_message' => 'Gửi tin nhắn',
+
+        'conversation_id' => [
+            'required' => 'Không tìm thấy cuộc hội thoại.',
+        ],
+        'message' => [
+            'required' => 'Trường tin nhắn là bắt buộc.',
+            'string' => 'Trường tin nhắn phải là một chuỗi.',
+            'max' => 'Trường tin nhắn không được vượt quá 192 ký tự.',
+            'error' => 'Trường tin nhắn là bắt buộc nếu không cung cấp tệp đính kèm.',
+            'send_error' => 'Đã xảy ra lỗi khi gửi tin nhắn!'
+        ],
+        'attachments' => [
+            'max' => 'Bạn chỉ có thể tải lên tối đa 5 tệp đính kèm.',
+            '*.max' => 'Mỗi tệp đính kèm không được vượt quá 10MB.',
+        ],
     ]
-
-
-
-
 ];

@@ -32,36 +32,36 @@ class VariableController extends Controller
         Controller::init(); // Gán các biến tĩnh ở đây
 
        self::$MESSAGES = [
-             'name.required' => 'Variable name' . Controller::$NOT_EMPTY,
-            'name.string' => 'Variable name' . Controller::$DATA_INVALID,
-            'name.max' => 'Variable name' . Controller::$MAX,
-            'status.numeric' => 'Status' . Controller::$DATA_INVALID,
-            'description.string' => 'Description' . Controller::$DATA_INVALID,
+            'name.required' => __('messages.variables.name'). ': ' . Controller::$NOT_EMPTY,
+            'name.string' => __('messages.variables.name'). ': ' . Controller::$DATA_INVALID,
+            'name.max' => __('messages.variables.name'). ': ' . Controller::$MAX,
+            'status.numeric' => __('messages.variables.status').': ' . Controller::$DATA_INVALID,
+            'description.string' => __('messages.variables.description'). ': ' . Controller::$DATA_INVALID,
 
             'stock_limit.required' => Controller::$NOT_EMPTY,
             'stock_limit.numeric' => Controller::$DATA_INVALID,
-            'variable_id.required' => 'Please create a variant first.',
-            'variable_id.numeric' => 'Variant ' . Controller::$DATA_INVALID,
+            'variable_id.required' => __('messages.variables.variable_first') .': '. Controller::$NOT_EMPTY,
+            'variable_id.numeric' => __('messages.variables.variable').': ' . Controller::$DATA_INVALID,
 
-            'unit_term.required' => 'Unit name: ' . Controller::$NOT_EMPTY,
-            'unit_term.array' => 'Unit name: ' . Controller::$DATA_INVALID,
-            'unit_term.*.required' => 'Unit name: ' . Controller::$NOT_EMPTY,
-            'unit_term.*.string' => 'Unit name: ' . Controller::$DATA_INVALID,
+            'unit_term.required' => __('messages.variables.unit').': ' . Controller::$NOT_EMPTY,
+            'unit_term.array' => __('messages.variables.unit').': ' . Controller::$DATA_INVALID,
+            'unit_term.*.required' => __('messages.variables.unit').': ' . Controller::$NOT_EMPTY,
+            'unit_term.*.string' => __('messages.variables.unit').': ' . Controller::$DATA_INVALID,
 
-            'unit_barcode.required' => 'Barcode: ' . Controller::$NOT_EMPTY,
-            'unit_barcode.array' => 'Barcode: ' . Controller::$DATA_INVALID,
-            'unit_barcode.*.required' => 'Barcode: ' . Controller::$NOT_EMPTY,
-            'unit_barcode.*.string' => 'Barcode: ' . Controller::$DATA_INVALID,
+            'unit_barcode.required' => __('messages.variables.barcode') . Controller::$NOT_EMPTY,
+            'unit_barcode.array' => __('messages.variables.barcode') . Controller::$DATA_INVALID,
+            'unit_barcode.*.required' => __('messages.variables.barcode') . Controller::$NOT_EMPTY,
+            'unit_barcode.*.string' => __('messages.variables.barcode') . Controller::$DATA_INVALID,
 
-            'unit_price.required' => 'Price: ' . Controller::$NOT_EMPTY,
-            'unit_price.array' => 'Price: ' . Controller::$DATA_INVALID,
-            'unit_price.*.required' => 'Price: ' . Controller::$NOT_EMPTY,
-            'unit_price.*.numeric' => 'Price: ' . Controller::$DATA_INVALID,
+            'unit_price.required' => __('messages.variables.price') . Controller::$NOT_EMPTY,
+            'unit_price.array' => __('messages.variables.price') . Controller::$DATA_INVALID,
+            'unit_price.*.required' => __('messages.variables.price') . Controller::$NOT_EMPTY,
+            'unit_price.*.numeric' => __('messages.variables.price') . Controller::$DATA_INVALID,
 
-            'unit_rate.required' => 'Conversion rate: ' . Controller::$NOT_EMPTY,
-            'unit_rate.array' => 'Conversion rate: ' . Controller::$DATA_INVALID,
-            'unit_rate.*.required' => 'Conversion rate: ' . Controller::$NOT_EMPTY,
-            'unit_rate.*.numeric' => 'Conversion rate: ' . Controller::$DATA_INVALID,
+            'unit_rate.required' => __('messages.variables.rate').': ' . Controller::$NOT_EMPTY,
+            'unit_rate.array' => __('messages.variables.rate').': ' . Controller::$DATA_INVALID,
+            'unit_rate.*.required' => __('messages.variables.rate').': ' . Controller::$NOT_EMPTY,
+            'unit_rate.*.numeric' => __('messages.variables.rate').': ' . Controller::$DATA_INVALID,
         ];
 
         return $next($request);
@@ -173,12 +173,12 @@ class VariableController extends Controller
                     });
                     $count = array_count_values($barcode);
                     if ($count[$value] > 1) {
-                        $fail('Barcode ' . $value . ' is duplicated. Please try another.');
+                        $fail(__('messages.variables.barcode').': ' . $value . __('messages.variables.duplicated'));
                     } else {
                         $checkAvailable = Unit::where('barcode', $value)
                             ->whereNull('deleted_at')->exists();
                         if ($checkAvailable) {
-                            $fail('Barcode ' . $attribute . ' is already in use.');
+                            $fail(__('messages.variables.barcode').': ' . $attribute . __('messages.variables.used'));
                         }
                     }
                 },
@@ -212,7 +212,6 @@ class VariableController extends Controller
                     'status' => $request->has('status'),
                 ]);
                 if ($variable) {
-                    LogController::create('1', self::NAME, $variable->id);
                     $variable->assignAttributes($request->input('attributes'));
                     foreach ($request->unit_term as $key => $term) {
                         $unit = Unit::create([
@@ -222,7 +221,6 @@ class VariableController extends Controller
                             'rate' => $request->unit_rate[$key],
                             'price' => $request->unit_price[$key],
                         ]);
-                        LogController::create('1', 'unit', $unit->id);
                         $unit->barcode = $request->unit_barcode[$key] ? $request->unit_barcode[$key] : $unit->_variable->_product->code . $unit->id;
                         $unit->save();
                     }
@@ -231,16 +229,16 @@ class VariableController extends Controller
                 DB::commit();
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Created ' . self::NAME . ' ' . $variable->name
+                    'msg' => __('messages.created') . ' ' . __('messages.variables.variable') . ' ' . $variable->name
                 );
             } catch (\Exception $e) {
                 DB::rollBack();
                 log_exception($e);
                 Controller::resetAutoIncrement(['variables', 'units']);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
@@ -264,14 +262,14 @@ class VariableController extends Controller
                     });
                     $count = array_count_values($barcode);
                     if ($count[$value] > 1) {
-                        $fail('Barcode ' . $value . ' is duplicated. Please correct it.');
+                        $fail('Barcode ' . $value . __('messages.variables.duplicated'));
                     } else {
                         preg_match('/barcode\.(\d+)/', $attribute, $matches);
                         $index = $matches[1];
                         $checkAvailable = Unit::where('barcode', $value)
                             ->whereNull('deleted_at')->where('id', '!=', $request->unit_id[$index])->exists();
                         if ($checkAvailable) {
-                            $fail('Barcode ' . $attribute . ' is already in use.');
+                      $fail('Barcode ' . $attribute . __('messages.variables.used'));
                         }
                     }
                 }
@@ -283,10 +281,10 @@ class VariableController extends Controller
                 'array',
                 function ($attribute, $value, $fail) {
                     if (!in_array("1", $value, true)) {
-                        $fail('The conversion rate must have one and only one value equal to 1');
+                        $fail(__('messages.variables.conversation_rate'));
                     }
                     if (count(array_unique($value)) !== count($value)) {
-                        $fail('Conversion rates must not be duplicated.');
+                        $fail(__('messages.variables.conversation_duplicated'));
                     }
                 }
             ],
@@ -306,7 +304,6 @@ class VariableController extends Controller
                             'stock_limit' => $request->stock_limit,
                             'status' => $request->has('status'),
                         ]);
-                        LogController::create('2', self::NAME, $variable->id);
 
                         $variable->syncAttributes($request->input('attributes'));
                         foreach ($request->unit_id as $key => $id) {
@@ -318,35 +315,34 @@ class VariableController extends Controller
                             $unit->save();
                             $unit->barcode = $request->unit_barcode[$key] ? $request->unit_barcode[$key] : $variable->_product->code . $unit->id;
                             $unit->save();
-                            LogController::create($id ? '2' : '1', 'unit', $unit->id);
                         }
 
                         DB::commit();
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Updated ' . self::NAME . ' ' . $variable->name
+                            'msg' => __('messages.updated'). ' ' . __('messages.variables.variable') . ' ' . $variable->name
                         );
                     } else {
                         DB::rollBack();
                         $response = array(
                             'status' => 'error',
-                            'msg' => 'An error occurred. Please reload the page and try again!'
+                            'msg' => __('messages.msg')
                         );
                     }
                 } catch (\Exception $e) {
                     DB::rollBack();
                     log_exception($e);
                     Controller::resetAutoIncrement(['variables', 'units']);
-                    return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                    return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
                 }
             } else {
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'An error occurred. Please reload the page and try again!'
+                    'msg' => __('messages.msg')
                 );
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }
@@ -376,20 +372,19 @@ class VariableController extends Controller
                 } else {
                     $obj->delete();
                 }
-                LogController::create("3", self::NAME, $obj->id);
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Successfully deleted ' . self::NAME . ' ' . $obj->name . '!'
+                    'msg' => __('messages.deleted') . ' ' . __('messages.variables.variable') . ' ' . $obj->name . '!'
                 );
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();
                 log_exception($e);
                 Controller::resetAutoIncrement(['variables', 'units']);
-                return response()->json(['errors' => ['error' => ['An error occurred: ' . $e->getMessage()]]], 422);
+                return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
             }
         } else {
-            return response()->json(['errors' => ['role' => ['You do not have permission!']]], 422);
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
         return response()->json($response, 200);
     }

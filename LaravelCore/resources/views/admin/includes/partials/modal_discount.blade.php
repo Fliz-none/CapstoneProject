@@ -26,6 +26,7 @@
                             <option value="2">{{ __('messages.discount_.buy') }}</option>
                         </select>
                     </div>
+
                     <div class="row d-none discount-type discount-price">
                         <div class="col-12 col-md-6 mb-3 form-group">
                             <label class="form-label fw-bold" for="discount-value">
@@ -44,10 +45,10 @@
                         </div>
                     </div>
 
-                    <div class="row d-none discount-type discount-buy-get">
+                    <div class="row d-none discount-type discount-buy_get">
                         <div class="col-12 col-md-6 mb-3 form-group">
                             <label class="form-label fw-bold" for="discount-buy_quantity">
-                              {{ __('messages.discount_.quantity') }}
+                                {{ __('messages.discount_.quantity') }}
                             </label>
                             <div class="input-group">
                                 <input class="form-control" id="discount-buy_quantity" name="buy_quantity" type="number" min="1" placeholder="E.g. Buy 2" autocomplete="off">
@@ -55,11 +56,24 @@
                         </div>
                         <div class="col-12 col-md-6 mb-3 form-group">
                             <label class="form-label fw-bold" for="discount-get_quantity">
-                                {{ __('messages.discount_.free') }}  {{ __('messages.discount_.quantity') }}
+                                {{ __('messages.discount_.free') }} {{ __('messages.discount_.quantity') }}
                             </label>
                             <input class="form-control" id="discount-get_quantity" name="get_quantity" type="number" min="1" placeholder="E.g. Get 1 free" autocomplete="off">
                         </div>
                     </div>
+
+                    <div class="row d-none discount-apply_type">
+                        <div class="col-12 form-group">
+                            <label class="form-label fw-bold">{{ __('messages.discount_.apply_type') }}</label><br>
+                            <div class="btn-group pb-3">
+                                <input class="btn-check" id="apply_type-once" name="apply_type" type="radio" value="once" checked>
+                                <label class="btn btn-outline-primary" for="apply_type-once">{{ __('messages.discount_.once') }}</label>
+                                <input class="btn-check" id="apply_type-multiple" name="apply_type" type="radio" value="multiple">
+                                <label class="btn btn-outline-primary" for="apply_type-multiple">{{ __('messages.discount_.multiple') }}</label>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-12 col-md-6 mb-3 form-group">
                             <label class="form-label fw-bold" for="discount-start_date">{{ __('messages.discount_.start') }}</label>
@@ -70,6 +84,7 @@
                             <input class="form-control" id="discount-end_date" name="end_date" type="date">
                         </div>
                     </div>
+
                     <div class="card mb-3 h-100">
                         <div class="card-header">
                             <div class="row">

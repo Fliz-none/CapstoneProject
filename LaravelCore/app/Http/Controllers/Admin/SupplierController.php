@@ -223,7 +223,6 @@ class SupplierController extends Controller
                             'status' => $request->has('status'),
                         ]);
 
-                        LogController::create('2', self::NAME, $supplier->id);
                         $response = array(
                             'status' => 'success',
                             'msg' => __('messages.updated') . __('messages.supplier.supplier') . ' ' . $supplier->name
@@ -259,7 +258,6 @@ class SupplierController extends Controller
                 $obj = Supplier::find($id);
                 if (!count($obj->imports)) {
                     $obj->delete();
-                    LogController::create("3", self::NAME, $obj->id);
                     array_push($success, $obj->name);
                 } else {
                     array_push($fail, $obj->name);

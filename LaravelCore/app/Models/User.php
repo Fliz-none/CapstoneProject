@@ -286,11 +286,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Log::class);
     }
 
-    public function local()
-    {
-        return $this->belongsTo(Local::class);
-    }
-
     public function orders()
     {
         return $this->hasMany(Order::class, 'customer_id');
@@ -327,7 +322,6 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->orders->sum('total') - $this->orders->sum('paid');
     }
-
 
     /**
      * Các cuộc trò chuyện mà user là customer (one-to-many)

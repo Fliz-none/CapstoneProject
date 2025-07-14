@@ -103,10 +103,10 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Customer who purchased" for="order-customer_id">
-                                            {{ __('messages.datatable.customer') }} &nbsp;
+                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-customer_id">
+                                            {{ __('messages.datatable.customer') }}
                                             <a class="btn btn-link btn-create-user rounded-pill p-0" type="button">
-                                                <i class="bi bi-plus-circle"></i>
+                                                <i class="bi bi-plus-circle ms-2"></i>
                                             </a>
                                         </label>
                                         <div class="col-sm-8">
@@ -133,7 +133,7 @@
                                     </div>
                                     <hr />
                                     <div class="row mb-3 row-total">
-                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Total quantity of items" for="order-total">{{ __('messages.dashboard_table_total') }} <span class="order-count px-1">0</span>
+                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center"  for="order-total">{{ __('messages.dashboard_table_total') }} <span class="order-count px-1">0</span>
                                             {{ __('messages.item') }}</label>
                                         <div class="col-sm-8">
                                             <input class="form-control-lg bg-white text-end form-control bg-white money order-total" id="order-total" name="total" type="text" value="0" placeholder="Order total amount"
@@ -141,8 +141,7 @@
                                         </div>
                                     </div>
                                     <div class="row row-discount">
-                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Product discount (value less or equal to 100 will be treated as % discount on the order total)"
-                                            for="order-discount">{{ __('messages.discount') }}</label>
+                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-discount">{{ __('messages.discount') }}</label>
                                         <div class="col-sm-8">
                                             <input class="form-control-lg text-end form-control bg-white money order-discount" id="order-discount" name="discount" type="text" value="0" onclick="this.select()"
                                                 placeholder="Amount or percentage" autocomplete="off">
@@ -150,7 +149,7 @@
                                     </div>
                                     <hr />
                                     <div class="row mb-3 row-summary">
-                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Amount the customer has to pay" for="order-summary">{{ __('messages.datatable.amount_due') }}</label>
+                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-summary">{{ __('messages.datatable.amount_due') }}</label>
                                         <div class="col-sm-8">
                                             <input class="form-control-lg text-end form-control bg-white money order-summary" id="order-summary" name="summary" type="text" value="0" placeholder="Amount" autocomplete="off" readonly>
                                         </div>
@@ -158,7 +157,7 @@
                                     <div class="order-payments" id="order-payments">
                                     </div>
                                     <div class="row mb-3 row-change d-none">
-                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" data-bs-toggle="tooltip" data-bs-title="Amount the customer has already paid" for="order-paid">Paid</label>
+                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-paid">Paid</label>
                                         <div class="col-sm-8">
                                             <input class="form-control-lg text-end form-control bg-white money order-paid" id="order-paid" name="change" type="text" value="0" placeholder="Amount" autocomplete="off" readonly>
                                         </div>
@@ -177,13 +176,9 @@
                                             <input name="id" type="hidden">
                                             <div class="d-grid">
                                                 <div class="btn-group dropup">
-                                                    <button class="btn btn-light btn-print print-order" data-bs-toggle="dropdown" type="button" aria-expanded="false">
+                                                    <button class="btn btn-light btn-print print-order"  data-id="" data-url="{{ getPath(route('admin.order')) }}" data-template="c80">
                                                         <i class="bi bi-printer-fill"></i>
                                                     </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li><a class="dropdown-item cursor-pointer btn-print print-order" data-id="" data-url="{{ getPath(route('admin.order')) }}" data-template="a5">A5 size</a></li>
-                                                        <li><a class="dropdown-item cursor-pointer btn-print print-order" data-id="" data-url="{{ getPath(route('admin.order')) }}" data-template="c80">80mm size</a></li>
-                                                    </ul>
                                                     <button class="btn btn-lg btn-info w-75 btn-submit" type="submit">{{ __('messages.save') }}</button>
                                                 </div>
                                             </div>

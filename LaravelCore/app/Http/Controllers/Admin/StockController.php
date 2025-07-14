@@ -46,7 +46,7 @@ class StockController extends Controller
             $objs = Stock::where('quantity', '>', 0);
             switch ($request->key) {
                 case 'search':
-                    $result = $objs->with('import_detail._variable._units', 'import_detail._variable._product.catalogues')
+                    $result = $objs->with('import_detail._variable.units', 'import_detail._variable._product.catalogues')
                         ->whereHas('import_detail', function ($query) use ($request) {
                             $query->whereHas('import', function ($query) use ($request) {
                                 $query->where(function ($query) use ($request) {
@@ -93,7 +93,7 @@ class StockController extends Controller
                         ->take(20)
                         ->get()
                         ->map(function ($obj) {
-                            $unit = $obj->import_detail->_variable->_units->where('rate', 1)->first();
+                            $unit = $obj->import_detail->_variable->units->where('rate', 1)->first();
                             $stockQuantity = $obj->import_detail->_variable->convertUnit($obj->quantity);
                             return '<li>
                                         <a class="dropdown-item cursor-pointer btn-select-stock px-0 py-0"
@@ -531,7 +531,6 @@ class StockController extends Controller
                                 'created_at' => $range[1],
                             ]);
                         }
-                        LogController::create('1', 'import', $import->id);
                     }
                 } elseif ($diff > 0) { // Tạo phiếu xuat
                     $stocks = Stock::whereHas('_import_detail', function ($query) use ($variable, $range, $request) {
@@ -573,7 +572,6 @@ class StockController extends Controller
                             }
                         }
                     }
-                    LogController::create('1', 'export', $export->id);
                 }
             }
             DB::commit();

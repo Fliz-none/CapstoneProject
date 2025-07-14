@@ -20,7 +20,8 @@ class CreateDetailsTable extends Migration
             $table->unsignedBigInteger('unit_id');
             $table->unsignedInteger('quantity');
             $table->unsignedDouble('price', 10, 0)->default(0);
-            $table->decimal('discount', 10, 0)->nullable();
+            $table->decimal('discount', 10, 0)->default(0)->nullable();
+            $table->unsignedDouble('discount_program', 10, 0)->default(0)->nullable();
             $table->string('note')->nullable();
             $table->softDeletes();
             $table->timestamps();

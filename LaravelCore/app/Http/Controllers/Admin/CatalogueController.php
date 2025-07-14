@@ -200,8 +200,6 @@ class CatalogueController extends Controller
                     'is_featured' => $request->has('is_featured'),
                     'avatar' => $request->avatar,
                 ]);
-
-                LogController::create('1', self::NAME, $catalogue->id);
                 cache()->forget('catalogues');
                 $response = array(
                     'status' => 'success',

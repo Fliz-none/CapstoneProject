@@ -116,7 +116,7 @@ class ImportController extends Controller
             return response()->json($result, 200);
         } else {
             if ($request->ajax()) {
-                $objs = Import::with(['import_details.stock.export_details', '_user.local', '_supplier', '_warehouse', '_export.export_details'])->when($request->has('warehouse_id'), function ($query) use ($request) {
+                $objs = Import::with(['import_details.stock.export_details', '_user', '_supplier', '_warehouse', '_export.export_details'])->when($request->has('warehouse_id'), function ($query) use ($request) {
                     $query->where('warehouse_id', $request->warehouse_id);
                 }, function ($query) {
                     $query->whereIn('warehouse_id', $this->user->warehouses->pluck('id'));
@@ -476,7 +476,6 @@ class ImportController extends Controller
                             }
 
                             DB::commit();
-                            LogController::create('2', self::NAME, $old->id);
                             $response = [
                                 'status' => 'success',
                                 'msg' => __('messages.updated') . $old->code,

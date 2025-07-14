@@ -31,7 +31,7 @@ class LocalController extends Controller
 
         $this->middleware(function ($request, $next) {
         // Locale đã được set xong ở đây
-       
+
         Controller::init();
 
         self::$MESSAGES = [
@@ -178,7 +178,6 @@ class LocalController extends Controller
                             'district' => $request->district,
                         ]);
 
-                        LogController::create('2', self::NAME, $local->id);
                         $response = array(
                             'status' => 'success',
                             'msg' => __('messages.updated') . ' ' . __('messages.local.local') . ': ' . $local->city . ' ' . $local->district

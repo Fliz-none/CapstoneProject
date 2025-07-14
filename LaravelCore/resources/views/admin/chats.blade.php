@@ -7,10 +7,10 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <h5 class="text-uppercase">{{ $pageName }}</h5>
+                    <h5 class="text-uppercase">{{ __('messages.chat.chat_management') }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.chat.chat_management') }}</li>
                         </ol>
                     </nav>
                 </div>
@@ -55,13 +55,13 @@
             <div class="container py-5">
                 <div class="row">
                     <div class="col-md-6 col-lg-5 col-xl-4 mb-lg-4 mb-md-0">
-                        <h5 class="font-weight-bold mb-3 text-center text-lg-start">Conversations</h5>
+                        <h5 class="font-weight-bold mb-3 text-center text-lg-start">{{ __('messages.chat.conversations') }}</h5>
                         <div class="card">
                             <div class="card-body d-flex flex-column" style="height: 100vh;">
                                 <!-- Input search: cố định -->
                                 <div class="form-outline position-relative p-0 mb-3">
                                     <i class="bi bi-search position-absolute" style="top: 45%; left: 10px; transform: translateY(-50%); z-index: 2;"></i>
-                                    <input class="form-control ps-5" id="search" type="search" placeholder="Search conversations..." />
+                                    <input class="form-control ps-5" id="search" type="search" placeholder="{{ __('messages.chat.search') }}" />
                                 </div>
 
                                 <!-- Danh sách conversations-->
@@ -94,7 +94,7 @@
                             </div>
                             <!-- Textarea + nút gửi -->
                             <div class="d-flex align-items-end gap-2 px-3 pb-3">
-                                <textarea class="form-control border-0 rounded-3 bg-light px-3 py-2" id="message" name="message" style="resize: none;" rows="2" placeholder="Nhập @, tin nhắn tới..."></textarea>
+                                <textarea class="form-control border-0 rounded-3 bg-light px-3 py-2" id="message" name="message" style="resize: none;" rows="2" placeholder="{{ __('messages.chat.@') }}"></textarea>
                                 <button class="btn btn-primary" type="submit">
                                     <i class="bi bi-send"></i>
                                 </button>

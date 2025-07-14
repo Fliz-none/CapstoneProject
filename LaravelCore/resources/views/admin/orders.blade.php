@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col-12 col-lg-10">
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_ORDER)))
-                        <a class="btn btn-info mb-3 btn-create-order">
+                        <a class="btn btn-info mb-3" href="{{ route('admin.order', ['key' => 'new']) }}">
                             <i class="bi bi-plus-circle"></i>
                             {{ __('messages.add') }}
                         </a>

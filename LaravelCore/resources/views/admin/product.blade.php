@@ -60,7 +60,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="product-excerpt">{{ __('messages.product.exp') }}</label>
+                                    <label for="product-excerpt">{{ __('messages.product.short_description') }}</label>
                                     <textarea class="form-control @error('excerpt') is-invalid @enderror" id="product-excerpt" name="excerpt" rows="3">{{ old('excerpt') != null ? old('excerpt') : (isset($product) ? $product->excerpt : '') }}</textarea>
                                     @error('excerpt')
                                         <span class="invalid-feedback d-block" role="alert">
@@ -197,7 +197,7 @@
             <h6 class="mb-0">{{ __('messages.product.product') }}</h6>
             <hr class="horizontal dark">
             <div class="form-group">
-                <label class="form-label mt-1" for="product-sku" data-bs-toggle="tooltip" data-bs-title="Short identifier for managing products">{{ __('messages.product.product_sku') }}</label>
+                <label class="form-label mt-1" for="product-sku">{{ __('messages.product.product_sku') }}</label>
                 <input class="form-control @error('sku') is-invalid @enderror" id="product-sku" name="sku" type="text" value="{{ old('sku') != null ? old('sku') : (isset($product) ? $product->sku : '') }}" placeholder="{{ __('messages.product.product_sku') }}"
                     autocomplete="off">
                 @error('sku')

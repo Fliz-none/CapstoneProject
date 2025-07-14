@@ -154,9 +154,9 @@
                                     `<tr class="group bg-light-primary text-white">
                                         <td>${counting_date}</td>
                                         <td></td>
-                                        <td class="text-end"><span class="fw-bold ${(cash_amount > 0 ? 'text-success">+' + number_format(cash_amount) : 'text-danger">' + number_format(cash_amount))}VND</span></td>
-                                        <td class="text-end"><span class="fw-bold ${(transfer_amount > 0 ? 'text-success">+' + number_format(transfer_amount) : 'text-danger">' + number_format(transfer_amount))}VND</span></td>
-                                        <td class="fw-bold text-end">${(number_format(cash_amount + transfer_amount))}VND</td>
+                                        <td class="text-end"><span class="fw-bold ${(cash_amount > 0 ? 'text-success">+' + number_format(cash_amount) : 'text-danger">' + number_format(cash_amount))} VND</span></td>
+                                        <td class="text-end"><span class="fw-bold ${(transfer_amount > 0 ? 'text-success">+' + number_format(transfer_amount) : 'text-danger">' + number_format(transfer_amount))} VND</span></td>
+                                        <td class="fw-bold text-end">${(number_format(cash_amount + transfer_amount))} VND</td>
                                         <td colspan="7"></td>
                                     </tr>`);
                                 last = counting_date;

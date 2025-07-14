@@ -45,17 +45,16 @@ class UserObserver
     {
 
         // Ép load quan hệ trước nếu cần cho các accessor dùng nó
-        $user->loadMissing([ '_branch']);
+        $user->loadMissing(['_branch']);
 
         self::$oldData[$user->id] = $user->getOriginal();
-       
     }
 
 
     public function updated(User $user)
     {
         // Load quan hệ nếu chưa có (bao gồm bản ghi soft-delete)
-        $user->loadMissing([ '_branch']);
+        $user->loadMissing(['_branch']);
         $oldData = self::$oldData[$user->id] ?? [];
         $newData = $user->toArray();
         // Nếu chỉ có deleted_at thay đổi thì không log trong updated

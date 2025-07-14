@@ -58,13 +58,13 @@ class Transaction extends Model
     {
         switch (true) {
             case $this->payment == '0':
-                $result = __('massages.datatable.other');
+                $result = __('messages.datatable.other');
                 break;
             case $this->payment == '1':
-                $result = __('massages.datatable.cash');
+                $result = __('messages.datatable.cash');
                 break;
             default:
-                $result = __('massages.datatable.transfer');
+                $result = __('messages.datatable.transfer');
                 break;
         }
         return $result;

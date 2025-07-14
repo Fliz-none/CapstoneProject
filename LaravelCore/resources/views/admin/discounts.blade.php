@@ -167,6 +167,7 @@
                     });
 
                     form.find('[name=type]').val(discount.type)
+                    form.find(`[name=apply_type][value=${discount.apply_type}]`).prop('checked', true)
 
                     if (discount.type <= 1) {
                         setDiscountType(discount.type, discount.value, discount.min_quantity)
@@ -250,6 +251,7 @@
         function setDiscountType(type, a = null, b = null) {
             const form = $('#discount-form')
             form.find('.discount-type').addClass('d-none')
+            form.find('.discount-apply_type').removeClass('d-none')
             switch (type) {
                 case 0:
                     $('.discount-price').removeClass('d-none').find('[name=value]').removeClass('money').end().find('.discount-value-type').text('%')
@@ -270,7 +272,8 @@
                     }
                     break;
                 case 2:
-                    $('.discount-buy-get').removeClass('d-none')
+                    $('.discount-buy_get').removeClass('d-none')
+                    $('.discount-apply_type').addClass('d-none')
                     if (a && b) {
                         form.find('[name=buy_quantity]').val(a)
                         form.find('[name=get_quantity]').val(b)

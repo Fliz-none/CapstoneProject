@@ -19,7 +19,7 @@ class WarehouseController extends Controller
             'address' => ['nullable', 'string', 'min:2', 'max:125'],
         ];
         public static array $MESSAGES = [];
-        
+
 
     public function __construct()
     {
@@ -49,7 +49,7 @@ class WarehouseController extends Controller
         return $next($request);
         });
 
-        
+
     }
 
     /**
@@ -167,7 +167,7 @@ class WarehouseController extends Controller
                     ->make(true);
             } else {
                 $pageName = self::NAME . ' management';
-                $pageName = self::NAME . ' management'; 
+                $pageName = self::NAME . ' management';
                 return view('admin.warehouses', compact('pageName'));
             }
         }
@@ -226,7 +226,6 @@ class WarehouseController extends Controller
                             'status' => $request->status,
                         ]);
 
-                        LogController::create('2', self::NAME, $warehouse->id);
                         cache()->forget('warehouses');
                         $response = array(
                             'status' => 'success',
