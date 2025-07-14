@@ -424,7 +424,7 @@
     /**
      * CATALOGUE PROCESS
      */
-    $(document).on('click', '.btn-create-catalogue', function(e) {
+    $(document).on('click', '.btn-create-catalogue', function (e) {
         e.preventDefault();
         const form = $('#catalogue-form')
         resetForm(form)
@@ -434,19 +434,19 @@
         form.find('.modal').modal('show').find('.modal-title').text("{{ __('messages.category.new_catalogue') }}");
     })
 
-    $('.btn-refresh-catalogue').click(function() {
+    $('.btn-refresh-catalogue').click(function () {
         const btn = $(this)
-        $.get(`{{ route('admin.catalogue') }}/tree`, function(html) {
+        $.get(`{{ route('admin.catalogue') }}/tree`, function (html) {
             btn.parents('form').find('.catalogue-select .list-group').html(html);
         })
     })
 
-    $(document).on('click', '.btn-update-catalogue', function(e) {
+    $(document).on('click', '.btn-update-catalogue', function (e) {
         e.preventDefault();
         const id = $(this).attr('data-id'),
             form = $('#catalogue-form');
         resetForm(form)
-        $.get(`{{ route('admin.catalogue') }}/${id}`, function(catalogue) {
+        $.get(`{{ route('admin.catalogue') }}/${id}`, function (catalogue) {
             form.find('[name=id]').val(catalogue.id)
             form.find('[name=name]').val(catalogue.name)
             form.find('[name=note]').val(catalogue.note)
@@ -1065,7 +1065,7 @@
             form.find('[name=phone]').val(user.phone)
             form.find('[name=email]').val(user.email)
             form.find('[name=scores]').val(user.scores)
-        //  form.find('[name=birthday]').val(user.birthday)
+            //  form.find('[name=birthday]').val(user.birthday)
             form.find('[name=note]').val(user.note)
             form.find('[name=address]').val(user.address)
             form.find(`[name=gender][value="${user.gender}"]`).prop('checked', true);
@@ -2618,37 +2618,87 @@
      *  DETAIL LOG
      */
 
-  $(document).on('click', '.btn-detail-log', function (e) {
-    e.preventDefault();
-    const id = $(this).data('id'),
-        form = $('#log-form');
+    $(document).on('click', '.btn-detail-log', function (e) {
+        e.preventDefault();
+        const id = $(this).data('id'),
+            form = $('#log-form');
 
-    resetForm(form); // nếu bạn có hàm resetForm
+        resetForm(form); // nếu có
 
-    $.get(`{{ route('admin.log.show', '') }}/${id}`, function (log) {
-        let before = log.before_change ? JSON.parse(log.before_change) : {};
-        let after = log.after_change ? JSON.parse(log.after_change) : {};
+        const locale = $('html').attr('lang') || 'vn';
+        const emptyText = locale === 'en' ? 'empty' : 'trống';
 
-        // Lấy tất cả key của cả 2 object để hiển thị đủ
-        const allKeys = Array.from(new Set([...Object.keys(before), ...Object.keys(after)]));
+        // Từ điển dịch trường
+        const translations = {
+            code: { vn: 'Mã', en: 'Code' },
+            name: { vn: 'Họ tên', en: 'Full Name' },
+            phone: { vn: 'Số điện thoại', en: 'Phone Number' },
+            email: { vn: 'Email', en: 'Email' },
+            avatar: { vn: 'Ảnh đại diện', en: 'Avatar' },
+            genderStr: { vn: 'Giới tính', en: 'Gender' },
+            password: { vn: 'Mật khẩu', en: 'Password' },
+            address: { vn: 'Địa chỉ', en: 'Address' },
+            local_id: { vn: 'Địa phương', en: 'Local' },
+            main_branch: { vn: 'Chi nhánh chính', en: 'Main Branch' },
+            scores: { vn: 'Điểm số', en: 'Scores' },
+            statusStr: { vn: 'Trạng thái', en: 'Status' },
+            note: { vn: 'Ghi chú', en: 'Note' },
+            remember_token: { vn: 'Token đăng nhập', en: 'Remember Token' },
+            deleted_at: { vn: 'Đã xoá lúc', en: 'Deleted At' },
+            created_at: { vn: 'Tạo lúc', en: 'Created At' },
+            updated_at: { vn: 'Cập nhật lúc', en: 'Updated At' },
+            excerpt: { vn: 'Miêu tả ngắn', en: 'Short Description' },
+            description: { vn: 'Mô tả', en: 'Description' },
+            slug: { vn: 'Slug', en: 'Slug' },
+            sku: { vn: 'Sku', en: 'Sku' },
+            specs: { vn: 'Thông số kỹ thuật', en: 'Specs' },
+            keyword: { vn: 'Từ khóa', en: 'Keyword' },
+            parent_id: { vn: 'Danh mục cha', en: 'Parent Category' },
+            branch_id: { vn: 'Chi nhánh', en: 'Branch' },
+            typeStr: { vn: 'Loại', en: 'Type' },
+            buy_quantity: { vn: 'Số lượng mua', en: 'Buy Quantity' },
+            get_quantity: { vn: 'Số lượng nhận', en: 'Get Quantity' },
+            min_quantity: { vn: 'Số lượng tối thiểu', en: 'Min Quantity' },
+            start_date: { vn: 'Ngày bắt đầu', en: 'Start Date' },
+            end_date: { vn: 'Ngày kết thúc', en: 'End Date' },
+        };
 
-        let rows = '';
-        allKeys.forEach(key => {
-            const beforeValue = before[key] !== undefined ? before[key] : '-';
-            const afterValue = after[key] !== undefined ? after[key] : '-';
-            rows += `
-                <tr>
-                    <td><strong>${key}</strong>: ${beforeValue}</td>
-                    <td><strong>${key}</strong>: ${afterValue}</td>
-                </tr>
-            `;
+        // Danh sách trường cần ẩn
+        const hiddenKeys = [
+            'password', 'remember_token', 'avatar', 'local', 'avatarUrl',
+            'fullAddress', 'status', 'fullName', 'id', 'gender',
+            'roles', '_local', '_branch', 'galleryUrl', 'gallery', 'sort', 'allow_review', 'type', 'value', 'deleted_at', 'updated_at', 'created_at'
+        ];
+
+        $.get(`{{ route('admin.log.show', '') }}/${id}`, function (log) {
+            console.log(log);
+
+            const before = log.before_change || {};
+            const after = log.after_change || {};
+
+            const allKeys = Array.from(new Set([...Object.keys(before), ...Object.keys(after)]));
+            let rows = '';
+
+            allKeys.forEach(key => {
+                if (hiddenKeys.includes(key)) return;
+
+                const label = translations[key]?.[locale] || key;
+
+                let beforeValue = (before[key] !== undefined && before[key] !== null) ? before[key] : emptyText;
+                let afterValue = (after[key] !== undefined && after[key] !== null) ? after[key] : emptyText;
+
+                rows += `
+            <tr>
+                <td><strong>${label}</strong>: ${beforeValue}</td>
+                <td><strong>${label}</strong>: ${afterValue}</td>
+            </tr>
+        `;
+            });
+
+            $('#log-form').find('.modal-body table tbody').html(rows);
+            $('#log-form').find('.modal').modal('show');
         });
-
-        $('#change-comparison-body').html(rows);
-
-        form.find('.modal').modal('show');
     });
-});
 
 
 
