@@ -18,9 +18,10 @@ class CreateDiscountsTable extends Migration
             $table->unsignedBigInteger('branch_id');
             $table->string('name');
             $table->unsignedTinyInteger('type')->comment('0: percent, 1: fixed, 2: buy_x_get_y');
+            $table->enum('apply_type', ['once', 'multiple'])->default('once');
 
             // Giá trị giảm: % hoặc số tiền
-            $table->decimal('value', 10, 2)->nullable();
+            $table->unsignedDecimal('value', 10, 0)->nullable();
 
             // Mua X tặng Y
             $table->unsignedInteger('buy_quantity')->nullable();
@@ -32,6 +33,7 @@ class CreateDiscountsTable extends Migration
             // Thời gian áp dụng
             $table->date('start_date');
             $table->date('end_date');
+
 
             $table->unsignedTinyInteger('status')->default(1)->comment('0: block; 1: active');
 

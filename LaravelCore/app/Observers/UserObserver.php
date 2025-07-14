@@ -41,7 +41,7 @@ class UserObserver
     public function updating(User $user)
     {
         // Lưu dữ liệu gốc vào mảng tạm theo ID
-       self::$oldData[$user->id] = $user->getOriginal();
+        self::$oldData[$user->id] = $user->getOriginal();
     }
 
 
@@ -49,10 +49,10 @@ class UserObserver
     {
         $oldData = self::$oldData[$user->id] ?? [];
         $newData = $user->toArray();
-    // Nếu chỉ có deleted_at thay đổi thì không log trong updated
-    if (!(count($newData) === 1 && isset($newData['deleted_at']))) {
-        $this->logAction($user, '2', $oldData, $newData);
-    }
+        // Nếu chỉ có deleted_at thay đổi thì không log trong updated
+        if (!(count($newData) === 1 && isset($newData['deleted_at']))) {
+            $this->logAction($user, '2', $oldData, $newData);
+        }
         // Xóa dữ liệu tạm
         unset(self::$oldData[$user->id]);
     }

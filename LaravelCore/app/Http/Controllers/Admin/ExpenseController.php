@@ -14,7 +14,7 @@ class ExpenseController extends Controller
 {
     const NAME = 'Expense';
     public static array $MESSAGES = [];
-        
+
     /**
      * Create a new controller instance.
      *
@@ -56,7 +56,7 @@ class ExpenseController extends Controller
 
         return $next($request);
     });
-        
+
     }
 
     /**
@@ -254,7 +254,6 @@ class ExpenseController extends Controller
                     Expense::find($expense->id)->update(['avatar' => $filename]);
                 }
 
-                LogController::create("1", self::NAME, $expense->id);
                 $response = [
                     'status' => 'success',
                     'msg' => __('messages.created') . __('messages.expense.expense_voucher') . ' ' . $expense->code,
@@ -304,7 +303,6 @@ class ExpenseController extends Controller
                             $expense->update(['avatar' => $filename]);
                         }
 
-                        LogController::create("2", self::NAME, $expense->id);
                         $response = [
                             'status' => 'success',
                             'msg' => 'Updated ' . self::NAME . ' ' . $expense->code,
@@ -338,7 +336,6 @@ class ExpenseController extends Controller
             $expense = Expense::find($id);
             $expense->delete();
             array_push($names, $expense->name);
-            LogController::create("3", self::NAME, $expense->id);
         }
         return response()->json([
             'status' => 'success',

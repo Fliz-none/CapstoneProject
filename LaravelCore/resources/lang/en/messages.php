@@ -119,6 +119,8 @@ return [
     ],
     //Sidebar
     'sidebar' => [
+        'customer_support' => 'Customer Support',
+        'catelogue' => 'Catelogue',
         'findsomething' => 'Find Something...',
         'possales' => 'POS Sales',
         'general' => 'General Management',
@@ -255,11 +257,14 @@ return [
         'user' => 'User',
         'action' => 'Action',
         'object' => 'Object',
-        'code_user' => 'Code User',
+        'code_user' => 'Code',
         'browser' => 'Browser',
         'location' => 'Location',
         'platform' => 'Platform',
         'device' => 'Device',
+        'before_change' => 'Before change',
+        'after_change' => 'After change',
+        'log' => 'Log'
     ],
 
     // Order
@@ -332,7 +337,7 @@ return [
     'save' => 'Save',
     'cancel' => 'Cancel',
     'delete' => 'Delete',
-    'unknown' => 'Unknown',
+    'unknown' => ' ',
     'data_invalid' => 'Invalid data',
     'not_empty' => 'Please do not leave this field empty',
     'one_least' => 'At least one item is required',
@@ -375,14 +380,15 @@ return [
     //Product
     'product' => [
         'product' => 'Product',
-        'product_name' => 'Product Name',
+        'product_name' => 'Product name',
         'product_management' => 'Product Management',
         'online_and_offline' => 'Online and Offline Sale',
+        'short_description' => 'Short description',
         'online' => 'Online Sale',
         'offline' => 'Offline Sale',
         'locked' => 'Sale Locked',
         'feature' => 'Just Launched',
-        'product_sku' => 'Product SKU',
+        'product_sku' => 'SKU',
         'exp' => 'Expiration Date',
         'technical' => 'Technical Specifications',
         'product_gallery' => 'Product Gallery',
@@ -456,6 +462,9 @@ return [
         'discount_name' => 'Discount Name',
         'vality' => 'Validity',
         'type' => 'Discount Type',
+        'apply_type' => 'Áp dụng cho',
+        'once' => 'One time / Order',
+        'multiple' => 'Multiple times / Order',
         'select_type' => 'Select Discount Type',
         'your_branch' => 'Your Branch',
         'select_branch' => 'Select Branch',
@@ -551,6 +560,9 @@ return [
 
     //Work schedule
     'work_schedule' => [
+        'your_phone' => 'Please use your phone to check in or check out',
+        'success_atendance' => 'You have completed your timekeeping for today',
+        'salary' => 'Salary',
         'work_schedule' => 'Work Schedule',
         'summary' => 'Summary',
         'work_schedule_management' => 'Work Schedule Management',
@@ -916,6 +928,61 @@ return [
         'status' => 'Return Status',
     ],
 
+    //Variable
+    'variables' => [
+        'variable' => 'Variant',
+        'new_variable' => 'New Variant',
+        'name' => 'Variant Name',
+        'customer' => 'Customer',
+        'description' => 'Description',
+        'product' => 'Product',
+        'price' => 'Price',
+        'rate' => 'Rate',
+        'unit' => 'Unit',
+        'minimum_stock' => 'Minimum Stock',
+        'add_unit' => 'Add Unit',
+        'order' => 'Order',
+        'payment_method' => 'Payment Method',
+        'payment_amount' => 'Payment Amount',
+        'status' => 'Status',
+        'barcode' => 'Barcode',
+
+        'variable_first' => 'Please create at least one variant.',
+        'used' => 'has already been used',
+        'duplicated' => 'has already been used, please try again!',
+        'conversation_rate' => 'The conversion rate must have one and only one value equal to 1.',
+        'conversation_duplicated' => 'Conversion rates must not be duplicated.',
+    ],
+
+    //Chat
+    'chat' => [
+        'chat' => 'Chat',
+        'chat_management' => 'Chat Management',
+        'conversations' => 'Conversations',
+        'sender' => 'Sender',
+        'receiver' => 'Receiver',
+        'no_chat' => 'No messages',
+        'not_yet_chat' => 'You have no conversations yet.',
+        'search' => 'Search conversations...',
+        '@' => 'Enter @, to message...',
+        'with_us' => 'Message with us',
+        'send_message' => 'Send Message',
+
+        'conversation_id' => [
+            'required' => 'Conversation not found.',
+        ],
+        'message' => [
+            'required' => 'The message field is required.',
+            'string' => 'The message field must be a string.',
+            'max' => 'The message field may not be greater than 192 characters.',
+            'error' => 'The message field is required unless an attachment is provided.',
+            'send_error' => 'An error occurred while sending the message!',
+        ],
+        'attachments' => [
+            'max' => 'You can upload up to 5 attachments only.',
+            '*.max' => 'Each attachment may not be greater than 10MB.',
+        ],
+    ],
 
 
 ];

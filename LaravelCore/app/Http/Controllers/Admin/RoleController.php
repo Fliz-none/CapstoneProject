@@ -144,7 +144,6 @@ class RoleController extends Controller
                 cache()->forget('cashiers');
 
                 DB::commit();
-                LogController::create('1', self::NAME, $role->id);
                 $response = [
                     'status' => 'success',
                     'msg' =>  __('messages.created') . __('messages.roles.role') . ' ' . $role->name,

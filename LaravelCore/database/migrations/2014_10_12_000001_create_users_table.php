@@ -34,7 +34,7 @@ class CreateUsersTable extends Migration
             $table->timestamps();
 
             $table->foreign('main_branch')->references('id')->on('branches')->constrained()->onDelete('restrict');
-            $table->foreign('local_id')->references('id')->on('locals')->constrained()->onDelete('restrict');
+            // $table->foreign('local_id')->references('id')->on('locals')->constrained()->onDelete('restrict');
         });
     }
 

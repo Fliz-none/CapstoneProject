@@ -11,7 +11,7 @@ class Order extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'orders';
-    protected $appends = ['code', 'statusStr', 'paid'];
+    protected $appends = ['code', 'statusStr', 'paid', 'receive', 'refund'];
     protected $fillable = [
         'branch_id',
         'customer_id',
@@ -96,6 +96,18 @@ class Order extends Model
     public function getPaidAttribute()
     {
         $paid = ($this->transactions->count()) ? $this->transactions->sum('amount') : 0;
+        return $paid;
+    }
+
+    public function getReceiveAttribute()
+    {
+        $paid = ($this->transactions->count()) ? $this->transactions->where('amount', '>', 0)->sum('amount') : 0;
+        return $paid;
+    }
+
+    public function getRefundAttribute()
+    {
+        $paid = ($this->transactions->count()) ? ($this->transactions->where('amount', '<', 0)->sum('amount') * -1) : 0;
         return $paid;
     }
 

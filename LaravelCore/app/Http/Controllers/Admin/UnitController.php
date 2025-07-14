@@ -153,7 +153,6 @@ class UnitController extends Controller
             $obj = Unit::find($id);
             if ($obj->rate != 1) {
                 $obj->delete();
-                LogController::create("3", self::NAME, $obj->id);
                 $response = array(
                     'status' => 'success',
                     'msg' => 'Deleted ' . self::NAME . ' ' . $obj->term . ' successfully!'

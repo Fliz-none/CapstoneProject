@@ -19,7 +19,7 @@ class CreateUnitsTable extends Migration
             $table->unsignedBigInteger('variable_id');
             $table->unsignedInteger('rate');
             $table->string('barcode')->nullable();
-            $table->decimal('price', 10, 2)->default(0);
+            $table->decimal('price', 10, 0)->default(0);
             $table->softDeletes();
             $table->timestamps();
             $table->foreign('variable_id')->references('id')->on('variables');

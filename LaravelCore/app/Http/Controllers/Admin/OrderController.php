@@ -85,7 +85,7 @@ class OrderController extends Controller
             return response()->json($result, 200);
         } else {
             if ($request->ajax()) {
-                $objs = Order::with('_customer.local', '_dealer.local', '_branch', 'details', 'transactions')
+                $objs = Order::with('_customer', '_dealer', '_branch', 'details', 'transactions')
                     ->when($request->has('customer_id'), function ($query) use ($request) {
                         $query->where('customer_id', $request->customer_id);
                     })
@@ -370,9 +370,10 @@ class OrderController extends Controller
         //     $request->validate($new_rules, $new_messages);
         // }
 
-        if (!$request->filled('customer_id') && !$request->filled('id') && !$request->has('transaction_payments')) {
-            return response()->json(['errors' => ['role' => [__('messages.order.customer_required')]]], 422);
-        }
+        // if (!$request->filled('customer_id') && !$request->filled('id') && !$request->has('transaction_payments')) {
+        //     return response()->json(['errors' => ['role' => [__('messages.order.customer_required')]]], 422);
+        // }
+
         if (!empty($this->user->can(User::CREATE_ORDER))) {
             if ($this->user->branch) {
                 if (!$request->has('id') && !$request->has('transaction_payments') && !$request->has('customer_id')) {
@@ -389,7 +390,6 @@ class OrderController extends Controller
                         'status' => $request->has('status') ? $request->status : 0,
                         'note' => $request->note,
                     ]);
-                    $order->update(['total' => $order->total()]);
                     if ($request->has('scores')) {
                         optional($order->customer)->update(['scores' => $request->scores]);
                     }
@@ -414,6 +414,7 @@ class OrderController extends Controller
                                     'quantity' => $request->quantities[$i],
                                     'price' => $request->prices[$i],
                                     'discount' => $request->discounts[$i],
+                                    'discount_program' => $request->discount_programs[$i],
                                     'note' => $request->notes[$i]
                                 ]);
                                 if ($detail) {
@@ -435,6 +436,7 @@ class OrderController extends Controller
                                     }
                                 }
                             }
+                            $order->update(['total' => $order->total()]);
                         }
 
                         if ($request->has('transaction_payments') && count($request->transaction_payments)) {
@@ -576,9 +578,9 @@ class OrderController extends Controller
         $request->validate($rules, $messages);
         if (!empty($this->user->can(User::UPDATE_ORDER))) {
             if ($request->has('id')) {
-                if (!$request->has('id') && !$request->has('transaction_payments') && !$request->has('customer_id')) {
-                    return response()->json(['errors' => ['customer_required' => [__('messages.order.customer_required')]]], 422);
-                }
+                // if (!$request->has('id') && !$request->has('transaction_payments') && !$request->has('customer_id')) {
+                //     return response()->json(['errors' => ['customer_required' => [__('messages.order.customer_required')]]], 422);
+                // }
                 DB::beginTransaction();
                 try {
                     $order = Order::find($request->id);
@@ -617,6 +619,7 @@ class OrderController extends Controller
                                     'quantity' => $request->quantities[$i],
                                     'price' => $request->prices[$i],
                                     'discount' => $request->discounts[$i],
+                                    'discount_program' => $request->discount_programs[$i],
                                     'note' => $request->notes[$i]
                                 ]);
                                 $export_id = $request->export_ids[$i] ? $request->export_ids[$i] : $export_id;

@@ -18,7 +18,7 @@ class CreateExpensesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('branch_id');
             $table->unsignedTinyInteger('payment')->comment('1: Cash; 2: Bank Transfer')->default(1);
-            $table->unsignedDecimal('amount',10,2);
+            $table->unsignedDecimal('amount',10,0);
             $table->string('image')->nullable();
             $table->string('group')->nullable();
             $table->string('note')->nullable();

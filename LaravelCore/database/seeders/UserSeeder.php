@@ -218,7 +218,7 @@ class UserSeeder extends Seeder
             [198, 'Chị Lạc', '0788877189', NULL, NULL, 1, NULL, NULL, NULL, '10', NULL, NULL, NULL, NULL, 1, '2024-04-03 14:10:00', NULL, NULL, NULL, NULL, '2024-04-01 13:08:53', NULL],
             [199, 'anh Nghĩa', '0939515038', NULL, NULL, 1, NULL, NULL, NULL, '185', NULL, NULL, NULL, NULL, 1, '2024-04-03 14:00:00', NULL, NULL, NULL, NULL, '2024-04-01 12:55:23', NULL],
             [200, 'khánh', '0934441434', NULL, NULL, 1, NULL, NULL, NULL, '255', NULL, NULL, NULL, NULL, 1, '2024-04-03 13:55:00', NULL, NULL, NULL, NULL, '2024-04-01 12:53:48', NULL],
-            
+
         ];
 
         foreach ($users as $user) {
@@ -230,10 +230,10 @@ class UserSeeder extends Seeder
                 'avatar' => $user[4],
                 'gender' => $user[5],
                 'password' => $user[6],
-                
+
                 'address' => $user[8],
                 'scores' => $user[9],
-                'local_id' => $user[10],
+                // 'local_id' => $user[10],
                 'main_branch' => $user[11],
                 'status' => $user[14],
                 //'last_login_at' => $user[15],

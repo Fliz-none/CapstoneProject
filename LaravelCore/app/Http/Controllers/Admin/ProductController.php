@@ -401,7 +401,6 @@ class ProductController extends Controller
                     'status' => $request->status,
                 ]);
                 if ($product) {
-                    LogController::create('1', self::NAME, $product->id);
                     if ($request->avatar) {
                         $image = $request->file('avatar');
                         $imageName = $image->getClientOriginalName();
@@ -414,7 +413,6 @@ class ProductController extends Controller
                             'name' => $imageName,
                             'author_id' => Auth::user()->id
                         ]);
-                        LogController::create('1', 'Image ' . $image->name, $image->id);
                         $product->update(['gallery' => '|' . $imageName]);
                     }
                     $product->syncCatalogues($request->catalogues);
@@ -478,13 +476,11 @@ class ProductController extends Controller
                                 'name' => $imageName,
                                 'author_id' => Auth::user()->id
                             ]);
-                            LogController::create('1', 'Image ' . $image->name, $image->id);
                             $product->update(['gallery' => '|' . $imageName]);
                         }
 
                         $product->syncCatalogues($request->catalogues);
 
-                        LogController::create('2', self::NAME, $product->id);
                         DB::commit();
                         $response = array(
                             'status' => 'success',
@@ -550,7 +546,6 @@ class ProductController extends Controller
                             DB::table('catalogue_product')->where('product_id', $obj->id)->delete();
                             $obj->forceDelete();
                         }
-                        LogController::create("3", self::NAME, $obj->id);
                         array_push($success, $obj->name);
                     }
                 }

@@ -199,8 +199,6 @@ class CatalogueController extends Controller
                     'status' => $request->has('status'),
                     'avatar' => $request->avatar,
                 ]);
-
-                LogController::create('1', self::NAME, $catalogue->id);
                 cache()->forget('catalogues');
                 $response = array(
                     'status' => 'success',

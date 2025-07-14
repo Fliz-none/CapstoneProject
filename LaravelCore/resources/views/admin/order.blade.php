@@ -98,20 +98,20 @@
                                         </div>
                                         <hr />
                                         <div class="row mb-3 row-total">
-                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-total" data-bs-toggle="tooltip" data-bs-title="Total value of goods in the order">Total <span class="order-count px-1">0</span> items&nbsp;</label>
+                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-total">Total <span class="order-count px-1">0</span> items&nbsp;</label>
                                             <div class="col-sm-8">
                                                 <input class="form-control-lg bg-white text-end form-control bg-white money order-total" id="order-${nextCount}-total" name="total" type="text" value="0" placeholder="Total money of the order" autocomplete="off" readonly>
                                             </div>
                                         </div>
                                         <div class="row row-discount">
-                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-discount" data-bs-toggle="tooltip" data-bs-title="Price on total order (Amount or Percentage)">Discount</label>
+                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-discount">Discount</label>
                                             <div class="col-sm-8">
                                                 <input class="form-control-lg text-end form-control bg-white money order-discount" id="order-${nextCount}-discount" name="discount" type="text" value="0" onclick="this.select()" placeholder="Amount or Percentage" autocomplete="off">
                                             </div>
                                         </div>
                                         <hr />
                                         <div class="row mb-3 row-summary">
-                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-summary" data-bs-toggle="tooltip" data-bs-title="Amount due">Amount due</label>
+                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-summary">Amount due</label>
                                             <div class="col-sm-8">
                                                 <input class="form-control-lg text-end form-control bg-white money order-summary" id="order-${nextCount}-summary" name="summary" type="text" value="0" placeholder="Amount" autocomplete="off" readonly>
                                             </div>
@@ -119,13 +119,13 @@
                                         <div class="order-payments" id="order-${nextCount}-payments">
                                         </div>
                                         <div class="row mb-3 row-change d-none">
-                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-change" data-bs-toggle="tooltip" data-bs-title="Change returned to customer (in cash)">Change</label>
+                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-change">Change</label>
                                             <div class="col-sm-8">
                                                 <input class="form-control-lg text-end form-control bg-white money order-change" id="order-${nextCount}-change" name="change" type="text" value="0" placeholder="Amount" autocomplete="off" readonly>
                                             </div>
                                         </div>
                                         <div class="row mb-3 row-due d-none">
-                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-due" data-bs-toggle="tooltip" data-bs-title="Amount remaining to be paid">Remaining balance</label>
+                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-due">Remaining balance</label>
                                             <div class="col-sm-8">
                                                 <input class="form-control-lg text-end form-control bg-white money order-due" id="order-${nextCount}-due" name="due" type="text" value="0" placeholder="Amount" autocomplete="off" readonly>
                                             </div>
@@ -377,14 +377,16 @@
             const tab = $('.tab-pane.active'),
                 index = tab.attr('id').match(/order-(\d+)/)[1],
                 count = clear ? 1 : tab.find(`.transaction-refund`).length + 1
+                //Bù trống sau input[type=checkbox] <label class="btn btn-outline-secondary" for="transaction-${index}${count}-refund"><i class="bi bi-reply-all-fill"></i></label>
             const newRow = `
                 <div class="row mb-3 row-amount">
-                    <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="transaction-${index}${count}-amount" data-bs-toggle="tooltip" data-bs-title="Amount due">${note}</label>
+                    <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="transaction-${index}${count}-amount">${note}</label>
                     <div class="col-sm-8">
                         <div class="btn-group btn-group-lg">
                             <input type="hidden" name="transaction_refund[]" value="0">
                             <input type="checkbox" class="btn-check transaction-refund" id="transaction-${index}${count}-refund" autocomplete="off">
-                            <label class="btn btn-outline-secondary" for="transaction-${index}${count}-refund"><i class="bi bi-reply-all-fill"></i></label>
+
+
                             <input type="hidden" value="${type}" name="transaction_payments[]">
                             <input type="hidden" value="${note}" name="transaction_notes[]">
                             <input class="form-control-lg text-end form-control money transaction-amount" id="transaction-${index}${count}-amount" name="transaction_amounts[]" type="text" value="${amount}" autocomplete="off" required>

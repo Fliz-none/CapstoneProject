@@ -46,20 +46,6 @@
                                     <input class="btn-check" id="gender-other" name="gender" type="radio" value="2">
                                     <label class="btn btn-outline-primary" for="gender-other">{{ __('messages.profile.other') }}</label>
                                 </div>
-                                <div class="pt-2 row align-items-center form-group">
-                                    <label class="form-label fw-bold" data-bs-toggle="tooltip" data-bs-title="User's address" for="user-local_city">{{ __('messages.profile.address') }}</label>
-                                    <div class="col-6 mb-3">
-                                        <select class="form-control select2" id="user-local_city" name="local_city" data-ajax--url="{{ route('admin.local', ['key' => 'cities']) }}" data-placeholder="{{ __('messages.user.city') }}"
-                                            autocomplete="off"></select>
-                                    </div>
-                                    <div class="col-6 mb-3">
-                                        <select class="form-control select2" id="user-local_id" name="local_id" data-ajax--url="{{ route('admin.local', ['key' => 'districts']) }}" data-placeholder="{{ __('messages.user.district') }}"
-                                            autocomplete="off"></select>
-                                    </div>
-                                    <div class="mb-4">
-                                        <input class="form-control" id="user-address" name="address" type="text" autocomplete="off" placeholder="{{ __('messages.user.address') }}">
-                                    </div>
-                                </div>
                             </div>
                             <div class="collapse" id="user-more">
                                 <!-- <div class="mb-3 form-group">

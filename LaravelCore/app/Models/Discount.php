@@ -29,6 +29,7 @@ class Discount extends Model
         'name',
         'branch_id',
         'type',
+        'apply_type',
         'value',
         'buy_quantity',
         'get_quantity',

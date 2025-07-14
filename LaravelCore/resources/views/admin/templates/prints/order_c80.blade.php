@@ -1,18 +1,18 @@
 @php
-    $settings = cache()->get('settings_' . Auth::user()->company_id);
+    $settings = cache()->get('settings');
 @endphp
 {{-- <link href="{{ asset('admin/css/bootstrap.css') }}" rel="stylesheet"> --}}
 <div id="print-container" style="font-size: 75%; color: #000000">
     <div class="container-fluid print-template">
         <div class="row">
             <div class="col-4">
-                <img class="img-fluid" src="{{ cache()->get('settings')['logo_square_bw'] }}" />
+                <img class="img-fluid" src="{{ asset('storage/' . $settings['logo_square_bw']) }}" />
             </div>
             <div class="col-8">
-                <h6 class="text-uppercase mb-0">{{ $settings['company_brandname'] }}</h6>
+                <h6 class="text-uppercase mb-0">{{ $settings['company_name'] }}</h6>
                 <small class="mb-0">
-                    Website: {{ $settings['company_website'] }} <br />
-                    Phone: {{ $settings['company_phone'] }}
+                    Address: {{ $settings['company_address'] }} <br />
+                    Phone: {{ $settings['company_hotline'] }}
                 </small>
             </div>
         </div>
@@ -36,70 +36,67 @@
         @endphp
         @if ($goods->count())
             <div class="fw-bold mb-0 mt-3 text-uppercase">Goods</div>
-            <div class="row">
+            <div class="row px-0">
                 @foreach ($goods as $i => $good)
                     <div class="col-12 fw-bold {{ $i ? 'mt-2' : '' }}">
                         {{ $good->_stock->import_detail->_variable->_product->name . ' - ' . $good->_stock->import_detail->_variable->name }}
-                        <br /><small>{{ $good->note }}</small>
                     </div>
-                    <div class="col-8">
-                        <small>{{ $good->quantity . ' ' . $good->_unit->term }} &times; {{ number_format($good->realPrice) . 'VND' }} {{ $good->discount ? ' - DISCOUNT ' . parseDiscount($good->discount) : '' }}</small>
+                    <div class="col-4 d-flex align-items-end pe-0">
+                        <small>
+                            {{ $good->quantity . ' ' . $good->_unit->term }}
+                        </small>
                     </div>
-                    <div class="col-4 text-end">
-                        {{ $good->realPrice ? number_format($good->total) . 'VND' : 'Free' }}
+                    <div class="col-4 d-flex align-items-end px-0">
+                        <small>
+                            @if ($good->realPrice != $good->price)
+                                <s class="ms-2">{{ number_format($good->price) }}</s><br>
+                            @endif
+                            &times; {{ number_format($good->realPrice) }}
+                        </small>
                     </div>
+                    <div class="col-4 d-flex align-items-end text-end px-0">
+                        <small>
+                            @if ($good->discount_program > 0)
+                                <s class="me-4">{{ number_format($good->total + $good->discount_program) }}</s><br>
+                            @endif
+                            {{ $good->realPrice ? number_format($good->total) . ' VND' : 'Free' }}
+                        </small>
+                    </div>
+                    <div class="col-12 fw-bold">
+                        <small>{{ $good->note }}</small>
+                    </div>
+                    <hr style="border: none; border-top: 1px solid #ccc; width: 80%; margin: 0.5rem auto;" />
                 @endforeach
             </div>
         @endif
-        <div class="row pt-3 mt-3" style="border-top: 1px solid #000;">
+        <div class="row pt-3" style="border-top: 1px solid #000;">
             @php
                 $sumOriginal = $order->details->sum(function ($detail) {
                     return $detail->realPrice > $detail->price ? $detail->total : $detail->originalTotal;
                 });
             @endphp
-            <div class="col-7 mb-3 fw-bold">
+            <div class="col-7 d-flex align-items-end mb-3 fw-bold">
                 TOTAL
-                {{ $goods->sum('quantity') ? $goods->sum('quantity') . ' PRODUCTS' : '' }}{{ $goods->sum('quantity') && $services->sum('quantity') ? ' - ' : '' }}{{ $services->sum('quantity') ? $services->sum('quantity') . ' SERVICES' : '' }}
+                {{ $goods->sum('quantity') ? $goods->sum('quantity') . ' PRODUCTS' : '' }}
             </div>
-            <div class="col-5 mb-3 text-end fw-bold">
-                {{ number_format($sumOriginal) }}VND
-            </div>
-            @if ($order->discount > 0 || $order->saveAmount > 0)
-                <div class="col-7 fw-bold">
-                    DISCOUNT
-                </div>
-                <div class="col-5 text-end fw-bold">
-                    {{ $order->saveAmount > 0 ? number_format($order->saveAmount) . 'VND' : '' }}
-                </div>
-                @if ($order->saveAmount > 0)
-                    <div class="col-7">
-                        Product discount
-                    </div>
-                    <div class="col-5 text-end">
-                        {{ number_format($order->details->sum('originalTotal') - $order->details->sum('total')) }}VND
-                    </div>
+            <div class="col-5 mb-3 text-end">
+                @if ($order->total != $sumOriginal)
+                    <s class="me-4">{{ number_format($sumOriginal) }}</s><br>
                 @endif
-                @if ($order->discount > 0)
-                    <div class="col-7 mb-3">
-                        Order discount
-                    </div>
-                    <div class="col-5 mb-3 text-end">
-                        {{ number_format($order->details->sum('total') - $order->total) }}VND
-                    </div>
-                @endif
-            @endif
-            <div class="col-7 mb-3 fw-bold">
-                AMOUNT DUE
-            </div>
-            <div class="col-5 mb-3 fw-bold text-end fs-4 fw-bold">
-                {{ number_format($order->total) }}VND
+                <span class="fw-bold">{{ number_format($order->total) }} VND</span>
             </div>
             @if ($order->transactions->count())
                 <div class="col-7 fw-bold">
-                    PAID
+                    Receive
                 </div>
                 <div class="col-5 fw-bold text-end">
-                    {{ number_format($order->paid) }}VND
+                    {{ number_format($order->receive) }}VND
+                </div>
+                <div class="col-7 fw-bold">
+                    Refund
+                </div>
+                <div class="col-5 fw-bold text-end">
+                    {{ number_format($order->refund) }}VND
                 </div>
             @endif
         </div>

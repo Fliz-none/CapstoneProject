@@ -127,7 +127,7 @@ class UserController extends Controller
                                 </li>');
                     break;
                 default:
-                    $obj = User::with('local', 'roles', 'warehouses', 'branches')->find($request->key);
+                    $obj = User::with('roles', 'warehouses', 'branches')->find($request->key);
                     if ($obj) {
                         switch ($request->action) {
                             case 'suggestions':
@@ -166,7 +166,7 @@ class UserController extends Controller
             return response()->json($result, 200);
         } else {
             if ($request->ajax()) {
-                $objs = User::with(['roles', 'local']);
+                $objs = User::with(['roles']);
                 return DataTables::of($objs)
                     ->addColumn('checkboxes', function ($obj) {
                         return '<input class="form-check-input choice" type="checkbox" name="choices[]" value="' . $obj->id . '">';

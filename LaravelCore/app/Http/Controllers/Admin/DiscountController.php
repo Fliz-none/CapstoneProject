@@ -209,6 +209,7 @@ class DiscountController extends Controller
                     'name' => $request->name,
                     'branch_id' => $request->branch_id,
                     'type' => $request->type,
+                    'apply_type' => $request->apply_type,
                     'value' => $request->type != 2 ? $request->value : null,
                     'min_quantity' => $request->type != 2 ? $request->min_quantity : 1,
                     'buy_quantity' => $request->type == 2 ? $request->buy_quantity : null,
@@ -222,7 +223,6 @@ class DiscountController extends Controller
                     $discount->syncUnit($request->unit_ids ?? []);
                 }
 
-                LogController::create('1', self::NAME, $discount->id);
                 $response = array(
                     'status' => 'success',
                     'msg' => __('messages.created').' '. __('messages.discount_.discount') . ' ' . $discount->name
@@ -287,6 +287,7 @@ class DiscountController extends Controller
                             'name' => $request->name,
                             'branch_id' => $request->branch_id,
                             'type' => $request->type,
+                            'apply_type' => $request->apply_type,
                             'value' => $request->type != 2 ? $request->value : null,
                             'min_quantity' => $request->type != 2 ? $request->min_quantity : 1,
                             'buy_quantity' => $request->type == 2 ? $request->buy_quantity : null,
@@ -300,7 +301,6 @@ class DiscountController extends Controller
                             $discount->syncUnit($request->unit_ids ?? []);
                         }
 
-                        LogController::create('2', self::NAME, $discount->id);
                         $response = array(
                             'status' => 'success',
                             'msg' => __('messages.updated').' '. __('messages.discount_.discount') . ' ' . $discount->name
@@ -334,7 +334,6 @@ class DiscountController extends Controller
             foreach ($request->choices as $key => $id) {
                 $obj = Discount::find($id);
                 $obj->delete();
-                LogController::create("3", self::NAME, $obj->id);
                 array_push($success, $obj->name);
             }
             if (count($success)) {

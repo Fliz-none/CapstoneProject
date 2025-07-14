@@ -27,17 +27,17 @@ class TransactionController extends Controller
     ];
 
     public static array $MESSAGES = [];
-     
+
 
     protected $zalo;
     public function __construct()
     {
-        
+
         parent::__construct();
         if ($this->user === null) {
             $this->user = Auth::user();
         }
-       
+
         $this->middleware(['admin', 'auth']);
         $this->middleware(function ($request, $next) {
         // Locale đã được set xong ở đây
@@ -210,8 +210,7 @@ class TransactionController extends Controller
                             $transaction_day = Carbon::parse($obj->created_at)->startOfDay();
                             $order_day = Carbon::parse($obj->_order->created_at)->startOfDay();
                             $result = $obj->fullAmount . '<br>
-                            <input type="hidden" data-date="' . $obj->created_at->format('d/m/Y') . '" data-payment="' . $obj->payment . '" value="' . $obj->amount . '">
-                            <small>' . ($transaction_day->eq($order_day) ? __('messages.datatable.purchase') : __('messages.datatable.debt_payment')) . '</small>';
+                            <input type="hidden" data-date="' . $obj->created_at->format('d/m/Y') . '" data-payment="' . $obj->payment . '" value="' . $obj->amount . '">';
                         } else {
                             $result = '';
                         }
@@ -225,8 +224,7 @@ class TransactionController extends Controller
                             $transaction_day = Carbon::parse($obj->created_at)->startOfDay();
                             $order_day = Carbon::parse($obj->_order->created_at)->startOfDay();
                             $result = $obj->fullAmount . '<br>
-                            <input type="hidden" data-date="' . $obj->created_at->format('d/m/Y') . '" data-payment="' . $obj->payment . '" value="' . $obj->amount . '">
-                            <small>' . ($transaction_day->eq($order_day) ? __('messages.datatable.purchase') : __('messages.datatable.debt_payment')) . '</small>';
+                            <input type="hidden" data-date="' . $obj->created_at->format('d/m/Y') . '" data-payment="' . $obj->payment . '" value="' . $obj->amount . '">';
                         } else {
                             $result = '';
                         }
@@ -292,7 +290,6 @@ class TransactionController extends Controller
                     ]);
                     $transaction->order->sync_scores($transaction->amount);
 
-                    LogController::create('1', self::NAME, $transaction->id);
                     $response = array(
                         'status' => 'success',
                         'msg' => 'Transaction added successfully: ' . $transaction->id
@@ -325,7 +322,6 @@ class TransactionController extends Controller
                                 ]);
                                 $order->sync_scores($transaction->amount);
 
-                                LogController::create('1', self::NAME, $transaction->id);
                                 $totalAmount -= $amount;
                                 array_push($ids, $order->id);
                             }
@@ -373,7 +369,6 @@ class TransactionController extends Controller
                             'note' => $request->note,
                         ]);
 
-                        LogController::create('2', self::NAME, $transaction->id);
                         $response = array(
                             'status' => 'success',
                             'msg' => 'Transaction updated successfully: ' . $transaction->id
@@ -409,7 +404,6 @@ class TransactionController extends Controller
                 $obj = Transaction::with('order')->find($id);
                 $obj->order->sync_scores($obj->amount * -1);
                 $obj->delete();
-                LogController::create("3", self::NAME, $obj->id);
                 array_push($success, $obj->name);
             }
             $msg = '';

@@ -11,7 +11,7 @@ class Detail extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'details';
-    protected $appends = ['realPrice', 'total'];
+    protected $appends = ['realPrice', 'total', 'originalTotal'];
     protected $fillable = [
         'order_id',
         'stock_id',
@@ -19,6 +19,7 @@ class Detail extends Model
         'quantity',
         'price',
         'discount',
+        'discount_program',
         'note',
     ];
 
@@ -64,7 +65,7 @@ class Detail extends Model
 
     public function getTotalAttribute() //Tính tổng đã giảm
     {
-        return $this->realPrice * $this->quantity;
+        return $this->realPrice * $this->quantity - $this->discount_program;
     }
 
     public function getOriginalTotalAttribute() //Tính tổng chưa giảm

@@ -7,10 +7,10 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <h5 class="text-uppercase">{{ $pageName }}</h5>
+                    <h5 class="text-uppercase">{{ __('messages.work_schedule.attendance') }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.work_schedule.attendance') }}</li>
                         </ol>
                     </nav>
                 </div>
@@ -81,7 +81,7 @@
                             <div class="work-done-icon">
                                 <i class="bi bi-calendar-check" style="font-size: calc(10rem + 1.5vw);"></i>
                             </div>
-                            <span class="fs-5 text-primary fw-bold">You have completed your timekeeping for today</span>
+                            <span class="fs-5 text-primary fw-bold">{{ __('messages.work_schedule.success_atendance') }}</span>
                         </div>
                     @endif
                 @else
@@ -89,7 +89,7 @@
                         <div class="work-done-icon">
                             <i class="bi bi-phone" style="font-size: calc(10rem + 1.5vw);"></i>
                         </div>
-                        <span class="fs-5 text-primary fw-bold">Please use your phone to check in or check out</span>
+                        <span class="fs-5 text-primary fw-bold">{{ __('messages.work_schedule.your_phone') }}</span>
                     </div>
                 @endif
             </div>

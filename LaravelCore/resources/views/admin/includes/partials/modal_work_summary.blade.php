@@ -15,7 +15,7 @@
                             <th class="text-center">{{ __('messages.work_schedule.name_employee') }}</th>
                             <th class="text-center">{{ __('messages.work_schedule.total_hours') }}</th>
                             <th class="text-center">{{ __('messages.work_schedule.total_time_late') }} / {{ __('messages.work_schedule.total_shift') }}</th>
-                             <th class="text-center">Salary</th>
+                             <th class="text-center">{{ __('messages.work_schedule.salary') }}</th>
                         </tr>
                     </thead>
                     <tbody>

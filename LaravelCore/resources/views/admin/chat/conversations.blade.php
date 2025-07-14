@@ -28,8 +28,8 @@
             <img src="{{ asset('admin/images/placeholder.webp') }}" alt="avatar"
                 class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
             <div class="pt-1">
-                <p class="fw-bold mb-0">No Conversations</p>
-                <p class="small text-muted">You have no conversations yet.</p>
+                <p class="fw-bold mb-0">{{ __('messages.chat.no_chat') }}</p>
+                <p class="small text-muted">{{ __('messages.chat.not_yet_chat') }}</p>
             </div>
         </div>
     </li>

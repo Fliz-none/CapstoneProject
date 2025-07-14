@@ -28,7 +28,7 @@
                         <li class="sidebar-item key-bg-secondary" data-keyword="Customer support">
                             <a class='sidebar-btn' href="{{ route('admin.chat') }}">
                                 <i class="bi bi-calendar2-range"></i>
-                                <span class="text-white">Customer support</span>
+                                <span class="text-white">{{ __('messages.sidebar.customer_support') }}</span>
                             </a>
                         </li>
                     {{-- @endif --}}
@@ -85,7 +85,7 @@
                                 @endif
                                 @if (!empty(Auth::user()->hasAnyPermission(app\Models\User::READ_CATALOGUES)))
                                     <li class="submenu-item" data-keyword="Categories">
-                                        <a href="{{ route('admin.catalogue') }}">Categories</a>
+                                        <a href="{{ route('admin.catalogue') }}">{{ __('messages.sidebar.catelogue') }}</a>
                                     </li>
                                 @endif
                                 @if (!empty(Auth::user()->hasAnyPermission(app\Models\User::READ_ATTRIBUTES)))
@@ -105,7 +105,7 @@
                         <li class="sidebar-item has-sub" data-keyword="Stocks">
                             <a class='sidebar-link' href="#">
                                 <i class="bi bi-grid-1x2"></i>
-                                <span>Stock management</span>
+                                <span>{{ __('messages.stock.stock') }}</span>
                             </a>
                             <ul class="submenu">
                                 @if (!empty(Auth::user()->hasAnyPermission(app\Models\User::READ_STOCKS)))
@@ -163,7 +163,7 @@
                             </a>
                         </li>
                     @endif
-                    <li class="sidebar-title">Settings</li>
+                    <li class="sidebar-title">{{ __('messages.setting.setting') }}</li>
                     <li class="sidebar-item has-sub" data-keyword="System configuration">
                         <a class='sidebar-link' href="#">
                             <i class="bi bi-sliders"></i>
