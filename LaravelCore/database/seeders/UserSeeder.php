@@ -238,7 +238,7 @@ class UserSeeder extends Seeder
                 'status' => $user[14],
                 //'last_login_at' => $user[15],
                 'note' => $user[16],
-                //'email_verified_at' => $user[17],
+                'email_verified_at' => $user[17],
                 'remember_token' => $user[18],
                 'deleted_at' => $user[19],
                 'created_at' => $user[20],

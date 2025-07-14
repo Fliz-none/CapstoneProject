@@ -1,12 +1,12 @@
 
 //Input mask money
 $(document).on('focus', '.money', function () {
-    $('.money').mask("#,##0", {
+    $(this).mask("#,##0", {
         reverse: true
     });
 });
 $(document).on('blur', '.money', function () {
-    $('.money').unmask();
+    $(this).unmask();
 })
 
 function number_format(nStr) {
@@ -81,8 +81,12 @@ function submitForm(frm) {
                 btn.prop("disabled", false);
             }
         },
-        error: function error(errors) {
-            btn.prop("disabled", false).html('<i class="fas fa-exclamation-triangle"></i> Thử lại');
+        error: function error(errors) {            
+            if (btn.hasClass('just-icon')) {
+                btn.prop("disabled", false).html('<i class="bi bi-arrow-repeat"></i>');
+            } else {
+                btn.prop("disabled", false).html('<i class="bi bi-arrow-repeat"></i> Thử lại');
+            }
             if (errors.status == 419 || errors.status == 401) {
                 window.location.href = config.routes.login;
             } else if (errors.status == 422) {
@@ -114,7 +118,7 @@ function submitForm(frm) {
                 });
             } else {
                 Toastify({
-                    text: `{{ __('An error has occurred') }}` + ' ' + `{{ __('Please try again later') }}`,
+                    text: errors.statusText ?? "Có lỗi xảy ra! Vui lòng thử lại sau.",
                     duration: 3000,
                     close: true,
                     gravity: "top",

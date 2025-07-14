@@ -198,6 +198,8 @@ function showLoginForm() {
 function submitLogoutForm() {
     const form = $("#logout-form");
     form.attr("action", "/logout");
+    console.log('submitLogoutForm');
+    
     submitForm(form).done(function (response) {
         showLoginForm();
         updateCsrfToken(response.token);

@@ -112,7 +112,6 @@ class SettingController extends Controller
         try {
             $envFile = app()->environmentFilePath(); // Get the path to the .env file
             $str = file_get_contents($envFile); // Read the content of the .env file
-
             if (count($values) > 0) {
                 foreach ($values as $envKey => $envValue) {
                     $keyPosition = strpos($str, "{$envKey}=");
@@ -132,7 +131,7 @@ class SettingController extends Controller
             }
 
             return true;
-        } catch (\Throwable $e) {
+        } catch (\Exception $e) {
             log_exception($e);
             return false;
         }

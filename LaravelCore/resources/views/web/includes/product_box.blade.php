@@ -9,7 +9,7 @@
               <a class="product-name" href="{{ route('product', ['catalogue' => $product->catalogues->first()->slug, 'slug' => $product->slug]) }}" title="{{ $product->name }}">
                   {{ $product->name }}
               </a>
-              <p class="short">Quy cách: {{ $product->variables->pluck('name')->take(3)->implode(', ') }}{{ $product->variables->count() > 3 ? '...' : '' }} </p>
+              <p class="short">Biến thể: {{ $product->variables->pluck('name')->take(3)->implode(', ') }}{{ $product->variables->count() > 3 ? '...' : '' }} </p>
               <p class="price">Giá: <span>{!! $product->displayPrice() !!}</span></p>
               <div class="d-flex justify-content-between align-items-center">
                   <div class="product-ratting">
@@ -19,7 +19,7 @@
                           <li><a href="#"><i class="bi bi-star-fill"></i></i></a></li>
                           <li><a href="#"><i class="bi bi-star-fill"></i></i></a></li>
                           <li><a href="#"><i class="bi bi-star-half"></i></a></li>
-                          {{-- <li><a href="#"><i class="bi bi-star"></i></a></li> --}}
+                          <li><a href="#"><i class="bi bi-star"></i></a></li>
                       </ul>
                   </div>
                   <div>

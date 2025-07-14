@@ -10,6 +10,12 @@ use Illuminate\Http\Request;
 use Jenssegers\Agent\Agent;
 class ProductController extends Controller
 {
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function index(Request $request)
     {
         $agent = new Agent();
@@ -60,7 +66,6 @@ class ProductController extends Controller
                 switch ($request->key) {
                     case null:
                         return $products->get();
-                        break;
                     case 'filter':
                         $products->with(['variables']);
                         $products->when($request->catalogues != null, function ($q) use ($request) {
@@ -91,7 +96,6 @@ class ProductController extends Controller
                             $product->price = $product->displayPrice();
                         });
                         return $products;
-                        break;
 
                     default:
                         # code...

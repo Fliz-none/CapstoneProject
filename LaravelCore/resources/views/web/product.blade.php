@@ -104,7 +104,7 @@
                                                         <p>• {!! $variable->description !!}</p>
                                                     @endif
                                                     <div class="variable-details">
-                                                        <h6 class="text-uppercase my-2">Chọn đơn vị tính</h6>
+                                                        <h6 class="text-uppercase my-2">Quy cách đóng gói</h6>
                                                         <div class="variable-units d-flex align-items-center">
                                                             @forelse ($variable->units as $unit)
                                                                 <div class="variable-unit me-2">
@@ -112,12 +112,12 @@
                                                                         class="btn-select-unit key-btn-white"
                                                                         data-price="{{ $unit->price }}"
                                                                         data-unit_id="{{ $unit->id }}">{{ $unit->term }}
-                                                                        <span class="unit-price text-"
-                                                                            data-price="{{ $unit->price }}">{{ number_format($unit->price, 0, ',', '.') . cache('settings')->get('currency') }}</span>
+                                                                        <span class="unit-price"
+                                                                            data-price="{{ $unit->price }}">{{ number_format($unit->price, 0, ',', '.') . $config['currency'] }}</span>
                                                                     </a>
                                                                 </div>
                                                             @empty
-                                                                <p class="variable-unit">Không có đơn vị</p>
+                                                                <p class="variable-unit">Sản phẩm đang được cập nhật</p>
                                                             @endforelse
                                                         </div>
                                                     </div>
@@ -127,7 +127,7 @@
                                                     data-variable-id="{{ $variable->id }}">
                                                     <i class="bi bi-currency-exchange fs-4 text-warning"></i>
                                                     <h4 class="text-dark mb-0 preview-price">
-                                                        0 {{ cache('settings')->get('currency') }}
+                                                        0 {{ $config['currency'] }}
                                                     </h4>
                                                 </div>
                                                 <div class="d-flex mb-4 align-items-center">
@@ -140,10 +140,11 @@
                                                             </div>
                                                             <input
                                                                 class="form-control quantity text-center align-self-center quantityInput"
-                                                                name="product-quantity"
                                                                 data-variable-id="{{ $variable->id }}"
-                                                                data-price="{{ $variable->price }}" type="text"
-                                                                value="1">
+                                                                data-price="{{ $variable->price }}"
+                                                                type="text"
+                                                                value="1"
+                                                                style="width: 5rem">
                                                             <div class="input-group-append">
                                                                 <button class="btn btn-quantity increaseBtn"
                                                                     data-variable-id="{{ $variable->id }}"
@@ -153,6 +154,7 @@
                                                     </div>
                                                     <div>
                                                         <input name="unit_id" type="hidden">
+                                                        <input name="quantity" type="hidden" value="1">
                                                         <button class="key-btn-dark btn-add-to-cart" type="submit"
                                                             title="Add to Cart">
                                                             <i class="bi bi-basket3"></i>
@@ -258,7 +260,7 @@
                                                                     title="{{ $product->name }}">
                                                                     {{ $product->name }}
                                                                 </a>
-                                                                <p class="short">Quy cách:
+                                                                <p class="short">Biến thể:
                                                                     {{ $product->variables->pluck('name')->take(3)->implode(', ') }}{{ $product->variables->count() > 3 ? ', ...' : '' }}
                                                                 </p>
                                                                 <p class="price">Giá: <span>{!! $product->displayPrice() !!}</span>
@@ -329,73 +331,68 @@
 @endsection
 @push('scripts')
     <script>
+        function updatePrice($form) {
+            const price = parseFloat($form.find('.btn-select-unit.active').data('price')) || 0;
+            const quantity = parseInt($form.find('[name="quantity"]').val()) || 1;
+            const total = price * quantity;
+            $form.find('.preview-price').text(
+                new Intl.NumberFormat('vi-VN').format(total) + ' {{ $config['currency'] }}'
+            );
+        }
+
         $(document).ready(function() {
-            function updateQuantity(element) {
-                var variableId = element.data('variable-id');
-                var quantityInput = $('.quantityInput[data-variable-id="' + variableId + '"]');
-                var priceElement = $('.variable-price[data-variable-id="' + variableId + '"]');
-
-                var currentQuantity = parseInt(quantityInput.val());
-                var variablePrice = parseFloat(quantityInput.data('price'));
-
-                if (element.hasClass('increaseBtn')) {
-                    currentQuantity++;
-                } else if (element.hasClass('decreaseBtn')) {
-                    currentQuantity--;
-                }
-
-                // Kiểm tra nếu giá trị không phải là số
-                if (isNaN(currentQuantity)) {
-                    currentQuantity = 1;
-                }
-
-                // Chặn số lượng xuống dưới 0 (nếu không muốn cho phép số âm)
-                currentQuantity = Math.max(1, currentQuantity);
-
-                quantityInput.val(currentQuantity); // Thay đổi giá trị thuộc tính value trong HTML
-
-                var newPrice = currentQuantity * variablePrice;
-                if (priceElement.length) {
-                    priceElement.text(newPrice.toLocaleString() +
-                        `{{ cache('settings')->get('currency') }}`);
-                }
-            }
-
-            // Sự kiện click nút
-            $('.btn-quantity').on('click', function() {
-                updateQuantity($(this));
-                return false; // Ngăn chặn sự kiện click mặc định
-            });
-
-            // Sự kiện input trên input
-            $('.quantityInput').on('keyup', function() {
-                updateQuantity($(this));
-            });
-
-            // Sự kiện click nút chọn đơn vị
+            // Khi chọn đơn vị tính
             $('.btn-select-unit').on('click', function() {
-                var unitId = $(this).data('unit_id');
-                var form = $(this).closest('form');
-                $('input[name="unit_id"]', form).val(unitId);
-                // Preview gia
-                var price = $(this).data('price');
-                var variableId = $(this).closest('.tab-pane').find('.quantityInput').data('variable-id');
-                var previewPriceContainer = $('.preview-price-container[data-variable-id="' + variableId +
-                        '"]'),
-                    previewPriceElement = previewPriceContainer.find('.preview-price');
-                var quantity = $('.quantityInput[data-variable-id="' + variableId + '"]').val();
-                if (previewPriceElement.length) {
-                    previewPriceElement.text((price * quantity).toLocaleString() +
-                        `{{ cache('settings')->get('currency') }}`);
-                }
+                const $this = $(this);
+                const $form = $this.closest('form');
+                // Bỏ active ở tất cả unit khác
+                $form.find('.btn-select-unit').removeClass('active');
+                $this.addClass('active');
+                // Gán unit_id
+                $form.find('input[name="unit_id"]').val($this.data('unit_id'));
+                // Cập nhật giá
+                updatePrice($form);
+
+                //Cập nhật giao diện nút
+                $form.find('.btn-select-unit').removeClass('active');
+                $this.addClass('active');
             });
 
-            // Kiểm tra kiểu số khi nhập (Optional)
-            $('.quantityInput').on('keypress', function(event) {
-                var keyCode = event.which;
-                if (keyCode < 48 || keyCode > 57) {
-                    event.preventDefault();
+            // Tăng giảm số lượng
+            $('.increaseBtn, .decreaseBtn').on('click', function() {
+                const $form = $(this).closest('form');
+                const $input = $form.find('.quantityInput');
+                let val = parseInt($input.val()) || 1;             
+                if ($(this).hasClass('increaseBtn')) {
+                    $input.val(val + 1);
+                } else if (val > 1) {
+                    $input.val(val - 1);
                 }
+                
+                $form.find('[name="quantity"]').val($input.val());   
+
+                updatePrice($form);
+            });
+
+            // Khi nhập số lượng thủ công
+            $('.quantityInput').on('input blur keyup', function() {
+                // Chỉ cho nhập số
+                $(this).val($(this).val().replace(/[^0-9]/g, ''));
+                if(isNaN($(this).val())) return;
+
+                // Khoa nguoi dung nhap so am
+                if ($(this).val() < 0) {
+                    $(this).val(0);
+                }
+
+                // Khoa nguoi dung nhap so lon hon 1000
+                if ($(this).val() > 1000) {
+                    $(this).val(1000);
+                }
+                
+                const $form = $(this).closest('form');
+                $form.find('[name="quantity"]').val($(this).val());   
+                updatePrice($form);
             });
         });
     </script>

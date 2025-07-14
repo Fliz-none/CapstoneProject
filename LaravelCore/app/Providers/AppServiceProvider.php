@@ -5,13 +5,13 @@ namespace App\Providers;
 use App\Models\Detail;
 use App\Models\User;
 use App\Http\Controllers\Controller;
-use App\Models\Log;
+use App\Models\Setting;
 use App\Observers\DetailObserver;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use App\Observers\UserObserver;
-use Illuminate\Database\Events\QueryExecuted;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -37,15 +37,15 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(125);
         Detail::observe(DetailObserver::class);
 
-
-        DB::listen(function (QueryExecuted $query) {
-            if ($query->time > 1000) { // Thời gian tính bằng milliseconds
-                Log::warning('Long query detected', [
-                    'sql' => $query->sql,
-                    'bindings' => $query->bindings,
-                    'time_ms' => $query->time,
-                ]);
-            }
+        View::composer([
+            '*',
+        ], function ($view) {
+            // $auth = Auth::user();
+            $view->with('config', [
+                'app_name' => config('app.name'),
+                'currency' => Setting::where('key', 'currency')->first()->value ?? 'VND',
+                'company_name' => Setting::where('key', 'company_name')->first()->value ?? config('app.name'),
+            ]);
         });
     }
 }

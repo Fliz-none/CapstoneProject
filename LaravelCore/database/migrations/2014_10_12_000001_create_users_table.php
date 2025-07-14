@@ -28,7 +28,7 @@ class CreateUsersTable extends Migration
             //$table->dateTime('last_login_at')->nullable();
             $table->text('note')->nullable();
 
-            //$table->dateTime('email_verified_at')->nullable();
+            $table->dateTime('email_verified_at')->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

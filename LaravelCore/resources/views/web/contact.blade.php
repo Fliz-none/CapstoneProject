@@ -150,9 +150,8 @@
                     </div>
                     <div class="col-lg-7 col-12">
                         <div class="map-embed">
-                            <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3929.176348939073!2d105.8017884747937!3d10.002287690103255!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a063c9138bf7ad%3A0xe9a00495b9c03576!2zVHJ1b25nRHVuZyBQZXQgLSBE4buLY2ggVuG7pSBUaMO6IFkgQ-G6p24gVGjGoQ!5e0!3m2!1svi!2s!4v1709980142012!5m2!1svi!2s"
-                                style="border:0; border-radius: 10px;" width="600" height="450" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3929.176348939073!2d105.8017884747937!3d10.002287690103255!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a063c9138bf7ad%3A0xe9a00495b9c03576!2zVHJ1b25nRHVuZyBQZXQgLSBE4buLY2ggVuG7pSBUaMO6IFkgQ-G6p24gVGjGoQ!5e0!3m2!1svi!2s!4v1709980142012!5m2!1svi!2s" style="border:0; border-radius: 10px;"
+                                width="600" height="450" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                     </div>
                 </div>

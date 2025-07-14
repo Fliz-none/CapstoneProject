@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Unit;
 use App\Models\Variable;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 class VariableSeeder extends Seeder
@@ -1309,6 +1311,13 @@ class VariableSeeder extends Seeder
                 'deleted_at' => $variable[6],
                 'created_at' => $variable[7],
                 'updated_at' => $variable[8]
+            ]);
+            
+            Unit::create([
+                'variable_id' => $variable[0],
+                'term' => Arr::random(['Cái', 'Gói', 'Thùng', 'Hộp', 'Chai']),
+                'rate' => 1,
+                'price' => Arr::random([10000, 20000, 50000, 100000, 200000, 70000, 5000]),
             ]);
         }
 

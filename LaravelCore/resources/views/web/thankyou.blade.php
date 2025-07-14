@@ -6,28 +6,27 @@
     <div class="master-wrapper">
         <div class="banner-page-cpn">
             <div class="imagebox">
-                <img src="assets/images/banner/lien-he-banner.jpg" alt="">
+                <img src="{{ asset('images/banner/lien-he-banner.jpg') }}" alt="Checkout Banner">
             </div>
             <div class="textbox">
                 <div class="child-container">
-                    <h3 class="fw-semibold text-dark" >
-                        Giỏ hàng
+                    <h3 class="">
+                        Cảm ơn
                     </h3>
-                    <span> Giỏ hàng của bạn </span>
+                    <span> Cảm ơn vì đã đặt hàng </span>
                 </div>
             </div>
         </div>
         <div class="support-wrapper support-fwidth-wrapper">
             <div class="container">
-
                 <div class="row">
                     <div class="col-12 text-center">
                         <div class="d-flex justify-content-center">
-                            <img src="assets/images/cart-x.png" alt="" class="img-fluid mb-2">
+                            <img src="{{ asset('images/checkout-success.png') }}" alt="" class="img-fluid mb-2">
                         </div>
-                        <p>Không có sản phẩm nào trong giỏ hàng</p>
-                        <a href="index.html" class="cta-btn btn-save-modal">
-                            <span class="">Trở lại trang chủ</span>
+                        <p>Đơn hàng cảm ơn vì đã đặt hàng</p>
+                        <a href="{{ route('home') }}" class="cta-btn btn-save-modal">
+                            <span class="">Trang chủ</span>
                         </a>
                     </div>
                 </div>

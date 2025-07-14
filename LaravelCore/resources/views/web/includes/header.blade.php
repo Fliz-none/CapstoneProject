@@ -62,9 +62,10 @@
                     </ul>
                 </div>
                 <div class="header-search mb-header-search mb-show">
-                    <div class="header-login circle-btn home-btn">
+                    <div class="header-login circle-btn home-btn mini-cart-icon">
                         <a data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
                             <img class="img-fluid" src="{{ asset('images/cart3.svg') }}" alt="">
+                            <span class="mini-cart-count">{{ Auth::check() && Auth::user()->cart ? Auth::user()->cart->count : '0'  }}</span>
                         </a>
                     </div>
                 </div>
@@ -85,9 +86,10 @@
                 </a>
             @endguest
         </div>
-        <div class="header-login circle-btn home-btn">
-            <a class="cursor-pointer" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart"><img
-                    class="img-fluid" src="{{ asset('images/cart3.svg') }}" alt="">
+        <div class="header-login circle-btn home-btn mini-cart-icon">
+            <a class="cursor-pointer" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+                <img class="img-fluid" src="{{ asset('images/cart3.svg') }}" alt="">
+                <span class="mini-cart-count">{{ Auth::check() && Auth::user()->cart ? Auth::user()->cart->count : '0' }}</span>
             </a>
         </div>
     </div>

@@ -311,6 +311,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Work::class, 'user_id');
     }
 
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
+    }
+
     public function debtOrders()
     {
         return $this->hasMany(Order::class, 'customer_id')->get()->filter(function ($order) {

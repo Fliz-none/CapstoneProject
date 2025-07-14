@@ -37,9 +37,9 @@ use App\Http\Controllers\ChatController as ClientChatController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\PostsController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController as WebProductController;
 use App\Http\Controllers\PostController as WebPostController;
 use App\Http\Controllers\ProfileController;
@@ -256,7 +256,7 @@ Route::group(['prefix' => 'quantri'], function () {
     });
 
     Route::group(['prefix' => 'log'], function () {
-       Route::get('/', [LogController::class, 'index'])->name('admin.log'); // danh sách
+        Route::get('/', [LogController::class, 'index'])->name('admin.log'); // danh sách
         Route::get('/{id}', [LogController::class, 'show'])->name('admin.log.show'); // xem chi tiết
     });
 
@@ -326,23 +326,31 @@ Route::get('tai-khoan/thiet-lap', [ProfileController::class, 'updatePassword'])-
 Route::get('tai-khoan/doi-mat-khau', [ProfileController::class, 'updateSettings'])->name('profile.update.settings');
 Route::get('tai-khoan', [ProfileController::class, 'profile'])->name('profile');
 Route::get('don-hang', [ProfileController::class, 'orders'])->name('orders');
-Route::get('gio-hang/thanh-toan', [CartController::class, 'index'])->name('checkout');
-Route::get('gio-hang/thanh-toan/hoan-thanh', [CartController::class, 'index'])->name('checkout');
 Route::get('shop', [ShopController::class, 'index'])->name('shop');
-Route::get('{sub?}/{category?}/{post?}', [WebPostController::class, 'index'])->name('post');
-Route::get('san-pham/{catalogue?}/{slug?}', [WebProductController::class, 'index'])->name('product');
+Route::get('product/{catalogue?}/{slug?}', [WebProductController::class, 'index'])->name('product');
 Route::post('/change-language', [LanguageController::class, 'changeLanguage'])
     ->name('change.language.ajax')
     ->middleware('web');
-Route::get('ajax/{type}{key?}', [WebProductController::class, 'getAjax'])->name('ajax');
 Route::group(['middleware' => 'auth'], function () {
-    Route::group(['prefix' => 'gio-hang'], function () {
+    Route::group(['prefix' => 'cart'], function () {
         Route::get('/', [CartController::class, 'index'])->name('cart.index');
-        Route::get('checkout', [CartController::class, 'checkout'])->name('cart.checkout');
-        Route::get('checkout/success', [CartController::class, 'checkout'])->name('cart.checkout.success');
         Route::post('add', [CartController::class, 'add'])->name('cart.add');
         Route::post('update', [CartController::class, 'update'])->name('cart.update');
         Route::post('remove', [CartController::class, 'remove'])->name('cart.remove');
         Route::post('clear', [CartController::class, 'clear'])->name('cart.clear');
     });
 });
+
+Route::middleware(['verified'])->group(function () {
+    Route::group(['prefix' => 'checkout'], function () {
+        Route::get('/', [CheckoutController::class, 'index'])->name('checkout');
+        Route::post('cod', [CheckoutController::class, 'cod'])->name('checkout.cod');
+        Route::post('vnpay', [CheckoutController::class, 'vnpay'])->name('checkout.vnpay');
+        Route::get('vnpay_return', [CheckoutController::class, 'vnpay_return'])->name('checkout.vnpay_return');
+        Route::post('momo', [CheckoutController::class, 'momo'])->name('checkout.momo');
+        Route::get('thankyou', [CheckoutController::class, 'thankyou'])->name('checkout.thankyou');
+    });
+});
+
+Route::get('ajax/{type}{key?}', [WebProductController::class, 'getAjax'])->name('ajax');
+Route::get('{sub?}/{category?}/{post?}', [WebPostController::class, 'index'])->name('post');

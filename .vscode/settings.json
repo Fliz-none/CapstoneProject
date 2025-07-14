@@ -1,4 +1,7 @@
 {
     "editor.formatOnPaste": true,
-    "editor.fontSize": 15
+    "editor.fontSize": 15,
+    "php.version": "8.1",
+    "prettier.bracketSameLine": true,
+    "prettier.printWidth": 200
 }

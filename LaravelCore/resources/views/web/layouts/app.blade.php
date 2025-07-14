@@ -338,28 +338,30 @@
                     }
                 }
             });
-            var swiper = new Swiper(".mySwiper", {
-                // loop: true,
-                spaceBetween: 5,
-                slidesPerView: 5,
-                freeMode: true,
-                watchSlidesProgress: true,
-            });
-            var swiper2 = new Swiper(".mySwiper2", {
-                loop: true,
-                spaceBetween: 30,
-                // navigation: {
-                //     nextEl: ".swiper-button-next",
-                //     prevEl: ".swiper-button-prev",
-                // },
-                thumbs: {
-                    swiper: swiper,
-                },
-                autoplay: {
-                    delay: 5000,
-                    disableOnInteraction: false,
-                },
-            });
+            if ($('.mySwiper2').length && $('.mySwiper').length) {
+                var swiperV = new Swiper(".mySwiper", {
+                    // loop: true,
+                    spaceBetween: 5,
+                    slidesPerView: 5,
+                    freeMode: true,
+                    watchSlidesProgress: true,
+                });
+                var swiper2 = new Swiper(".mySwiper2", {
+                    loop: true,
+                    spaceBetween: 30,
+                    navigation: {
+                        nextEl: ".swiper-button-next",
+                        prevEl: ".swiper-button-prev",
+                    },
+                    thumbs: {
+                        swiper: swiperV,
+                    },
+                    autoplay: {
+                        delay: 5000,
+                        disableOnInteraction: false,
+                    },
+                });
+            }
 
             // function outsideContainer() {
             var container = $('.container').width();
@@ -432,9 +434,9 @@
                 var input = wrapper.querySelector('input');
 
                 wrapper.addEventListener('click', function() {
-                    if (input.value === '' && !wrapper.classList.contains('active')) {
+                    if (input && input.value === '' && !wrapper.classList.contains('active')) {
                         wrapper.classList.add('active');
-                    } else if (input.value !== '') {
+                    } else if (input && input.value !== '') {
                         wrapper.classList.add('active');
                     }
                 });
@@ -512,47 +514,66 @@
         $(document).ready(function() {
             $(document).on('click', '.btn-add-to-cart', function(e) {
                 e.preventDefault();
-
+                const form = $(this).closest('form');
+                if(form.find('[name=quantity]').val() <= 0 || form.find('.btn-select-unit.active').length <= 0) {
+                    Toastify({
+                        text: "Vui lòng chọn đơn vị, số lượng hợp lệ cho sản phẩm này!",
+                        duration: 3000,
+                        newWindow: true,
+                        close: true,
+                        gravity: "top",
+                        position: "center",
+                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                    }).showToast();
+                    return false;
+                }
                 // Mở modal Bootstrap
                 var offcanvasCart = new bootstrap.Offcanvas(document.getElementById('offcanvasCart'));
                 offcanvasCart.show();
-                const form = $(this).closest('form');
                 submitForm(form).done(function(response) {
                     form.find('[type=submit]:last').prop("disabled", false).html(
                         '<i class="bi bi-basket3"></i> <span>Thêm vào giỏ hàng</span>');
                     updateMiniCart(response.cart);
-
                 });
             });
 
             function updateMiniCart(cart) {
+                console.log(cart);
                 // Update mini cart icon
-                $('.mini-cart-icon sup').add('.ltn__utilize-buttons sup').text(cart.count);
-                $('.mini-cart-icon h6 .ltn__secondary-color').text(number_format(cart.total) + 'đ');
-
+                
                 // Update cart menu
                 var miniCartHtml = '';
                 cart.items.forEach(function(item) {
+                    const product = item.unit.variable.product;
                     miniCartHtml += `
-                        <div class="mini-cart-item clearfix">
+                        <div class="mini-cart-item">
                             <div class="mini-cart-img">
-                                <a href="${item.variable.product.url}"><img src="${item.variable.product.imageUrl}" alt="${item.variable.product.sku + (item.variable.sub_sku != null ? item.variable.sub_sku : '')} - ${item.variable.product.name + (item.variable.name != null ? ' - ' + item.variable.name : '')}"></a>
-                                <form action="{{ route('cart.remove') }}" method="post">
+                                <img src="${product.avatarUrl}" alt="${product.name}">
+                                <form action="{{ route('cart.remove') }}" method="POST">
                                     @csrf
-                                    <input name="variable_id" type="hidden" value="${item.variable_id}">
-                                    <button class="mini-cart-item-delete" type="submit"><i class="icon-cancel"></i></button>
+                                    <input type="hidden" name="unit_id" value="${item.unit_id}">
+                                    <button class="mini-cart-item-delete just-icon" type="submit">
+                                        <i class="bi bi-x"></i>
+                                    </button>
                                 </form>
                             </div>
                             <div class="mini-cart-info">
-                                <h6><a href="${item.variable.product.url}">${item.variable.product.sku + (item.variable.sub_sku != null ? item.variable.sub_sku : '')} - ${item.variable.product.name + (item.variable.name != null ? ' - ' + item.variable.name : '')}</a></h6>
-                                <span class="mini-cart-quantity">${item.quantity} &times; ${number_format(item.price)}đ</span>
+                                <h6>${product.name} - ${item.unit.variable.name} - ${item.unit.term}</h6>
+                                <span class="mini-cart-quantity">
+                                    ${item.quantity} × ${number_format(item.unit.price) + ' {{ $config['currency'] }}'}
+                                </span>
+                            </div>
+                            <div class="mini-cart-price">
+                                ${item.sub_total + ' {{ $config['currency'] }}'}
                             </div>
                         </div>`;
                 });
-                $('.mini-cart-product-area').html(miniCartHtml);
+                $('.mini-cart-items').html(miniCartHtml);
 
+                //Update count
+                $('.mini-cart-count').text(cart.count);
                 // Update subtotal
-                $('.mini-cart-sub-total span').text(number_format(cart.total) + 'đ');
+                $('.mini-cart-total span').text(number_format(cart.total) + ' {{ $config['currency'] }}');
             }
 
             // Handle item removal from mini cart
@@ -560,8 +581,7 @@
                 e.preventDefault();
                 const form = $(this).closest('form')
                 submitForm(form).done(function(response) {
-                    form.find('[type=submit]:last').prop("disabled", false).html(
-                        '<i class="icon-cancel"></i>');
+                    form.find('[type=submit]:last').prop("disabled", false).html('<i class="bi bi-x"></i>');
                     updateMiniCart(response.cart);
                 })
             })

@@ -145,7 +145,7 @@ class Product extends Model
 
     public function displayPrice()
     {
-        $currency = cache()->get('currency', 'VND');
+        $currency = cache()->get('settings')['currency'] ?? 'VND';
         $prices = $this->variables->flatMap(function ($variable) {
             return $variable->units->pluck('price');
         })->filter(function ($price) {

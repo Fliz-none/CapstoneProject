@@ -46,9 +46,9 @@
                             $user = auth()->user();
                         @endphp
                         <div class="profile-content">
-                            <div class="row">
-                                <div class="col-12 col-md-4">
-                                    <div class="profile-avatar">
+                            <div class="row justify-content-center">
+                                <div class="col-12 col-sm-8 col-md-4">
+                                    <div class="profile-avatar py-2">
                                         <img class="img-fluid rounded-circle" src="{{ $user->avatarUrl }}" alt="Avatar">
                                     </div>
                                 </div>
@@ -59,8 +59,9 @@
                                         <p class="text-muted">{{ $user->phone }}</p>
                                         <p class="text-muted">{{ $user->address }}</p>
                                         <p class="text-muted">{{ $user->created_at->format('d/m/Y') }}</p>
-                                        <a href="#" class="key-btn-info">Chỉnh sửa thông tin</a>
-                                        <a class="key-btn-danger" href="{{ route('logout') }}"
+                                        <a href="#" class="key-btn-info mb-3">Chỉnh sửa thông tin</a>
+                                        {!! $user->hasAnyPermission(\App\Models\User::ACCESS_ADMIN) ? '<a href="' . route('admin.home') . '" class="key-btn-dark mb-3">Truy cập trang quản trị</a>' : '' !!}
+                                        <a class="key-btn-danger mb-3" href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                         submitLogoutForm();">
                                             {{ __('messages.profile.logout') }}
@@ -96,3 +97,14 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script>
+        function submitLogoutForm() {
+            const form = $("#logout-form");
+            form.attr("action", "/logout");
+            submitForm(form).done(function (response) {
+                window.location.reload();
+            });
+        }
+    </script>
+@endpush

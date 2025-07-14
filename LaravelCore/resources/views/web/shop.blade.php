@@ -125,7 +125,7 @@
                                                     title="{{ $product->name }}">
                                                     {{ $product->name }}
                                                 </a>
-                                                <p class="short">Quy cách:
+                                                <p class="short">Biến thể:
                                                     {{ $product->variables->pluck('name')->take(3)->implode(', ') }}{{ $product->variables->count() > 3 ? '...' : '' }}
                                                 </p>
                                                 <p class="price">Giá: <span>{!! $product->displayPrice() !!}</span></p>

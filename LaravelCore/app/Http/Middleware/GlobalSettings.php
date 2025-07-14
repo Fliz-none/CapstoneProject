@@ -64,22 +64,16 @@ class GlobalSettings
             if (!Cache::has('catalogues')) {
                 Cache::put('catalogues', Controller::getCatalogueChildren(Catalogue::where('status', '>', 0)->with('children')->get()), now()->addHours(60));
             }
-            if(!Cache::has('products')) {
+            if (!Cache::has('products')) {
                 Cache::put('products', Product::where('status', 1)->get(), now()->addHours(12));
-            }
-            if (!Cache::has('settings')) {
-                $settings = Setting::pluck('value', 'key');
-                Cache::put('settings', $settings, now()->addMinutes(60));
             }
             if (!Cache::has('version')) {
                 Cache::put('version', Version::orderBy('id', 'DESC')->first(), now()->addHours(12));
             }
-            // if (!Cache::has('zalo_access_token') && !Cache::has('zalo_refresh_token')) {
-            //     $settings = cache()->get('settings');
-            //     Cache::put('zalo_access_token', $settings['zalo_access_token'], now()->addSeconds(3600));
-            //     Cache::put('zalo_refresh_token', $settings['zalo_refresh_token'], now()->addDays(30));
-            // }
-            
+        }
+        if (!Cache::has('settings')) {
+            $settings = Setting::pluck('value', 'key');
+            Cache::put('settings', $settings, now()->addMinutes(60));
         }
         return $next($request);
     }

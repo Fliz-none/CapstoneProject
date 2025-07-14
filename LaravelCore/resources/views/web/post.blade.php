@@ -11,14 +11,12 @@
                         <div class="swiper-wrapper">
                             <div class="swiper-slide">
                                 <div class="home-banner-slide">
-                                    <img class="img-fluid" src="{{ asset('images/banner/banner-shop.jpg') }}" alt="Trang chủ"
-                                        loading="lazy">
+                                    <img class="img-fluid" src="{{ asset('images/banner/banner-shop.jpg') }}" alt="Trang chủ" loading="lazy">
                                 </div>
                             </div>
                             <div class="swiper-slide">
                                 <div class="home-banner-slide">
-                                    <img class="img-fluid" src="{{ asset('images/banner/spa-banner.jpg') }}" alt="Trang chủ"
-                                        loading="lazy">
+                                    <img class="img-fluid" src="{{ asset('images/banner/spa-banner.jpg') }}" alt="Trang chủ" loading="lazy">
                                 </div>
                                 <div class="text-box-banner text-center">
                                     <h3>TruongDung Pet - Dịch Vụ Thú Y Cần Thơ</h3>
@@ -36,8 +34,7 @@
                     <div class="news-detail-head">
                         <p class="news-detail-cate">
                             <i class="bi bi-tag fs-4" aria-hidden="true"></i>
-                            <a
-                                href="{{ route('post', ['sub' => 'posts', 'category' => $post->category->slug]) }}">{{ $post->category->name }}</a>
+                            <a href="{{ route('post', ['sub' => 'posts', 'category' => $post->category->slug]) }}">{{ $post->category->name }}</a>
                         </p>
                         <h3 class="news-detail-title">
                             {{ $pageName }}
@@ -78,16 +75,13 @@
                             </p>
                             <div class="custom-slide-nav">
                                 <div class="swiper-button-prev">
-                                    <svg width="48" height="30" viewBox="0 0 48 30" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="15" cy="15" r="14.5" transform="rotate(180 15 15)"
-                                            stroke="#333333" />
+                                    <svg width="48" height="30" viewBox="0 0 48 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="15" cy="15" r="14.5" transform="rotate(180 15 15)" stroke="#333333" />
                                         <path d="M48 15.5L12.5 15.5M12.5 15.5L15.5 19M12.5 15.5L15.5 12" stroke="#333333" />
                                     </svg>
                                 </div>
                                 <div class="swiper-button-next">
-                                    <svg width="48" height="30" viewBox="0 0 48 30" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
+                                    <svg width="48" height="30" viewBox="0 0 48 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <circle cx="33" cy="15" r="14.5" stroke="#333333" />
                                         <path d="M0 15.5H35.5M35.5 15.5L32.5 12M35.5 15.5L32.5 19" stroke="#333333" />
                                     </svg>
@@ -102,22 +96,16 @@
                                     <div class="swiper-slide">
                                         <div class="news-slide-item">
                                             <div class="news-slide-image">
-                                                <a href="{{ route('post', ['sub' => 'posts', 'category' => $post->category->slug, 'post' => $post->slug]) }}"
-                                                    title="{{ $post->title }}">
-                                                    <img class="img-fluid" src="{{ $post->getImageUrlAttribute() }}"
-                                                        alt="{{ $post->title }}">
+                                                <a href="{{ route('post', ['sub' => 'posts', 'category' => $post->category->slug, 'post' => $post->slug]) }}" title="{{ $post->title }}">
+                                                    <img class="img-fluid" src="{{ $post->getImageUrlAttribute() }}" alt="{{ $post->title }}">
                                                 </a>
                                             </div>
                                             <div class="news-slide-content">
-                                                <a class="news-title"
-                                                    href="{{ route('post', ['sub' => 'posts', 'category' => $post->category->slug, 'post' => $post->slug]) }}"
-                                                    title="{{ $post->title }}">
+                                                <a class="news-title" href="{{ route('post', ['sub' => 'posts', 'category' => $post->category->slug, 'post' => $post->slug]) }}" title="{{ $post->title }}">
                                                     {{ $post->title }}
                                                 </a>
                                                 <p class="news-des">
-                                                    {!! $post->excerpt
-                                                        ? Illuminate\Support\Str::limit(strip_tags($post->excerpt), 60)
-                                                        : Illuminate\Support\Str::limit(strip_tags($post->content), 60) !!}
+                                                    {!! $post->excerpt ? Illuminate\Support\Str::limit(strip_tags($post->excerpt), 60) : Illuminate\Support\Str::limit(strip_tags($post->content), 60) !!}
                                                 </p>
                                                 <p class="date">
                                                     {{ \Carbon\Carbon::parse($post->created_at)->format('d/m/Y') }}
@@ -175,7 +163,7 @@
                     text: text,
                     duration: 3000,
                     gravity: "top",
-                    position: "right",
+                    position: "center",
                     backgroundColor: backgroundColor,
                 }).showToast();
             }).catch(() => {
@@ -183,7 +171,7 @@
                     text: "Không thể sao chép liên kết.",
                     duration: 3000,
                     gravity: "top",
-                    position: "right",
+                    position: "center",
                     backgroundColor: "--bs-danger",
                 }).showToast();
             });

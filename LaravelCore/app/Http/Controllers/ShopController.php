@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Catalogue;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class ShopController extends Controller
@@ -33,7 +34,7 @@ class ShopController extends Controller
         /**
          * @var \Illuminate\Pagination\LengthAwarePaginator|null
          */
-        $query = Product::query()->where('status', 2);
+        $query = Product::whereIn('status', [2, 3]);
 
         // Lọc theo từ khóa tìm kiếm
         if ($request->filled('search')) {

@@ -93,7 +93,7 @@
                                                                         <a class="product-name" href="{{ route('product', ['catalogue' => $cat->slug, 'slug' => $product->slug]) }}" title="{{ $product->name }}">
                                                                             {{ $product->name }}
                                                                         </a>
-                                                                        <p class="short">Quy cách: {{ $product->variables->pluck('name')->take(3)->implode(', ') }}{{ $product->variables->count() > 3 ? '...' : '' }} </p>
+                                                                        <p class="short">Biến thể: {{ $product->variables->pluck('name')->take(3)->implode(', ') }}{{ $product->variables->count() > 3 ? '...' : '' }} </p>
                                                                         <p class="price">Giá: <span>{!! $product->displayPrice() !!}</span></p>
                                                                     </div>
                                                                 </div>
@@ -167,7 +167,7 @@
                                                                     <a class="product-name" href="{{ route('product', ['catalogue' => $cat->slug, 'slug' => $product->slug]) }}" title="{{ $product->name }}">
                                                                         {{ $product->name }}
                                                                     </a>
-                                                                    <p class="short">Quy cách: {{ $product->variables->pluck('name')->take(3)->implode(', ') }}{{ $product->variables->count() > 3 ? '...' : '' }} </p>
+                                                                    <p class="short">Biến thể: {{ $product->variables->pluck('name')->take(3)->implode(', ') }}{{ $product->variables->count() > 3 ? '...' : '' }} </p>
                                                                     <p class="price">Giá: <span>{!! $product->displayPrice() !!}</span></p>
                                                                 </div>
                                                             </div>
@@ -220,7 +220,7 @@
                                                 <a class="product-name" href="{{ route('product', ['catalogue' => $product->catalogues->first()->slug, 'slug' => $product->slug]) }}" title="{{ $product->name }}">
                                                     {{ $product->name }}
                                                 </a>
-                                                <p class="short">Quy cách: {{ $product->variables->pluck('name')->take(3)->implode(', ') }}{{ $product->variables->count() > 3 ? '...' : '' }} </p>
+                                                <p class="short">Biến thể: {{ $product->variables->pluck('name')->take(3)->implode(', ') }}{{ $product->variables->count() > 3 ? '...' : '' }} </p>
                                                 <p class="price">Giá: <span>{!! $product->displayPrice() !!}</span></p>
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <div class="product-ratting">
@@ -347,7 +347,7 @@
                                 <a class="product-name" href="{{ route('product') }}/${product.catalogues[0].slug}/${product.slug}" title="${product.name}">
                                     ${product.name}
                                 </a>
-                                <p class="short">Quy cách: ${product.variables.map(variable => variable.name).join(', ')} </p>
+                                <p class="short">Biến thể: ${product.variables.map(variable => variable.name).join(', ') }${product.variables.length > 3 ? '...' : ''} </p>
                                 <p class="price">Giá: <span>${product.price}</span></p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="product-ratting">

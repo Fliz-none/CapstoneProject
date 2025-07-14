@@ -17,7 +17,6 @@ class Warehouse extends Model
         'address',
         'note',
         'status',
-        'open_sale',
     ];
 
     public function branch()

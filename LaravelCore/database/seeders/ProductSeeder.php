@@ -730,7 +730,7 @@ class ProductSeeder extends Seeder
                 'gallery' => $product[8],
                 'sort' => $product[9],
                 'allow_review' => $product[10],
-                'status' => $product[11],
+                'status' => rand(1, 4), //Radom 1, 2, 3, 4, 0
                 'deleted_at' => $product[12],
                 'created_at' => $product[13],
                 'updated_at' => $product[14],
