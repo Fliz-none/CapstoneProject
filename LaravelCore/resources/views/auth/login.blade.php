@@ -44,10 +44,16 @@
                                 </div>
                             </div>
                             <div class="row mb-0">
-                                <div class="col-md-8 offset-md-4">
+                                <div class="col-md-8 offset-md-4 d-flex">
                                     <button class="key-btn-dark" type="submit">
                                         {{ __('Login') }}
                                     </button>
+                                    <a href="{{ route('google.login') }}" class="btn btn-outline-danger btn-lg border border-1 rounded-3 ms-3 px-3">
+                                        <span class="d-flex fw-bold"><img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Logo" style="width: 1rem; margin-right: 10px;">
+                                        Google</span>
+                                    </a>
+                                </div>
+                                <div class="col-12 text-end">
                                     @if (Route::has('password.request'))
                                         <a class="btn btn-link" href="{{ route('forgot') }}">
                                             {{ __('Forgot Your Password?') }}

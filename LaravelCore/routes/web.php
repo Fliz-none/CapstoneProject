@@ -46,6 +46,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use App\Models\User;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -350,6 +355,55 @@ Route::middleware(['verified'])->group(function () {
         Route::post('momo', [CheckoutController::class, 'momo'])->name('checkout.momo');
         Route::get('thankyou', [CheckoutController::class, 'thankyou'])->name('checkout.thankyou');
     });
+});
+
+Route::get('/auth/google', function () {
+    return Socialite::driver('google')->redirect();
+})->name('google.login');
+
+Route::get('/auth/google/callback', function () {
+    try {
+        $googleUser = Socialite::driver('google')->stateless()->user();
+
+        // Kiểm tra xem user đã tồn tại trong database chưa (dựa vào email)
+        $user = User::where('email', $googleUser->getEmail())->first();
+        if ($user) {
+            // Nếu user đã tồn tại, cập nhật google_id
+            if (!$user->avatar) {
+                $user->update([
+                    'avatar' => $googleUser->getAvatar(), // Cập nhật avatar nếu cần
+                ]);
+            }
+        } else {
+            // Nếu chưa có user nào với email này, tạo user mới
+            $user = User::create([
+                'name' => $googleUser->getName(),
+                'email' => $googleUser->getEmail(),
+                'avatar' => $googleUser->getAvatar(),
+                'password' => null,
+            ]);
+        }
+
+        // Đăng nhập user vào hệ thống
+        Auth::login($user);
+
+
+        $intendedUrl = Session::pull('url.intended');
+
+        // ✅ Kiểm tra xem URL đó có thuộc domain của hệ thống không
+        if ($intendedUrl && Str::startsWith($intendedUrl, config('app.url'))) {
+            return redirect($intendedUrl);
+        }
+
+        if ($user->can(User::CREATE_ORDER)) {
+            return redirect()->route('admin.order', ['key' => 'new']);
+        }
+
+        return redirect()->route('home');
+    } catch (\Exception $e) {
+        dd($e);
+        return redirect('/login')->with('error', 'Đăng nhập thất bại!');
+    }
 });
 
 Route::get('ajax/{type}{key?}', [WebProductController::class, 'getAjax'])->name('ajax');

@@ -127,7 +127,7 @@ class UserController extends Controller
                                 </li>');
                     break;
                 default:
-                    $obj = User::with('local', 'roles', 'warehouses', 'branches')->find($request->key);
+                    $obj = User::with('roles', 'warehouses', 'branches')->find($request->key);
                     if ($obj) {
                         switch ($request->action) {
                             case 'suggestions':
@@ -166,7 +166,7 @@ class UserController extends Controller
             return response()->json($result, 200);
         } else {
             if ($request->ajax()) {
-                $objs = User::with(['roles', 'local']);
+                $objs = User::with(['roles']);
                 return DataTables::of($objs)
                     ->addColumn('checkboxes', function ($obj) {
                         return '<input class="form-check-input choice" type="checkbox" name="choices[]" value="' . $obj->id . '">';
@@ -223,13 +223,8 @@ class UserController extends Controller
                             $query->where('name', 'like', "%" . $keyword . "%");
                         });
                     })
-                    ->editColumn('local', function ($obj) {
+                    ->editColumn('address', function ($obj) {
                         return $obj->fullAddress;
-                    })
-                    ->filterColumn('local', function ($query, $keyword) {
-                        $query->whereHas('local', function ($query) use ($keyword) {
-                            $query->where('city', 'like', "%" . $keyword . "%")->orWhere('district', 'like', "%" . $keyword . "%");
-                        });
                     })
                     ->editColumn('status', function ($obj) {
                         return '<span class="badge bg-' . ($obj->status ? 'success' : 'danger') . '">' . $obj->statusStr . '</span>';
@@ -348,7 +343,6 @@ class UserController extends Controller
                     'address' => $request->address,
                     'scores' => $request->scores,
                     'gender' => $request->gender,
-                    'local_id' => $request->local_id,
                     'note' => $request->note,
                     'status' => $request->has('status'),
                 ]);
@@ -454,7 +448,6 @@ class UserController extends Controller
                             'address' => $request->address,
                             'scores' => $request->scores,
                             'gender' => $request->gender,
-                            'local_id' => $request->local_id,
                             'note' => $request->note,
                             'status' => $request->has('status'),
                         ]);

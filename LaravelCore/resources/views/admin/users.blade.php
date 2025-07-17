@@ -93,8 +93,8 @@
                         data: 'role',
                         name: 'role'
                     }, {
-                        data: 'local',
-                        name: 'local',
+                        data: 'address',
+                        name: 'address',
                         sortable: false
                     },
                     config.datatable.columns.status,
