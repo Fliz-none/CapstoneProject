@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\OutOfStockException;
 use App\Models\Setting;
 use App\Models\Unit;
 use Illuminate\Http\Request;
@@ -48,6 +49,12 @@ class CartController extends Controller
                 'status' => 'success',
                 'msg' => 'Added to cart successfully!',
                 'cart' => $cart->load('items.unit.variable.product'), // load lại các quan hệ nếu cần
+            ], 200);
+        } catch (OutOfStockException $e) {
+            return response()->json([
+                'status' => 'error',
+                'msg' => 'The product is out of stock! Please choose another product.',
+                'cart' => $cart->load('items.unit.variable.product'),
             ], 200);
         } catch (\Exception $e) {
             log_exception($e);

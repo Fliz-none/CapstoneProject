@@ -70,10 +70,10 @@ class GlobalSettings
             if (!Cache::has('version')) {
                 Cache::put('version', Version::orderBy('id', 'DESC')->first(), now()->addHours(12));
             }
-            if (!Cache::has('settings')) {
-                $settings = Setting::pluck('value', 'key');
-                Cache::put('settings', $settings, now()->addMinutes(60));
-            }
+        }
+        if (!Cache::has('settings')) {
+            $settings = Setting::pluck('value', 'key');
+            Cache::put('settings', $settings, now()->addMinutes(60));
         }
         return $next($request);
     }

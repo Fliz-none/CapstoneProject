@@ -32,6 +32,7 @@ use App\Models\Transaction;
 use App\Models\Unit;
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Models\CartItem;
 use App\Models\Variable;
 use App\Models\Version;
 use App\Models\Warehouse;
@@ -39,6 +40,7 @@ use App\Models\Work;
 use App\Observers\AttachmentObserver;
 use App\Observers\AttributeObserver;
 use App\Observers\BranchObserver;
+use App\Observers\CartItemObserver;
 use App\Observers\CatalogueObserver;
 use App\Observers\CategoryObserver;
 use App\Observers\ConversationObserver;
@@ -96,12 +98,12 @@ class AppServiceProvider extends ServiceProvider
     {
         User::observe(UserObserver::class);
         Product::observe(ProductObserver::class);
-        // Thêm các dòng tương tự cho tất cả các model:
         Attachment::observe(AttachmentObserver::class);
         Attribute::observe(AttributeObserver::class);
         Branch::observe(BranchObserver::class);
         Catalogue::observe(CatalogueObserver::class);
         Category::observe(CategoryObserver::class);
+        CartItem::observe(CartItemObserver::class);
         Conversation::observe(ConversationObserver::class);
         ConversationUser::observe(ConversationUserObserver::class);
         Discount::observe(DiscountObserver::class);
@@ -127,17 +129,21 @@ class AppServiceProvider extends ServiceProvider
         Version::observe(VersionObserver::class);
         Warehouse::observe(WarehouseObserver::class);
         Work::observe(WorkObserver::class);
+        Detail::observe(DetailObserver::class);
+        
         Controller::init();
         Schema::defaultStringLength(191);
-        Detail::observe(DetailObserver::class);
 
         View::composer([
             '*',
         ], function ($view) {
+            $settings = cache('settings') ?? Setting::pluck('value', 'key');
             $view->with('config', [
                 'app_name' => config('app.name'),
-                'currency' => Setting::where('key', 'currency')->first()->value ?? 'VND',
-                'company_name' => Setting::where('key', 'company_name')->first()->value ?? config('app.name'),
+                'currency' => $settings->get('currency'),
+                'company_hotline' => $settings->get('company_hotline'),
+                'company_email' => $settings->get('company_email'),
+                'company_address' => $settings->get('company_address'),
             ]);
         });
     }

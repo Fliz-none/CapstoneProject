@@ -38,6 +38,11 @@ class Stock extends Model
         return $this->hasMany(Detail::class);
     }
 
+    public function cart_items()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
     public function productName(){
         $variable = $this->_import_detail->_variable;
         $v_name = ' - ' . $variable->name;

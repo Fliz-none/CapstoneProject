@@ -45,8 +45,22 @@ function resetForm(frm) {
 }
 
 /**
+ * Xử lý toastify cho toàn trang
+ */
+function pushToastify(msg, stt) {
+    Toastify({
+        text: msg,
+        duration: 3000,
+        close: true,
+        gravity: "top",
+        position: "center",
+        backgroundColor: `var(--bs-${stt})`,
+    }).showToast();
+}
+/**
  * Submit form
  */
+
 function submitForm(frm) {
     var btn = frm.find("[type=submit]:last");
     frm.find("input")
@@ -55,8 +69,16 @@ function submitForm(frm) {
         .removeClass("is-invalid")
         .prop("disabled", false)
         .next()
-        .remove("span");
-    btn.prop("disabled", true).html('<span class="spinner-border spinner-border-sm" id="spinner-form" role="status"></span>');
+        .remove("span.response");
+    let str = `<span class="${btn.text() == "" ? "" : "text-white"
+        }"><i class="bi bi-arrow-repeat"></i></i>${btn.text() == "" ? "" : " Try again"
+        }</span>`;
+    btn.prop("disabled", true).html(
+        '<span class="spinner-border spinner-border-sm" id="spinner-form" role="status"></span>'
+    );
+    const processing = setTimeout(() => {
+        Swal.fire(config.sweetAlert.delay);
+    }, 5000);
     return $.ajax({
         data: new FormData(frm[0]),
         url: frm.attr("action"),
@@ -67,26 +89,20 @@ function submitForm(frm) {
             "X-CSRF-TOKEN": $('meta[name = "csrf-token"]').attr("content"),
         },
         success: function success(response) {
+            clearTimeout(processing);
+            Swal.close();
             if (response.status == "success") {
-                Toastify({
-                    text: response.msg,
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "center",
-                    backgroundColor: "var(--bs-".concat(response.status, ")"),
-                }).showToast();
+                pushToastify(response.msg, response.status);
                 resetForm(frm);
-            } else {
-                btn.prop("disabled", false);
+            } else if (response.status == "danger" || response.status == "error") {
+                Swal.fire("FAILED!", response.msg, response.status);
+                btn.prop("disabled", false).html(str);
             }
         },
-        error: function error(errors) {            
-            if (btn.hasClass('just-icon')) {
-                btn.prop("disabled", false).html('<i class="bi bi-arrow-repeat"></i>');
-            } else {
-                btn.prop("disabled", false).html('<i class="bi bi-arrow-repeat"></i> Thử lại');
-            }
+        error: function error(errors) {
+            clearTimeout(processing);
+            Swal.close();
+            btn.prop("disabled", false).html(str);
             if (errors.status == 419 || errors.status == 401) {
                 window.location.href = config.routes.login;
             } else if (errors.status == 422) {
@@ -96,35 +112,25 @@ function submitForm(frm) {
                     .remove("span");
                 $.each(errors.responseJSON.errors, function (i, error) {
                     var el = frm.find('[name="' + i + '"]');
-                    if (el.length) {
-                        el.addClass("is-invalid").next().remove("span");
+                    if (
+                        el.length && !el.hasClass("d-none") && el.attr("type") != "hidden" && el.attr("type") != "radio" && !el.prop("hidden")
+                    ) {
+                        el.addClass("is-invalid")
+                            .next()
+                            .remove("span.response");
                         el.after(
                             $(
-                                '<span class="text-danger">' +
-                                error[0] +
-                                "</span>"
+                                `<span class="text-danger response">${error[0]}</span>`
                             )
                         );
                     } else {
-                        Toastify({
-                            text: error[0],
-                            duration: 3000,
-                            close: true,
-                            gravity: "top",
-                            position: "center",
-                            backgroundColor: "var(--bs-info)",
-                        }).showToast();
+                        Swal.fire("Alert!", error[0], "info");
                     }
                 });
             } else {
-                Toastify({
-                    text: errors.statusText ?? "Có lỗi xảy ra! Vui lòng thử lại sau.",
-                    duration: 3000,
-                    close: true,
-                    gravity: "top",
-                    position: "center",
-                    backgroundColor: "var(--bs-danger)",
-                }).showToast();
+                console.log(errors);
+
+                pushToastify("Unknown error. Please contact the software developer for assistance.", 'danger')
             }
         },
     });

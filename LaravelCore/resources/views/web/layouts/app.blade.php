@@ -74,6 +74,30 @@
                     broadcast: "{{ route('chat.broadcast') }}",
                 }
             },
+            sweetAlert: {
+                confirm: {
+                    title: "{{ __('messages.sweet_confirm_title') }}",
+                    text: "{{ __('messages.sweet_confirm_text') }}",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "var(--bs-danger)",
+                    cancelButtonColor: "var(--bs-primary)",
+                    confirmButtonText: "{{ __('messages.sweet_confirm_button') }}",
+                    cancelButtonText: "{{ __('messages.sweet_cancel_button') }}",
+                    reverseButtons: false
+                },
+                delay: {
+                    title: "{{ __('messages.sweet_delay_title') }}",
+                    text: "{{ __('messages.sweet_delay_text') }}",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    willOpen: () => {
+                        Swal.showLoading();
+                    },
+                },
+            },
         }
 
         let auth_id = @json(auth()->id());
@@ -515,7 +539,7 @@
             $(document).on('click', '.btn-add-to-cart', function(e) {
                 e.preventDefault();
                 const form = $(this).closest('form');
-                if(form.find('[name=quantity]').val() <= 0 || form.find('.btn-select-unit.active').length <= 0) {
+                if (form.find('[name=quantity]').val() <= 0 || form.find('.btn-select-unit.active').length <= 0) {
                     Toastify({
                         text: "Vui lòng chọn đơn vị, số lượng hợp lệ cho sản phẩm này!",
                         duration: 3000,
@@ -531,6 +555,9 @@
                 var offcanvasCart = new bootstrap.Offcanvas(document.getElementById('offcanvasCart'));
                 offcanvasCart.show();
                 submitForm(form).done(function(response) {
+                    console.log(response);
+
+                    form.find('[name=quantity]').val(1);
                     form.find('[type=submit]:last').prop("disabled", false).html(
                         '<i class="bi bi-basket3"></i> <span>Thêm vào giỏ hàng</span>');
                     updateMiniCart(response.cart);
@@ -538,9 +565,8 @@
             });
 
             function updateMiniCart(cart) {
-                console.log(cart);
                 // Update mini cart icon
-                
+
                 // Update cart menu
                 var miniCartHtml = '';
                 cart.items.forEach(function(item) {

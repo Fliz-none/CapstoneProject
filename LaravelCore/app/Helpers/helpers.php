@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\CartItem;
+use App\Models\Stock;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -196,12 +198,35 @@ if (!function_exists('parseDate')) {
 if (!function_exists('log_exception')) {
     function log_exception($e)
     {
-        Log::error('An error occurred: ' . $e->getMessage() . ';' . PHP_EOL .
+        Log::error(
+            'An error occurred: ' . $e->getMessage() . ';' . PHP_EOL .
                 'Request URL: "' . request()->fullUrl() . '";' . PHP_EOL .
                 'Received Data: ' . json_encode(request()->all()) . ';' . PHP_EOL .
                 'User ID: ' . (Auth::check() ? Auth::id() : 'Guest') . ';' . PHP_EOL .
                 'Error Code: ' . $e->getCode() . ';' . PHP_EOL .
                 'Error Details: ' . $e->getTraceAsString()
         );
+    }
+}
+
+
+class StockChecker
+{
+    public static function checkUnitStock(CartItem $item): ?Stock
+    {
+        $requiredQty = $item->quantity;
+
+        $unit = $item->unit;
+        if (!$unit || $unit->sum_stock < $requiredQty) {
+            return null;
+        }
+
+        // Tìm stock đủ hàng, ưu tiên theo FIFO (import_details.id tăng dần)
+        return Stock::whereHas('import_detail', function ($query) use ($unit) {
+            $query->where('unit_id', $unit->id);
+        })
+            ->where('quantity', '>=', $requiredQty)
+            ->orderBy('import_detail_id') // FIFO
+            ->first();
     }
 }

@@ -51,13 +51,17 @@
     <hr class="m-1">
     <div class="offcanvas-footer p-4">
         <div class="row">
+            @php
+                $is_login = Auth::check();
+                $user = Auth::user();
+            @endphp
             <div class="col-12 text-center">
                 <p class="mb-3 fw-bold mini-cart-total">
-                    <trong>Tạm tính: <span>{{ number_format(Auth::check() && Auth::user()->cart ? Auth::user()->cart->total : 0) . ' ' . $config['currency'] }}</span></trong>
+                    <trong>Tạm tính: <span>{{ number_format($is_login && $user->cart ? $user->cart->total : 0) . ' ' . $config['currency'] }}</span></trong>
                 </p>
-                <div class="d-flex gap-2 w-100">
-                    <a href="{{ route('checkout') }}" class="key-btn-success" style="width: 50%;">Thanh toán</a>
-                    <a href="{{ route('shop') }}" class="key-btn-info" style="width: 50%;">Tiếp tục mua hàng</a>
+                <div class="d-flex gap-2 w-100 justify-content-center">
+                    {!! $is_login ? '<a href="' . route('checkout') . '" class="key-btn-success" style="width: 50%;">Thanh toán</a>' : '' !!}
+                    <a href="{{ route('shop') }}" class="key-btn-info" style="width: 50%;">Vào cửa hàng</a>
                 </div>
             </div>
         </div>

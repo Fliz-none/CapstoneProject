@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class Unit extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $appends = ['bestDiscount'];
+    protected $appends = ['bestDiscount', 'sum_stock'];
     protected $fillable = [
         'term',
         'variable_id',
@@ -42,6 +43,13 @@ class Unit extends Model
     public function export_details()
     {
         return $this->hasMany(ExportDetail::class);
+    }
+
+    public function getSumStockAttribute()
+    {
+        return $this->import_details->sum(function ($import_detail) {
+            return (optional($import_detail->stock)->quantity ?? 0) / $this->rate;
+        });
     }
 
     public function discounts()

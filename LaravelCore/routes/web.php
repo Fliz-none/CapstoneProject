@@ -347,8 +347,7 @@ Route::middleware(['verified'])->group(function () {
         Route::post('cod', [CheckoutController::class, 'cod'])->name('checkout.cod');
         Route::post('vnpay', [CheckoutController::class, 'vnpay'])->name('checkout.vnpay');
         Route::get('vnpay_return', [CheckoutController::class, 'vnpay_return'])->name('checkout.vnpay_return');
-        Route::post('momo', [CheckoutController::class, 'momo'])->name('checkout.momo');
-        Route::get('thankyou', [CheckoutController::class, 'thankyou'])->name('checkout.thankyou');
+        // Route::post('momo', [CheckoutController::class, 'momo'])->name('checkout.momo');
     });
 });
 

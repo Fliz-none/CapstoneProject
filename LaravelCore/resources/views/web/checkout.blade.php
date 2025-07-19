@@ -24,8 +24,8 @@
         <div class="support-wrapper support-fwidth-wrapper">
             <div class="container">
                 @if (session('response') && session('response')['status'] == 'error')
-                    <div class="alert key-bg-primary alert-dismissible fade show text-white mb-4" role="alert">
-                        <i class="bi bi-check"></i>
+                    <div class="alert bg-danger alert-dismissible fade show text-white mb-4" role="alert">
+                        <i class="bi bi-x"></i>
                         {!! session('response')['msg'] !!}
                         <button class="btn-close" data-bs-dismiss="alert" type="button" aria-label="Close">
                         </button>
@@ -98,18 +98,20 @@
                         <div class="table-responsive">
                             <table class="table table-bordered align-middle checkout-table">
                                 <thead class="table-light">
-                                    <tr>
-                                        <th></th>
-                                        <th>
-                                            <h5>Tên sản phẩm</h5>
-                                        </th>
-                                        <th>
-                                            <h5>Số lượng × Giá</h5>
-                                        </th>
-                                        <th class="text-end">
-                                            <h5>Tạm tính</h5>
-                                        </th>
-                                    </tr>
+                                    @if ($cart && $cart->count > 0)
+                                        <tr>
+                                            <th></th>
+                                            <th>
+                                                <h5>Tên sản phẩm</h5>
+                                            </th>
+                                            <th>
+                                                <h5>Số lượng × Giá</h5>
+                                            </th>
+                                            <th class="text-end">
+                                                <h5>Tạm tính</h5>
+                                            </th>
+                                        </tr>
+                                    @endif
                                 </thead>
                                 <tbody>
                                     @if ($cart && $cart->count > 0)
@@ -326,7 +328,7 @@
                             $('input[name="payment_method"]').val('vnpay');
                             break;
                         case 'momo':
-                            $form.attr('action', `{{ route('checkout.momo') }}`)
+                            $form.attr('action', ``)
                             $('.checkout-payment-info').html('<h5 class="mb-1">Thanh toán qua Momo</h5><p>Thanh toán dễ dàng qua ứng dụng MoMo bằng cách quét má QR hoặc xác nhận trực tiếp trên điện thoại.</p>');
                             $('input[name="payment_method"]').val('momo');
                             break;

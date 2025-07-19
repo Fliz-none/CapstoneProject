@@ -9,7 +9,7 @@ class CartItem extends Model
 {
     use HasFactory;
     public $timestamps = false;
-    protected $fillable = ['cart_id', 'unit_id', 'quantity', 'price'];
+    protected $fillable = ['cart_id', 'unit_id', 'stock_id', 'quantity', 'price'];
     protected $appends = ['sub_total'];
 
     public function cart()
@@ -20,6 +20,11 @@ class CartItem extends Model
     public function unit()
     {
         return $this->belongsTo(Unit::class);
+    }
+
+    public function stock()
+    {
+        return $this->belongsTo(Stock::class);
     }
 
     public function getSubTotalAttribute()

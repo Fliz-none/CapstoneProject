@@ -11,9 +11,9 @@
             <div class="textbox">
                 <div class="child-container">
                     <h3 class="">
-                        Cảm ơn
+                        Thank you
                     </h3>
-                    <span> Cảm ơn vì đã đặt hàng </span>
+                    <span> Thanks for your order </span>
                 </div>
             </div>
         </div>
@@ -24,7 +24,13 @@
                         <div class="d-flex justify-content-center">
                             <img src="{{ asset('images/checkout-success.png') }}" alt="" class="img-fluid mb-2">
                         </div>
-                        <p>Đơn hàng cảm ơn vì đã đặt hàng</p>
+                        <p class="text-start">We have received your order.<br>
+                        You will receive an email in 5 minutes.<br>
+                        For any inquiries about your order, please contact us:<br>
+                        <strong>Hotline:</strong> {{ $config['company_hotline'] }}<br>
+                        <strong>Email:</strong> {{ $config['company_email'] }}<br>
+                        {!! isset($order_code) ? '<strong>Order Code:</strong> ' . $order_code : '' !!}
+                        </p>
                         <a href="{{ route('home') }}" class="cta-btn btn-save-modal">
                             <span class="">Trang chủ</span>
                         </a>
