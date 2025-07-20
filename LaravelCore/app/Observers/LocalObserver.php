@@ -17,16 +17,24 @@ class LocalObserver
     protected static $oldData = [];
 
     protected function logAction($Model, $action, $beforeChange = [], $afterChange = [])
-    {
+    {  // Nếu chạy qua CLI (php artisan) thì không log
+        if (app()->runningInConsole()) {
+            return;
+        }
+        if (!Auth::check()) {
+            return;
+        }
         $agent = new Agent();
         $ip = request()->ip();
         $geo = Http::get("https://ipinfo.io/{$ip}/json?token=d89e4a0555c438")->json();
-
+        if (!Auth::check()) {
+            return;
+        }
         Log::create([
             'user_id' => Auth::id(),
             'action' => $action,
             'type' => 'Local',
-            'object' => 'L' . str_pad($Model->id, 5, "0", STR_PAD_LEFT),
+            'object' => 'LOC' . str_pad($Model->id, 5, "0", STR_PAD_LEFT),
             'geolocation' => json_encode($geo),
             'agent' => $agent->browser(),
             'platform' => $agent->platform(),
@@ -44,15 +52,15 @@ class LocalObserver
      */
     public function created(Local $model)
     {
-        
-         $this->logAction($model, '1');
+
+        $this->logAction($model, '1');
     }
 
-        public function updating(Local $model)
+    public function updating(Local $model)
     {
         // Lưu lại cả attributes thật + appends
         self::$oldData[$model->id] = $model->getOriginal();
-       
+
     }
 
     /**
@@ -63,7 +71,7 @@ class LocalObserver
      */
     public function updated(Local $model)
     {
-           $oldData = self::$oldData[$model->id] ?? [];
+        $oldData = self::$oldData[$model->id] ?? [];
         $newData = $model->toArray();
         // Nếu chỉ có deleted_at thay đổi thì không log trong updated
         if (!(count($newData) === 1 && isset($newData['deleted_at']))) {
@@ -81,7 +89,7 @@ class LocalObserver
      */
     public function deleted(Local $model)
     {
-         $this->logAction($model, '3');
+        $this->logAction($model, '3');
     }
 
     /**

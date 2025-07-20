@@ -12,7 +12,7 @@ class Category extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'categories';
-    protected $appends = ['fullName', 'statusStr'];
+    protected $appends = ['fullName', 'statusStr', 'code'];
     protected $fillable = [
         'slug',
         'name',
@@ -57,5 +57,10 @@ class Category extends Model
     {
         $str = '<span class="' . ($this->deleted_at ? 'text-danger' : 'text-primary') . '">' . $this->name . '</span>';
         return $str;
+    }
+
+    public function getCodeAttribute()
+    {
+        return 'CATE' . str_pad($this->id, 5, "0", STR_PAD_LEFT);
     }
 }

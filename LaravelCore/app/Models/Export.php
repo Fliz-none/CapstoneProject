@@ -60,6 +60,7 @@ class Export extends Model
         return $this->belongsTo(User::class, 'receiver_id')->withTrashed();
     }
 
+
     public function _to_warehouse()
     {
         return $this->belongsTo(Warehouse::class, 'to_warehouse_id')->withTrashed();

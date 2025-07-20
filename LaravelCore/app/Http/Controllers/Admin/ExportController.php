@@ -107,7 +107,7 @@ class ExportController extends Controller
             return response()->json($result, 200);
         } else {
             if ($request->ajax()) {
-                $objs = Export::with(['_user.local', '_receiver.local', 'import', 'export_details._stock.import_detail._import.import_details.stock.export_details'])->whereHas('export_details', function ($query) use ($request) {
+                $objs = Export::with(['_user', '_receiver', 'import', 'export_details._stock.import_detail._import.import_details.stock.export_details'])->whereHas('export_details', function ($query) use ($request) {
                     $query->whereHas('_stock', function ($query) use ($request) {
                         $query->whereHas('import_detail', function ($query) use ($request) {
                             $query->whereHas('_import', function ($query) use ($request) {
@@ -272,6 +272,7 @@ class ExportController extends Controller
 
     public function create(Request $request)
     {
+
         $request->validate(self::RULES, self::$MESSAGES);
         if (!empty($this->user->can(User::CREATE_EXPORT))) {
             DB::beginTransaction();
@@ -286,8 +287,10 @@ class ExportController extends Controller
                     'status' => $request->status,
                 ]);
                 if ($export) {
+                    
                     if ($request->has('to_warehouse_id')) {
                         $import = Import::create([
+                            'user_id' => $request->receiver_id,
                             'warehouse_id' => $request->to_warehouse_id,
                             'export_id' => $export->id,
                             'note' => 'Import from ' . $export->code,

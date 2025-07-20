@@ -17,16 +17,24 @@ class WorkObserver
     protected static $oldData = [];
 
     protected function logAction($Model, $action, $beforeChange = [], $afterChange = [])
-    {
+    {  // Nếu chạy qua CLI (php artisan) thì không log
+        if (app()->runningInConsole()) {
+            return;
+        }
+        if (!Auth::check()) {
+            return;
+        }
         $agent = new Agent();
         $ip = request()->ip();
         $geo = Http::get("https://ipinfo.io/{$ip}/json?token=d89e4a0555c438")->json();
-
+        if (!Auth::check()) {
+            return;
+        }
         Log::create([
             'user_id' => Auth::id(),
             'action' => $action,
             'type' => 'Work',
-            'object' => 'WO' . str_pad($Model->id, 5, "0", STR_PAD_LEFT),
+            'object' => 'CHC' . str_pad($Model->id, 5, "0", STR_PAD_LEFT),
             'geolocation' => json_encode($geo),
             'agent' => $agent->browser(),
             'platform' => $agent->platform(),

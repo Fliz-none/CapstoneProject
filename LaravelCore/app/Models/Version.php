@@ -10,6 +10,8 @@ class Version extends Model
     use HasFactory;
     protected $table = 'versions';
 
+    protected $appends = ['code'];
+
     protected $fillable = [
         'name',
         'description',
@@ -24,5 +26,9 @@ class Version extends Model
     public function _user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+    public function getCodeAttribute()
+    {
+        return 'VER' . str_pad($this->id, 5, "0", STR_PAD_LEFT);
     }
 }

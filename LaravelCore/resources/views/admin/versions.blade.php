@@ -74,7 +74,7 @@
                     url: `{{ route('admin.version') }}`
                 },
                 columns: [
-                    config.datatable.columns.id, {
+                    config.datatable.columns.code, {
                         data: 'name',
                         name: 'name'
                     }, {

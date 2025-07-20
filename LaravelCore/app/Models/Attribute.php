@@ -12,6 +12,7 @@ class Attribute extends Model
     
     protected $table = 'attributes';
     public $timestamps = false;
+    protected $appends = ['code'];
     protected $fillable = [
         'key',
         'value',
@@ -20,5 +21,10 @@ class Attribute extends Model
     public function variables()
     {
         return $this->belongsToMany(Variable::class);
+    }
+
+    public function getCodeAttribute()
+    {
+        return 'ATTR' . str_pad($this->id, 5, "0", STR_PAD_LEFT);
     }
 }

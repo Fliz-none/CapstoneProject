@@ -92,10 +92,27 @@ class LocalController extends Controller
             return response()->json($result, 200);
         } else {
             if ($request->ajax()) {
-                $locals = Local::latest();
+                $locals = Local::select('*')->orderByDesc('id');
                 return DataTables::of($locals)
                     ->addColumn('checkboxes', function ($obj) {
                         return '<input class="form-check-input choice" type="checkbox" name="choices[]" value="' . $obj->id . '">';
+                    })
+                    ->addColumn('code', function ($obj) {
+                        if ($this->user->can(User::UPDATE_CATEGORY)) {
+                            $code = '<a class="btn btn-link text-decoration-none btn-update-local fw-bold p-0" data-id="' . $obj->id . '">' . $obj->code . '</a>';
+                        } else {
+                            $code = '<span class="fw-bold">' . $obj->code . '</span>';
+                        }
+                        return $code;
+                    })
+                    ->filterColumn('code', function ($query, $keyword) {
+                        $array = explode('/', $keyword);
+                        $query->when(count($array) == 1, function ($query) use ($keyword) {
+                            $numericKeyword = ltrim(preg_replace('/[^0-9]/', '', $keyword), '0');
+                            if (!empty($numericKeyword)) {
+                                $query->where('locals.id', 'like', "%" . $numericKeyword . "%");
+                            }
+                        });
                     })
                     ->editColumn('city', function ($obj) {
                         if (!empty($this->user->can(User::UPDATE_LOCAL))) {
@@ -123,7 +140,7 @@ class LocalController extends Controller
                         </form>';
                         }
                     })
-                    ->rawColumns(['checkboxes', 'city', 'district', 'action'])
+                    ->rawColumns(['checkboxes', 'city', 'district', 'action','code'])
                     ->make(true);
             } else {
                 $pageName = self::NAME . ' management';

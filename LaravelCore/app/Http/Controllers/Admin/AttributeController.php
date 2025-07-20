@@ -75,6 +75,14 @@ class AttributeController extends Controller
                     ->addColumn('checkboxes', function ($obj) {
                         return '<input class="form-check-input choice" type="checkbox" name="choices[]" value="' . $obj->id . '">';
                     })
+                    ->addColumn('code', function ($obj) {
+                        if ($this->user->can(User::UPDATE_ATTRIBUTE)) {
+                            $code = '<a class="btn btn-link text-decoration-none btn-update-attribute fw-bold p-0" data-id="' . $obj->id . '">' . $obj->code . '</a>';
+                        } else {
+                            $code = '<span class="fw-bold">' . $obj->code . '</span>';
+                        }
+                        return $code;
+                    })
                     ->editColumn('name', function ($obj) {
                         if (!empty($this->user->can(User::UPDATE_ATTRIBUTE))) {
                             return '<a class="btn btn-link text-decoration-none text-start btn-update-attribute" data-id="' . $obj->id . '">' . $obj->key . '</a>';
@@ -94,7 +102,7 @@ class AttributeController extends Controller
                         </form>';
                         }
                     })
-                    ->rawColumns(['checkboxes', 'name', 'action'])
+                    ->rawColumns(['checkboxes', 'name', 'action', 'code'])
                     ->make(true);
             } else {
                 $pageName = self::NAME . ' management';

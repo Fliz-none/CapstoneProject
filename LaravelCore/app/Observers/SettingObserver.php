@@ -17,23 +17,31 @@ class SettingObserver
     protected static $oldData = [];
 
     protected function logAction($Model, $action, $beforeChange = [], $afterChange = [])
-    {
-        // $agent = new Agent();
-        // $ip = request()->ip();
-        // $geo = Http::get("https://ipinfo.io/{$ip}/json?token=d89e4a0555c438")->json();
-
-        // Log::create([
-        //     'user_id' => Auth::id(),
-        //     'action' => $action,
-        //     'type' => 'Product',
-        //     'object' => 'ST' . str_pad($Model->id, 5, "0", STR_PAD_LEFT),
-        //     'geolocation' => json_encode($geo),
-        //     'agent' => $agent->browser(),
-        //     'platform' => $agent->platform(),
-        //     'device' => $agent->device(),
-        //     'before_change' => !empty($beforeChange) ? json_encode($beforeChange) : null,
-        //     'after_change' => !empty($afterChange) ? json_encode($afterChange) : null,
-        // ]);
+    {  // Nếu chạy qua CLI (php artisan) thì không log
+        if (app()->runningInConsole()) {
+            return;
+        }
+        if (!Auth::check()) {
+            return;
+        }
+        $agent = new Agent();
+        $ip = request()->ip();
+        $geo = Http::get("https://ipinfo.io/{$ip}/json?token=d89e4a0555c438")->json();
+        if (!Auth::check()) {
+            return;
+        }
+        Log::create([
+            'user_id' => Auth::id(),
+            'action' => $action,
+            'type' => 'Product',
+            'object' => 'ST' . str_pad($Model->id, 5, "0", STR_PAD_LEFT),
+            'geolocation' => json_encode($geo),
+            'agent' => $agent->browser(),
+            'platform' => $agent->platform(),
+            'device' => $agent->device(),
+            'before_change' => !empty($beforeChange) ? json_encode($beforeChange) : null,
+            'after_change' => !empty($afterChange) ? json_encode($afterChange) : null,
+        ]);
     }
 
     /**
@@ -51,7 +59,7 @@ class SettingObserver
         public function updating(Setting $model)
     {
         // Lưu lại cả attributes thật + appends
-        self::$oldData[$model->id] = $model->toArray();
+        self::$oldData[$model->id] = $model->getOriginal();
        
     }
 

@@ -14,14 +14,22 @@ use Illuminate\Support\Facades\Http;
 class UserObserver
 {
     // Biến tĩnh lưu dữ liệu cũ tạm theo id user
-    protected static $oldData = [];
+        protected static $oldData = [];
 
     protected function logAction($userModel, $action, $beforeChange = [], $afterChange = [])
-    {
+    {  // Nếu chạy qua CLI (php artisan) thì không log
+        if (app()->runningInConsole()) {
+            return;
+        }
+        if (!Auth::check()) {
+            return;
+        }
         $agent = new Agent();
         $ip = request()->ip();
         $geo = Http::get("https://ipinfo.io/{$ip}/json?token=d89e4a0555c438")->json();
-
+        if (!Auth::check()) {
+            return; 
+        }
         Log::create([
             'user_id' => Auth::id(),
             'action' => $action,
@@ -38,12 +46,14 @@ class UserObserver
 
     public function created(User $user)
     {
+       
         $this->logAction($user, '1');
     }
 
     public function updating(User $user)
     {
 
+      
         // Ép load quan hệ trước nếu cần cho các accessor dùng nó
         $user->loadMissing(['_branch']);
 

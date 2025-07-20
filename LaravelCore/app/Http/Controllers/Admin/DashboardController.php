@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Detail;
+use App\Models\Export;
 use App\Models\ExportDetail;
+use App\Models\Import;
 use App\Models\ImportDetail;
 use App\Models\Order;
 use App\Models\Product;
@@ -47,35 +49,50 @@ class DashboardController extends Controller
 
     public function analytics(Request $request)
     {
+
         if (!$this->user->can(User::READ_DASHBOARD)) {
             abort(403);
         }
         $result = [];
         $range = json_decode($request->range);
-        $orders = Order::whereBetween('orders.created_at', $range)->get();
+        $orders = Order::whereBetween('orders.created_at', $range)->
+        when($request->has('branch') && $request->branch != 'all', function ($query) use ($request) {
+            $query->where('branch_id', $request->branch);
+        })->get();
         // $details = Detail::
         // whereBetween('created_at', $range);
 
-        if ($request->has('key')) {
-            // Tính khoảng cách bằng ngày
-            $daysDifference = Carbon::parse($range[0])->diffInDays(Carbon::parse($range[1])) + 1;
-            // Tính ngày trước đó
-            $previousStartDate = Carbon::parse($range[0])->subDay($daysDifference)->format('Y-m-d') . ' 00:00:00';
-            $previousEndDate = Carbon::parse($range[1])->subDay($daysDifference)->format('Y-m-d') . ' 23:59:59';
-
-            // Lấy dữ liệu đơn hàng của ngày trước đó
-            $previousOrders = Order::whereBetween('orders.created_at', [$previousStartDate, $previousEndDate])
-                ->get();
-
-            // Gộp dữ liệu từ các đơn hàng hiện tại và trước đó
-            $result['listOrders'] = [
-                'previous' => $previousOrders->isNotEmpty() ? $this->groupAndSummarizeOrders($previousOrders) : [],
-                'current' => $orders->isNotEmpty() ? $this->groupAndSummarizeOrders($orders) : [],
-            ];
-
-            return response()->json($result);
-        }
         // Trả lại dữ liệu của Order theo khoảng ngày 
+        if ($request->has('key')) {
+            $range = json_decode($request->range); // Thêm dòng này
+
+            $start = Carbon::parse($range[0])->timezone('Asia/Ho_Chi_Minh')->startOfDay();
+            $end = Carbon::parse($range[1])->timezone('Asia/Ho_Chi_Minh')->endOfDay();
+
+            $daysDifference = $start->diffInDays($end) + 1;
+
+            $previousStartDate = $start->copy()->subDays($daysDifference)->startOfDay();
+            $previousEndDate = $end->copy()->subDays($daysDifference)->endOfDay();
+
+            $orders = Order::whereBetween('created_at', [$start, $end])
+                ->when($request->branch != 'all', function ($query) use ($request) {
+                    $query->where('branch_id', $request->branch);
+                })->get();
+
+            $previousOrders = Order::whereBetween('created_at', [$previousStartDate, $previousEndDate])
+                ->when($request->branch != 'all', function ($query) use ($request) {
+                    $query->where('branch_id', $request->branch);
+                })->get();
+
+            return response()->json([
+                'listOrders' => [
+                    'previous' => $previousOrders->isNotEmpty() ? $this->groupAndSummarizeOrders($previousOrders) : [],
+                    'current' => $orders->isNotEmpty() ? $this->groupAndSummarizeOrders($orders) : [],
+                ]
+            ]);
+        }
+
+        
 
         //Doanh thu
         $transactions = Transaction::whereBetween('created_at', $range)
@@ -189,10 +206,8 @@ class DashboardController extends Controller
             ->count();
 
 
-        $result['exportProducts'] = Product::whereHas('variables.import_details.stock.export_details', function ($query) use ($range, $request) {
-            $query->whereBetween('created_at', $range);
-        })
-            ->whereHas('variables.import_details.import.warehouse', function ($query) use ($request) {
+        $result['exportProducts'] = Export::whereBetween('date', $range)
+            ->whereHas('export_details.stock.import_detail.import.warehouse', function ($query) use ($request) {
                 if ($request->has('branch') && $request->branch !== 'all') {
                     $query->where('branch_id', $request->branch);
                 }
@@ -201,11 +216,8 @@ class DashboardController extends Controller
 
 
         //Nhập hàng
-        $result['allStocks'] = ImportDetail::whereHas('import', function ($query) use ($range) {
-            $query->whereNull('export_id')
-                ->whereBetween('created_at', $range);
-        })
-            ->whereHas('import.warehouse', function ($query) use ($request) {
+        $result['allStocks'] = Import::whereBetween('created_at', $range)
+            ->whereHas('warehouse', function ($query) use ($request) {
                 if ($request->has('branch') && $request->branch !== 'all') {
                     $query->where('branch_id', $request->branch);
                 }
@@ -403,7 +415,7 @@ class DashboardController extends Controller
                 break;
             case 'quantity':
                 $stocks = ExportDetail::with('_unit._variable._product')
-                   ->whereHas('detail.order', function ($query) use ($branch) {
+                    ->whereHas('detail.order', function ($query) use ($branch) {
                         if ($branch !== 'all') {
                             $query->where('branch_id', $branch);
                         }

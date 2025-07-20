@@ -8,6 +8,7 @@ return [
     'dashboard_orders' => 'Đơn hàng',
     'dashboard_customers' => 'Khách hàng',
     'dashboard_products' => 'Sản phẩm',
+    'dashboard_exports' => 'Xuất hàng',
     'dashboard_imports' => 'Nhập hàng',
     'dashboard_canvas_day' => 'Ngày',
     'dashboard_canvas_week' => 'Tuần',
@@ -26,6 +27,10 @@ return [
     'dashboard_highest_debt' => 'Nợ nhiều nhất',
     'dashboard_table_name' => 'Tên',
     'dashboard_table_total' => 'Tổng',
+    'dashboard_week' => 'Tuần',
+    'dashboard_quarter' => 'Quý',
+    'dashboard_current' => 'Hiện tại',
+    'dashboard_previous' => 'Trước đó',
 
     // Date Range Options
     'daterange.today' => 'Hôm nay',
@@ -515,6 +520,7 @@ return [
         'supplier_select' => 'Chọn nhà cung cấp',
         'waiting' => 'Chưa xử lý',
         'imported' => 'Đã nhập',
+        'exported' => 'Đã xuất',
         'sync_stock' => 'Đồng bộ kho thành công',
 
         'print' => 'In',

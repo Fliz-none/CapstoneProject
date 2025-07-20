@@ -128,7 +128,7 @@ class AppServiceProvider extends ServiceProvider
         Warehouse::observe(WarehouseObserver::class);
         Work::observe(WorkObserver::class);
         Controller::init();
-        Schema::defaultStringLength(191);
+        // Schema::defaultStringLength(191);
         Detail::observe(DetailObserver::class);
 
         View::composer([

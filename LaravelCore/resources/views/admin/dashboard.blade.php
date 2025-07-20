@@ -60,8 +60,7 @@
                                             <input
                                                 class="form-control fs-3 py-0 bg-transparent revenue-input form-control-plaintext"
                                                 type="password" readonly>
-                                            <h3 class="d-none revenue" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                data-bs-html="true" data-bs-title="Collected: 0<br/>Debt: 0">0</h3>
+                                            <h3 class="d-none revenue">0</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -84,37 +83,36 @@
                                             <input
                                                 class="form-control fs-3 py-0 bg-transparent sales-input form-control-plaintext"
                                                 type="password" readonly>
-                                            <h3 class="sales d-none" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                data-bs-html="true" data-bs-title="Sales: 0<br/>Debt: 0">0</h3>
+                                            <h3 class="sales d-none">0</h3>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- <div class="col-6 col-lg-4 col-md-6">
-                            <div class="card mb-3">
-                                <div class="card-body px-3 py-4">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="stats-icon green">
-                                                <i class="bi bi-cash-coin"></i>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <h6 class="text-muted font-semibold">
-                                                {{ __('messages.dashboard_profit') }}
-                                                <i class="bi bi-eye cursor-pointer btn-show-money"></i>
-                                            </h6>
-                                            <input
-                                                class="form-control fs-3 py-0 bg-transparent profits-input form-control-plaintext"
-                                                type="password" readonly>
-                                            <h3 class="d-none profits" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                data-bs-html="true" data-bs-title="Sales: 0">0</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
+                                                                            <div class="card mb-3">
+                                                                                <div class="card-body px-3 py-4">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-4">
+                                                                                            <div class="stats-icon green">
+                                                                                                <i class="bi bi-cash-coin"></i>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-8">
+                                                                                            <h6 class="text-muted font-semibold">
+                                                                                                {{ __('messages.dashboard_profit') }}
+                                                                                                <i class="bi bi-eye cursor-pointer btn-show-money"></i>
+                                                                                            </h6>
+                                                                                            <input
+                                                                                                class="form-control fs-3 py-0 bg-transparent profits-input form-control-plaintext"
+                                                                                                type="password" readonly>
+                                                                                            <h3 class="d-none profits" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                                                                data-bs-html="true" data-bs-title="Sales: 0">0</h3>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div> -->
                         <div class="col-6 col-lg-4 col-md-6">
                             <div class="card mb-3">
                                 <div class="card-body px-3 py-4">
@@ -132,9 +130,7 @@
                                             <input
                                                 class="form-control fs-3 py-0 bg-transparent orders-input form-control-plaintext"
                                                 type="password" readonly>
-                                            <h3 class="d-none orders" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                data-bs-html="true"
-                                                data-bs-title="Completed: 0<br/>Collected: 0<br/>Cancelled: 0">0</h3>
+                                            <h3 class="d-none orders">0</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -157,8 +153,7 @@
                                             <input
                                                 class="form-control fs-3 py-0 bg-transparent customers-input form-control-plaintext"
                                                 type="password" readonly>
-                                            <h3 class="d-none customers" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                data-bs-html="true" data-bs-title="New / Old<br/>0 / 0">0</h3>
+                                            <h3 class="d-none customers">0</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -175,14 +170,13 @@
                                         </div>
                                         <div class="col-md-8">
                                             <h6 class="text-muted font-semibold">
-                                                {{ __('messages.dashboard_products') }}
+                                                {{ __('messages.dashboard_exports') }}
                                                 <i class="bi bi-eye cursor-pointer btn-show-money"></i>
                                             </h6>
                                             <input
                                                 class="form-control fs-3 py-0 bg-transparent products-input form-control-plaintext"
                                                 type="password" readonly>
-                                            <h3 class="d-none products" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                data-bs-html="true" data-bs-title="Sold / New imports<br/>0 / 0">0/0</h3>
+                                            <h3 class="d-none products">0</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -205,8 +199,7 @@
                                             <input
                                                 class="form-control fs-3 py-0 bg-transparent imports-input form-control-plaintext"
                                                 type="password" readonly>
-                                            <h3 class="d-none imports" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                data-bs-html="true" data-bs-title="Sold: 0<br/>Revenue/Cost: 0/0">0</h3>
+                                            <h3 class="d-none imports">0</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -354,8 +347,8 @@
                                 <table class="table table-hover table-center" id="product-table">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Total</th>
+                                            <th>{{ __('messages.dashboard_table_name') }}</th>
+                                            <th>{{ __('messages.dashboard_table_total') }}</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -464,8 +457,6 @@
                     loadDataTables('product');
                 })
 
-
-
                 function loadAnalytics() {
                     const range = [startDate.format('YYYY-MM-DD HH:mm:ss'), endDate.format('YYYY-MM-DD HH:mm:ss')],
                         rangeJson = moment(startDate).format('DD_MM_YYYY') + '__' + moment(endDate).format('DD_MM_YYYY'),
@@ -517,13 +508,13 @@
                 function showData(data) {
                     $('h3.sales').html(number_format(data.allSales) + 'đ').attr('data-bs-title',
                         `Sales / Debt: <br/>
-                                                            ${number_format(data.cashSales) + 'đ'} / ${number_format(data.debtSales) + 'đ'}<br/>
-                                                            Products: <br/>
-                                                            ${number_format(data.productSales) + 'đ'}`).prev().val(data.allSales)
+                                                                                                                                            ${number_format(data.cashSales) + 'đ'} / ${number_format(data.debtSales) + 'đ'}<br/>
+                                                                                                                                            Products: <br/>
+                                                                                                                                            ${number_format(data.productSales) + 'đ'}`).prev().val(data.allSales)
 
                     $('h3.revenue').html(number_format(data.allRevenue) + 'đ').attr('data-bs-title',
                         `Payment: ${number_format(data.cashRevenue) + 'đ'}<br/>
-                                                            Debt Collection: ${number_format(data.debtRevenue) + 'đ'}`).prev().val(data.allRevenue)
+                                                                                                                                            Debt Collection: ${number_format(data.debtRevenue) + 'đ'}`).prev().val(data.allRevenue)
 
                     // $('h3.profits').html(number_format(data.allProfits) + 'đ').attr('data-bs-title',
                     //     `Products: ${number_format(data.productProfits)}đ<br/>
@@ -531,13 +522,14 @@
 
                     $('h3.orders').html(number_format(data.allOrders)).attr('data-bs-title',
                         `Collected: ${number_format(data.paidOrders)}<br/>Completed: ${number_format(data.completeOrders)}<br/>
-                                                            Canceled: ${number_format(data.cancelOrders)}`).prev().val(data.allOrders)
+                                                                                                                                            Canceled: ${number_format(data.cancelOrders)}`).prev().val(data.allOrders)
 
                     $('h3.customers').html(number_format(data.allCustomers)).attr('data-bs-title',
                         `New Customers: ${number_format(data.newCustomers)}<br/>Old Customers: ${number_format(data.oldCustomers)}`).prev().val(data.allCustomers)
 
-                    $('h3.products').html(`${number_format(data.allProducts)} &times; ${number_format(data.allVariables)}`).attr('data-bs-title',
-                        `New Products: ${number_format(data.newProducts)}<br/>Sale Products: ${number_format(data.oldProducts)}`).prev().val(data.allProducts * data.allVariables)
+                    $('h3.products').html(`${number_format(data.exportProducts)}`)
+                        .attr('data-bs-title',
+                            `New Products: ${number_format(data.newProducts)}<br/>Sale Products: ${number_format(data.oldProducts)}`).prev().val(data.allProducts * data.allVariables)
 
                     $('h3.imports').html(number_format(data.allStocks)).attr('data-bs-title',
                         `Sale Products: ${number_format(data.saleStocks)}<br/>Revenue/Cost: <br/>${number_format(data.revenueStocks)}/${number_format(data.costStocks)}`).prev().val(data.allStocks)
@@ -554,124 +546,128 @@
                     const sumCtx = $('#sum-orders-chart')[0].getContext('2d');
                     const countCtx = $('#count-orders-chart')[0].getContext('2d');
 
-                    let labelsCurrent = [];
-                    let totalsCurrent = [];
-                    let countsCurrent = [];
-                    let labelsPrevious = [];
-                    let totalsPrevious = [];
-                    let countsPrevious = [];
-
-                    // Nhóm dữ liệu hiện tại theo khung thời gian đã chọn
                     const groupedDataCurrent = groupDataByTimeFrame(data.current, timeFrame);
 
-                    // Nếu cần so sánh, nhóm dữ liệu trước đó
                     if (comparePrevious && data.previous) {
                         const groupedDataPrevious = groupDataByTimeFrame(data.previous, timeFrame);
 
-                        // Gán dữ liệu hiện tại
-                        groupedDataCurrent.forEach(item => {
-                            labelsCurrent.push(item.label);
-                            totalsCurrent.push(item.total);
-                            countsCurrent.push(item.count);
-                        });
+                        // Đồng bộ độ dài giữa hai mảng
+                        const minLength = Math.min(groupedDataCurrent.length, groupedDataPrevious.length);
 
-                        // Gán dữ liệu so sánh
-                        groupedDataPrevious.forEach(item => {
-                            labelsPrevious.push(item.label);
-                            totalsPrevious.push(item.total);
-                            countsPrevious.push(item.count);
-                        });
+                        // Nhãn trục X chung
+                        const labels = Array.from({ length: minLength }, (_, i) => `Ngày ${i + 1}`);
 
-                        // Hủy biểu đồ cũ nếu tồn tại
+                        // Dữ liệu hiện tại
+                        const totalsCurrent = groupedDataCurrent.slice(0, minLength).map(i => i.total);
+                        const countsCurrent = groupedDataCurrent.slice(0, minLength).map(i => i.count);
+                        const tooltipLabelsCurrent = groupedDataCurrent.slice(0, minLength).map(i => i.label); // Ví dụ: 14/07
+
+                        // Dữ liệu trước đó
+                        const totalsPrevious = groupedDataPrevious.slice(0, minLength).map(i => i.total);
+                        const countsPrevious = groupedDataPrevious.slice(0, minLength).map(i => i.count);
+                        const tooltipLabelsPrevious = groupedDataPrevious.slice(0, minLength).map(i => i.label); // Ví dụ: 12/07
+
                         if (window.sumChart) window.sumChart.destroy();
                         if (window.countChart) window.countChart.destroy();
 
-                        // Tạo biểu đồ với dữ liệu hiện tại và trước đó
                         window.sumChart = createLineChart(
                             sumCtx,
-                            labelsCurrent,
+                            labels,
                             totalsCurrent,
-                            '{{ __('messages.dashboard_canvas_current_amount') }}',
+                            '{{ __("messages.dashboard_canvas_current_amount") }}',
                             'rgba(54, 162, 235, 1)',
-                            labelsPrevious,
+                            tooltipLabelsCurrent,
                             totalsPrevious,
-                            '{{ __('messages.dashboard_canvas_previous_amount') }}',
-                            '#ccc'
+                            '{{ __("messages.dashboard_canvas_previous_amount") }}',
+                            'rgba(159, 251, 166, 1)',
+                            tooltipLabelsPrevious
                         );
 
                         window.countChart = createLineChart(
                             countCtx,
-                            labelsCurrent,
+                            labels,
                             countsCurrent,
-                            '{{ __('messages.dashboard_canvas_current_orders') }}',
+                            '{{ __("messages.dashboard_canvas_current_orders") }}',
                             'rgba(75, 192, 192, 1)',
-                            labelsPrevious,
+                            tooltipLabelsCurrent,
                             countsPrevious,
-                            '{{ __('messages.dashboard_canvas_previous_orders') }}',
-                            '#ccc'
+                            '{{ __("messages.dashboard_canvas_previous_orders") }}',
+                            'rgba(159, 251, 166, 1)',
+                            tooltipLabelsPrevious
                         );
                     } else {
-                        // Nếu không cần so sánh, chỉ hiển thị dữ liệu hiện tại
-                        groupedDataCurrent.forEach(item => {
-                            labelsCurrent.push(item.label);
-                            totalsCurrent.push(item.total);
-                            countsCurrent.push(item.count);
-                        });
+                        // Không so sánh – chỉ hiển thị hiện tại
+                        const labels = groupedDataCurrent.map(i => i.label);
+                        const totals = groupedDataCurrent.map(i => i.total);
+                        const counts = groupedDataCurrent.map(i => i.count);
 
                         if (window.sumChart) window.sumChart.destroy();
                         if (window.countChart) window.countChart.destroy();
 
                         window.sumChart = createLineChart(
                             sumCtx,
-                            labelsCurrent,
-                            totalsCurrent,
-                            '{{ __('messages.dashboard_canvas_current_amount') }}',
-                            'rgba(54, 162, 235, 1)'
+                            labels,
+                            totals,
+                            '{{ __("messages.dashboard_canvas_current_amount") }}',
+                            'rgba(54, 162, 235, 1)',
+                            labels // Tooltip hiện đúng ngày
                         );
 
                         window.countChart = createLineChart(
                             countCtx,
-                            labelsCurrent,
-                            countsCurrent,
-                            '{{ __('messages.dashboard_canvas_current_orders') }}',
-                            'rgba(75, 192, 192, 1)'
+                            labels,
+                            counts,
+                            '{{ __("messages.dashboard_canvas_current_orders") }}',
+                            'rgba(75, 192, 192, 1)',
+                            labels // Tooltip hiện đúng ngày
                         );
                     }
                 }
 
+
                 function groupDataByTimeFrame(data, timeFrame) {
-                    return data.reduce((acc, curr) => {
-                        let label;
+                    const grouped = data.reduce((acc, curr) => {
+                        let labelForSort, labelDisplay;
+
                         switch (timeFrame) {
                             case 'day':
-                                label = moment(curr.created_at).format('DD/MM/YYYY');
+                                labelForSort = moment(curr.created_at).format('YYYY-MM-DD');
+                                labelDisplay = moment(curr.created_at).format('DD/MM/YYYY');
                                 break;
                             case 'week':
-                                label = `Tuần ${moment(curr.created_at).isoWeek()} - ${moment(curr.created_at).year()}`;
+                                const week = moment(curr.created_at).isoWeek();
+                                const year = moment(curr.created_at).year();
+                                labelForSort = `${year}-W${week.toString().padStart(2, '0')}`;
+                                labelDisplay = `{{ __('messages.dashboard_week') }} ${week} - ${year
+                                    }`;
                                 break;
                             case 'month':
-                                label = moment(curr.created_at).format('MM/YYYY');
+                                labelForSort = moment(curr.created_at).format('YYYY-MM');
+                                labelDisplay = moment(curr.created_at).format('MM/YYYY');
                                 break;
                             case 'quarter':
-                                // Tính quý từ ngày
-                                const quarter = moment(curr.created_at).quarter(); // Lấy quý
-                                const year = moment(curr.created_at).year(); // Lấy năm
-                                label = `Quý ${quarter} - ${year}`;
+                                const quarter = moment(curr.created_at).quarter();
+                                const qYear = moment(curr.created_at).year();
+                                labelForSort = `${qYear} -Q${quarter} `;
+                                labelDisplay = `{{ __('messages.dashboard_quarter') }} ${quarter} - ${qYear}`;
                                 break;
                             case 'year':
-                                label = moment(curr.created_at).format('YYYY');
+                                labelForSort = moment(curr.created_at).format('YYYY');
+                                labelDisplay = moment(curr.created_at).format('YYYY');
                                 break;
                             default:
-                                label = moment(curr.created_at).format('DD/MM/YYYY');
+                                labelForSort = moment(curr.created_at).format('YYYY-MM-DD');
+                                labelDisplay = moment(curr.created_at).format('DD/MM/YYYY');
                         }
 
-                        const existing = acc.find(item => item.label === label);
+                        const existing = acc.find(item => item._labelSort === labelForSort);
                         if (existing) {
                             existing.total += curr.total;
                             existing.count += curr.count;
                         } else {
                             acc.push({
-                                label,
+                                label: labelDisplay,       // hiển thị cho người dùng
+                                _labelSort: labelForSort,  // dùng để sắp xếp
                                 total: curr.total,
                                 count: curr.count
                             });
@@ -679,6 +675,15 @@
 
                         return acc;
                     }, []);
+
+                    // 🟩 Thêm phần SẮP XẾP theo thời gian thực tế
+                    grouped.sort((a, b) => {
+                        if (a._labelSort < b._labelSort) return -1;
+                        if (a._labelSort > b._labelSort) return 1;
+                        return 0;
+                    });
+
+                    return grouped;
                 }
 
                 function createLineChart(
@@ -687,15 +692,16 @@
                     dataCurrent,
                     labelCurrent,
                     backgroundColorCurrent,
-                    labelsPrevious = [],
+                    tooltipLabelsCurrent = [],
                     dataPrevious = [],
                     labelPrevious = '',
-                    backgroundColorPrevious = ''
+                    backgroundColorPrevious = '',
+                    tooltipLabelsPrevious = []
                 ) {
                     const config = {
-                        type: 'line', // Loại biểu đồ
+                        type: 'line',
                         data: {
-                            labels: labelsCurrent, // Nhãn gốc là chuỗi ngày đầy đủ (DD/MM/YYYY)
+                            labels: labelsCurrent,
                             datasets: [{
                                 label: labelCurrent,
                                 data: dataCurrent,
@@ -703,12 +709,10 @@
                                 borderColor: backgroundColorCurrent,
                                 fill: false,
                                 borderWidth: 2,
-                                borderCapStyle: 'round', // Bo tròn đầu đường vẽ
-                                borderJoinStyle: 'round', // Bo tròn tại điểm nối
-                                tension: 0.2, // Độ cong của đường (tăng giá trị để đường cong mềm mại hơn)
-                                pointRadius: 5, // Bán kính của điểm (chấm) tại mỗi điểm dữ liệu
-                                pointStyle: 'circle', // Kiểu điểm (có thể là 'circle', 'rect', 'star', ...)
-                                pointBackgroundColor: backgroundColorCurrent // Màu sắc của điểm
+                                tension: 0.2,
+                                pointRadius: 5,
+                                pointStyle: 'circle',
+                                pointBackgroundColor: backgroundColorCurrent
                             }]
                         },
                         options: {
@@ -716,20 +720,23 @@
                             maintainAspectRatio: false,
                             scales: {
                                 x: {
-                                    display: true, // Ẩn trục X
+                                    display: true,
                                     grid: {
-                                        display: true // Ẩn lưới của trục X
+                                        display: true
                                     },
                                     ticks: {
-                                        display: false // Không hiển thị nhãn trên trục X
+                                        display: false
                                     }
                                 },
                                 y: {
                                     title: {
                                         display: true,
-                                        text: '{{ __('messages.dashboard_canvas_value') }}'
+                                        text: '{{ __("messages.dashboard_canvas_value") }}'
                                     },
-                                    beginAtZero: true
+                                    beginAtZero: true,
+                                    ticks: {
+                                        precision: 0
+                                    }
                                 }
                             },
                             plugins: {
@@ -738,14 +745,18 @@
                                     intersect: false,
                                     callbacks: {
                                         title: function (tooltipItems) {
-                                            // Lấy ngày đầy đủ từ labelsCurrent và labelsPrevious
                                             const index = tooltipItems[0].dataIndex;
-                                            let tooltipTitle = labelsCurrent[index]; // Hiển thị ngày đầy đủ cho labelsCurrent
-                                            // Nếu có dữ liệu trước đó, thêm thông tin từ labelsPrevious
-                                            if (labelsPrevious.length > 0) {
-                                                tooltipTitle += ' | ' + labelsPrevious[index]; // Hiển thị ngày đầy đủ cho labelsPrevious
+
+                                            const currentDate = tooltipLabelsCurrent?.[index];
+                                            const previousDate = tooltipLabelsPrevious?.[index];
+
+                                            const lines = [`{{ __('messages.dashboard_current') }} : ${currentDate}`];
+
+                                            if (previousDate) {
+                                                lines.push(`{{ __('messages.dashboard_previous') }}  ${previousDate}`);
                                             }
-                                            return tooltipTitle; // Trả về tiêu đề cho tooltip (ngày của cả hai dataset)
+
+                                            return lines;
                                         }
                                     }
                                 },
@@ -756,7 +767,6 @@
                         }
                     };
 
-                    // Nếu có dữ liệu so sánh, thêm dataset vào biểu đồ
                     if (dataPrevious.length > 0) {
                         config.data.datasets.push({
                             label: labelPrevious,
@@ -765,12 +775,10 @@
                             borderColor: backgroundColorPrevious,
                             fill: false,
                             borderWidth: 2,
-                            borderCapStyle: 'round', // Bo tròn đầu đường vẽ
-                            borderJoinStyle: 'round', // Bo tròn tại điểm nối
-                            tension: 0.2, // Độ cong của đường
-                            pointRadius: 5, // Bán kính của điểm dữ liệu
-                            pointStyle: 'circle', // Kiểu điểm
-                            pointBackgroundColor: backgroundColorPrevious // Màu sắc của điểm
+                            tension: 0.2,
+                            pointRadius: 5,
+                            pointStyle: 'circle',
+                            pointBackgroundColor: backgroundColorPrevious
                         });
                     }
 
@@ -781,14 +789,21 @@
                 $('.btn-compare').on('click', function () {
                     const selectedTimeFrame = $('input[name="timeframe"]:checked').val();
                     const range = [startDate, endDate];
-                    $.get(`{{ route('admin.dashboard.analytics') }}?key=compare&range=${JSON.stringify(range)}`, function (response) {
+                    console.log(range);
+
+                    const url = `{{ route('admin.dashboard.analytics') }}?key=compare&branch=${$('#main_branch').val()}&range=${encodeURIComponent(JSON.stringify(range))}`;
+
+                    $.get(url, function (response) {
                         if (response.listOrders) {
+                            console.log(response.listOrders);
+
                             buildChart(response.listOrders, selectedTimeFrame, true);
                         }
-                    }).error(function () {
+                    }).fail(function () {
                         alert('An error occurred while fetching data.');
                     });
                 });
+
 
                 // Xử lý sự kiện cho radio buttons
                 $('input[name="timeframe"]').on('change', function () {
@@ -807,7 +822,7 @@
                         $(target).DataTable().destroy();
                     }
                     const table = $(target).DataTable({
-                        dom: 'ltip',
+                        dom: 'lftip',
                         processing: true,
                         serverSide: false,
                         orderCellsTop: true,

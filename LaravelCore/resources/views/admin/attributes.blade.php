@@ -80,7 +80,7 @@
                     url: `{{ route('admin.attribute') }}` + window.location.search
                 },
                 columns: [
-                    config.datatable.columns.id,
+                    config.datatable.columns.code,
                     config.datatable.columns.name, {
                         data: 'value',
                         name: 'value'
