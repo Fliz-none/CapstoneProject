@@ -81,7 +81,7 @@
                     url: `{{ route('admin.local') }}` + window.location.search
                 },
                 columns: [
-                    config.datatable.columns.id, {
+                    config.datatable.columns.code, {
                         data: 'city',
                         name: 'city'
                     }, {

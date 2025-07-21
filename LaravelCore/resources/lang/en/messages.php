@@ -8,6 +8,7 @@ return [
     'dashboard_orders' => 'Orders',
     'dashboard_customers' => 'Customers',
     'dashboard_products' => 'Products',
+    'dashboard_exports' => 'Exports',
     'dashboard_imports' => 'Imports',
     'dashboard_canvas_day' => 'Day',
     'dashboard_canvas_week' => 'Week',
@@ -26,6 +27,10 @@ return [
     'dashboard_highest_debt' => 'Highest Debt',
     'dashboard_table_name' => 'Name',
     'dashboard_table_total' => 'Total',
+    'dashboard_week' => 'Week',
+    'dashboard_quarter' => 'Quarter',
+    'dashboard_current' => 'Current',
+    'dashboard_previous' => 'Previous',
 
     // Date Range Options
     'daterange.today' => 'Today',
@@ -120,7 +125,7 @@ return [
     //Sidebar
     'sidebar' => [
         'customer_support' => 'Customer Support',
-        'catelogue' => 'Catelogue',
+        'catelogue' => 'Catalogue',
         'findsomething' => 'Find Something...',
         'possales' => 'POS Sales',
         'general' => 'General Management',
@@ -511,6 +516,7 @@ return [
         'supplier_select' => 'Select Supplier',
         'waiting' => 'Pending',
         'imported' => 'Imported',
+        'exported' => 'Exported',
         'sync_stock' => 'Stock sync successfully',
 
         'print' => 'Print',

@@ -10,6 +10,7 @@ class Local extends Model
 {
     use HasFactory;
     public $timestamps = false;
+    protected $appends = ['code'];
     protected $table = 'locals';
 
     protected $fillable = [
@@ -25,5 +26,9 @@ class Local extends Model
     public function suppliers()
     {
         return $this->hasMany(Supplier::class);
+    }
+    public function getCodeAttribute()
+    {
+        return 'LOC' . str_pad($this->id, 5, "0", STR_PAD_LEFT);
     }
 }

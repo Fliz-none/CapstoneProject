@@ -71,7 +71,7 @@
                                             <input class="btn-check" id="export-status-waiting" name="status" type="radio" value="0">
                                             <label class="btn btn-outline-danger" for="export-status-waiting">{{ __('messages.stock.waiting') }}</label>
                                             <input class="btn-check" id="export-status-exported" name="status" type="radio" value="1">
-                                            <label class="btn btn-outline-success" for="export-status-exported">{{ __('messages.stock.imported') }}</label>
+                                            <label class="btn btn-outline-success" for="export-status-exported">{{ __('messages.stock.exported') }}</label>
                                         </div>
                                     </div>
                                 </div>

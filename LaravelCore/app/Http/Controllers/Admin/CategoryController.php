@@ -80,6 +80,27 @@ class CategoryController extends Controller
                     ->addColumn('checkboxes', function ($obj) {
                         return '<input class="form-check-input choice" type="checkbox" name="choices[]" value="' . $obj->id . '">';
                     })
+                    ->addColumn('code', function ($obj) {
+                        if ($this->user->can(User::UPDATE_CATEGORY)) {
+                            $code = '<a class="btn btn-link text-decoration-none btn-update-catalogue fw-bold p-0" data-id="' . $obj->id . '">' . $obj->code . '</a>';
+                        } else {
+                            $code = '<span class="fw-bold">' . $obj->code . '</span>';
+                        }
+                        return $code . '<br/><small>' . $obj->created_at->format('d/m/Y H:i') . '</small>';
+                    })
+                    ->filterColumn('code', function ($query, $keyword) {
+                        $array = explode('/', $keyword);
+                        $query->when(count($array) > 1, function ($query) use ($keyword, $array) {
+                            $date = (count($array) == 3 ? $array[2] : date('Y')) . '-' . str_pad($array[1], 2, "0", STR_PAD_LEFT) . '-' . str_pad($array[0], 2, "0", STR_PAD_LEFT);
+                            $query->whereDate('created_at', $date);
+                        });
+                        $query->when(count($array) == 1, function ($query) use ($keyword) {
+                            $numericKeyword = ltrim(preg_replace('/[^0-9]/', '', $keyword), '0');
+                            if (!empty($numericKeyword)) {
+                                $query->where('catalogues.id', 'like', "%" . $numericKeyword . "%");
+                            }
+                        });
+                    })
                     ->editColumn('name', function ($obj) {
                         if (!empty($this->user->can(User::UPDATE_CATEGORY))) {
                             return '<a class="btn btn-link text-decoration-none text-start btn-update-category" data-id="' . $obj->id . '">' . $obj->name . '</a>';

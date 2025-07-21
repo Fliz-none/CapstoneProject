@@ -73,6 +73,15 @@ class VersionController extends Controller
         } else {
             if ($request->ajax()) {
                 return DataTables::of($objs)
+                    ->addColumn('code', function ($obj) {
+                        if ($this->user->can(User::UPDATE_VERSION)) {
+                            $code = '<a class="btn btn-link text-decoration-none btn-update-version fw-bold p-0" data-id="' . $obj->id . '">' . $obj->code . '</a>';
+                        } else {
+                            $code = '<span class="fw-bold">' . $obj->code . '</span>';
+                        }
+                        return $code;
+                    })
+                    
                     ->editColumn('name', function ($obj) {
                         if (!empty($this->user->can(User::UPDATE_VERSION))) {
                             return '<a class="btn btn-link text-decoration-none text-start btn-update-version" data-id="' . $obj->id . '">' . $obj->name . '</a>';
@@ -122,7 +131,7 @@ class VersionController extends Controller
                             return 'N/A';
                         }
                     })
-                    ->rawColumns(['checkboxes', 'name', 'user', 'description', 'action'])
+                    ->rawColumns(['checkboxes', 'name', 'user', 'description', 'action','code'])
                     ->setTotalRecords($objs->count())
                     ->make(true);
             } else {

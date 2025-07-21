@@ -16,10 +16,18 @@ class CatalogueObserver
 
     protected function logAction($Model, $action, $beforeChange = [], $afterChange = [])
     {
+        // Nếu chạy qua CLI (php artisan) thì không log
+        if (app()->runningInConsole()) {
+            return;
+        }
+        if (!Auth::check()) {
+            return;
+        }
+        
         $agent = new Agent();
         $ip = request()->ip();
         $geo = Http::get("https://ipinfo.io/{$ip}/json?token=d89e4a0555c438")->json();
-
+       
         Log::create([
             'user_id' => Auth::id(),
             'action' => $action,
