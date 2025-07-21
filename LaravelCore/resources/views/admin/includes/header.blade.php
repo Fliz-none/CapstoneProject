@@ -20,6 +20,10 @@
                         @include('admin.includes.notifications', ['notis' => $notis, 'hide' => false])
                     </li>
                 </ul>
+                @php
+                    $avatarPath = '/user/' . Auth::user()->avatar;
+                    $fullPath = public_path(env('FILE_STORAGE', '/storage') . $avatarPath);
+                @endphp
                 <div class="dropdown">
                     <a class="cursor-pointer" data-bs-toggle="dropdown" aria-expanded="false">
                         <div class="user-menu d-flex align-items-start">
@@ -29,7 +33,7 @@
                             </div>
                             <div class="user-img d-flex align-items-center">
                                 <div class="avatar avatar-md">
-                                    <img src="{{ Auth::user()->avatar ? asset(env('FILE_STORAGE', '/storage')) . '/user/' . Auth::user()->avatar : asset('admin/images/logo/favicon_key.png') }}">
+                                    <img src="{{ Auth::user()->avatar ? Auth::user()->avatarUrl : asset('admin/images/logo/favicon_key.png') }}">
                                 </div>
                             </div>
                         </div>

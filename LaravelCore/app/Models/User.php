@@ -201,12 +201,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'gender',
         'password',
-        'birthday',
         'address',
         'scores',
-        'local_id',
         'status',
-        'last_login_at',
         'note',
     ];
 
@@ -401,8 +398,12 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getAvatarUrlAttribute()
     {
         $path = 'public/user/' . $this->avatar;
-        if ($this->avatar && Storage::exists($path)) {
-            $image = asset(env('FILE_STORAGE') . '/user/' . $this->avatar);
+        if ($this->avatar) {
+            if(Storage::exists($path)) {
+                $image = asset(env('FILE_STORAGE') . '/user/' . $this->avatar);
+            } else {
+                return $this->avatar;
+            }
         } else {
             $image = asset('admin/images/placeholder_key.png');
         }

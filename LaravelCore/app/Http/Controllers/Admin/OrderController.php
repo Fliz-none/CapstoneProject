@@ -376,9 +376,9 @@ class OrderController extends Controller
 
         if (!empty($this->user->can(User::CREATE_ORDER))) {
             if ($this->user->branch) {
-                if (!$request->has('id') && !$request->has('transaction_payments') && !$request->has('customer_id')) {
-                    return response()->json(['errors' => ['customer_required' => [__('messages.order.customer_required')]]], 422);
-                }
+                // if (!$request->has('id') && !$request->has('transaction_payments') && !$request->has('customer_id')) {
+                //     return response()->json(['errors' => ['customer_required' => [__('messages.order.customer_required')]]], 422);
+                // }
                 DB::beginTransaction();
                 try {
                     $order = Order::create([
