@@ -8,6 +8,7 @@ use App\Models\ImportDetail;
 use App\Models\Stock;
 use App\Models\Unit;
 use App\Models\User;
+use App\Models\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -39,49 +40,49 @@ class ImportController extends Controller
             // Locale đã được set xong ở đây
             Controller::init();
             self::$MESSAGES = [
-                'note.required' => __('messages.import.import_content').': ' . Controller::$NOT_EMPTY,
-                'note.min' => __('messages.import.import_content').': ' . Controller::$MIN,
-                'note.max' => __('messages.import.import_content').': ' . Controller::$MAX,
-                'warehouse_id.required' => __('messages.stock.warehouse').': ' . Controller::$NOT_EMPTY,
-                'warehouse_id.numeric' => __('messages.stock.warehouse').': ' . Controller::$DATA_INVALID,
-                'supplier_id.required' =>  __('messages.stock.supplier').': ' . Controller::$NOT_EMPTY,
-                'supplier_id.numeric' =>  __('messages.stock.supplier').': ' . Controller::$DATA_INVALID,
-                'status.required' => __('messages.import.import_content').': ' . Controller::$NOT_EMPTY,
-                'status.string' => __('messages.import.import_content').': ' . Controller::$DATA_INVALID,
-                'status.max' => __('messages.import.import_content').': ' . Controller::$MAX,
-                'variable_ids.required' => __('messages.product.product').': ' . Controller::$NOT_EMPTY,
-                'variable_ids.array' => __('messages.product.product').': ' . Controller::$DATA_INVALID,
-                'variable_ids.*.required' => __('messages.product.product').': ' . Controller::$NOT_EMPTY,
-                'variable_ids.*.numeric' => __('messages.product.product').': ' . Controller::$DATA_INVALID,
+                'note.required' => __('messages.import.import_content') . ': ' . Controller::$NOT_EMPTY,
+                'note.min' => __('messages.import.import_content') . ': ' . Controller::$MIN,
+                'note.max' => __('messages.import.import_content') . ': ' . Controller::$MAX,
+                'warehouse_id.required' => __('messages.stock.warehouse') . ': ' . Controller::$NOT_EMPTY,
+                'warehouse_id.numeric' => __('messages.stock.warehouse') . ': ' . Controller::$DATA_INVALID,
+                'supplier_id.required' => __('messages.stock.supplier') . ': ' . Controller::$NOT_EMPTY,
+                'supplier_id.numeric' => __('messages.stock.supplier') . ': ' . Controller::$DATA_INVALID,
+                'status.required' => __('messages.import.import_content') . ': ' . Controller::$NOT_EMPTY,
+                'status.string' => __('messages.import.import_content') . ': ' . Controller::$DATA_INVALID,
+                'status.max' => __('messages.import.import_content') . ': ' . Controller::$MAX,
+                'variable_ids.required' => __('messages.product.product') . ': ' . Controller::$NOT_EMPTY,
+                'variable_ids.array' => __('messages.product.product') . ': ' . Controller::$DATA_INVALID,
+                'variable_ids.*.required' => __('messages.product.product') . ': ' . Controller::$NOT_EMPTY,
+                'variable_ids.*.numeric' => __('messages.product.product') . ': ' . Controller::$DATA_INVALID,
                 'unit_ids.required' => '' . Controller::$NOT_EMPTY,
                 'unit_ids.array' => '' . Controller::$DATA_INVALID,
                 'unit_ids.*.required' => '' . Controller::$NOT_EMPTY,
                 'unit_ids.*.numeric' => '' . Controller::$DATA_INVALID,
-                'current_unit_ids.required' => __('messages.stock.unit').': ' . Controller::$NOT_EMPTY,
-                'current_unit_ids.array' => __('messages.stock.unit').': ' . Controller::$DATA_INVALID,
-                'current_unit_ids.*.required' => __('messages.stock.unit').': ' . Controller::$NOT_EMPTY,
-                'current_unit_ids.*.numeric' => __('messages.stock.unit').': ' . Controller::$DATA_INVALID,
-                'quantities.required' => __('messages.stock.quantity').': ' . Controller::$NOT_EMPTY,
-                'quantities.array' => __('messages.stock.quantity').': ' . Controller::$DATA_INVALID,
-                'quantities.*.required' => __('messages.stock.quantity').': ' . Controller::$NOT_EMPTY,
-                'quantities.*.numeric' => __('messages.stock.quantity').': ' . Controller::$DATA_INVALID,
-                'prices.required' => __('messages.stock.price').': ' . Controller::$NOT_EMPTY,
-                'prices.array' => __('messages.stock.price').': ' . Controller::$DATA_INVALID,
-                'prices.*.required' => __('messages.stock.price').': ' . Controller::$NOT_EMPTY,
-                'prices.*.numeric' => __('messages.stock.price').': ' . Controller::$DATA_INVALID,
+                'current_unit_ids.required' => __('messages.stock.unit') . ': ' . Controller::$NOT_EMPTY,
+                'current_unit_ids.array' => __('messages.stock.unit') . ': ' . Controller::$DATA_INVALID,
+                'current_unit_ids.*.required' => __('messages.stock.unit') . ': ' . Controller::$NOT_EMPTY,
+                'current_unit_ids.*.numeric' => __('messages.stock.unit') . ': ' . Controller::$DATA_INVALID,
+                'quantities.required' => __('messages.stock.quantity') . ': ' . Controller::$NOT_EMPTY,
+                'quantities.array' => __('messages.stock.quantity') . ': ' . Controller::$DATA_INVALID,
+                'quantities.*.required' => __('messages.stock.quantity') . ': ' . Controller::$NOT_EMPTY,
+                'quantities.*.numeric' => __('messages.stock.quantity') . ': ' . Controller::$DATA_INVALID,
+                'prices.required' => __('messages.stock.price') . ': ' . Controller::$NOT_EMPTY,
+                'prices.array' => __('messages.stock.price') . ': ' . Controller::$DATA_INVALID,
+                'prices.*.required' => __('messages.stock.price') . ': ' . Controller::$NOT_EMPTY,
+                'prices.*.numeric' => __('messages.stock.price') . ': ' . Controller::$DATA_INVALID,
                 'lots.required' => 'Lot: ' . Controller::$NOT_EMPTY,
                 'lots.array' => 'Lot: ' . Controller::$DATA_INVALID,
                 'lots.*.string' => 'Lot: ' . Controller::$DATA_INVALID,
                 'lots.*.max' => 'Lot: ' . Controller::$MAX,
-                'expireds.required' => __('messages.stock.exp').': ' . Controller::$NOT_EMPTY,
-                'expireds.array' => __('messages.stock.exp').': ' . Controller::$DATA_INVALID,
-                'expireds.*.date_format' => __('messages.stock.exp').': ',
-                'import_detail_ids.required' => __('messages.import.import_detail').': ' . Controller::$DATA_INVALID,
-                'import_detail_ids.array' => __('messages.import.import_detail').': ' . Controller::$DATA_INVALID,
-                'import_detail_ids.*.numeric' => __('messages.import.import_detail').': ' . Controller::$DATA_INVALID,
-                'stock_ids.required' => __('messages.stock.stock').': ' . Controller::$DATA_INVALID,
-                'stock_ids.array' => __('messages.stock.stock').': ' . Controller::$DATA_INVALID,
-                'stock_ids.*.numeric' => __('messages.stock.stock').': ' . Controller::$DATA_INVALID,
+                'expireds.required' => __('messages.stock.exp') . ': ' . Controller::$NOT_EMPTY,
+                'expireds.array' => __('messages.stock.exp') . ': ' . Controller::$DATA_INVALID,
+                'expireds.*.date_format' => __('messages.stock.exp') . ': ',
+                'import_detail_ids.required' => __('messages.import.import_detail') . ': ' . Controller::$DATA_INVALID,
+                'import_detail_ids.array' => __('messages.import.import_detail') . ': ' . Controller::$DATA_INVALID,
+                'import_detail_ids.*.numeric' => __('messages.import.import_detail') . ': ' . Controller::$DATA_INVALID,
+                'stock_ids.required' => __('messages.stock.stock') . ': ' . Controller::$DATA_INVALID,
+                'stock_ids.array' => __('messages.stock.stock') . ': ' . Controller::$DATA_INVALID,
+                'stock_ids.*.numeric' => __('messages.stock.stock') . ': ' . Controller::$DATA_INVALID,
             ];
             return $next($request);
         });
@@ -347,10 +348,22 @@ class ImportController extends Controller
                         }
                     }
 
+                    if ($import->status == 1) {
+                        Expense::create([
+                            'user_id' => $import->user_id,
+                            'payment' => 1,
+                            'amount' => $import->total,
+                            'note' => $import->code,
+                            'status' => 1,
+                            'group' => 'IM',
+                            'branch_id' => $this->user->main_branch,
+                        ]);
+                    }
+
                     DB::commit();
                     $response = [
                         'status' => 'success',
-                        'msg' => __('messages.created') . $import->note,
+                        'msg' => __('messages.created') . ' ' . $import->note,
                     ];
                     return response()->json($response, 200);
                 }
@@ -407,12 +420,15 @@ class ImportController extends Controller
                 try {
                     $old = Import::find($request->id);
                     if ($old) {
+                        $old_status = $old->status;
+                        $old_total = $old->total;
                         if ($old->export_id || $old->checkLoss()) { //Nếu là phiếu nhập kho nội bộ
                             if ($old->export_id) {
                                 $old->user_id = $this->user->id;
                                 $old->status = $request->status;
                                 $old->save();
                             }
+
                             foreach (array_filter($request->import_detail_ids) as $i => $id) {
                                 $import_detail = ImportDetail::find($id);
                                 $import_detail->price = $request->prices[$i];
@@ -427,14 +443,7 @@ class ImportController extends Controller
                                     }
                                 }
                             }
-                            DB::commit();
-                            $response = [
-                                'status' => 'success',
-                                'msg' => __('messages.updated') . $old->code ,
-                            ];
-                            return response()->json($response, 200);
-                        }
-                        if ($old) {
+                        } else {
                             $old->update([
                                 'user_id' => $this->user->id,
                                 'warehouse_id' => $old->checkLoss() ? $old->warehouse_id : $request->warehouse_id,
@@ -474,21 +483,26 @@ class ImportController extends Controller
                                     'msg' => __('messages.msg')
                                 );
                             }
-
-                            DB::commit();
-                            $response = [
-                                'status' => 'success',
-                                'msg' => __('messages.updated') . $old->code,
-                            ];
-                            return response()->json($response, 200);
-                        } else {
-                            DB::rollBack();
-                            Controller::resetAutoIncrement(['imports', 'import_details', 'stocks']);
-                            $response = array(
-                                'status' => 'error',
-                                'msg' => __('messages.msg')
-                            );
                         }
+
+                        if ($old->status == 0 && $old_status == 1) {
+                            $old_expense = Expense::where('group','IM')->where('note', $old->code)->first();
+                            $old_expense->delete();
+                        } else if($old->total != $old_total)
+                        {
+                            $old_expense = Expense::where('group', 'IM')->where('note', $old->code)->first();
+                            $old_expense->update([
+                                'user_id' => $old->user_id,
+                                'amount' => $old->total,
+                            ]);
+                        }
+
+                        DB::commit();
+                        $response = [
+                            'status' => 'success',
+                            'msg' => __('messages.updated') . $old->code,
+                        ];
+                        return response()->json($response, 200);
                     } else {
                         DB::rollBack();
                         $response = array(
@@ -543,9 +557,16 @@ class ImportController extends Controller
                 $obj->unsetRelation('import_details');
                 $count_import_details = $obj->import_details()->withTrashed()->count();
                 if (!$count_import_details) {
+                    if ($obj->expense) {
+                        $obj->expense->forceDelete();
+                    }
                     $obj->forceDelete();
                 } else {
+                    if ($obj->expense) {
+                        $obj->expense->delete();
+                    }
                     $obj->delete();
+                    
                 }
                 DB::commit();
             } catch (\Exception $e) {
@@ -557,7 +578,7 @@ class ImportController extends Controller
         }
         $response = array(
             'status' => 'success',
-            'msg' =>  __('messages.deleted') . implode(', ', $names)
+            'msg' => __('messages.deleted') . implode(', ', $names)
         );
         return response()->json($response, 200);
     }

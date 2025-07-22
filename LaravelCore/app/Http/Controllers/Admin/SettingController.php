@@ -61,6 +61,34 @@ class SettingController extends Controller
         cache()->forget('settings');
     }
 
+    public function updateScore(Request $request) {
+        try {
+            $data = [
+                'check_score' => (int) $request->input('check_score', 0),
+                'money_to_score' => $request->input('money_to_score', []),
+                'score_to_money' => $request->input('score_to_money', []),
+            ];
+
+            $this->updateSetting('setting_score', $data);
+            cache()->forget('settings');
+
+            $response = [
+                'status' => 'success',
+                'msg' => __('messages.shop_setting.score_success')
+            ];
+        } catch (\Exception $e) {
+            log_exception($e);
+
+            $response = [
+                'status' => 'error',
+                'msg' => __('messages.msg')
+            ];
+        }
+
+        return redirect()->back()->with('response', $response);
+    }
+
+
     public function updatePrint(Request $request)
     {
         try {

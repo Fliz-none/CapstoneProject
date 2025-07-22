@@ -287,6 +287,8 @@ Route::group(['prefix' => 'quantri'], function () {
         Route::post('work', [SettingController::class, 'updatework'])->name('admin.setting.work');
         Route::post('zalo', [SettingController::class, 'updateZalo'])->name('admin.setting.zalo');
         Route::post('print', [SettingController::class, 'updatePrint'])->name('admin.setting.print');
+        Route::post('score', [SettingController::class, 'updateScore'])->name('admin.setting.score');
+
     });
 
     Route::group(['prefix' => 'role'], function () {

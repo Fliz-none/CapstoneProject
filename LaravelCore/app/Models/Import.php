@@ -10,7 +10,7 @@ class Import extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'imports';
-    protected $appends = ['code', 'total', 'statusStr'];
+    protected $appends = ['code', 'total', 'statusStr','expense'];
     protected $fillable = [
         'user_id',
         'warehouse_id',
@@ -68,6 +68,10 @@ class Import extends Model
             }
         });
         return $loss;
+    }
+
+    public function getExpenseAttribute() {
+         return Expense::where('group', 'IM')->where('note', $this->code)->first();
     }
 
     public function getStatusStrAttribute()
