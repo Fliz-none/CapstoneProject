@@ -190,6 +190,20 @@
                 !$('.work-shift').length ? $('.table-shift tbody').html(`<tr class="text-center fst-italic text-primary"><th colspan="5"><h6 class="pt-2">There is no shift.</h6></th></tr>`) : '';
                 resetShiftIndexes();
             });
+
+            $('input.btn-check[name="check_score"]').on('change', function () {
+                    const form = $('#score-setting-form');
+
+                    let formData = form.serializeArray();
+                    // Lấy giá trị check_score đã chọn
+                    let checkScore = form.find('input[name="check_score"]:checked').val();
+                      if (checkScore == 0) {
+                            $('#money_to_score, #score_to_money').addClass('d-none');
+                        } else {
+                            $('#money_to_score, #score_to_money').removeClass('d-none');
+                        }
+                    
+                });
         })
 
         $(document).on('click', '.btn-add-expense', function () {
@@ -201,6 +215,7 @@
             `;
             $('.expense-group-container').append(newExpenseField);
         });
+
 
         $(document).on('click', '.btn-remove-expense', function () {
             if ($('.expense-group-item').length > 1) {

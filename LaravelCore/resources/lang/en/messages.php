@@ -823,10 +823,23 @@ return [
     // ShopSetting
     'shop_setting' => [
         'shop_setting' => 'Shop Settings',
+        'shop_score' => 'Set shop score',
         'inventory_management' => 'Inventory Management',
         'inventory_placeholder' => 'Control quantity of import, export, and remaining inventory',
         'reward' => 'Reward Point Conversion Rate',
         'reward_placeholder' => 'Spending amount equivalent to 1 reward point',
+
+        'check' => 'Open reward points',
+        'check_placeholder' => 'Check to open reward points',
+        'money_to_score' => 'Money to scores',
+        'money_to_score_placeholder' => 'Amount spent converted into reward points',
+        'score_to_money' => 'Points to money',  
+        'score_to_money_placeholder' => 'Reward points converted into amount spent',
+        'score' => 'Points',
+        'money' => 'VND',
+        'open' => 'Open',
+        'close' => 'Close',
+        'score_success' => 'Successfully updated scores',
 
         'invoice' => 'Invoice Printing Settings',
         'a5' => 'Add QR code to A5 paper',

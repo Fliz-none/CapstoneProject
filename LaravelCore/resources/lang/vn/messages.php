@@ -837,10 +837,24 @@ return [
     //ShopSetting
     'shop_setting' => [
         'shop_setting' => 'Cài đặt cửa hàng',
+        'shop_score' => 'Cài đặt điểm cửa hàng',
         'inventory_management' => 'Quản lý hàng tồn kho',
         'inventory_placeholder' => 'Kiểm soát lượng hàng nhập, xuất và hàng tồn kho còn lại',
         'reward' => 'Tỷ giá quy đổi điểm thưởng',
         'reward_placeholder' => 'Số tiền chi tiêu tương đương với 1 điểm thưởng',
+
+        'check' => 'Mở điểm thưởng',
+        'check_placeholder' => 'Chọn để mở hoặc đóng điểm thưởng',
+        'money_to_score' => 'Chuyển tiền sang điểm',
+        'money_to_score_placeholder' => 'Số tiền chi tiêu được chuyển đổi thành điểm thưởng',
+        'score_to_money' => 'Chuyển điểm thưởng thành tiền',
+        'score_to_money_placeholder' => 'Điểm thưởng được chuyển đổi thành số tiền chi tiêu',
+        'score' => 'Điểm thưởng',
+        'money' => 'VND',
+        'open' => 'Mở',
+        'close' => 'Tắt',
+
+        'score_success' => 'Cập nhật điểm thưởng thành công',
 
         'invoice' => 'Cài đặt in hoá đơn',
         'a5' => 'Thêm mã QR vào giấy A5',
