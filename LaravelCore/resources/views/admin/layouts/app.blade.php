@@ -1236,6 +1236,29 @@
         })
     })
 
+    let branchMap = null;
+    $('#branch-modal').on('shown.bs.modal', function () {
+        if (!branchMap) {
+            branchMap = initGoongMap({
+                containerId: 'branch-map',
+                addressInputSelector: '#branch-form input[name="address"]',
+                addressPreviewSelector: '#branch-address-preview',
+                onLocationSelected: ({ lat, lng, address }) => {
+                    $('#branch-form input[name="address"]').val(JSON.stringify({ lat, lng, address }));
+                }
+            });
+        }
+    });
+    $('#branch-modal').on('hidden.bs.modal', function () {
+        if (branchMap) {
+            branchMap.remove(); // Xóa bản đồ khỏi DOM
+            branchMap = null;   // Cho phép tạo lại map ở lần mở tiếp theo
+        }
+        $('#branch-form input[name="address"]').val('');
+        $('#branch-address-preview').val('');
+    });
+
+    // =========== END BRANCH ===========
     /**
      * IMPORT PROCESS
      */
@@ -1474,7 +1497,7 @@
             form.find('[name=name]').val(supplier.name)
             form.find('[name=phone]').val(supplier.phone)
             form.find('[name=email]').val(supplier.email)
-            form.find('[name=address]').val(supplier.address)
+            form.find('[name=address]').val(supplier.addressObject.address)
             form.find('[name=organ]').val(supplier.organ)
             form.find('[name=note]').val(supplier.note)
             form.find(`[name='status']`).prop('checked', supplier.status)
@@ -1482,6 +1505,31 @@
             form.find('.modal').modal('show')
         })
     })
+
+    
+    let supplierMap = null;
+    $('#supplier-modal').on('shown.bs.modal', function () {
+        if (!supplierMap) {
+            supplierMap = initGoongMap({
+                containerId: 'supplier-map',
+                addressInputSelector: '#supplier-form input[name="address"]',
+                addressPreviewSelector: '#supplier-address-preview',
+                onLocationSelected: ({ lat, lng, address }) => {
+                    $('#supplier-form input[name="address"]').val(JSON.stringify({ lat, lng , address }));
+                }
+            });
+        }
+    });
+
+    $('#supplier-modal').on('hidden.bs.modal', function () {
+        if (supplierMap) {
+            supplierMap.remove(); // Xóa bản đồ khỏi DOM
+            supplierMap = null;   // Cho phép tạo lại map ở lần mở tiếp theo
+        }
+        $('#supplier-form input[name="address"]').val('');
+        $('#supplier-address-preview').val('');
+    });
+
     /* =================== END SUPPLIER ================== */
 
     /**
@@ -2674,6 +2722,49 @@
     /**
      *  DETAIL LOG
      */
+    const translations_log = {
+        code: { vn: 'Mã', en: 'Code' },
+        name: { vn: 'Họ tên', en: 'Full Name' },
+        phone: { vn: 'Số điện thoại', en: 'Phone Number' },
+        email: { vn: 'Email', en: 'Email' },
+        avatar: { vn: 'Ảnh đại diện', en: 'Avatar' },
+        genderStr: { vn: 'Giới tính', en: 'Gender' },
+        password: { vn: 'Mật khẩu', en: 'Password' },
+        address: { vn: 'Địa chỉ', en: 'Address' },
+        local_id: { vn: 'Địa phương', en: 'Local' },
+        main_branch: { vn: 'Chi nhánh chính', en: 'Main Branch' },
+        scores: { vn: 'Điểm số', en: 'Scores' },
+        statusStr: { vn: 'Trạng thái', en: 'Status' },
+        note: { vn: 'Ghi chú', en: 'Note' },
+        remember_token: { vn: 'Token đăng nhập', en: 'Remember Token' },
+        deleted_at: { vn: 'Đã xoá lúc', en: 'Deleted At' },
+        created_at: { vn: 'Tạo lúc', en: 'Created At' },
+        updated_at: { vn: 'Cập nhật lúc', en: 'Updated At' },
+        excerpt: { vn: 'Miêu tả ngắn', en: 'Short Description' },
+        description: { vn: 'Mô tả', en: 'Description' },
+        slug: { vn: 'Slug', en: 'Slug' },
+        sku: { vn: 'Sku', en: 'Sku' },
+        specs: { vn: 'Thông số kỹ thuật', en: 'Specs' },
+        keyword: { vn: 'Từ khóa', en: 'Keyword' },
+        parent_id: { vn: 'Danh mục cha', en: 'Parent Category' },
+        branch_id: { vn: 'Chi nhánh', en: 'Branch' },
+        typeStr: { vn: 'Loại', en: 'Type' },
+        buy_quantity: { vn: 'Số lượng mua', en: 'Buy Quantity' },
+        get_quantity: { vn: 'Số lượng nhận', en: 'Get Quantity' },
+        min_quantity: { vn: 'Số lượng tối thiểu', en: 'Min Quantity' },
+        start_date: { vn: 'Ngày bắt đầu', en: 'Start Date' },
+        end_date: { vn: 'Ngày kết thúc', en: 'End Date' },
+        organ: { vn: 'Tổ chức', en: 'Organ' },
+    };
+    const locale = $('html').attr('lang') || 'vn';
+    const emptyText = locale === 'en' ? 'empty' : 'trống';
+    const hiddenKeys = [
+        'password', 'remember_token', 'avatar', 'local', 'avatarUrl',
+        'fullAddress', 'status', 'fullName', 'id', 'gender',
+        'roles', '_local', '_branch', 'galleryUrl', 'gallery', 'sort',
+        'allow_review', 'type', 'value', 'deleted_at', 'updated_at', 'created_at', 'addressObject'
+    ];
+
 
     $(document).on('click', '.btn-detail-log', function (e) {
         e.preventDefault();
@@ -2681,75 +2772,30 @@
             form = $('#log-form');
 
         resetForm(form); // nếu có
-
-        const locale = $('html').attr('lang') || 'vn';
-        const emptyText = locale === 'en' ? 'empty' : 'trống';
-
-        // Từ điển dịch trường
-        const translations = {
-            code: { vn: 'Mã', en: 'Code' },
-            name: { vn: 'Họ tên', en: 'Full Name' },
-            phone: { vn: 'Số điện thoại', en: 'Phone Number' },
-            email: { vn: 'Email', en: 'Email' },
-            avatar: { vn: 'Ảnh đại diện', en: 'Avatar' },
-            genderStr: { vn: 'Giới tính', en: 'Gender' },
-            password: { vn: 'Mật khẩu', en: 'Password' },
-            address: { vn: 'Địa chỉ', en: 'Address' },
-            local_id: { vn: 'Địa phương', en: 'Local' },
-            main_branch: { vn: 'Chi nhánh chính', en: 'Main Branch' },
-            scores: { vn: 'Điểm số', en: 'Scores' },
-            statusStr: { vn: 'Trạng thái', en: 'Status' },
-            note: { vn: 'Ghi chú', en: 'Note' },
-            remember_token: { vn: 'Token đăng nhập', en: 'Remember Token' },
-            deleted_at: { vn: 'Đã xoá lúc', en: 'Deleted At' },
-            created_at: { vn: 'Tạo lúc', en: 'Created At' },
-            updated_at: { vn: 'Cập nhật lúc', en: 'Updated At' },
-            excerpt: { vn: 'Miêu tả ngắn', en: 'Short Description' },
-            description: { vn: 'Mô tả', en: 'Description' },
-            slug: { vn: 'Slug', en: 'Slug' },
-            sku: { vn: 'Sku', en: 'Sku' },
-            specs: { vn: 'Thông số kỹ thuật', en: 'Specs' },
-            keyword: { vn: 'Từ khóa', en: 'Keyword' },
-            parent_id: { vn: 'Danh mục cha', en: 'Parent Category' },
-            branch_id: { vn: 'Chi nhánh', en: 'Branch' },
-            typeStr: { vn: 'Loại', en: 'Type' },
-            buy_quantity: { vn: 'Số lượng mua', en: 'Buy Quantity' },
-            get_quantity: { vn: 'Số lượng nhận', en: 'Get Quantity' },
-            min_quantity: { vn: 'Số lượng tối thiểu', en: 'Min Quantity' },
-            start_date: { vn: 'Ngày bắt đầu', en: 'Start Date' },
-            end_date: { vn: 'Ngày kết thúc', en: 'End Date' },
-        };
-
-        // Danh sách trường cần ẩn
-        const hiddenKeys = [
-            'password', 'remember_token', 'avatar', 'local', 'avatarUrl',
-            'fullAddress', 'status', 'fullName', 'id', 'gender',
-            'roles', '_local', '_branch', 'galleryUrl', 'gallery', 'sort', 'allow_review', 'type', 'value', 'deleted_at', 'updated_at', 'created_at'
-        ];
-
         $.get(`{{ route('admin.log.show', '') }}/${id}`, function (log) {
-            console.log(log);
-
             const before = log.before_change || {};
             const after = log.after_change || {};
-
             const allKeys = Array.from(new Set([...Object.keys(before), ...Object.keys(after)]));
             let rows = '';
 
             allKeys.forEach(key => {
                 if (hiddenKeys.includes(key)) return;
 
-                const label = translations[key]?.[locale] || key;
+                const label = translations_log[key]?.[locale] || key;
 
                 let beforeValue = (before[key] !== undefined && before[key] !== null) ? before[key] : emptyText;
                 let afterValue = (after[key] !== undefined && after[key] !== null) ? after[key] : emptyText;
-
+                if(beforeValue.startsWith('{') && beforeValue.endsWith('}')) {
+                   beforeValue = beforeValue.replace('{', '').replace('}', '').replace(/"/g, ' ');
+                }
+                if(afterValue.startsWith('{') && afterValue.endsWith('}')) {
+                   afterValue = afterValue.replace('{', '').replace('}', '').replace(/"/g, ' ');
+                }
                 rows += `
-            <tr>
-                <td><strong>${label}</strong>: ${beforeValue}</td>
-                <td><strong>${label}</strong>: ${afterValue}</td>
-            </tr>
-        `;
+                    <tr ${(beforeValue != afterValue) ? 'style="background-color: #aaa;"' : ''}>
+                        <td><strong>${label}</strong>: ${beforeValue}</td>
+                        <td><strong>${label}</strong>: ${afterValue}</td>
+                    </tr>`;
             });
 
             $('#log-form').find('.modal-body table tbody').html(rows);
@@ -2903,6 +2949,194 @@
         return `${hours}:${minutes}`;
     }
 </script>
+<link href="https://cdn.jsdelivr.net/npm/@goongmaps/goong-js@1.0.9/dist/goong-js.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/@goongmaps/goong-js@1.0.9/dist/goong-js.js"></script>
+
+<script>
+    const GOONG_MAP_API_KEY = '{{ config("services.goong.map_key") }}';
+    const GOONG_REST_API_KEY = '{{ config("services.goong.rest_key") }}';
+
+    function debounce(func, wait, immediate) {
+        let timeout;
+        return function () {
+            const context = this,
+                args = arguments;
+            clearTimeout(timeout);
+            timeout = setTimeout(function () {
+                timeout = null;
+                if (!immediate) func.apply(context, args);
+            }, wait);
+            if (immediate && !timeout) func.apply(context, args);
+        };
+    }
+
+    function initGoongMap({
+        containerId,
+        defaultLat = 10.762622,
+        defaultLng = 106.660172,
+        onLocationSelected = () => {},
+        addressInputSelector = null,
+        addressPreviewSelector = null
+    }) {
+        goongjs.accessToken = GOONG_MAP_API_KEY;
+
+        const map = new goongjs.Map({
+            container: containerId,
+            style: 'https://tiles.goong.io/assets/goong_map_web.json',
+            center: [defaultLng, defaultLat],
+            zoom: 14,
+        });
+
+        let marker = new goongjs.Marker({ draggable: true })
+            .setLngLat([defaultLng, defaultLat])
+            .addTo(map);
+
+        function reverseGeocode(lat, lng, callback) {
+            $.ajax({
+                url: 'https://rsapi.goong.io/Geocode',
+                method: 'GET',
+                data: {
+                    latlng: `${lat},${lng}`,
+                    api_key: GOONG_REST_API_KEY
+                },
+                success: function (res) {
+                    const address = res.results[0]?.formatted_address || '';
+                    callback(address);
+                }
+            });
+        }
+
+        function geocodeAddress(address, callback) {
+            $.ajax({
+                url: 'https://rsapi.goong.io/Geocode',
+                method: 'GET',
+                data: {
+                    address: address,
+                    api_key: GOONG_REST_API_KEY
+                },
+                success: function (res) {
+                    if (res.results.length > 0) {
+                        const { lat, lng } = res.results[0].geometry.location;
+                        const formatted_address = res.results[0].formatted_address;
+                        callback({ lat, lng, address: formatted_address });
+                    }
+                }
+            });
+        }
+
+        function updateAddressInput(lat, lng, address) {
+            if (addressInputSelector) {
+                const input = document.querySelector(addressInputSelector);
+                const jsonValue = JSON.stringify({ address, lat, lng });
+                input.value = jsonValue;
+            }
+        }
+
+        function updatePreviewAddressInput(address) {
+            if (addressPreviewSelector) {
+                const input = document.querySelector(addressPreviewSelector);
+                input.value = address;
+            }
+        }
+
+        function updateMarkerAndCenter(lat, lng) {
+            marker.setLngLat([lng, lat]);
+            map.flyTo({ center: [lng, lat], zoom: 16 });
+        }
+
+        map.on('click', function (e) {
+            const { lat, lng } = e.lngLat;
+            updateMarkerAndCenter(lat, lng);
+            reverseGeocode(lat, lng, function (address) {
+                onLocationSelected({ lat, lng, address });
+                updateAddressInput(lat, lng, address);
+                updatePreviewAddressInput(address);
+            });
+        });
+
+        marker.on('dragend', function () {
+            const lngLat = marker.getLngLat();
+            reverseGeocode(lngLat.lat, lngLat.lng, function (address) {
+                onLocationSelected({ lat: lngLat.lat, lng: lngLat.lng, address });
+                updateAddressInput(lngLat.lat, lngLat.lng, address);
+                updatePreviewAddressInput(address);
+            });
+        });
+
+        if (addressPreviewSelector) {
+            const $input = $(addressPreviewSelector);
+            const $suggestions = $('<ul id="suggestions" class="autocomplete-list w-auto"></ul>');
+            $input.after($suggestions);
+
+            const defaultLocation = `${defaultLat},${defaultLng}`;
+            const radius = 20000;
+
+            // DEBOUNCED AUTOCOMPLETE
+            const handleAutocomplete = debounce(function () {
+                const inputValue = $input.val();
+                if (inputValue.length < 2) {
+                    $suggestions.empty();
+                    return;
+                }
+
+                $.ajax({
+                    url: 'https://rsapi.goong.io/place/autocomplete',
+                    method: 'GET',
+                    data: {
+                        input: inputValue,
+                        location: defaultLocation,
+                        radius: radius,
+                        limit: 10,
+                        api_key: GOONG_REST_API_KEY
+                    },
+                    success: function (res) {
+                        $suggestions.empty();
+
+                        if (res.predictions && res.predictions.length > 0) {
+                            res.predictions.forEach(function (place) {
+                                const $item = $('<li></li>').text(place.description);
+                                $item.on('click', function () {
+                                    const address = place.description;
+
+                                    // Vì autocomplete không trả về lat/lng, phải gọi geocode
+                                    geocodeAddress(address, function ({ lat, lng, address }) {
+                                        console.log('Selected address:', address, lat, lng);
+                                        
+                                        $input.val(address);
+                                        $suggestions.empty();
+                                        updateMarkerAndCenter(lat, lng);
+                                        onLocationSelected({ lat, lng, address });
+                                        updateAddressInput(lat, lng, address);
+                                        updatePreviewAddressInput(address);
+                                    });
+                                });
+                                $suggestions.append($item);
+                            });
+                        } else {
+                            $suggestions.append('<li class="text-muted">Không tìm thấy kết quả</li>');
+                        }
+                    },
+                    error: function () {
+                        $suggestions.html('<li class="text-danger">Lỗi khi gọi API</li>');
+                    }
+                });
+            }, 300); // 300ms debounce
+
+            $input.on('input', handleAutocomplete);
+
+            // chọn ngoài thì ẩn
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest(addressPreviewSelector).length) {
+                    $suggestions.empty();
+                }
+            });
+        }
+
+        return { map, marker };
+    }
+
+</script>
+
 <script src="{{ asset('admin/js/main.js') }}?v={{ $version_name }}"></script>
 @stack('quick_images')
 @stack('scripts')

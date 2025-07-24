@@ -188,7 +188,7 @@ class User extends Authenticatable implements MustVerifyEmail
     const DELETE_EXPENSES = 'Delete multiple expenses';
     const APPROVE_EXPENSE = 'Approve expense';
 
-    protected $appends = ['code', 'fullName', 'statusStr', 'genderStr', 'fullAddress', 'avatarUrl'];
+    protected $appends = ['code', 'fullName', 'statusStr', 'genderStr', 'avatarUrl'];
     /**
      * The attributes that are mass assignable.
      *
@@ -387,13 +387,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->status ? __('messages.active') : __('messages.inactive');
     }
 
-    public function getFullAddressAttribute()
-    {
-        $address = $this->address ? $this->address . ', ' : '';
-        $location = $this->local ? ($this->local->district . ', ' . $this->local->city) : '';
-        $fullAddress = $address . $location;
-        return $fullAddress ?: __('messages.unknown');
-    }
 
     public function getAvatarUrlAttribute()
     {

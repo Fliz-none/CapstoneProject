@@ -28,7 +28,7 @@ class BranchController extends Controller
 
         $this->middleware(function ($request, $next) {
             // Locale đã được set xong ở đây
-           Controller::init();
+            Controller::init();
             self::$MESSAGES = [
                 'name.required' => Controller::$NOT_EMPTY,
                 'name.string' => Controller::$DATA_INVALID,
@@ -46,14 +46,12 @@ class BranchController extends Controller
 
             return $next($request);
         });
-
-        
     }
 
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return \Illuminate\Contracts\Support\Renderable|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -133,7 +131,7 @@ class BranchController extends Controller
                         $query->orderBy('name', $order);
                     })
                     ->editColumn('address', function ($obj) {
-                        return '<div class="text-start">' . $obj->address . '</div>';
+                        return '<div class="text-start">' . $obj->addressObject->address . '</div>';
                     })
                     ->filterColumn('address', function ($query, $keyword) {
                         $query->where('address', 'like', "%" . $keyword . "%")

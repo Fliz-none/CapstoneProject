@@ -10,7 +10,7 @@ class Supplier extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'suppliers';
-    protected $appends = ['code', 'fullName', 'statusStr'];
+    protected $appends = ['code', 'fullName', 'statusStr', 'addressObject'];
     protected $fillable = [
         'name',
         'phone',
@@ -38,6 +38,12 @@ class Supplier extends Model
         }
         return $name;
     }
+
+    public function getAddressObjectAttribute()
+    {
+        return json_decode($this->address) ?? (object) ['lng' => 0, 'lat' => 0, 'address' => ''];
+    }
+
 
     public function getCodeAttribute()
     {

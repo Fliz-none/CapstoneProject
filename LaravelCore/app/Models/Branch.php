@@ -66,6 +66,11 @@ class Branch extends Model
         return $name;
     }
 
+    public function getAddressObjectAttribute()
+    {
+        return json_decode($this->address) ?? (object) ['lng' => 0, 'lat' => 0, 'address' => ''];
+    }
+    
     public function getCodeAttribute()
     {
         return 'BRA' . str_pad($this->id, 5, "0", STR_PAD_LEFT);

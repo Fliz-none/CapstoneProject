@@ -29,15 +29,16 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
-    
+
     'goong' => [
-        'key' => env('GOONG_API_KEY'),
+        'rest_key' => env('GOONG_REST_API_KEY'),
+        'map_key' => env('GOONG_MAP_API_KEY'),
     ],
 
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => env('GOOGLE_REDIRECT_URI'),
+        'redirect' => env('APP_URL') . '/auth/google/callback',
     ],
 
 ];

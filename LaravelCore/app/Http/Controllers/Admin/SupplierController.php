@@ -132,7 +132,7 @@ class SupplierController extends Controller
                         $query->orderBy('id', $order);
                     })
                     ->editColumn('address', function ($obj) {
-                        return '<div class="text-start">' . $obj->address . '</div>';
+                        return '<div class="text-start">' . $obj->addressObject->address . '</div>';
                     })
                     ->editColumn('status', function ($obj) {
                         return '<span class="badge bg-' . ($obj->status ? 'success' : 'danger') . '">' . $obj->statusStr . '</span>';
