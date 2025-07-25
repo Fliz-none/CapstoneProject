@@ -29,6 +29,11 @@ class RoleController extends Controller
             $this->user = Auth::user();
         }
         $this->middleware(['auth']);
+
+        $this->middleware(function ($request, $next) {
+            Controller::init();
+            return $next($request);
+        });
     }
 
     /**

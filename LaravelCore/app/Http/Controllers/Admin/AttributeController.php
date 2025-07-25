@@ -19,7 +19,7 @@ class AttributeController extends Controller
             'value' => ['required', 'string', 'min: 3', 'max:125'],
         ];
 
-        public static array $MESSAGES = [];
+    public static array $MESSAGES = [];
         
 
     public function __construct()
@@ -29,7 +29,7 @@ class AttributeController extends Controller
             $this->user = Auth::user();
         }
         $this->middleware(['admin', 'auth']);
-            $this->middleware(function ($request, $next) {
+        $this->middleware(function ($request, $next) {
             // Locale đã được set xong ở đây
              Controller::init();
           self::$MESSAGES = [

@@ -9,8 +9,7 @@
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
                         <div class="home-banner-slide">
-                            <img class="img-fluid" src="{{ asset('images/banner/cua-hang-banner.jpg') }}" loading="lazy"
-                                alt="banner">
+                            <img class="img-fluid" src="{{ asset('images/banner/cua-hang-banner.jpg') }}" loading="lazy" alt="banner">
                         </div>
                         <div class="text-box-banner text-center">
                             <h2 class="fw-semibold">Dịch vụ TruongDung Pet cung cấp</h2>
@@ -20,8 +19,7 @@
                     </div>
                     <div class="swiper-slide">
                         <div class="home-banner-slide">
-                            <img class="img-fluid" src="{{ asset('images/banner/dv-thu-cung-banner.jpg') }}" loading="lazy"
-                                alt="banner">
+                            <img class="img-fluid" src="{{ asset('images/banner/dv-thu-cung-banner.jpg') }}" loading="lazy" alt="banner">
                         </div>
                         <div class="text-box-banner text-center">
                             <h3>Dịch vụ TruongDung Pet cung cấp</h3>
@@ -59,11 +57,9 @@
                                         <p class="text-muted">{{ $user->phone }}</p>
                                         <p class="text-muted">{{ $user->address }}</p>
                                         <p class="text-muted">{{ $user->created_at->format('d/m/Y') }}</p>
-                                        <a href="#" class="key-btn-info mb-3">Chỉnh sửa thông tin</a>
+                                        <a class="key-btn-info mb-3 btn-web-profile" href="#">Chỉnh sửa thông tin</a>
                                         {!! $user->hasAnyPermission(\App\Models\User::ACCESS_ADMIN) ? '<a href="' . route('admin.home') . '" class="key-btn-dark mb-3">Truy cập trang quản trị</a>' : '' !!}
-                                        <a class="key-btn-danger mb-3" href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                        submitLogoutForm();">
+                                        <a class="key-btn-danger mb-3" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                             {{ __('messages.profile.logout') }}
                                             <i class="icon-mid bi bi-box-arrow-right me-2"></i>
                                         </a>
@@ -78,8 +74,7 @@
                 </div>
             </div>
         </div>
-        <div class="support-wrapper support-fwidth-wrapper"
-            style="background-image: url({{ asset('images/bg-store-3.jpg') }});">
+        <div class="support-wrapper support-fwidth-wrapper" style="background-image: url({{ asset('images/bg-store-3.jpg') }});">
             <div class="container">
                 <div class="row">
                     <div class="col-12 col-md-8">
@@ -88,7 +83,7 @@
                             trở thành thương hiệu Phòng khám Thú y-Dịch vụ chăm sóc Thú cưng có tâm, có tầm, hiện
                             đại hoá lớn nhất khu vực Cần Thơ và các tỉnh lân cận</p>
 
-                        <a href="tel:0344333586" title="HOTLINE 0344 333 586" class="cta-btn">
+                        <a class="cta-btn" href="tel:0344333586" title="HOTLINE 0344 333 586">
                             HOTLINE 0344 333 586
                         </a>
                     </div>
@@ -102,9 +97,45 @@
         function submitLogoutForm() {
             const form = $("#logout-form");
             form.attr("action", "/logout");
-            submitForm(form).done(function (response) {
+            submitForm(form).done(function(response) {
                 window.location.reload();
             });
         }
+
+        $(document).on('click', '.btn-web-profile', function(e) {
+            e.preventDefault();
+            const form = $('#profile-web-form');
+            const btn = form.find('button[type="submit"]');
+            const originalText = btn.attr('data-text') || 'Save';
+            btn.prop('disabled', false).html(originalText);
+            $('#profile-web-modal').modal('show');
+        });
+
+
+        $(document).on('submit', '#profile-web-form', function(e) {
+            e.preventDefault();
+            const form = $(this);
+            submitForm(form).done(function(response) {
+                resetForm(form);
+                setTimeout(() => {
+                    location.reload();
+                }, 500);
+            });
+        });
+
+        //Preview avatar
+        $('#profile-avatar').on('change', function(e) {
+            const file = e.target.files[0];
+
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#avatar-preview').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                alert("Vui lòng chọn một tệp hình ảnh hợp lệ.");
+            }
+        });
     </script>
 @endpush
