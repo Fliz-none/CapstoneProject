@@ -1,4 +1,4 @@
-<div class="card mb-3">
+{{-- <div class="card mb-3">
     <form id="company-form" action="{{ route('admin.setting.shop') }}" method="post">
         @csrf
         <div class="card-header d-flex justify-content-between">
@@ -30,7 +30,7 @@
             </div>
         </div>
     </form>
-</div>
+</div> --}}
 
 @php
 $scoreSettings = json_decode($settings['setting_score'] ?? '{}', true);
@@ -56,11 +56,11 @@ $scoreSettings = json_decode($settings['setting_score'] ?? '{}', true);
             
                 <div class="col-sm-8">
                     <div class="btn-group" role="group" aria-label="Check Score Toggle">
-                        <input type="radio" class="btn-check" name="check_score" id="check_score_1" value="1" autocomplete="off" {{ $scoreSettings['check_score'] == 1 ? 'checked' : '' }}>
+                        <input type="radio" class="btn-check" name="check_score" id="check_score_1" value="1" autocomplete="off" checked>
                         <label class="btn btn-outline-primary" for="check_score_1">
                             {{ __('messages.shop_setting.open') }}
                         </label>
-                        <input type="radio" class="btn-check" name="check_score" id="check_score_0" value="0" autocomplete="off" {{ $scoreSettings['check_score'] == 0 ? 'checked' : '' }}>
+                        <input type="radio" class="btn-check" name="check_score" id="check_score_0" value="0" autocomplete="off">
                         <label class="btn btn-outline-secondary" for="check_score_0">
                             {{ __('messages.shop_setting.close') }}
                         </label>

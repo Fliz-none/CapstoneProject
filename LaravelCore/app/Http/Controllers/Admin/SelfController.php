@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChangePasswordRequest;
+use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 
 class SelfController extends Controller
 {
@@ -21,6 +21,8 @@ class SelfController extends Controller
             $this->user = Auth::user();
         }
         $this->middleware(['admin', 'auth']);
+
+
     }
 
     /**
@@ -29,13 +31,14 @@ class SelfController extends Controller
     public function index(Request $request)
     {
         $pageName = $this->user->name;
+        $logs = Log::where('user_id', $this->user->id)->get();
         switch ($request->key) {
             case 'settings':
-                return view('admin.profile_settings', compact('pageName'));
+                return view('admin.profile_settings', compact('pageName', 'logs'));
             case 'password':
-                return view('admin.profile_password', compact('pageName'));
+                return view('admin.profile_password', compact('pageName', 'logs'));
             case '':
-                return view('admin.profile', compact('pageName'));
+                return view('admin.profile', compact('pageName', 'logs'));
             default:
                 abort(404);
         }

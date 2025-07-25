@@ -52,6 +52,7 @@ class SettingsSeeder extends Seeder
             ['company_tax_id', ''],
             ['company_email', 'lhd4388@gmail.com'],
             ['company_description', 'SMS - Sales Management Solution is a software that helps you manage your sales, employees, inventory and more. SMS is designed to offer a focused and flexible tool that addresses operational gaps in small and medium-sized retail businesses. By emphasizing usability, centralized data, and intelligent automation, SMS aims to enhance retail efficiency while maintaining compatibility with current workflows and business needs.'],
+            ['setting_score', '{"money_to_score":{"money":"100000","score":"11"},"score_to_money":{"score":"10","money":"50005"}}'],
         ];
 
         foreach ($settings as $key => $setting) {
