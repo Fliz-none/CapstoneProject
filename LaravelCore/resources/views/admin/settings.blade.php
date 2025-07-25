@@ -202,7 +202,7 @@
                         } else {
                             $('#money_to_score, #score_to_money').removeClass('d-none');
                         }
-                    
+
                 });
         })
 

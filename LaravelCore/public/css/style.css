@@ -12088,7 +12088,7 @@ ul {
   background: rgba(255, 255, 255, 0.6);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  border-radius: 0px 0px 32px 32px;
+  border-radius: 0px 0px 16px 16px;
 }
 @media (max-width: 1400px) {
   .header .header-content--inner {

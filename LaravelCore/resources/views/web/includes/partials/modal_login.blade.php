@@ -39,7 +39,11 @@
                         </div>
                     </div>
                     <div class="row ">
-                        <div class="col-12 mb-3">
+                        <div class="col-12 mb-3 d-flex justify-content-between align-items-end">
+                            <a class="btn btn-outline-danger btn-lg border border-1 rounded-3 ms-3 px-3" href="{{ route('google.login') }}">
+                                <span class="d-flex fw-bold"><img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Logo" style="width: 1rem; margin-right: 10px;">
+                                    Google</span>
+                            </a>
                             <button class="btn btn-warning btn-login" type="button">
                                 <span class="">Đăng nhập</span>
                             </button>

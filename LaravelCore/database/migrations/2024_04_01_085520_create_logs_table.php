@@ -25,9 +25,9 @@ class CreateLogsTable extends Migration
         $table->string('agent');
         $table->string('platform');
         $table->string('device');
-      
+
         $table->timestamps();
-        
+
         $table->foreign('user_id')->references('id')->on('users');
     }  );
     }

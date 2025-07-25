@@ -276,6 +276,8 @@ Route::group(['prefix' => 'quantri'], function () {
     Route::group(['prefix' => 'setting'], function () {
         Route::get('{key?}', [SettingController::class, 'index'])->name('admin.setting');
         Route::post('image', [SettingController::class, 'updateImage'])->name('admin.setting.image');
+        Route::post('banner', [SettingController::class, 'updateBanner'])->name('admin.setting.banner');
+        Route::post('introduce', [SettingController::class, 'updateIntro'])->name('admin.setting.introduce');
         Route::post('pay', [SettingController::class, 'updatePay'])->name('admin.setting.pay');
         Route::post('company', [SettingController::class, 'updateCompany'])->name('admin.setting.company');
         Route::post('email', [SettingController::class, 'updateEmail'])->name('admin.setting.email');

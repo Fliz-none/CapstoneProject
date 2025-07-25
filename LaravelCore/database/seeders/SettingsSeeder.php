@@ -15,10 +15,10 @@ class SettingsSeeder extends Seeder
     public function run()
     {
         $settings = [
-            ['logo_square', ''],
-            ['logo_horizon', 'logo_horizon.png'],
-            ['logo_square_bw', 'logo_bw.svg'],
-            ['logo_horizon_bw', 'logo_horizon_bw.png'],
+            ['logo_square', 'favicon.png'],
+            ['logo_horizon', 'favicon.png'],
+            ['logo_square_bw', 'favicon.png'],
+            ['logo_horizon_bw', 'favicon.png'],
             ['favicon', 'favicon.png'],
 
             ['social_facebook', 'https://www.facebook.com/profile.php?id=100009390873079'],
@@ -52,6 +52,18 @@ class SettingsSeeder extends Seeder
             ['company_tax_id', ''],
             ['company_email', 'lhd4388@gmail.com'],
             ['company_description', 'SMS - Sales Management Solution is a software that helps you manage your sales, employees, inventory and more. SMS is designed to offer a focused and flexible tool that addresses operational gaps in small and medium-sized retail businesses. By emphasizing usability, centralized data, and intelligent automation, SMS aims to enhance retail efficiency while maintaining compatibility with current workflows and business needs.'],
+            ['company_introduce', 'SMS (Sales Management Solution) is a friendly and flexible sales management software that helps you stay on top of your sales, staff, inventory, and more. Designed for small and medium-sized retail businesses, SMS focuses on simplicity, smart automation, and centralized data to boost efficiency—while fitting right into your existing workflow.'],
+            ['company_slogan', 'Bringing good things to you'],
+
+            ['banner_home_1', 'bg-contact-1.jpg'],
+            ['banner_home_2', 'bg-contact-1.jpg'],
+            ['banner_store_1', 'bg-contact-1.jpg'],
+            ['banner_store_2', 'bg-contact-1.jpg'],
+            ['banner_post_1', 'bg-contact-1.jpg'],
+            ['banner_post_2', 'bg-contact-1.jpg'],
+            ['banner_us_1', 'bg-contact-1.jpg'],
+            ['banner_us_2', 'bg-contact-1.jpg'],
+            ['banner_contact', 'bg-contact-1.jpg'],
         ];
 
         foreach ($settings as $key => $setting) {
@@ -60,7 +72,7 @@ class SettingsSeeder extends Seeder
                 'value' => $setting[1],
             ]);
         }
-        
+
         // 'name',
         // 'description',
         // 'user_id',

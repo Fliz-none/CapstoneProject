@@ -2,32 +2,29 @@
 @section('title')
     {{ $pageName }}
 @endsection
+@php
+    $settings = cache()->get('settings');
+@endphp
 @section('content')
     <div class="master-wrapper">
         <div class="container-fluid px-0">
             <div class="home-banner-wrapper">
                 <div class="swiper">
+                    <div class="swiper">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <div class="home-banner-slide">
-                                <img class="img-fluid" src="{{ asset('images/banner/banner-hero.jpg') }}" alt="Trang chủ" loading="lazy">
-                            </div>
-                            <div class="text-box-banner top text-center">
-                                <h2> Dịch vụ TruongDung Pet cung cấp </h2>
-                                <p> TruongDung Pet đặt tình yêu và sự chân thành đến với sức khỏe của Pet cưng của bạn. </p>
+                                <img class="img-fluid object-fit-contain" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/'. $settings['banner_us_1']) }}" alt="Trang chủ" loading="lazy">
                             </div>
                         </div>
                         <div class="swiper-slide">
                             <div class="home-banner-slide">
-                                <img class="img-fluid" src="{{ asset('images/banner/spa-banner.jpg') }}" alt="Trang chủ" loading="lazy">
-                            </div>
-                            <div class="text-box-banner text-center">
-                                <h3>TruongDung Pet - Dịch Vụ Thú Y Cần Thơ</h3>
-                                <p>Chuyên: Khám & Điều trị bệnh, Spa, Cắt tỉa lông, Nhuộm, Pet hotel.
-                                </p>
+                                <img class="img-fluid object-fit-contain" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/'. $settings['banner_us_2']) }}" alt="Trang chủ" loading="lazy">
                             </div>
                         </div>
                     </div>
+                    <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+                </div>
                     <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
                 </div>
                 <div class="swiper-pagination"></div>
@@ -40,7 +37,7 @@
                         <h2 class="text-dark fw-semibold fs-1">Về TruongDung Pet</h2>
                         <div class="img my-4 img-style">
                             <div class="img-inner">
-                                <img class="img-fluid" src="{{ asset('images/img-about-2.jpg') }}" alt="ve-truongdungpet" loading="lazy">
+                                <img class="img-fluid" src="{{ asset('images/img-about-2.jpg') }}" alt="about-us" loading="lazy">
                             </div>
                         </div>
                     </div>
@@ -56,7 +53,7 @@
                         </div>
                         <div class="img mb-4 img-style">
                             <div class="img-inner">
-                                <img class="" src="{{ asset('images/img-about-1.jpg') }}" alt="ve-truongdungpet" loading="lazy">
+                                <img class="" src="{{ asset('images/img-about-1.jpg') }}" alt="about-us" loading="lazy">
                             </div>
                         </div>
 
@@ -91,7 +88,7 @@
                     <div class="col-12 col-md-7 col-lg-6 px-4 order-md-1">
                         <div class="img mb-4 img-style">
                             <div class="img-inner">
-                                <img class="" src="{{ asset('images/img-about-3.jpg') }}" alt="ve-truongdungpet" loading="lazy">
+                                <img class="" src="{{ asset('images/img-about-3.jpg') }}" alt="about-us" loading="lazy">
                             </div>
                         </div>
                     </div>
@@ -117,7 +114,7 @@
                     <div class="col-12 col-lg-7">
                         <div class="img img-style">
                             <div class="img-inner">
-                                <img class="" src="{{ asset('images/img-about-4.jpg') }}" alt="ve-truongdungpet" loading="lazy">
+                                <img class="" src="{{ asset('images/img-about-4.jpg') }}" alt="about-us" loading="lazy">
                             </div>
                         </div>
                     </div>

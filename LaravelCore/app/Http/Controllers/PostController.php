@@ -46,7 +46,7 @@ class PostController extends Controller
                 case 'khach-san-thu-cung':
                     $pageName = 'Khách sạn thú cưng';
                     return view('web.posts.khach-san-thu-cung', compact('pageName', 'products'));
-                case 've-truongdung-pet':
+                case 'about-us':
                     $pageName = 'Về TRUONGDUNG PET';
                     return view('web.posts.ve-truongdung-pet', compact('pageName', 'products'));
                 case 'posts':
@@ -55,7 +55,7 @@ class PostController extends Controller
                 default:
                     abort(404, 'Category not found');
             }
-        } 
+        }
         // else {
         //     $pageName = 'Bài viết';
         //     return view('web.posts', compact('pageName'));

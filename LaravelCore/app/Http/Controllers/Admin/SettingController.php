@@ -49,7 +49,7 @@ class SettingController extends Controller
     public function updateSetting($key, $value)
     {
         $settings = cache()->get('settings');
-        if (array_key_exists($key, $settings->toArray())) {
+        if ($settings && array_key_exists($key, $settings->toArray())) {
             if ($value != $settings[$key]) {
                 Setting::where('key', $key)->update([
                     'value' => $value,
@@ -58,7 +58,6 @@ class SettingController extends Controller
         } else {
             Setting::create(['key' => $key, 'value' => $value]);
         }
-        cache()->forget('settings');
     }
 
     public function updateScore(Request $request) {
@@ -135,6 +134,57 @@ class SettingController extends Controller
         }
         return redirect()->back()->with('response', $response);
     }
+
+    public function updateBanner(Request $request)
+    {
+        try {
+            $this->updateSetting('banner_home_1', $request->banner_home_1);
+            $this->updateSetting('banner_home_2', $request->banner_home_2);
+            $this->updateSetting('banner_store_1', $request->banner_store_1);
+            $this->updateSetting('banner_store_2', $request->banner_store_2);
+            $this->updateSetting('banner_post_1', $request->banner_post_1);
+            $this->updateSetting('banner_post_2', $request->banner_post_2);
+            $this->updateSetting('banner_us_1', $request->banner_us_1);
+            $this->updateSetting('banner_us_2', $request->banner_us_2);
+            $this->updateSetting('banner_contact', $request->banner_contact);
+            cache()->forget('settings');
+
+            $response = [
+                'status' => 'success',
+                'msg' => __('messages.images.image') . ' ' . __('messages.updated')
+            ];
+        } catch (\Exception $e) {
+            log_exception($e);
+            $response = [
+                'status' => 'error',
+                'msg' => __('messages.msg')
+            ];
+        }
+        return redirect()->back()->with('response', $response);
+    }
+
+    public function updateIntro(Request $request)
+    {
+        try {
+            $this->updateSetting('company_slogan', $request->company_slogan);
+            $this->updateSetting('company_introduce', $request->company_introduce);
+            $this->updateSetting('company_description', $request->company_description);
+            cache()->forget('settings');
+
+            $response = [
+                'status' => 'success',
+                'msg' => __('messages.images.image') . ' ' . __('messages.updated')
+            ];
+        } catch (\Exception $e) {
+            log_exception($e);
+            $response = [
+                'status' => 'error',
+                'msg' => __('messages.msg')
+            ];
+        }
+        return redirect()->back()->with('response', $response);
+    }
+
     public static function setEnv(array $values)
     {
         try {
