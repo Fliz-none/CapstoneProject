@@ -63,10 +63,6 @@
                             @include('admin.includes.setting_shop')
                         @break
 
-                        @case(Request::path() === 'quantri/setting/website')
-                            @include('admin.includes.setting_website')
-                        @break
-
                         @case(Request::path() === 'quantri/setting/work')
                             @include('admin.includes.setting_work')
                         @break

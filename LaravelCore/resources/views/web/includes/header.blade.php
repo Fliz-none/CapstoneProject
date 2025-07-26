@@ -16,6 +16,10 @@
             </div>
         </div>
     </div>
+    {{-- Large screen --}}
+    @php
+        $company_name = $settings['company_name'] ?? 'SM Solution';
+    @endphp
     <div class="header-content">
         <div class="container">
             <div class="header-content--inner">
@@ -37,26 +41,16 @@
                                 Bài viết
                             </a>
                         </li>
-                        <li class="header-list-item">
-                            <a class="header-item-link {{ $pageName == __('Tất cả sản phẩm') ? 'active' : '' }}" href="{{ route('product') }}" title="Sản phẩm">
-                                Sản phẩm
+                        <li class="header-list-item has-sub">
+                            <a class="header-item-link {{ $pageName == __('Liên hệ') ? 'active' : '' }}" href="{{ route('contact') }}" title="Liên hệ">
+                                Liên hệ
                             </a>
                         </li>
                     </ul>
                     <ul class="header-list">
                         <li class="header-list-item has-sub">
-                            <a class="header-item-link {{ $pageName == __('Về TRUONGDUNG PET') ? 'active' : '' }}" href="{{ route('post', ['sub' => 've-truongdung-pet']) }}" title="Về TruongDungPet">
-                                Về TruongDungPet
-                            </a>
-                        </li>
-                        <li class="header-list-item has-sub">
-                            <a class="header-item-link {{ $pageName == __('Chăm sóc boss') ? 'active' : '' }}" href="{{ route('post', ['sub' => 'posts', 'category' => 'cham-soc-boss']) }}" title="Chăm sóc boss">
-                                Chăm sóc boss
-                            </a>
-                        </li>
-                        <li class="header-list-item has-sub">
-                            <a class="header-item-link {{ $pageName == __('Liên hệ') ? 'active' : '' }}" href="{{ route('contact') }}" title="Liên hệ">
-                                Liên hệ
+                            <a class="header-item-link {{ $pageName == 'Về ' . $company_name ? 'active' : '' }}" href="{{ route('about-us') }}" title="Về {{ $company_name }}">
+                                Về {{ $company_name }}
                             </a>
                         </li>
                     </ul>
@@ -65,7 +59,7 @@
                     <div class="header-login circle-btn home-btn mini-cart-icon">
                         <a data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
                             <img class="img-fluid" src="{{ asset('images/cart3.svg') }}" alt="">
-                            <span class="mini-cart-count">{{ Auth::check() && Auth::user()->cart ? Auth::user()->cart->count : '0'  }}</span>
+                            <span class="mini-cart-count">{{ Auth::check() && Auth::user()->cart ? Auth::user()->cart->count : '0' }}</span>
                         </a>
                     </div>
                 </div>
@@ -139,27 +133,6 @@
                             </a>
                         </div>
                     </li>
-                    <li class="mb-header-list-item ">
-                        <div class="list-item-head">
-                            <a class="header-item-link {{ $pageName == __('Tất cả sản phẩm') ? 'active' : '' }}" href="{{ route('product') }}" title="Sản phẩm">
-                                Sản phẩm
-                            </a>
-                        </div>
-                    </li>
-                    <li class="mb-header-list-item">
-                        <div class="list-item-head">
-                            <a class="header-item-link {{ $pageName == __('Về TRUONGDUNG PET') ? 'active' : '' }}" href="{{ route('post', ['sub' => 've-truongdung-pet']) }}" title="Về TruongDungPet">
-                                Về TruongDungPet
-                            </a>
-                        </div>
-                    </li>
-                    <li class="mb-header-list-item">
-                        <div class="list-item-head">
-                            <a class="header-item-link {{ $pageName == __('Chăm sóc boss') ? 'active' : '' }}" href="{{ route('post', ['sub' => 'posts', 'category' => 'cham-soc-boss']) }}" title="Chăm sóc boss">
-                                Chăm sóc boss
-                            </a>
-                        </div>
-                    </li>
                     <li class="mb-header-list-item">
                         <div class="list-item-head">
                             <a class="header-item-link {{ $pageName == __('Liên hệ') ? 'active' : '' }}" href="{{ route('contact') }}" title="Liên hệ">
@@ -167,9 +140,16 @@
                             </a>
                         </div>
                     </li>
+                    <li class="mb-header-list-item">
+                        <div class="list-item-head">
+                            <a class="header-item-link {{ $pageName == 'Về ' . $company_name ? 'active' : '' }}" href="{{ route('post', ['sub' => 'about-us']) }}" title="Về {{ $company_name }}">
+                                Về {{ $company_name }}
+                            </a>
+                        </div>
+                    </li>
                 </ul>
             </div>
-            
+
             <div class="header-login circle-btn home-btn">
                 @guest
                     @if (Route::has('login'))

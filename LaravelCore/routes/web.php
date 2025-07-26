@@ -282,12 +282,11 @@ Route::group(['prefix' => 'quantri'], function () {
         Route::post('social', [SettingController::class, 'updateSocial'])->name('admin.setting.social');
         Route::post('shop', [SettingController::class, 'updateShop'])->name('admin.setting.shop');
         Route::post('expense', [SettingController::class, 'updateExpense'])->name('admin.setting.expense');
-        Route::post('clinic', [SettingController::class, 'updateClinic'])->name('admin.setting.clinic');
-        Route::post('website', [SettingController::class, 'updateWebsite'])->name('admin.setting.website');
-        Route::post('work', [SettingController::class, 'updatework'])->name('admin.setting.work');
-        Route::post('zalo', [SettingController::class, 'updateZalo'])->name('admin.setting.zalo');
+        Route::post('work', [SettingController::class, 'updateWork'])->name('admin.setting.work');
         Route::post('print', [SettingController::class, 'updatePrint'])->name('admin.setting.print');
         Route::post('score', [SettingController::class, 'updateScore'])->name('admin.setting.score');
+
+        Route::post('website', [SettingController::class, 'updateWebsite'])->name('admin.setting.website');
 
     });
 
@@ -333,6 +332,8 @@ Route::get('tai-khoan/thiet-lap', [ProfileController::class, 'updatePassword'])-
 Route::get('tai-khoan/doi-mat-khau', [ProfileController::class, 'updateSettings'])->name('profile.update.settings');
 Route::get('tai-khoan', [ProfileController::class, 'profile'])->name('profile');
 Route::get('don-hang', [ProfileController::class, 'orders'])->name('orders');
+
+Route::get('about-us', [function (){ return view('web.about-us'); }])->name('about-us');
 Route::get('shop', [ShopController::class, 'index'])->name('shop');
 Route::get('product/{catalogue?}/{slug?}', [WebProductController::class, 'index'])->name('product');
 Route::post('/change-language', [LanguageController::class, 'changeLanguage'])

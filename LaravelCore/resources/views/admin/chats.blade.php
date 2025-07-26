@@ -141,11 +141,11 @@
                 class="text-decoration-none text-truncate border p-1 d-inline-block"
                 style="max-width: 150px;" title="${attachment.file_name}">
                 <i class="bi bi-file-earmark-fill"></i> ${attachment.file_name}</a>`;
+            console.log(attachment);
+            
         }
 
         function renderMessage(message, type = 'receive') {
-            console.log('renderMessage', message);
-
             const isSender = type === 'broadcast';
             const align = isSender ? 'end' : 'start';
             const bg = isSender ? 'bg-chat-primary' : 'bg-chat-secondary';
@@ -353,7 +353,12 @@
                         const html = config.auth_id == data.message.sender_id ?
                             renderMessage(data.message, 'broadcast') :
                             renderMessage(data.message, 'receive');
-
+                        if(config.auth_id != data.message.sender_id){
+                            new Notification('You have a new message', {
+                                body: message.content,
+                                icon: '/icon.png'
+                            });
+                        }
                         $('.messages').append(html);
                         $('#preview-attachments').empty();
                         $('#attachments').val('');

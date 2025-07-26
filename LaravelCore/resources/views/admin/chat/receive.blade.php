@@ -41,7 +41,7 @@
         }
     @endphp
 
-    <img src="{{ $message->sender->avatarUrl }}" alt="avatar" width="50" class="{{ $avatarClass }}"
+    <img src="{{ $message->sender->avatarUrl }}" alt="avatar" width="50" height="50" class="{{ $avatarClass }}"
         @if ($canUpdate) data-id="{{ $message->sender_id }}" @endif>
     <div class="" style="max-width: 50%; width: fit-content;">
         <div class="card mb-0 cursor-pointer">

@@ -27,7 +27,7 @@ class ChatController extends Controller
             switch ($request->key) {
                 case 'messages':
                     $offset = $request->input('offset', 0);
-                    $messages = Message::with('sender')->whereHas('conversation', function ($q) {
+                    $messages = Message::with(['sender', 'attachments'])->whereHas('conversation', function ($q) {
                         $q->where('customer_id', $this->user->id);
                     })
                         ->orderBy('created_at', 'desc')
@@ -56,6 +56,7 @@ class ChatController extends Controller
 
     public function broadcast(Request $request)
     {
+        dd($request->all());
         DB::beginTransaction();
         try {
             $request->validate([

@@ -47,6 +47,6 @@
             <i class="bi bi-clock"></i> {{ $message->created_at->diffForHumans() }}
         </small>
     </div>
-    <img src="{{ $message->sender->avatarUrl }}" alt="avatar" width="50" class="{{ $avatarClass }}"
+    <img src="{{ $message->sender->avatarUrl }}" alt="avatar" width="50" height="50" class="{{ $avatarClass }}"
         @if ($canUpdate) data-id="{{ $message->sender_id }}" @endif>
 </li>

@@ -9,47 +9,47 @@
             <div class="row justify-content-between align-items-stretch">
                 <div class="col-12 col-md-4 col-lg mb-3">
                     <h6 class="text-secondary">{{ __('messages.setting.website_icon') }}</h6>
-                    <label class="form-label select-image" for="favicon" style="height: 19rem !important"> <img
-                            class="img-fluid rounded-4 object-fit-cover" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/favicon_key.png') }}';">
+                    <label class="form-label select-image" for="favicon" style="height: 19rem !important">
+                        <img class="img-fluid rounded-4 object-fit-cover" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/favicon_key.png') }}';">
                     </label>
                     <input class="hidden-image" id="favicon" name="favicon" type="hidden" value="{{ $settings['favicon'] ?? old('favicon') }}">
-                    <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{__('messages.delete')}}</button>
+                    <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{ __('messages.delete') }}</button>
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg mb-3">
                     <h6 class="text-secondary">{{ __('messages.setting.color') }}</h6>
-                    <label class="form-label select-image" for="logo_horizon" style="height: 19rem !important"> <img
-                            class="img-fluid rounded-4 object-fit-cover" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/logo_horizon_key.png') }}';">
+                    <label class="form-label select-image" for="logo_horizon" style="height: 19rem !important">
+                        <img class="img-fluid rounded-4 object-fit-cover" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/logo_horizon_key.png') }}';">
                     </label>
                     <input class="hidden-image" id="logo_horizon" name="logo_horizon" type="hidden" value="{{ $settings['logo_horizon'] ?? old('logo_horizon') }}">
-                    <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{__('messages.delete')}}</button>
+                    <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{ __('messages.delete') }}</button>
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg mb-3">
                     <h6 class="text-secondary">{{ __('messages.setting.square') }}</h6>
-                    <label class="form-label select-image" for="logo_square" style="height: 19rem !important"> <img
-                            class="img-fluid rounded-4 object-fit-cover" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/logo_square.png') }}';">
+                    <label class="form-label select-image" for="logo_square" style="height: 19rem !important">
+                        <img class="img-fluid rounded-4 object-fit-cover" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/logo_square.png') }}';">
                     </label>
                     <input class="hidden-image" id="logo_square" name="logo_square" type="hidden" value="{{ $settings['logo_square'] ?? old('logo_square') }}">
-                    <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{__('messages.delete')}}</button>
+                    <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{ __('messages.delete') }}</button>
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg mb-3">
                     <h6 class="text-secondary">{{ __('messages.setting.black_and_white') }}</h6>
-                    <label class="form-label select-image" for="logo_horizon_bw" style="height: 19rem !important"> <img
-                            class="img-fluid rounded-4 object-fit-cover" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/logo_horizon_bw_key.png') }}';">
+                    <label class="form-label select-image" for="logo_horizon_bw" style="height: 19rem !important">
+                        <img class="img-fluid rounded-4 object-fit-cover" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/logo_horizon_bw_key.png') }}';">
                     </label>
                     <input class="hidden-image" id="logo_horizon_bw" name="logo_horizon_bw" type="hidden" value="{{ $settings['logo_horizon_bw'] ?? old('logo_square') }}">
-                    <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{__('messages.delete')}}</button>
+                    <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{ __('messages.delete') }}</button>
                     </div>
                 </div>
                 <div class="col-12 col-md-4 col-lg mb-3">
                     <h6 class="text-secondary">{{ __('messages.setting.black_and_white_square') }}</h6>
-                    <label class="form-label select-image" for="logo_square_bw" style="height: 19rem !important"> <img
-                            class="img-fluid rounded-4 object-fit-cover" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/logo_square_bw_key.png') }}';">
+                    <label class="form-label select-image" for="logo_square_bw" style="height: 19rem !important">
+                        <img class="img-fluid rounded-4 object-fit-cover" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/logo_square_bw_key.png') }}';">
                     </label>
                     <input class="hidden-image" id="logo_square_bw" name="logo_square_bw" type="hidden" value="{{ $settings['logo_square_bw'] ?? old('logo_square') }}">
-                    <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{__('messages.delete')}}</button>
+                    <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{ __('messages.delete') }}</button>
                     </div>
                 </div>
             </div>
@@ -121,8 +121,7 @@
                                 <small class="form-text text-muted" id="bank_account-help-{{ $i }}">{{ __('messages.setting.placeholder') }} </small>
                             </label>
                             <div class="col-sm-8">
-                                <input class="form-control @error('bank_accounts.' . $i) is-invalid @enderror" id="bank_account-{{ $i }}" name="bank_accounts[{{ $i }}]" type="text"
-                                    value="{{ optional($acc)->bank_account }}">
+                                <input class="form-control @error('bank_accounts.' . $i) is-invalid @enderror" id="bank_account-{{ $i }}" name="bank_accounts[{{ $i }}]" type="text" value="{{ optional($acc)->bank_account }}">
                                 @error('bank_accounts.' . $i)
                                     <span class="invalid-feedback d-block" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -136,8 +135,7 @@
                                 <small class="form-text text-muted" id="bank_number-help-{{ $i }}">{{ __('messages.setting.placeholder') }} </small>
                             </label>
                             <div class="col-sm-8">
-                                <input class="form-control @error('bank_numbers.' . $i) is-invalid @enderror" id="bank_number-{{ $i }}" name="bank_numbers[{{ $i }}]" type="text"
-                                    value="{{ optional($acc)->bank_number }}">
+                                <input class="form-control @error('bank_numbers.' . $i) is-invalid @enderror" id="bank_number-{{ $i }}" name="bank_numbers[{{ $i }}]" type="text" value="{{ optional($acc)->bank_number }}">
                                 @error('bank_numbers.' . $i)
                                     <span class="invalid-feedback d-block" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -203,7 +201,7 @@
                 <div class="mb-3 row">
                     <label class="col-sm-4 col-form-label" for="mail_password">{{ __('messages.setting.password') }}<br />
                         <small class="form-text text-muted" id="mail_password-help">
-                         {{ __('messages.setting.password_placeholder') }}
+                            {{ __('messages.setting.password_placeholder') }}
                         </small>
                     </label>
                     <div class="col-sm-8">
@@ -231,7 +229,7 @@
                 <div class="mb-3 row">
                     <label class="col-sm-4 col-form-label" for="mail_driver">{{ __('messages.setting.mail_sending_protocol') }}<br />
                         <small class="form-text text-muted" id="mail_driver-help">
-                           {{ __('messages.setting.mail_sending_protocol_placeholder') }}
+                            {{ __('messages.setting.mail_sending_protocol_placeholder') }}
                         </small>
                     </label>
                     <div class="col-sm-8">
@@ -245,7 +243,7 @@
                 <div class="mb-3 row">
                     <label class="col-sm-4 col-form-label" for="mail_port">{{ __('messages.setting.port') }}<br />
                         <small class="form-text text-muted" id="mail_port-help">
-                            {{{ __('messages.setting.port_placeholder') }}}
+                            {{ __('messages.setting.port_placeholder') }}
                         </small>
                     </label>
                     <div class="col-sm-8">
@@ -276,8 +274,7 @@
                         </small>
                     </label>
                     <div class="col-sm-8">
-                        <input class="form-control @error('expired_notification_frequency') is-invalid @enderror" id="expired_notification_frequency-preview" type="text"
-                            value="{{ isset($settings['expired_notification_frequency']) ? 'Every ' . $settings['expired_notification_frequency'] . ' days' : '' }}">
+                        <input class="form-control @error('expired_notification_frequency') is-invalid @enderror" id="expired_notification_frequency-preview" type="text" value="{{ isset($settings['expired_notification_frequency']) ? 'Every ' . $settings['expired_notification_frequency'] . ' days' : '' }}">
                         <input name="expired_notification_frequency" type="hidden" {{ isset($settings['expired_notification_frequency']) ? $settings['expired_notification_frequency'] : '' }}>
                         @error('expired_notification_frequency')
                             <span class="invalid-feedback d-block" role="alert"> <strong>{{ $message }}</strong>
@@ -300,7 +297,7 @@
             <div class="mb-3 row">
                 <label class="col-sm-4 col-form-label" for="social_facebook">Facebook<br />
                     <small class="form-text text-muted" id="social_facebook-help">
-                       {{ __('messages.setting.facebook') }}
+                        {{ __('messages.setting.facebook') }}
                     </small>
                 </label>
                 <div class="col-sm-8">

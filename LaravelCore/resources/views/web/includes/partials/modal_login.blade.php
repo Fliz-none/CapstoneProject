@@ -40,7 +40,7 @@
                     </div>
                     <div class="row ">
                         <div class="col-12 mb-3">
-                            <button class="btn btn-warning btn-login" type="button">
+                            <button class="btn btn-warning btn-login" type="submit">
                                 <span class="">Đăng nhập</span>
                             </button>
                             <a class="ms-2" href="{{ route('forgot') }}">Quên mật khẩu</a>

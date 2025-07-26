@@ -163,7 +163,9 @@
             </header>
             <ul class="chatbox">
             </ul>
-            <div class="chat-input">
+            <div class="chat-input d-flex">
+                <input type="file" name="attachments[]" id="chatAttachments" class="d-none" multiple accept="image/*,video/*,audio/*,application/*,text/*,doc">
+                <p class="btn btn-select-attachments fw-bold my-auto" onclick="document.querySelector('#chatAttachments').click()" style="color: rgb(66, 91, 237)"><i class="bi bi-paperclip"></i></p>
                 <textarea name="message" placeholder="Enter a message..." spellcheck="false" required></textarea>
                 <span id="send-btn" class="material-symbols-rounded"><i class="bi bi-send"></i></span>
             </div>

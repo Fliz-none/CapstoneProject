@@ -153,7 +153,7 @@ class Product extends Model
         });
         
         if ($prices->isEmpty()) {
-            return '0 ' . $currency;
+            return '? ' . $currency;
         }
 
         $min = $prices->min();
