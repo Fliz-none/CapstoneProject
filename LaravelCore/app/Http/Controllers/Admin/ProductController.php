@@ -199,7 +199,7 @@ class ProductController extends Controller
                     ->editColumn('name', function ($obj) use ($can_update_product) {
                         if ($can_update_product) {
                             $color = $obj->deleted_at ? 'danger' : 'success';
-                            return '<a href="' . route('admin.product', ['key' => $obj->id]) . '" class="btn btn-link text-' . $color . ' text-decoration-none btn-update-product fw-bold text-start" data-id="' . $obj->id . '">' . $obj->name . '</a>' . ($obj->sku ? '<br/><span class="px-3">' . $obj->sku . '</span>' : '');
+                            return '<a href="' . route('admin.product', ['key' => $obj->id]) . '" class="btn btn-link text-' . $color . ' text-decoration-none btn-update-product fw-bold text-start" data-id="' . $obj->id . '">' . $obj->name . '</a>';
                         }
                         return '<span class="fw-bold">' . $obj->name . '</span>';
                     })
