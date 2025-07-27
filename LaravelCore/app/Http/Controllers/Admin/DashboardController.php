@@ -31,6 +31,11 @@ class DashboardController extends Controller
             $this->user = Auth::user();
         }
         $this->middleware(['admin', 'auth']);
+
+        $this->middleware(function ($request, $next) {
+            Controller::init();
+            return $next($request);
+        });
     }
 
     /**

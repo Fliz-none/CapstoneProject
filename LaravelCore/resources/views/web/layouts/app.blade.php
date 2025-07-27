@@ -36,6 +36,7 @@
         @include('web.includes.partials.modal_login')
         @include('web.includes.partials.modal_register')
         @include('web.includes.partials.modal_cart')
+        @include('web.includes.partials.modal_profile')
         <!-- end modal  -->
         <!-- footer -->
         @include('web.includes.footer')

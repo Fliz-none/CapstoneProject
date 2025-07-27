@@ -330,6 +330,7 @@ Route::get('local', [HomeController::class, 'local'])->name('local');
 Route::get('tim-kiem/{q?}', [HomeController::class, 'home'])->name('search');
 Route::get('lien-he', [HomeController::class, 'contact'])->name('contact');
 Route::get('tai-khoan', [ProfileController::class, 'profile'])->name('profile');
+Route::post('tai-khoan', [ProfileController::class, 'change_infor'])->name('profile.change_infor');
 Route::get('tai-khoan/don-hang', [ProfileController::class, 'orders'])->name('profile.orders');
 Route::get('tai-khoan/thiet-lap', [ProfileController::class, 'updatePassword'])->name('profile.update.password');
 Route::get('tai-khoan/doi-mat-khau', [ProfileController::class, 'updateSettings'])->name('profile.update.settings');

@@ -22,7 +22,10 @@ class SelfController extends Controller
         }
         $this->middleware(['admin', 'auth']);
 
-
+        $this->middleware(function ($request, $next) {
+            Controller::init();
+            return $next($request);
+        });
     }
 
     /**

@@ -33,6 +33,11 @@ class OrderController extends Controller
         }
         $this->middleware('auth');
         // $this->middleware(['verified','auth']);
+
+        $this->middleware(function ($request, $next) {
+            Controller::init();
+            return $next($request);
+        });
     }
 
     /**
