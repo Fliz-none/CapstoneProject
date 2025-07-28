@@ -81,12 +81,11 @@ class ChatController extends Controller
         // Validate message + files
         $request->validate([
             'conversation_id' => 'required|numeric',
-            'message' => 'required|string|max:192',
+            'message' => 'string|max:192',
             'attachments' => 'nullable|array|max:5', // Tối đa 5 files
             'attachments.*' => 'file|max:10240',     // Mỗi file ≤ 10MB
         ], [
             'conversation_id.required' => __('messages.chat.conversation_id.required'),
-            'message.required' => __('messages.chat.message.required'),
             'message.string' => __('messages.chat.message.string'),
             'message.max' => __('messages.chat.message.max'),
             'attachments.max' => __('messages.chat.attachments.max'),
@@ -107,6 +106,7 @@ class ChatController extends Controller
             // Tìm hoặc tạo cuộc trò chuyện
             $conversation = Conversation::firstOrCreate([
                 'id' => $conversationId,
+                'created_by' => Auth::id(),
             ]);
 
             //Authorization
@@ -156,6 +156,36 @@ class ChatController extends Controller
             }
         } catch (\Exception $e) {
             log_exception($e);
+        }
+    }
+
+    public function create_conversation(Request $request)
+    {
+        $request->validate([
+            'customer_id' => 'exists:users,id',
+            'name' => 'string|max:255',
+            'selected_ids' => 'required|array',
+        ]);
+        DB::beginTransaction();
+        try {
+            $conversation = Conversation::create([
+                'customer_id' => $request->customer_id,
+                'name' => $request->name,
+                'created_by' => $this->user->id
+            ]);
+            $conversation->users()->attach($request->selected_ids);
+            //add thêm auth()->id
+            $conversation->users()->attach($this->user->id);
+            DB::commit();
+            return response()->json([
+                'status' => 'success',
+                'msg' => 'Conversation created successfully',
+                'data' => $conversation
+            ]);
+        } catch (\Exception $e) {
+            log_exception($e);
+            DB::rollBack();
+            return response()->json('An error occurred, while creating the conversation!', 500);
         }
     }
 }

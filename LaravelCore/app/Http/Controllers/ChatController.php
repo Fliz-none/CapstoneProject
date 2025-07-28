@@ -56,20 +56,19 @@ class ChatController extends Controller
 
     public function broadcast(Request $request)
     {
-        dd($request->all());
         DB::beginTransaction();
         try {
             $request->validate([
-                'message' => 'required|string|max:192',
+                'message' => 'string|max:192',
             ], [
-                'message.required' => 'The message field is required.',
                 'message.string' => 'The message field must be a string.',
                 'message.max' => 'The message field must not be greater than 192 characters.',
             ]);
 
             $messageText = $request->get('message');
             $conversation = Conversation::firstOrCreate([
-                'customer_id' => Auth::id()
+                'customer_id' => Auth::id(),
+                'created_by' => Auth::id(),
             ]);
             if ($conversation->wasRecentlyCreated) {
                 $admins = User::permission(User::ACCESS_ADMIN)->pluck('id');
@@ -89,4 +88,5 @@ class ChatController extends Controller
             return response()->json('An error occurred, while sending the message!', 500);
         }
     }
+
 }

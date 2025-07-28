@@ -309,8 +309,9 @@ Route::group(['prefix' => 'quantri'], function () {
     });
 
     Route::group(['prefix' => 'chat'], function () {
-        Route::get('{key?}', [ChatController::class, 'index'])->name('admin.chat');
+        Route::get('{key?}/{action?}', [ChatController::class, 'index'])->name('admin.chat');
         Route::post('broadcast', [ChatController::class, 'broadcast'])->name('admin.chat.broadcast');
+        Route::post('create_conversation', [ChatController::class, 'create_conversation'])->name('admin.chat.create_conversation');
     });
 });
 // Route chat for client

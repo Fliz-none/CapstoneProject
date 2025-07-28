@@ -9,8 +9,7 @@
             }
         @endphp
 
-        <img src="{{ $message->sender->avatarUrl }}" alt="avatar" width="50" class="{{ $avatarClass }}"
-            @if ($canUpdate) data-id="{{ $message->sender_id }}" @endif>
+        <div class="me-3" style="width: 50px"></div>
 
         <div class="" style="max-width: 50%; width: fit-content;">
             <div class="card bg-chat-secondary mb-0 cursor-pointer d-flex align-items-center" style="border: 1px solid rgba(133, 133, 244, 0.841)">
