@@ -153,8 +153,7 @@ class OrderController extends Controller
                             }
                             return '<span class="fw-bold">' . $obj->_customer->name . '</span>';
                         } else {
-                                return '<span class="px-3">' . __('messages.unknown') . '</span>';
-
+                            return '<span class="px-3">' . __('messages.unknown') . '</span>';
                         }
                     })
                     ->filterColumn('customer', function ($query, $keyword) {
@@ -170,10 +169,14 @@ class OrderController extends Controller
                             ->orderBy('users.name', $order);
                     })
                     ->editColumn('dealer', function ($obj) use ($can_read_user) {
-                        if ($can_read_user) {
-                            return '<a class="btn btn-update-user text-primary text-start" data-id="' . $obj->dealer_id . '">' . $obj->_dealer->fullName . '</a>';
+                        if ($obj->_dealer) {
+                            if ($can_read_user) {
+                                return '<a class="btn btn-update-user text-primary text-start" data-id="' . $obj->dealer_id . '">' . $obj->_dealer->fullName . '</a>';
+                            }
+                            return '<span class="fw-bold">' . $obj->_dealer->name . '</span>';
+                        } else {
+                            return '<span class="px-3">' . __('messages.unknown') . '</span>';
                         }
-                        return '<span class="fw-bold">' . $obj->_dealer->name . '</span>';
                     })
                     ->filterColumn('dealer', function ($query, $keyword) {
                         $query->whereHas('dealer', function ($query) use ($keyword) {
@@ -312,50 +315,50 @@ class OrderController extends Controller
         ];
         $messages = [
             // Order
-            'customer_id.numeric' => __('messages.order_controller.customer').': ' . Controller::$DATA_INVALID,
-            'discount.numeric' =>  __('messages.order_controller.discount').': ' . Controller::$DATA_INVALID,
-            'note.string' =>  __('messages.order_controller.order_note').': ' . Controller::$DATA_INVALID,
-            'note.max' =>  __('messages.order_controller.order_note').': ' . Controller::$MAX,
-            'id.numeric' =>  __('messages.order_controller.order').': ' . Controller::$DATA_INVALID,
+            'customer_id.numeric' => __('messages.order_controller.customer') . ': ' . Controller::$DATA_INVALID,
+            'discount.numeric' =>  __('messages.order_controller.discount') . ': ' . Controller::$DATA_INVALID,
+            'note.string' =>  __('messages.order_controller.order_note') . ': ' . Controller::$DATA_INVALID,
+            'note.max' =>  __('messages.order_controller.order_note') . ': ' . Controller::$MAX,
+            'id.numeric' =>  __('messages.order_controller.order') . ': ' . Controller::$DATA_INVALID,
 
             // Order Details
-            'unit_ids.required' => __('messages.order_controller.unit').': ' . Controller::$ONE_LEAST,
-            'unit_ids.array' => __('messages.order_controller.unit').': ' . Controller::$DATA_INVALID,
-            'prices.required' => __('messages.order_controller.product_price').': ' . Controller::$ONE_LEAST,
-            'prices.array' => __('messages.order_controller.product_price').': ' . Controller::$DATA_INVALID,
-            'discounts.required' => __('messages.order_controller.product_discount').': ' . Controller::$ONE_LEAST,
-            'discounts.array' => __('messages.order_controller.product_discount').': ' . Controller::$DATA_INVALID,
-            'quantities.required' => __('messages.order_controller.product_quantity').': ' . Controller::$ONE_LEAST,
-            'quantities.array' => __('messages.order_controller.product_quantity').': ' . Controller::$DATA_INVALID,
-            'rates.required' => __('messages.order_controller.unit_rate').': ' . Controller::$ONE_LEAST,
-            'rates.array' => __('messages.order_controller.unit_rate').': ' . Controller::$DATA_INVALID,
-            'notes.array' => __('messages.order_controller.product_note').': ' . Controller::$DATA_INVALID,
-            'ids.required' => __('messages.order_controller.order_detail').': ' . Controller::$ONE_LEAST,
-            'ids.array' => __('messages.order_controller.order_detail').': ' . Controller::$DATA_INVALID,
+            'unit_ids.required' => __('messages.order_controller.unit') . ': ' . Controller::$ONE_LEAST,
+            'unit_ids.array' => __('messages.order_controller.unit') . ': ' . Controller::$DATA_INVALID,
+            'prices.required' => __('messages.order_controller.product_price') . ': ' . Controller::$ONE_LEAST,
+            'prices.array' => __('messages.order_controller.product_price') . ': ' . Controller::$DATA_INVALID,
+            'discounts.required' => __('messages.order_controller.product_discount') . ': ' . Controller::$ONE_LEAST,
+            'discounts.array' => __('messages.order_controller.product_discount') . ': ' . Controller::$DATA_INVALID,
+            'quantities.required' => __('messages.order_controller.product_quantity') . ': ' . Controller::$ONE_LEAST,
+            'quantities.array' => __('messages.order_controller.product_quantity') . ': ' . Controller::$DATA_INVALID,
+            'rates.required' => __('messages.order_controller.unit_rate') . ': ' . Controller::$ONE_LEAST,
+            'rates.array' => __('messages.order_controller.unit_rate') . ': ' . Controller::$DATA_INVALID,
+            'notes.array' => __('messages.order_controller.product_note') . ': ' . Controller::$DATA_INVALID,
+            'ids.required' => __('messages.order_controller.order_detail') . ': ' . Controller::$ONE_LEAST,
+            'ids.array' => __('messages.order_controller.order_detail') . ': ' . Controller::$DATA_INVALID,
 
-            'unit_ids.*.required' => __('messages.order_controller.unit').': ' . Controller::$DATA_INVALID,
-            'unit_ids.*.numeric' => __('messages.order_controller.unit').': ' . Controller::$DATA_INVALID,
-            'prices.*.required' => __('messages.order_controller.product_price').': ' . Controller::$DATA_INVALID,
-            'prices.*.numeric' => __('messages.order_controller.product_price').': ' . Controller::$DATA_INVALID,
-            'discounts.*.numeric' => __('messages.order_controller.product_discount').': ' . Controller::$DATA_INVALID,
-            'quantities.*.required' => __('messages.order_controller.product_quantity').': ' . Controller::$DATA_INVALID,
-            'quantities.*.numeric' => __('messages.order_controller.product_quantity').': ' . Controller::$DATA_INVALID,
+            'unit_ids.*.required' => __('messages.order_controller.unit') . ': ' . Controller::$DATA_INVALID,
+            'unit_ids.*.numeric' => __('messages.order_controller.unit') . ': ' . Controller::$DATA_INVALID,
+            'prices.*.required' => __('messages.order_controller.product_price') . ': ' . Controller::$DATA_INVALID,
+            'prices.*.numeric' => __('messages.order_controller.product_price') . ': ' . Controller::$DATA_INVALID,
+            'discounts.*.numeric' => __('messages.order_controller.product_discount') . ': ' . Controller::$DATA_INVALID,
+            'quantities.*.required' => __('messages.order_controller.product_quantity') . ': ' . Controller::$DATA_INVALID,
+            'quantities.*.numeric' => __('messages.order_controller.product_quantity') . ': ' . Controller::$DATA_INVALID,
             'quantities.*.min' => __('messages.order.min_product'),
-            'rates.*.required' => __('messages.order_controller.unit_rate').': ' . Controller::$DATA_INVALID,
-            'rates.*.numeric' => __('messages.order_controller.unit_rate').': ' . Controller::$DATA_INVALID,
-            'notes.*.string' => __('messages.order_controller.product_note').': ' . Controller::$DATA_INVALID,
-            'ids.*.numeric' => __('messages.order_controller.order_detail').': ' . Controller::$DATA_INVALID,
+            'rates.*.required' => __('messages.order_controller.unit_rate') . ': ' . Controller::$DATA_INVALID,
+            'rates.*.numeric' => __('messages.order_controller.unit_rate') . ': ' . Controller::$DATA_INVALID,
+            'notes.*.string' => __('messages.order_controller.product_note') . ': ' . Controller::$DATA_INVALID,
+            'ids.*.numeric' => __('messages.order_controller.order_detail') . ': ' . Controller::$DATA_INVALID,
 
             // Payment
-            'transaction_payments.array' => __('messages.order_controller.payment_method').': ' . Controller::$DATA_INVALID,
-            'transaction_amounts.array' => __('messages.order_controller.payment_amount').': ' . Controller::$DATA_INVALID,
-            'transaction_refund.array' => __('messages.order_controller.status').': ' . Controller::$DATA_INVALID,
+            'transaction_payments.array' => __('messages.order_controller.payment_method') . ': ' . Controller::$DATA_INVALID,
+            'transaction_amounts.array' => __('messages.order_controller.payment_amount') . ': ' . Controller::$DATA_INVALID,
+            'transaction_refund.array' => __('messages.order_controller.status') . ': ' . Controller::$DATA_INVALID,
 
-            'transaction_payments.*.required' => __('messages.order_controller.payment_method').': ' . Controller::$NOT_EMPTY,
-            'transaction_refund.*.required' => __('messages.order_controller.status').': ' . Controller::$NOT_EMPTY,
-            'transaction_refund.*.numeric' => __('messages.order_controller.status').': ' . Controller::$DATA_INVALID,
-            'transaction_amounts.*.required' => __('messages.order_controller.payment_amount').': ' . Controller::$NOT_EMPTY,
-            'transaction_amounts.*.numeric' => __('messages.order_controller.payment_amount').': ' . Controller::$DATA_INVALID,
+            'transaction_payments.*.required' => __('messages.order_controller.payment_method') . ': ' . Controller::$NOT_EMPTY,
+            'transaction_refund.*.required' => __('messages.order_controller.status') . ': ' . Controller::$NOT_EMPTY,
+            'transaction_refund.*.numeric' => __('messages.order_controller.status') . ': ' . Controller::$DATA_INVALID,
+            'transaction_amounts.*.required' => __('messages.order_controller.payment_amount') . ': ' . Controller::$NOT_EMPTY,
+            'transaction_amounts.*.numeric' => __('messages.order_controller.payment_amount') . ': ' . Controller::$DATA_INVALID,
         ];
 
         $request->validate($rules, $messages);
@@ -474,7 +477,7 @@ class OrderController extends Controller
                         }
                         // $order->sync_scores($order->paid);
                         $setting_score = json_decode(cache()->get('settings')['setting_score']);
-                        if($setting_score->check_score == 1 && $order->customer) {
+                        if ($setting_score->check_score == 1 && $order->customer) {
                             $convert = $setting_score->money_to_score;
                             $order->customer->update([
                                 'scores' => $order->customer->scores + (intdiv($order->total, $convert->money) * $convert->score)
@@ -484,7 +487,7 @@ class OrderController extends Controller
                         $response = array(
                             'id' => $order->id,
                             'status' => 'success',
-                            'msg' => __('messages.created') .' '. $order->code
+                            'msg' => __('messages.created') . ' ' . $order->code
                         );
                         DB::commit();
                     } else {
@@ -540,54 +543,54 @@ class OrderController extends Controller
         ];
         $messages = [
             // Order
-            'customer_id.numeric' => __('messages.order_controller.customer').': ' . Controller::$DATA_INVALID,
-            'discount.numeric' => __('messages.order_controller.order_discount').': ' . Controller::$DATA_INVALID,
-            'note.string' => __('messages.order_controller.order_note').': ' . Controller::$DATA_INVALID,
-            'note.max' => __('messages.order_controller.order_note').': ' . Controller::$MAX,
-            'id.numeric' =>  __('messages.order_controller.order').': ' . Controller::$DATA_INVALID,
+            'customer_id.numeric' => __('messages.order_controller.customer') . ': ' . Controller::$DATA_INVALID,
+            'discount.numeric' => __('messages.order_controller.order_discount') . ': ' . Controller::$DATA_INVALID,
+            'note.string' => __('messages.order_controller.order_note') . ': ' . Controller::$DATA_INVALID,
+            'note.max' => __('messages.order_controller.order_note') . ': ' . Controller::$MAX,
+            'id.numeric' =>  __('messages.order_controller.order') . ': ' . Controller::$DATA_INVALID,
 
             // Order Details
-            'stock_ids.required' => __('messages.order_controller.product').': ' . Controller::$ONE_LEAST,
-            'stock_ids.array' => __('messages.order_controller.product').': ' . Controller::$DATA_INVALID,
-            'unit_ids.required' => __('messages.order_controller.unit') .': ' . Controller::$ONE_LEAST,
-            'unit_ids.array' => __('messages.order_controller.unit') .': ' . Controller::$DATA_INVALID,
-            'prices.required' => __('messages.order_controller.product_price') .': ' . Controller::$ONE_LEAST,
-            'prices.array' => __('messages.order_controller.product_price') .': ' . Controller::$DATA_INVALID,
-            'discounts.required' => __('messages.order_controller.product_discount') .': ' . Controller::$ONE_LEAST,
-            'discounts.array' => __('messages.order_controller.product_discount') .': ' . Controller::$DATA_INVALID,
-            'quantities.required' => __('messages.order_controller.product_quantity') .': ' . Controller::$ONE_LEAST,
-            'quantities.array' => __('messages.order_controller.product_quantity') .': ' . Controller::$DATA_INVALID,
-            'rates.required' => __('messages.order_controller.unit_rate') .': ' . Controller::$ONE_LEAST,
-            'rates.array' => __('messages.order_controller.unit_rate') .': ' . Controller::$DATA_INVALID,
-            'notes.array' => __('messages.order_controller.product_note').': ' . Controller::$DATA_INVALID,
-            'ids.required' => __('messages.order_controller.order_detail') .': ' . Controller::$ONE_LEAST,
-            'ids.array' => __('messages.order_controller.order_detail') .': ' . Controller::$DATA_INVALID,
+            'stock_ids.required' => __('messages.order_controller.product') . ': ' . Controller::$ONE_LEAST,
+            'stock_ids.array' => __('messages.order_controller.product') . ': ' . Controller::$DATA_INVALID,
+            'unit_ids.required' => __('messages.order_controller.unit') . ': ' . Controller::$ONE_LEAST,
+            'unit_ids.array' => __('messages.order_controller.unit') . ': ' . Controller::$DATA_INVALID,
+            'prices.required' => __('messages.order_controller.product_price') . ': ' . Controller::$ONE_LEAST,
+            'prices.array' => __('messages.order_controller.product_price') . ': ' . Controller::$DATA_INVALID,
+            'discounts.required' => __('messages.order_controller.product_discount') . ': ' . Controller::$ONE_LEAST,
+            'discounts.array' => __('messages.order_controller.product_discount') . ': ' . Controller::$DATA_INVALID,
+            'quantities.required' => __('messages.order_controller.product_quantity') . ': ' . Controller::$ONE_LEAST,
+            'quantities.array' => __('messages.order_controller.product_quantity') . ': ' . Controller::$DATA_INVALID,
+            'rates.required' => __('messages.order_controller.unit_rate') . ': ' . Controller::$ONE_LEAST,
+            'rates.array' => __('messages.order_controller.unit_rate') . ': ' . Controller::$DATA_INVALID,
+            'notes.array' => __('messages.order_controller.product_note') . ': ' . Controller::$DATA_INVALID,
+            'ids.required' => __('messages.order_controller.order_detail') . ': ' . Controller::$ONE_LEAST,
+            'ids.array' => __('messages.order_controller.order_detail') . ': ' . Controller::$DATA_INVALID,
 
-            'stock_ids.*.required' => __('messages.order_controller.product').': ' . Controller::$DATA_INVALID,
-            'stock_ids.*.numeric' => __('messages.order_controller.product').': ' . Controller::$DATA_INVALID,
-            'unit_ids.*.required' => __('messages.order_controller.unit') .': ' . Controller::$DATA_INVALID,
-            'unit_ids.*.numeric' => __('messages.order_controller.unit') .': ' . Controller::$DATA_INVALID,
-            'prices.*.required' => __('messages.order_controller.product_price') .': ' . Controller::$DATA_INVALID,
-            'prices.*.numeric' => __('messages.order_controller.product_price') .': ' . Controller::$DATA_INVALID,
-            'discounts.*.numeric' => __('messages.order_controller.product_discount') .': ' . Controller::$DATA_INVALID,
-            'quantities.*.required' => __('messages.order_controller.product_quantity') .': ' . Controller::$DATA_INVALID,
-            'quantities.*.numeric' => __('messages.order_controller.product_quantity') .': ' . Controller::$DATA_INVALID,
+            'stock_ids.*.required' => __('messages.order_controller.product') . ': ' . Controller::$DATA_INVALID,
+            'stock_ids.*.numeric' => __('messages.order_controller.product') . ': ' . Controller::$DATA_INVALID,
+            'unit_ids.*.required' => __('messages.order_controller.unit') . ': ' . Controller::$DATA_INVALID,
+            'unit_ids.*.numeric' => __('messages.order_controller.unit') . ': ' . Controller::$DATA_INVALID,
+            'prices.*.required' => __('messages.order_controller.product_price') . ': ' . Controller::$DATA_INVALID,
+            'prices.*.numeric' => __('messages.order_controller.product_price') . ': ' . Controller::$DATA_INVALID,
+            'discounts.*.numeric' => __('messages.order_controller.product_discount') . ': ' . Controller::$DATA_INVALID,
+            'quantities.*.required' => __('messages.order_controller.product_quantity') . ': ' . Controller::$DATA_INVALID,
+            'quantities.*.numeric' => __('messages.order_controller.product_quantity') . ': ' . Controller::$DATA_INVALID,
             'quantities.*.min' => __('messages.order.min_product'),
-            'rates.*.required' => __('messages.order_controller.unit_rate') .': ' . Controller::$DATA_INVALID,
-            'rates.*.numeric' => __('messages.order_controller.unit_rate') .': ' . Controller::$DATA_INVALID,
-            'notes.*.string' => __('messages.order_controller.product_note').': ' . Controller::$DATA_INVALID,
-            'ids.*.numeric' => __('messages.order_controller.order_detail') .': ' . Controller::$DATA_INVALID,
+            'rates.*.required' => __('messages.order_controller.unit_rate') . ': ' . Controller::$DATA_INVALID,
+            'rates.*.numeric' => __('messages.order_controller.unit_rate') . ': ' . Controller::$DATA_INVALID,
+            'notes.*.string' => __('messages.order_controller.product_note') . ': ' . Controller::$DATA_INVALID,
+            'ids.*.numeric' => __('messages.order_controller.order_detail') . ': ' . Controller::$DATA_INVALID,
 
             // Payment
-            'transaction_payments.array' => __('messages.order_controller.payment_method').': ' . Controller::$DATA_INVALID,
-            'transaction_amounts.array' => __('messages.order_controller.payment_amount').': ' . Controller::$DATA_INVALID,
-            'transaction_refund.array' => __('messages.order_controller.status').': ' . Controller::$DATA_INVALID,
+            'transaction_payments.array' => __('messages.order_controller.payment_method') . ': ' . Controller::$DATA_INVALID,
+            'transaction_amounts.array' => __('messages.order_controller.payment_amount') . ': ' . Controller::$DATA_INVALID,
+            'transaction_refund.array' => __('messages.order_controller.status') . ': ' . Controller::$DATA_INVALID,
 
-            'transaction_payments.*.required' => __('messages.order_controller.payment_method').': ' . Controller::$NOT_EMPTY,
-            'transaction_refund.*.required' => __('messages.order_controller.status').': ' . Controller::$NOT_EMPTY,
-            'transaction_refund.*.numeric' => __('messages.order_controller.status').': ' . Controller::$DATA_INVALID,
-            'transaction_amounts.*.required' => __('messages.order_controller.payment_amount').': ' . Controller::$NOT_EMPTY,
-            'transaction_amounts.*.numeric' => __('messages.order_controller.payment_amount').': ' . Controller::$DATA_INVALID,
+            'transaction_payments.*.required' => __('messages.order_controller.payment_method') . ': ' . Controller::$NOT_EMPTY,
+            'transaction_refund.*.required' => __('messages.order_controller.status') . ': ' . Controller::$NOT_EMPTY,
+            'transaction_refund.*.numeric' => __('messages.order_controller.status') . ': ' . Controller::$DATA_INVALID,
+            'transaction_amounts.*.required' => __('messages.order_controller.payment_amount') . ': ' . Controller::$NOT_EMPTY,
+            'transaction_amounts.*.numeric' => __('messages.order_controller.payment_amount') . ': ' . Controller::$DATA_INVALID,
         ];
 
         $request->validate($rules, $messages);
@@ -691,7 +694,7 @@ class OrderController extends Controller
                         $response = array(
                             'id' => $order->id,
                             'status' => 'success',
-                            'msg' => __('messages.updated').' '  . $order->code
+                            'msg' => __('messages.updated') . ' '  . $order->code
                         );
                         DB::commit();
                     } else {

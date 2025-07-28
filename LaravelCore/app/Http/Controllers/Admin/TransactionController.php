@@ -40,28 +40,28 @@ class TransactionController extends Controller
 
         $this->middleware(['admin', 'auth']);
         $this->middleware(function ($request, $next) {
-        // Locale đã được set xong ở đây
-        Controller::init(); // Gán các biến tĩnh ở đây
+            // Locale đã được set xong ở đây
+            Controller::init(); // Gán các biến tĩnh ở đây
 
-        self::$MESSAGES = [
-            'note.required' => Controller::$NOT_EMPTY,
-            'note.string' => Controller::$DATA_INVALID,
-            'note.min' => Controller::$MIN,
-            'note.max' => Controller::$MAX,
-            'customer_id.required_without' => __('messages.transaction.required_without'),
-            'cashier_id.required' => Controller::$NOT_EMPTY,
-            'payment.required' => Controller::$NOT_EMPTY,
-            'amount.required' => Controller::$NOT_EMPTY,
-            'status.required' => Controller::$NOT_EMPTY,
-            'customer_id.numeric' => Controller::$DATA_INVALID,
-            'cashier_id.numeric' => Controller::$DATA_INVALID,
-            'payment.numeric' => Controller::$DATA_INVALID,
-            'amount.numeric' => Controller::$DATA_INVALID,
-            'status.string' => Controller::$DATA_INVALID,
-        ];
+            self::$MESSAGES = [
+                'note.required' => Controller::$NOT_EMPTY,
+                'note.string' => Controller::$DATA_INVALID,
+                'note.min' => Controller::$MIN,
+                'note.max' => Controller::$MAX,
+                'customer_id.required_without' => __('messages.transaction.required_without'),
+                'cashier_id.required' => Controller::$NOT_EMPTY,
+                'payment.required' => Controller::$NOT_EMPTY,
+                'amount.required' => Controller::$NOT_EMPTY,
+                'status.required' => Controller::$NOT_EMPTY,
+                'customer_id.numeric' => Controller::$DATA_INVALID,
+                'cashier_id.numeric' => Controller::$DATA_INVALID,
+                'payment.numeric' => Controller::$DATA_INVALID,
+                'amount.numeric' => Controller::$DATA_INVALID,
+                'status.string' => Controller::$DATA_INVALID,
+            ];
 
-        return $next($request);
-    });
+            return $next($request);
+        });
     }
 
     /**
@@ -110,6 +110,7 @@ class TransactionController extends Controller
             if ($request->ajax()) {
                 $totalOrder = 0;
                 if ($request->has('order_id')) {
+
                     $order = Order::find($request->order_id);
                     if ($order) {
                         $totalOrder = $order->total;
@@ -191,10 +192,14 @@ class TransactionController extends Controller
                         });
                     })
                     ->addColumn('cashier', function ($obj) {
-                        if (!empty($this->user->can(User::READ_USER))) {
-                            return '<a class="btn btn-link text-decoration-none text-start btn-update-user" data-id="' . $obj->_cashier->id . '">' . $obj->_cashier->fullName . '</a>';
+                        if ($obj->_cashier) {
+                            if (!empty($this->user->can(User::READ_USER))) {
+                                return '<a class="btn btn-link text-decoration-none text-start btn-update-user" data-id="' . $obj->_cashier->id . '">' . $obj->_cashier->fullName . '</a>';
+                            } else {
+                                return $obj->_cashier->fullName;
+                            }
                         } else {
-                            return $obj->_cashier->fullName;
+                            return '';
                         }
                     })
                     ->filterColumn('cashier', function ($query, $keyword) {
@@ -203,7 +208,7 @@ class TransactionController extends Controller
                         });
                     })
                     ->addColumn('amount', function ($obj) {
-                        return number_format($obj->amount) . 'đ';
+                        return number_format($obj->amount) . 'VMD';
                     })
                     ->addColumn('cash', function ($obj) {
                         if ($obj->payment <= 1) {
@@ -351,7 +356,7 @@ class TransactionController extends Controller
 
     public function update(Request $request)
     {
-         Controller::init();
+        Controller::init();
         $request->validate(self::RULES, self::$MESSAGES);
         if (!empty($this->user->can(User::UPDATE_TRANSACTION))) {
             if ($request->has('id')) {

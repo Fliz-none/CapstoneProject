@@ -44,8 +44,8 @@ class SettingController extends Controller
             $settings = cache()->get('settings');
             if ($request->key) {
                 switch ($request->key) {
-                    case 'website':
-                        return view('admin.setting_website');
+                    case 'website_page':
+                        return view('admin.setting_website', compact('pageName', 'settings'));
                 }
             }
             $banks = Http::get('https://api.vietqr.io/v2/banks')->json();
@@ -517,7 +517,8 @@ class SettingController extends Controller
             . "@endsection\n\n"
             . $css . "\n"
             . "@section('content')\n"
-            . $bodyContent . "\n"
+            . "<div class='master-wrapper'>\n"
+            . $bodyContent . "</div>\n"
             . "@endsection";
 
         $filePath = resource_path('views/web/about-us.blade.php');

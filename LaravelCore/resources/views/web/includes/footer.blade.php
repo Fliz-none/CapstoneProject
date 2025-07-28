@@ -2,12 +2,12 @@
     $settings = cache()->get('settings');
 @endphp
 <div class="footer">
-    <div class="container" style="margin: 0 8rem !important">
+    <div class="container">
         <div class="footer-content">
             <div class="row">
                 <div class="col-lg-3 col-12 text-white">
                     <a href="{{ url('/') }}" title=" {{ $settings['company_name'] }}">
-                        <img class="img-fluid" src="{{ asset('storage/' . $settings['logo_horizon']) }}" alt="{{ $settings['company_name'] }}">
+                        <img class="img-fluid" src="{{ asset('storage/' . $settings['favicon']) }}" alt="{{ $settings['company_name'] }}">
                     </a>
                 </div>
                 <div class="col-lg-7 col-12 text-white">

@@ -19757,7 +19757,6 @@ ul {
   background-position: center !important;
   background-repeat: no-repeat !important;
   background-size: cover !important;
-  min-height: 50vw;
 }
 @media (max-width: 1500px) {
   .home-story-wrapper {

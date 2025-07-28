@@ -53,7 +53,7 @@ class CatalogueController extends Controller
      */
     public function index(Request $request)
     {
-        $objs = Catalogue::whereStatus(1)->with('_parent');
+        $objs = Catalogue::with('_parent');
         if (isset($request->key)) {
             switch ($request->key) {
                 case 'list':

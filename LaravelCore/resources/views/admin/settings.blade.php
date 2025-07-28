@@ -44,23 +44,27 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link{!! Request::path() === 'quantri/setting/shop' ? ' active" aria-current="page' : '' !!}" href="{{ route('admin.setting', ['key' => 'shop']) }}">
-                                 {{ __('messages.setting.shop_setting') }}
+                                {{ __('messages.setting.shop_setting') }}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link{!! Request::path() === 'quantri/setting/website' ? ' active" aria-current="page' : '' !!}" href="{{ route('admin.setting', ['key' => 'website']) }}">
-                                 {{ __('messages.setting.website_setting') }}
+                                {{ __('messages.setting.website_setting') }}
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link{!! Request::path() === 'quantri/setting/work' ? ' active" aria-current="page' : '' !!}" href="{{ route('admin.setting', ['key' => 'work']) }}">
-                                 {{ __('messages.setting.work_shift') }}
+                                {{ __('messages.setting.work_shift') }}
                             </a>
                         </li>
                     </ul>
                     @switch(true)
                         @case(Request::path() === 'quantri/setting/shop')
                             @include('admin.includes.setting_shop')
+                        @break
+
+                        @case(Request::path() === 'quantri/setting/website')
+                            @include('admin.includes.setting_website')
                         @break
 
                         @case(Request::path() === 'quantri/setting/work')
@@ -187,22 +191,22 @@
                 resetShiftIndexes();
             });
 
-            $('input.btn-check[name="check_score"]').on('change', function () {
-                    const form = $('#score-setting-form');
+            $('input.btn-check[name="check_score"]').on('change', function() {
+                const form = $('#score-setting-form');
 
-                    let formData = form.serializeArray();
-                    // Lấy giá trị check_score đã chọn
-                    let checkScore = form.find('input[name="check_score"]:checked').val();
-                      if (checkScore == 0) {
-                            $('#money_to_score, #score_to_money').addClass('d-none');
-                        } else {
-                            $('#money_to_score, #score_to_money').removeClass('d-none');
-                        }
+                let formData = form.serializeArray();
+                // Lấy giá trị check_score đã chọn
+                let checkScore = form.find('input[name="check_score"]:checked').val();
+                if (checkScore == 0) {
+                    $('#money_to_score, #score_to_money').addClass('d-none');
+                } else {
+                    $('#money_to_score, #score_to_money').removeClass('d-none');
+                }
 
-                });
+            });
         })
 
-        $(document).on('click', '.btn-add-expense', function () {
+        $(document).on('click', '.btn-add-expense', function() {
             let index = $('.expense-group-item').length;
             let newExpenseField = `
                 <div class="mb-3 row expense-group-item">
@@ -213,13 +217,12 @@
         });
 
 
-        $(document).on('click', '.btn-remove-expense', function () {
+        $(document).on('click', '.btn-remove-expense', function() {
             if ($('.expense-group-item').length > 1) {
                 $('.expense-group-item').last().remove();
             } else {
                 pushToastify('Please add at least one expense item.', 'danger');
             }
         });
-
     </script>
 @endpush

@@ -53,7 +53,10 @@
         @csrf
         <div class="card-header d-flex justify-content-between">
             <h3>Banner Settings</h3>
-            <button class="btn btn-primary btn-save" type="submit">{{ __('messages.save') }}</button>
+            <div>
+                <a class="btn btn-success me-3" href="{{ route('admin.setting', ['key' => 'website_page']) }}">Design About Us Page</a>
+                <button class="btn btn-primary btn-save" type="submit">{{ __('messages.save') }}</button>
+            </div>
         </div>
         <div class="card-body">
             <div class="row justify-content-between align-items-stretch">

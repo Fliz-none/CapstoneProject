@@ -212,6 +212,10 @@
                 messages: `{{ route('admin.chat', ['key' => 'messages']) }}`
             }
         },
+        address: {
+            defaultLat: 10.0451618,
+            defaultLng: 105.765374
+        },
         defaultLanguage: "{{ session()->get('locale') ?? 'en' }}",
         auth_id: @json(auth()->id()),
         canUpdateUser: {{ Auth::user()->can(\App\Models\User::UPDATE_USER) ? 'true' : 'false' }},
@@ -1237,6 +1241,17 @@
             if (branch.deleted_at != null) {
                 form.find('.btn[type=submit]:last-child').addClass('d-none')
             }
+            let addressObj = {};
+            try {
+                addressObj = JSON.parse(branch.address || '{}');
+                $('#branch-address-preview').val(addressObj.address);
+                config.address.defaultLat = addressObj.lat || config.address.defaultLat;
+                config.address.defaultLng = addressObj.lng || config.address.defaultLng;
+                console.log(addressObj);
+
+            } catch (e) {
+                console.warn('Invalid address JSON', branch.address);
+            }
             form.attr('action', `{{ route('admin.branch.update') }}`)
             form.find('.modal').modal('show').find('.modal-title').text(branch.name)
         })
@@ -1246,6 +1261,8 @@
     $('#branch-modal').on('shown.bs.modal', function() {
         if (!branchMap) {
             branchMap = initGoongMap({
+                defaultLat: config.address.defaultLat,
+                defaultLng: config.address.defaultLng,
                 containerId: 'branch-map',
                 addressInputSelector: '#branch-form input[name="address"]',
                 addressPreviewSelector: '#branch-address-preview',
@@ -1263,11 +1280,12 @@
             });
         }
     });
+
     $('#branch-modal').on('hidden.bs.modal', function() {
         if (branchMap) {
-            branchMap.remove(); // Xóa bản đồ khỏi DOM
             branchMap = null; // Cho phép tạo lại map ở lần mở tiếp theo
         }
+        $('#branch-map').empty();
         $('#branch-form input[name="address"]').val('');
         $('#branch-address-preview').val('');
     });
@@ -1511,11 +1529,22 @@
             form.find('[name=name]').val(supplier.name)
             form.find('[name=phone]').val(supplier.phone)
             form.find('[name=email]').val(supplier.email)
-            form.find('[name=address]').val(supplier.addressObject.address)
+            form.find('[name=address]').val(supplier.address)
             form.find('[name=organ]').val(supplier.organ)
             form.find('[name=note]').val(supplier.note)
             form.find(`[name='status']`).prop('checked', supplier.status)
             form.attr('action', `{{ route('admin.supplier.update') }}`)
+            let addressObj = {};
+            try {
+                addressObj = JSON.parse(supplier.address || '{}');
+                $('#supplier-address-preview').val(addressObj.address);
+                config.address.defaultLat = addressObj.lat || config.address.defaultLat;
+                config.address.defaultLng = addressObj.lng || config.address.defaultLng;
+                console.log(config.address);
+
+            } catch (e) {
+                console.warn('Invalid address JSON', supplier.address);
+            }
             form.find('.modal').modal('show')
         })
     })
@@ -1525,6 +1554,8 @@
     $('#supplier-modal').on('shown.bs.modal', function() {
         if (!supplierMap) {
             supplierMap = initGoongMap({
+                defaultLat: config.address.defaultLat,
+                defaultLng: config.address.defaultLng,
                 containerId: 'supplier-map',
                 addressInputSelector: '#supplier-form input[name="address"]',
                 addressPreviewSelector: '#supplier-address-preview',
@@ -1545,9 +1576,10 @@
 
     $('#supplier-modal').on('hidden.bs.modal', function() {
         if (supplierMap) {
-            supplierMap.remove(); // Xóa bản đồ khỏi DOM
             supplierMap = null; // Cho phép tạo lại map ở lần mở tiếp theo
         }
+
+        $('#supplier-map').empty();
         $('#supplier-form input[name="address"]').val('');
         $('#supplier-address-preview').val('');
     });

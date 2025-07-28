@@ -33,7 +33,7 @@
                             </div>
                             <div class="user-img d-flex align-items-center">
                                 <div class="avatar avatar-md">
-                                    <img src="{{ Auth::user()->avatar ? Auth::user()->avatarUrl : asset('admin/images/logo/favicon_key.png') }}">
+                                    <img src="{{ Auth::user()->avatar ? Auth::user()->avatarUrl : asset('admin/images/logo/favicon_key.png') }}" referrerpolicy="no-referrer">
                                 </div>
                             </div>
                         </div>

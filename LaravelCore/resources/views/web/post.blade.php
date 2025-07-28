@@ -2,6 +2,9 @@
 @section('title')
     {{ $pageName }}
 @endsection
+@php
+    $settings = cache()->get('settings');
+@endphp
 @section('content')
     <main>
         <div class="master-wrapper">
@@ -11,20 +14,16 @@
                         <div class="swiper-wrapper">
                             <div class="swiper-slide">
                                 <div class="home-banner-slide">
-                                    <img class="img-fluid" src="{{ asset('images/banner/banner-shop.jpg') }}" alt="Trang chủ" loading="lazy">
+                                    <img class="img-fluid" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/' . $settings['banner_post_1']) }}" alt="Trang chủ" loading="lazy">
                                 </div>
                             </div>
                             <div class="swiper-slide">
                                 <div class="home-banner-slide">
-                                    <img class="img-fluid" src="{{ asset('images/banner/spa-banner.jpg') }}" alt="Trang chủ" loading="lazy">
-                                </div>
-                                <div class="text-box-banner text-center">
-                                    <h3>TruongDung Pet - Dịch Vụ Thú Y Cần Thơ</h3>
-                                    <p>Chuyên: Khám & Điều trị bệnh, Spa, Cắt tỉa lông, Nhuộm, Pet hotel.
-                                    </p>
+                                    <img class="img-fluid" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/' . $settings['banner_post_2']) }}" alt="Trang chủ" loading="lazy">
                                 </div>
                             </div>
                         </div>
+                        <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
                     </div>
                     <div class="swiper-pagination"></div>
                 </div>
