@@ -166,8 +166,8 @@ class CatalogueController extends Controller
 
     public function sort(Request $request)
     {
-        $ids = $request->input('sort');
-        if (count($ids) == Catalogue::count()) {
+        $ids = $request->input('sort', []);
+        if ($ids && count($ids) == Catalogue::count()) {
             foreach ($ids as $index => $id) {
                 Catalogue::where('id', $id)->update(['sort' => $index + 1]);
             }

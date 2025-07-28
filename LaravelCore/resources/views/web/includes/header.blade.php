@@ -19,6 +19,10 @@
             </div> --}}
         </div>
     </div>
+    {{-- Large screen --}}
+    @php
+        $company_name = $settings['company_name'] ?? 'SM Solution';
+    @endphp
     <div class="header-content">
         <div class="container" style="width: 55vw !important">
             <div class="header-content--inner">
@@ -56,7 +60,7 @@
                     <div class="header-login circle-btn home-btn mini-cart-icon">
                         <a data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
                             <img class="img-fluid" src="{{ asset('images/cart3.svg') }}" alt="">
-                            <span class="mini-cart-count">{{ Auth::check() && Auth::user()->cart ? Auth::user()->cart->count : '0'  }}</span>
+                            <span class="mini-cart-count">{{ Auth::check() && Auth::user()->cart ? Auth::user()->cart->count : '0' }}</span>
                         </a>
                     </div>
                 </div>
@@ -146,6 +150,7 @@
                     </li>
                 </ul>
             </div>
+
 
             <div class="header-login circle-btn home-btn">
                 @guest

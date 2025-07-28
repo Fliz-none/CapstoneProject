@@ -46,6 +46,33 @@ class UserController extends Controller
         if (isset($request->key)) {
             $objs = User::whereStatus(1);
             switch ($request->key) {
+                case 'conversation':
+                    $selected = $request->input('selected', []);
+                    $result = $objs
+                        ->whereStatus(1)
+                        ->where('id', '!=', $this->user->id)
+                        ->when(!empty($selected), function ($query) use ($selected) {
+                            $query->whereNotIn('id', $selected);
+                        })
+                        ->where(function ($query) use ($request) {
+                            $query->where('name', 'LIKE', '%' . $request->q . '%')
+                                ->orWhere('phone', 'LIKE', '%' . $request->q . '%')
+                                ->orWhere('email', 'LIKE', '%' . $request->q . '%');
+                        })->take(20)->get()->map(function ($user) {
+                            $text = ($user->email ? $user->email . ' - ' : '') . ($user->phone ? $user->phone : '');
+                            $avatar = $user->avatarUrl;
+                            return '<li class="list-group-item d-flex align-items-center gap-2 border-0 cursor-pointer user-conversation-item"
+                                    data-id="' . $user->id . '"
+                                    data-name="' . $user->name . '"
+                                    data-avatar="' . $avatar . '">
+                                    <img src="' . $user->avatarUrl . '" alt="" width="40" height="40" class="rounded-circle border" style="object-fit: cover;">
+                                    <div>
+                                        <div class="fw-semibold">' . e($user->name) . '</div>
+                                        <div class="text-muted small">' . e($text) . '</div>
+                                    </div>
+                                </li>';
+                        });
+                    break;
                 case 'find':
                     $result = $objs
                         ->where(function ($query) use ($request) {

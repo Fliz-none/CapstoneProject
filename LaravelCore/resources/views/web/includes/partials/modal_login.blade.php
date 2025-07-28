@@ -44,7 +44,7 @@
                                 <span class="d-flex fw-bold"><img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Logo" style="width: 1rem; margin-right: 10px;">
                                     Google</span>
                             </a>
-                            <button class="btn btn-warning btn-login" type="button">
+                            <button class="btn btn-warning btn-login" type="submit">
                                 <span class="">Đăng nhập</span>
                             </button>
                             <a class="ms-2" href="{{ route('forgot') }}">Quên mật khẩu</a>

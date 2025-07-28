@@ -400,7 +400,7 @@ class TransactionController extends Controller
     public function remove(Request $request)
     {
         $success = [];
-        if ($this->user->can(User::DELETE_SUPPLIER)) {
+        if ($this->user->can(User::DELETE_TRANSACTION)) {
             foreach ($request->choices as $key => $id) {
                 $obj = Transaction::with('order')->find($id);
                 $obj->order->sync_scores($obj->amount * -1);

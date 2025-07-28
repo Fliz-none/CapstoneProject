@@ -1,11 +1,12 @@
 let userMessage = null;
-
-function sendChatMessageToServer(message, onSuccess, onError) {
+let attachments = [];
+function sendChatMessageToServer(message, attachments, onSuccess, onError) {
     $.ajax({
         url: config.routes.pusher.broadcast,
         method: 'POST',
         data: {
             message: message,
+            attachments: attachments,
             _token: $('meta[name="csrf-token"]').attr('content')
         },
         success: onSuccess,
@@ -16,7 +17,7 @@ function sendChatMessageToServer(message, onSuccess, onError) {
 function handleChat() {
     userMessage = $('.chat-input textarea').val().trim();
     if (!userMessage) return;
-
+    attachments = $('#chatAttachments').val() || [];
     $('.chat-input textarea').val('');
     const sendingEl = $(`
         <li class="chat outgoing temp-sending">
@@ -26,6 +27,7 @@ function handleChat() {
     $('.chatbox').append(sendingEl);
     sendChatMessageToServer(
         userMessage,
+        attachments,
         function (response) {
             sendingEl.remove();
             return;

@@ -9,7 +9,9 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use Session;
 
 class SettingController extends Controller
@@ -33,13 +35,19 @@ class SettingController extends Controller
     /**
      * Show the application setting.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return \Illuminate\Contracts\Support\Renderable|\Illuminate\Http\RedirectResponse
      */
     public function index(Request $request)
     {
         try {
             $pageName = self::NAME;
             $settings = cache()->get('settings');
+            if ($request->key) {
+                switch ($request->key) {
+                    case 'website':
+                        return view('admin.setting_website');
+                }
+            }
             $banks = Http::get('https://api.vietqr.io/v2/banks')->json();
             return view('admin.settings', compact('pageName', 'settings', 'banks'));
         } catch (\Exception $e) {
@@ -65,7 +73,8 @@ class SettingController extends Controller
         }
     }
 
-    public function updateScore(Request $request) {
+    public function updateScore(Request $request)
+    {
         try {
             $data = [
                 'check_score' => (int) $request->input('check_score', 0),
@@ -407,7 +416,7 @@ class SettingController extends Controller
             'staff_number.*.integer' => __('messages.setting_controller.staff_number__*__integer'),
             'staff_number.*.min' => __('messages.setting_controller.staff_number__*__min'),
 
-              'currency.required' => 'Please enter a currency.',
+            'currency.required' => 'Please enter a currency.',
             'hourly_salary.required' => 'Please enter the hourly salary.',
             'hourly_salary.numeric' => 'Hourly salary must be numeric.',
 
@@ -473,5 +482,58 @@ class SettingController extends Controller
         }
 
         return redirect()->back()->with('response', $response);
+    }
+
+    public function updateWebsite(Request $request)
+    {
+        $html = $request->input('html');
+        $css  = $request->input('css'); // Nếu bạn cần xử lý thêm CSS
+        // Thêm thẻ style
+        $css = '<style>' . $css . '</style>';
+        libxml_use_internal_errors(true);
+        $dom = new \DOMDocument();
+        $dom->loadHTML($html);
+
+        $xpath = new \DOMXPath($dom);
+        $nodes = $xpath->query('//div[contains(@class, "master-wrapper")]');
+
+        if ($nodes->length === 0) {
+            return response()->json([
+                'status' => 'error',
+                'msg' => 'Cấu trúc trang web không hợp lệ.'
+            ], 400);
+        }
+
+        $wrapperNode = $nodes->item(0);
+        $bodyContent = '';
+
+        foreach ($wrapperNode->childNodes as $child) {
+            $bodyContent .= $dom->saveHTML($child);
+        }
+
+        $bladeContent = "@extends('web.layouts.app')\n\n"
+            . "@section('title')\n"
+            . $request->input('title') . "\n"
+            . "@endsection\n\n"
+            . $css . "\n"
+            . "@section('content')\n"
+            . $bodyContent . "\n"
+            . "@endsection";
+
+        $filePath = resource_path('views/web/about-us.blade.php');
+
+        try {
+            File::put($filePath, $bladeContent);
+
+            return response()->json([
+                'status' => 'success',
+                'msg' => 'Đã lưu giao diện thành công!'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'msg' => 'Không thể lưu file: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

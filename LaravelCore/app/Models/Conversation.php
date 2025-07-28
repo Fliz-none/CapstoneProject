@@ -12,7 +12,9 @@ class Conversation extends Model
     use SoftDeletes;
 
     protected $fillable = [
+        'name',
         'customer_id',
+        'created_by',
         'status'
     ];
 
@@ -42,6 +44,11 @@ class Conversation extends Model
         return Message::where('conversation_id', $this->id)
             ->orderBy('created_at', 'desc')
             ->first();
+    }
+
+    public function created_user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function lastMessageAt()

@@ -7,8 +7,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="fb:app_id" content="">
-    <link type="image/x-icon" href="{{ asset('images/logo-main.svg') }}" rel="shortcut icon">
+    @php
+        if (cache()->get('settings')['favicon']) {
+            $favicon = asset(env('FILE_STORAGE', '/storage') . '/' . cache()->get('settings')['favicon']);
+        } else {
+            $favicon = asset('admin/images/logo/favicon_key.png');
+        }
+    @endphp
+    <link type="image/x-icon" href="{{ $favicon }}" rel="shortcut icon">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>{{ config('app.name') }} - @yield('title')</title>
 
@@ -28,7 +34,6 @@
 </head>
 
 <body class="home">
-
     <div id="app">
         @include('web.includes.header')
         @yield('content')
@@ -117,7 +122,36 @@
                     return '';
                 }
             }
-            return `<li class="chat ${type}">
+
+            const attachments = () => {
+                if (message.attachments) {
+                    let html = '';
+                    $.each(message.attachments, function(index, attachment) {
+                        if (attachment.mime_type.startsWith('image/')) {
+                            html += `<li class="chat ${type}">
+                                        <span class="material-symbols-outlined bg-white" style="width: 40px;"></span>
+                                        <div class="w-50 d-inline-block">
+                                            <img src="${attachment.file_url}" alt="attachment" class="rounded thumb img-fluid w-100">
+                                        </div>
+                                    </li>`;
+                        } else {
+                            //Open file with attachment file_url by browser
+                            html += `<li class="chat ${type}">
+                                        <span class="material-symbols-outlined bg-white" style="width: 40px;"></span>
+                                        <a href="${attachment.file_url}" target="_blank"
+                                        class="text-decoration-none text-truncate border p-1 d-inline-block"
+                                        style="max-width: 150px;" title="${attachment.file_name}">
+                                        <i class="bi bi-file-earmark-fill"></i> ${attachment.file_name}</a>
+                                    </li>`;
+                        }
+                    })
+                    return html;
+                } else {
+                    return '';
+                }
+            }
+            return `${attachments()}
+                    <li class="chat ${type}">
                         <span class="material-symbols-outlined bg-white" style="width: 40px;">${avatar()}</span>
                         <p class="pb-1">${message.content} <br><small class="m-1 fst-italic ${type == 'outgoing' ? 'float-end text-white' : 'text-muted'}">${moment(message.created_at).fromNow()}</small></p>
                     </li>`;
@@ -154,16 +188,22 @@
             @if (auth()->check())
                 loadMessages(true);
             @endif
-
+            
             $(document).on('click', '.btn-login', function(event) {
                 let form = $('#loginForm');
                 submitForm(form).done(function(response) {
-                    if (response.status == "success") {
-                        form.find('.modal').modal('hide');
-                    }
+                    location.reload();
                 });
             });
-
+            // Bắt sự kiện nhấn Enter trong input
+            $('#loginForm input').on('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    let form = $('#loginForm');
+                    submitForm(form).done(function(response) {
+                        location.reload();
+                    });
+                }                
+            });
             function submitLogoutForm() {
                 const form = $("#logout-form");
                 form.attr("action", "/logout");
@@ -199,6 +239,14 @@
                 if ($(this).scrollTop() === 0) {
                     loadMessages(false);
                 }
+            });
+
+            // Chọn file
+            $(document).on('change', '#chatAttachments', function() {
+                console.log(this.files);
+                console.log($(this).val());
+                
+                
             });
         });
     </script>
@@ -553,11 +601,10 @@
                     return false;
                 }
                 // Mở modal Bootstrap
-                var offcanvasCart = new bootstrap.Offcanvas(document.getElementById('offcanvasCart'));
+                var offcanvasCart = new bootstrap.Offcanvas($('#offcanvasCart'));
                 offcanvasCart.show();
-                submitForm(form).done(function(response) {
-                    console.log(response);
 
+                submitForm(form).done(function(response) {
                     form.find('[name=quantity]').val(1);
                     form.find('[type=submit]:last').prop("disabled", false).html(
                         '<i class="bi bi-basket3"></i> <span>Thêm vào giỏ hàng</span>');

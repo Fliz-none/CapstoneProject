@@ -59,9 +59,10 @@
                         <div class="card">
                             <div class="card-body d-flex flex-column" style="height: 100vh;">
                                 <!-- Input search: cố định -->
-                                <div class="form-outline position-relative p-0 mb-3">
+                                <div class="form-outline position-relative p-0 mb-3 gap-2 d-flex">
                                     <i class="bi bi-search position-absolute" style="top: 45%; left: 10px; transform: translateY(-50%); z-index: 2;"></i>
                                     <input class="form-control ps-5" id="search" type="search" placeholder="{{ __('messages.chat.search') }}" />
+                                    <button class="btn btn-link btn-select-user-conversation text-muted px-3 ms-auto" type="button" title="Add conversation"><i class="bi bi-person-plus"></i></button>
                                 </div>
 
                                 <!-- Danh sách conversations-->
@@ -115,20 +116,9 @@
         let offset = 0;
         let loading = false;
 
-        // -----------------------------
-        // Utility functions
-        // -----------------------------
-        function debounce(func, wait) {
-            let timeout;
-            return function(...args) {
-                clearTimeout(timeout);
-                timeout = setTimeout(() => func.apply(this, args), wait);
-            };
-        }
-
         function createAvatar(sender, align = 'start') {
             const avatarClass = config.canUpdateUser ? 'btn-update-user cursor-pointer' : '';
-            return `<img src="${sender.avatarUrl}" alt="avatar" width="50"
+            return `<img src="${sender.avatarUrl}" alt="avatar" width="50" height="50"
             class="rounded-circle d-flex align-self-${align} shadow-1-strong ${sender.id == config.auth_id ? 'sender-avatar' : ''} ${avatarClass}"
             ${config.canUpdateUser ? `data-id="${sender.id}"` : ''}>`;
         }
@@ -144,18 +134,15 @@
         }
 
         function renderMessage(message, type = 'receive') {
-            console.log('renderMessage', message);
-
             const isSender = type === 'broadcast';
             const align = isSender ? 'end' : 'start';
             const bg = isSender ? 'bg-chat-primary' : 'bg-chat-secondary';
-            const avatar = createAvatar(message.sender, isSender ? 'start' : 'start');
+            const avatar = createAvatar(message.sender, isSender ? 'end' : 'start');
             let html = '';
             if (message.attachments && message.attachments.length > 0) {
                 message.attachments.forEach(att => {
                     const fileBlock = renderAttachment(att);
                     html += `<li class="d-flex justify-content-${align} mb-1">
-                        ${!isSender ? avatar : '<div style="width: 50px"></div>'}
                         <div style="max-width: 50%; width: fit-content;" class="${isSender ? 'ms-auto' : ''}">
                             <div class="card ${bg} mb-0 cursor-pointer d-inline-block" style="border: 1px solid rgba(133, 133, 244, 0.841)">
                                 <div class="card-body p-1">
@@ -164,7 +151,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div><div style="width: 50px" class="ms-3"></div>
+                        </div>
                     </li>`;
                 });
             }
@@ -353,7 +340,12 @@
                         const html = config.auth_id == data.message.sender_id ?
                             renderMessage(data.message, 'broadcast') :
                             renderMessage(data.message, 'receive');
-
+                        if (config.auth_id != data.message.sender_id) {
+                            new Notification('You have a new message', {
+                                body: message.content,
+                                icon: '/icon.png'
+                            });
+                        }
                         $('.messages').append(html);
                         $('#preview-attachments').empty();
                         $('#attachments').val('');
@@ -362,6 +354,120 @@
                 });
         }
 
+        // -----------------------------
+        // Add conversation
+        // -----------------------------
+        $(document).on('click', '.btn-select-user-conversation', async function() {
+            $(`<div class="modal fade" id="add-conversation-modal" tabindex="-1" aria-labelledby="addConversationLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header bg-info">
+                                <h5 class="modal-title fs-5 text-white" id="addConversationLabel">Select users to start a conversation</h5></br>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3 px-3 row form-group name-user-conversation-container">
+                                    <label for="name">Conversation name</label>
+                                    <input type="text" class="form-control" id="conversationName" placeholder="Conversation name">
+                                </div>
+                                <div class="px-3 row selected-user-conversation-container">
+                                </div>
+                                <div class="mb-3 px-3 row form-group search-user-conversation-container">
+                                    <label for="search-user-conversation">Search users</label>
+                                    <input type="text" class="form-control" id="search-user-conversation" placeholder="Search users">
+                                    <ul id="search-user-conversation-results" class="list-group gap-1" style="max-height: 300px; overflow-y: scroll; height: 300px;"></ul>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary btn-add-conversation">Add a conversation</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).prependTo('body').modal('show');
+        });
+
+        $(document).on('input', '#search-user-conversation', debounce(function() {
+            const keyword = $(this).val();
+            const html = getUsers(keyword);
+        }, 300));
+
+        let selected_ids = [];
+        $(document).on('click', '.user-conversation-item', function() {
+            if (selected_ids.length > 5) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Infomation',
+                    text: 'You can select up to 6 users',
+                    confirmButtonText: 'Close'
+                });
+                return;
+            }
+            if (!$('.selected-user-conversation-container').length) {
+                selected_ids = [];
+            }
+            if (selected_ids.includes($(this).data('id'))) {
+                return;
+            };
+            const html = `<div class="col-2 mb-3 selected-user-conversation-item position-relative" data-id="${$(this).data('id')}">
+                            <img src="${$(this).data('avatar')}" class="rounded-circle me-2" alt="avatar" width="40" height="40">
+                            <div class="pt-1">
+                                <p class="text-muted text-wrap mb-0" style="font-size: 10px;">${$(this).data('name')}</p>
+                            </div>
+                            <button class="selected-user-conversation-item-delete" data-id="${$(this).data('id')}" title="Delete" onclick="deleteSelectedUserConversationItem(this)" type="button">
+                                <i class="bi bi-x"></i>
+                            </button>
+                        </div>`;
+            $('.selected-user-conversation-container').append(html);
+            selected_ids.push($(this).data('id'));
+            $(this).remove();
+        });
+
+        function getUsers(q = '') {
+            $.ajax({
+                url: `{{ route('admin.user', ['key' => 'conversation']) }}`,
+                data: {
+                    q: q,
+                    selected: selected_ids,
+                },
+                success: function(users) {
+                    $('#search-user-conversation-results').empty();
+                    $('#search-user-conversation-results').html(users.join(''));
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+        }
+
+        $(document).on('click', '.btn-add-conversation', function() {
+            $.ajax({
+                url: `{{ route('admin.chat.create_conversation') }}`,
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    selected_ids: selected_ids,
+                    name: $('#conversationName').val(),
+                },
+                success: function(res) {
+                    $('#add-conversation-modal').modal('hide');
+                    loadConversations();
+                    pushToastify(res.msg, 'success');
+                    console.log(res);
+                    
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+        });
+
+        function deleteSelectedUserConversationItem(item) {
+            $(item).parent().remove();
+            selected_ids = selected_ids.filter(id => id !== $(item).data('id'));
+        }
         // -----------------------------
         // Init
         // -----------------------------

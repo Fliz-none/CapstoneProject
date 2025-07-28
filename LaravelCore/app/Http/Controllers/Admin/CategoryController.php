@@ -138,7 +138,7 @@ class CategoryController extends Controller
 
     public function sort(Request $request)
     {
-        $ids = $request->input('sort');
+        $ids = $request->input('sort', []);
         if (count($ids) == Category::count()) {
             foreach ($ids as $index => $id) {
                 Category::where('id', $id)->update(['sort' => $index + 1]);

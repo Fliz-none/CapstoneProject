@@ -9,7 +9,14 @@
     <title> @yield('title') - {{ config('app.name') }}</title>
 
     {{-- Thẻ favicon --}}
-    <link type="image/x-icon" href="{{ asset(env('FILE_STORAGE', '/storage') . '/' . cache()->get('settings')['favicon']) }}" rel="shortcut icon">
+    @php
+        if (cache()->get('settings')['favicon']) {
+            $favicon = asset(env('FILE_STORAGE', '/storage') . '/' . cache()->get('settings')['favicon']);
+        } else {
+            $favicon = asset('admin/images/logo/favicon_key.png');
+        }
+    @endphp
+    <link type="image/x-icon" href="{{ $favicon }}" rel="shortcut icon">
     {{-- Định nghĩa web app --}}
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -33,8 +40,7 @@
     <link href="{{ asset('admin/css/work.css') }}?v={{ $version_name }}" rel="stylesheet">
 
     <link href="{{ asset('admin/vendors/perfect-scrollbar/perfect-scrollbar.css') }}" rel="stylesheet">
-    <link href="{{ asset('admin/vendors/bootstrap-icons/bootstrap-icons.css') }}?v={{ $version_name }}"
-        rel="stylesheet">
+    <link href="{{ asset('admin/vendors/bootstrap-icons/bootstrap-icons.css') }}?v={{ $version_name }}" rel="stylesheet">
     <link href="{{ asset('admin/css/app.css') }}?v={{ $version_name }}" rel="stylesheet">
     <link href="{{ asset('admin/css/key.css') }}?v={{ $version_name }}" rel="stylesheet">
     <link href="{{ asset('admin/vendors/jqueryui-1.13.2/jquery-ui.css') }}" rel="stylesheet">
@@ -64,22 +70,22 @@
 
     <script>
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function () {
-                navigator.serviceWorker.register(`{{ asset('js/service-worker.js') }}`).then(function (
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register(`{{ asset('js/service-worker.js') }}`).then(function(
                     registration) {
                     // console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                }, function (err) {
+                }, function(err) {
                     // console.error('ServiceWorker registration failed: ', err);
                 });
             });
         }
-        $(document).ready(function () {
-            $(window).on('offline', function () {
+        $(document).ready(function() {
+            $(window).on('offline', function() {
                 $('.loading').removeClass('d-none');
                 Swal.fire("Alert!", {{ __('messages.you_are_offline') }}, "info");
             });
             // Bắt sự kiện khi có mạng trở lại
-            $(window).on('online', function () {
+            $(window).on('online', function() {
                 $('.loading').addClass('d-none');
                 Swal.close();
             });
@@ -291,7 +297,7 @@
                     data: 'created_at',
                     name: 'created_at',
                     searchable: true,
-                    render: function (data, type, row) {
+                    render: function(data, type, row) {
                         return (type == 'display') ? ((data != null) ? moment(data).format("DD/MM/YYYY H:mm") :
                             '') : data;
                     }
@@ -305,15 +311,15 @@
                 },
             },
             columnDefines: [{
-                target: $(".dataTable thead tr th").length - 2,
-                sortable: false,
-                searchable: false
-            },
-            {
-                target: $(".dataTable thead tr th").length - 1,
-                sortable: false,
-                searchable: false,
-            },
+                    target: $(".dataTable thead tr th").length - 2,
+                    sortable: false,
+                    searchable: false
+                },
+                {
+                    target: $(".dataTable thead tr th").length - 1,
+                    sortable: false,
+                    searchable: false,
+                },
             ],
             pageLength: 20,
             lengths: [
@@ -347,7 +353,7 @@
         },
         select2: {
             ajax: {
-                processResults: function (data, params) {
+                processResults: function(data, params) {
                     params.page = params.page || 1;
                     return {
                         results: data,
@@ -371,10 +377,10 @@
     /**
      * Xử lý thêm
      */
-    $(document).on('click', '.btn-select-stock', function () {
+    $(document).on('click', '.btn-select-stock', function() {
         const stockQuantity = JSON.parse($(this).attr('data-stock-quantity')),
             tab = $('#order-modal').hasClass('show') ? $('#order-modal') : $('#export-modal').hasClass('show') ?
-                $('#export-modal') : $('.tab-pane.active'),
+            $('#export-modal') : $('.tab-pane.active'),
             stock = {
                 stockId: $(this).attr('data-stock-id'),
                 stockExpired: $(this).attr('data-expired'),
@@ -389,7 +395,7 @@
         let availableStock = false,
             availableUnit = false;
 
-        tab.find(`[name='stock_ids[]'][value=${stock.stockId}]`).each(function () {
+        tab.find(`[name='stock_ids[]'][value=${stock.stockId}]`).each(function() {
             const card = $(this).closest('.detail'),
                 unitId = card.find(`[name='unit_ids[]']`).val(),
                 orderQuantity = parseInt(card.find(`[name='quantities[]']`).val())
@@ -424,7 +430,7 @@
     /**
      * CATALOGUE PROCESS
      */
-    $(document).on('click', '.btn-create-catalogue', function (e) {
+    $(document).on('click', '.btn-create-catalogue', function(e) {
         e.preventDefault();
         const form = $('#catalogue-form')
         resetForm(form)
@@ -434,19 +440,19 @@
         form.find('.modal').modal('show').find('.modal-title').text("{{ __('messages.category.new_catalogue') }}");
     })
 
-    $('.btn-refresh-catalogue').click(function () {
+    $('.btn-refresh-catalogue').click(function() {
         const btn = $(this)
-        $.get(`{{ route('admin.catalogue') }}/tree`, function (html) {
+        $.get(`{{ route('admin.catalogue') }}/tree`, function(html) {
             btn.parents('form').find('.catalogue-select .list-group').html(html);
         })
     })
 
-    $(document).on('click', '.btn-update-catalogue', function (e) {
+    $(document).on('click', '.btn-update-catalogue', function(e) {
         e.preventDefault();
         const id = $(this).attr('data-id'),
             form = $('#catalogue-form');
         resetForm(form)
-        $.get(`{{ route('admin.catalogue') }}/${id}`, function (catalogue) {
+        $.get(`{{ route('admin.catalogue') }}/${id}`, function(catalogue) {
             form.find('[name=id]').val(catalogue.id)
             form.find('[name=name]').val(catalogue.name)
             form.find('[name=note]').val(catalogue.note)
@@ -473,7 +479,7 @@
     /**
      * PRODUCT PROCESS
      */
-    $(document).on('click', '.btn-create-product', function (e) {
+    $(document).on('click', '.btn-create-product', function(e) {
         e.preventDefault();
         initCreateProduct()
     })
@@ -487,10 +493,10 @@
         form.find('.modal').modal('show').find('.modal-title').text('New product')
     }
 
-    $(document).on('click', '.btn-update-product', function (e) {
+    $(document).on('click', '.btn-update-product', function(e) {
         e.preventDefault();
         const id = $(this).attr('data-id');
-        $.get(`{{ route('admin.product') }}/${id}`, function (product) {
+        $.get(`{{ route('admin.product') }}/${id}`, function(product) {
             initUpdateProduct(product)
         })
     })
@@ -505,7 +511,7 @@
         form.find('[name=unit]').val(product.unit)
         form.find('[name=status]').val(product.status)
         form.find('[name=avatar]').prev().find('img').attr('src', product.avatarUrl)
-        $.each(product.catalogues, function (i, catalogue) {
+        $.each(product.catalogues, function(i, catalogue) {
             $(`input[type=checkbox][value=${catalogue.id}]`).prop('checked', true)
         })
         sortCheckedInput(form)
@@ -517,15 +523,15 @@
         form.attr('action', `{{ route('admin.product.update') }}`).find('.modal').modal('show').find('.modal-title').text(product.name);
     }
 
-    $(document).on('change', '.variable-attribute', function () {
+    $(document).on('change', '.variable-attribute', function() {
         $(this).closest('.accordion-body').find('.variable-attribute').not(this).prop('checked', false)
-        const text = $(this).closest('.accordion').find('.variable-attribute:checked').map(function () {
+        const text = $(this).closest('.accordion').find('.variable-attribute:checked').map(function() {
             return $(this).next().text()
         }).get().join(' - ')
         $(this).closest('.modal').find('#variable-name').val(text)
     })
 
-    $(document).on('click', '.btn-create-variable', function (e) {
+    $(document).on('click', '.btn-create-variable', function(e) {
         e.preventDefault();
         const form = $('#variable-form')
         resetForm(form)
@@ -538,10 +544,10 @@
         form.find('.modal').modal('show').find('.modal-title').text(`{{ __('messages.variables.new_variable') }}`)
     })
 
-    $(document).on('click', '.btn-update-variable', function (e) {
+    $(document).on('click', '.btn-update-variable', function(e) {
         e.preventDefault();
         const id = $(this).attr('data-id');
-        $.get(`{{ route('admin.variable') }}/${id}`, function (variable) {
+        $.get(`{{ route('admin.variable') }}/${id}`, function(variable) {
             initUpdateVariable(variable)
         })
     })
@@ -559,11 +565,11 @@
         if (variable.deleted_at != null) {
             form.find('.btn[type=submit]:last-child').addClass('d-none')
         }
-        $.each(variable.attributes, function (index, attribute) {
+        $.each(variable.attributes, function(index, attribute) {
             form.find(`#variable-attribute-${attribute.id}`).prop('checked', true);
         })
         form.find('#variable-units').empty()
-        $.each(variable.units, function (index, unit) {
+        $.each(variable.units, function(index, unit) {
             form.find('#variable-units').append(`
             <tr class="variable-unit">
                 <td><input class="form-control" name="unit_barcode[]" type="text" value="${unit.barcode ? unit.barcode : ''}" placeholder="Barcode"></td>
@@ -586,7 +592,7 @@
         form.find('.modal').modal('show').find('.modal-title').text(variable.name != null ? variable.name : variable.id)
     }
 
-    $(document).on('click', '.btn-append-unit', function (e) {
+    $(document).on('click', '.btn-append-unit', function(e) {
         e.preventDefault();
         const form = $('#variable-form');
         const str = `
@@ -609,7 +615,7 @@
         form.find('#variable-units').append(str);
     })
 
-    $(document).on('click', '.btn-remove-unit', function (e) {
+    $(document).on('click', '.btn-remove-unit', function(e) {
         e.preventDefault();
         const btn = $(this);
         if ($('.variable-unit').length > 1) {
@@ -617,7 +623,7 @@
                 const form = btn.closest('form');
                 Swal.fire(config.sweetAlert.confirm).then((result) => {
                     if (result.isConfirmed) {
-                        submitForm(form).done(function (response) {
+                        submitForm(form).done(function(response) {
                             if (response.status == 'success') {
                                 btn.closest('.variable-unit').remove();
                             }
@@ -639,19 +645,19 @@
     /**
      * IN BARCODE - MÃ VẠCH
      */
-    $('body').on('click', '.btn-barcode-product', function () {
+    $('body').on('click', '.btn-barcode-product', function() {
         var form = $(this).closest('section').find('.batch-form'),
             modal = $('#barcode-modal');
-        var checkedValues = JSON.stringify(form.find('input[name="choices[]"]:checked').map(function () {
+        var checkedValues = JSON.stringify(form.find('input[name="choices[]"]:checked').map(function() {
             return $(this).val();
         }).get());
-        $.get(config.routes.get + '/barcode?ids=' + checkedValues, function (products) {
+        $.get(config.routes.get + '/barcode?ids=' + checkedValues, function(products) {
             let str = ``
-            $.each(products, function (i, product) {
+            $.each(products, function(i, product) {
                 let variables = ``,
                     units = ``
-                $.each(product.variables, function (j, variable) {
-                    $.each(variable.units, function (k, unit) {
+                $.each(product.variables, function(j, variable) {
+                    $.each(variable.units, function(k, unit) {
                         units += `<option value="${unit.barcode}" data-variable="${unit.variable_id}" data-price="${unit.price}" data-term="${unit.term}" ${j ? 'hidden' : ''}>${unit.term}</option>`
                     })
                     variables += `<option value="${variable.id}">${variable.name != null ? variable.name : variable.id}</option>`
@@ -683,9 +689,9 @@
         })
     })
 
-    $(document).on('click', '.btn-print-barcode', function () {
+    $(document).on('click', '.btn-print-barcode', function() {
         let str = ``
-        $('#barcode-modal').find('.barcode-unit').each(function () {
+        $('#barcode-modal').find('.barcode-unit').each(function() {
             let card = $(this).closest('.card-barcode'),
                 qtt = parseInt(card.find('.barcode-quantity').val()),
                 product = card.find('.barcode-product-name').val(),
@@ -716,7 +722,7 @@
                     </div>
                 </div>
             </div>`)
-        $('#print-wrapper').find('.barcode-value').each(function () {
+        $('#print-wrapper').find('.barcode-value').each(function() {
             JsBarcode('#' + $(this).prev().attr('id'), $(this).val(), {
                 format: "CODE128",
                 lineColor: "#000000",
@@ -738,11 +744,11 @@
         });
     })
 
-    $(document).on('change', '.barcode-variable', function () {
+    $(document).on('change', '.barcode-variable', function() {
         const id = $(this).val()
-        $(this).closest('.card-barcode').find('.barcode-unit').each(function () {
+        $(this).closest('.card-barcode').find('.barcode-unit').each(function() {
             let set = false;
-            $(this).find('option').prop('hidden', false).prop('selected', false).each(function () {
+            $(this).find('option').prop('hidden', false).prop('selected', false).each(function() {
                 if ($(this).attr('data-variable') != id) {
                     $(this).prop('hidden', true)
                 } else {
@@ -758,20 +764,20 @@
     /**
      * BARCODE ONSCAN
      */
-    $(document).ready(function () {
+    $(document).ready(function() {
         onScan.attachTo(document, {
             suffixKeyCodes: [13], // Enter-key expected at the end of a scan
             reactToPaste: false, // Compatibility to built-in scanners in paste-mode (as opposed to keyboard-mode)
-            onScan: function (sCode, iQty) {
+            onScan: function(sCode, iQty) {
                 // console.log('Barcode scanned: ' + sCode); // Check if this runs
                 $('input:focus').val('')
                 if ($('#product-modal').hasClass('show')) {
-                    $.get(`{{ route('admin.variable') }}/scan?barcode=${sCode}`, function (variable) {
+                    $.get(`{{ route('admin.variable') }}/scan?barcode=${sCode}`, function(variable) {
                         if (variable) {
                             pushToastify("Barcode already exists!", 'danger')
                         } else {
                             let available = true;
-                            $(`[name='barcode[]']`).each(function (i, input) {
+                            $(`[name='barcode[]']`).each(function(i, input) {
                                 if (input.value == sCode) {
                                     available = false;
                                     return false;
@@ -789,9 +795,9 @@
                     let btn = $('.btn-create-stock'),
                         existVariable = false
                     btn.prop("disabled", true).html('<span class="spinner-border spinner-border-sm" id="spinner-form" role="status"></span>');
-                    $.get(`{{ route('admin.unit') }}/scan?barcode=${sCode}`, function (unit) {
+                    $.get(`{{ route('admin.unit') }}/scan?barcode=${sCode}`, function(unit) {
                         if (unit) {
-                            $('.import_detail-unit_id').each(function (i, input) {
+                            $('.import_detail-unit_id').each(function(i, input) {
                                 if (input.value == unit.id) {
                                     existVariable = true
                                     let input = $(this).closest('tr').find(`[name='quantities[]']`)
@@ -811,19 +817,19 @@
                     if ($('#export-modal').hasClass('show')) {
                         $('#export-search-input').val(sCode).change().focus()
                     } else {
-                        $.get(`{{ route('admin.stock') }}/scan?barcode=${sCode}&action=export`, function (stocks) {
+                        $.get(`{{ route('admin.stock') }}/scan?barcode=${sCode}&action=export`, function(stocks) {
                             let scanUnit,
                                 availableStock = false,
                                 tab = $('#order-modal').hasClass('show') ? $('#order-modal') : $('#export-modal').hasClass('show') ? $('#export-modal') : $('.tab-pane.active')
                             if (stocks.length) {
-                                $.each(stocks, function (index, stock) {
-                                    $.each(stock.import_detail._variable.units, function (index, unit) {
+                                $.each(stocks, function(index, stock) {
+                                    $.each(stock.import_detail._variable.units, function(index, unit) {
                                         if (unit.barcode === sCode) {
                                             scanUnit = unit
                                         }
                                     });
                                 });
-                                $.each(stocks, function (i, stock) {
+                                $.each(stocks, function(i, stock) {
                                     var nextLoops = true,
                                         availableUnit = false,
                                         newCard = {
@@ -838,7 +844,7 @@
                                             productUnits: stock.import_detail._variable.units
                                         };
                                     if (tab.find(`[name='stock_ids[]'][value=${stock.id}]`).length) {
-                                        tab.find(`[name='stock_ids[]'][value=${stock.id}]`).each(function (i, detail) {
+                                        tab.find(`[name='stock_ids[]'][value=${stock.id}]`).each(function(i, detail) {
                                             const card = $(this).closest('.detail'),
                                                 unitId = card.find(`[name='unit_ids[]']`).val(),
                                                 orderQuantity = parseInt(card.find(`[name='quantities[]']`).val())
@@ -880,13 +886,13 @@
                     $('.dataTables_filter').find('input').val(sCode).change().focus()
                 }
             },
-            onKeyDetect: function (iKeyCode) {
+            onKeyDetect: function(iKeyCode) {
                 // console.log('Pressed: ' + iKeyCode); // Debugging
             },
-            onKeyProcess: function (sChar, oEvent) {
+            onKeyProcess: function(sChar, oEvent) {
                 // console.log('Processed character: ' + sChar); // Debugging
             },
-            onScanError: function (oDebug) {
+            onScanError: function(oDebug) {
                 // console.log('Scan error: ', oDebug); // Debugging
             }
         });
@@ -899,11 +905,11 @@
         }
 
         // Check keydown and keypress events
-        document.addEventListener('keydown', function (event) {
+        document.addEventListener('keydown', function(event) {
             // console.log('Keydown event:', event);
         });
 
-        document.addEventListener('keypress', function (event) {
+        document.addEventListener('keypress', function(event) {
             // console.log('Keypress event:', event);
         });
     });
@@ -911,7 +917,7 @@
     /**
      * CATEGORY PROCESS
      */
-    $(document).on('click', '.btn-create-category', function (e) {
+    $(document).on('click', '.btn-create-category', function(e) {
         e.preventDefault();
         const form = $('#category-form')
         resetForm(form)
@@ -920,12 +926,12 @@
         form.find('.modal').modal('show').find('.modal-title').text('New category')
     })
 
-    $(document).on('click', '.btn-update-category', function (e) {
+    $(document).on('click', '.btn-update-category', function(e) {
         e.preventDefault();
         const id = $(this).attr('data-id'),
             form = $('#category-form');
         resetForm(form)
-        $.get(`{{ route('admin.category') }}/${id}`, function (category) {
+        $.get(`{{ route('admin.category') }}/${id}`, function(category) {
             form.find('[name=id]').val(category.id)
             form.find('[name=name]').val(category.name)
             form.find('[name=note]').val(category.note)
@@ -942,7 +948,7 @@
     /**
      * PROFILE
      */
-    $('.btn-change-branch').on('click', function () {
+    $('.btn-change-branch').on('click', function() {
         Swal.fire({
             title: 'Select branch',
             html: `
@@ -964,11 +970,11 @@
                         main_branch: $('[name=main_branch]').val(),
                         _token: '{{ csrf_token() }}'
                     },
-                    success: function (response) {
+                    success: function(response) {
                         pushToastify(response.msg, response.status)
                         $('nav.navbar .user-name small').text(response.main_branch)
                     },
-                    error: function (error) {
+                    error: function(error) {
                         Swal.fire({
                             icon: 'error',
                             title: 'An error occurred',
@@ -984,20 +990,20 @@
     /**
      * LANGUAGES
      */
-    $('.btn-change-language').on('click', function () {
+    $('.btn-change-language').on('click', function() {
         const currentLocale = '{{ app()->getLocale() }}';
 
         Swal.fire({
-            title: '{{ __("messages.lang.select_language") }}',
+            title: '{{ __('messages.lang.select_language') }}',
             html: `
             <select id="locale_selector" class="form-select">
-                <option value="vn" ${currentLocale === 'vn' ? 'selected' : ''}>🇻🇳 {{ __("messages.lang.vi") }}</option>
-                <option value="en" ${currentLocale === 'en' ? 'selected' : ''}>🇺🇸 {{ __("messages.lang.en") }}</option>
+                <option value="vn" ${currentLocale === 'vn' ? 'selected' : ''}>🇻🇳 {{ __('messages.lang.vi') }}</option>
+                <option value="en" ${currentLocale === 'en' ? 'selected' : ''}>🇺🇸 {{ __('messages.lang.en') }}</option>
             </select>
         `,
             showCancelButton: true,
-            confirmButtonText: '{{ __("messages.save") }}',
-            cancelButtonText: '{{ __("messages.cancel") }}',
+            confirmButtonText: '{{ __('messages.save') }}',
+            cancelButtonText: '{{ __('messages.cancel') }}',
         }).then((result) => {
             if (result.isConfirmed) {
                 const newLocale = $('#locale_selector').val();
@@ -1011,19 +1017,19 @@
                             locale: newLocale,
                             _token: '{{ csrf_token() }}'
                         },
-                        success: function () {
+                        success: function() {
                             Swal.fire({
                                 icon: 'success',
-                                title: '{{ __("messages.lang.language_changed_success") }}',
+                                title: '{{ __('messages.lang.language_changed_success') }}',
                                 timer: 1500,
                                 showConfirmButton: false
                             }).then(() => location.reload());
                         },
-                        error: function () {
+                        error: function() {
                             Swal.fire({
                                 icon: 'error',
-                                title: '{{ __("messages.error_occurred") }}',
-                                text: '{{ __("messages.try_again_later") }}'
+                                title: '{{ __('messages.error_occurred') }}',
+                                text: '{{ __('messages.try_again_later') }}'
                             });
                         }
                     });
@@ -1036,7 +1042,7 @@
     /**
      * USER PROCESS
      */
-    $(document).on('click', '.btn-create-user', function (e) {
+    $(document).on('click', '.btn-create-user', function(e) {
         e.preventDefault();
         const form = $('#user-form')
         resetForm(form)
@@ -1054,12 +1060,12 @@
         form.find('.modal').modal('show').find('.modal-title').text('{{ __('messages.user.create_new_account') }}')
     })
 
-    $(document).on('click', '.btn-update-user', function (e) {
+    $(document).on('click', '.btn-update-user', function(e) {
         e.preventDefault();
         const id = $(this).attr('data-id'),
             form = $('#user-form');
         resetForm(form);
-        $.get(`{{ route('admin.user') }}/${id}`, function (user) {
+        $.get(`{{ route('admin.user') }}/${id}`, function(user) {
             form.find('[name=id]').val(user.id)
             form.find('[name=name]').val(user.name)
             form.find('[name=phone]').val(user.phone)
@@ -1088,10 +1094,10 @@
         })
     })
 
-    $('#user-local_city').change(function () {
-        $.get(`{{ route('admin.local') }}/districts?city=${$(this).val()}`, function (locals) {
+    $('#user-local_city').change(function() {
+        $.get(`{{ route('admin.local') }}/districts?city=${$(this).val()}`, function(locals) {
             let options = ''
-            $.each(locals, function (i, local) {
+            $.each(locals, function(i, local) {
                 options += `<option value="${local.id}">${local.text}</option>`;
             });
             $('select#user-local_id').html(options).trigger({
@@ -1100,8 +1106,8 @@
         })
     })
 
-    $('#user-local_id').change(function () {
-        $.get(`{{ route('admin.local') }}/${$(this).val()}`).then(function (local) {
+    $('#user-local_id').change(function() {
+        $.get(`{{ route('admin.local') }}/${$(this).val()}`).then(function(local) {
             var option = new Option(local.city);
             $('select#user-local_city').html(option).trigger({
                 type: 'select2:select'
@@ -1109,36 +1115,36 @@
         });
     })
 
-    $(document).on('click', '.select-avatar', function (e) {
+    $(document).on('click', '.select-avatar', function(e) {
         e.preventDefault();
         $(this).parent().find('input[type="file"]').click();
     })
 
-    $(document).on('change', '#user-avatar', function (e) {
+    $(document).on('change', '#user-avatar', function(e) {
         e.preventDefault();
         if (this.files && this.files[0]) {
             var reader = new FileReader();
-            reader.onload = function (e) {
+            reader.onload = function(e) {
                 $('#user-avatar-preview').attr('src', e.target.result).show();
             }
             reader.readAsDataURL(this.files[0]);
         }
     })
 
-    $(document).on('click', '.btn-update-user_role', function () {
+    $(document).on('click', '.btn-update-user_role', function() {
         const id = $(this).attr('data-id'),
             form = $('#user_role-form');
         resetForm(form)
-        $.get(`{{ route('admin.user') }}/${id}`).done(function (user) {
+        $.get(`{{ route('admin.user') }}/${id}`).done(function(user) {
             form.attr('action', `{{ route('admin.user.update.role') }}`);
             form.find('#user_role-modal-label').text('{{ __('messages.set_role') }}' + user.name)
-            $.each(user.roles, function (i, role) {
+            $.each(user.roles, function(i, role) {
                 $('input[name="role_id[]"][value="' + role.id + '"]').prop('checked', true);
             });
-            $.each(user.branches, function (i, branch) {
+            $.each(user.branches, function(i, branch) {
                 $('input[name="branch_id[]"][value="' + branch.id + '"]').prop('checked', true);
             });
-            $.each(user.warehouses, function (i, warehouse) {
+            $.each(user.warehouses, function(i, warehouse) {
                 $('input[name="warehouse_id[]"][value="' + warehouse.id + '"]').prop('checked',
                     true);
             });
@@ -1151,7 +1157,7 @@
         })
     })
 
-    $(document).on('click', '.btn-update-user_password', function () {
+    $(document).on('click', '.btn-update-user_password', function() {
         const id = $(this).attr('data-id'),
             form = $('#user_password-form');
         resetForm(form)
@@ -1164,7 +1170,7 @@
     /**
      * WAREHOUSE PROCESS
      */
-    $(document).on('click', '.btn-create-warehouse', function (e) {
+    $(document).on('click', '.btn-create-warehouse', function(e) {
         e.preventDefault();
         const form = $('#warehouse-form')
         resetForm(form)
@@ -1173,12 +1179,12 @@
         form.find('.modal').modal('show').find('.modal-title').text(`{{ __('messages.warehouses.new_warehouse') }}`)
     })
 
-    $(document).on('click', '.btn-update-warehouse', function (e) {
+    $(document).on('click', '.btn-update-warehouse', function(e) {
         e.preventDefault();
         const id = $(this).attr('data-id'),
             form = $('#warehouse-form');
         resetForm(form)
-        $.get(`{{ route('admin.warehouse') }}/${id}`, function (warehouse) {
+        $.get(`{{ route('admin.warehouse') }}/${id}`, function(warehouse) {
             form.find('[name=name]').val(warehouse.name)
             form.find('[name=id]').val(warehouse.id)
             form.find('[name=note]').val(warehouse.note)
@@ -1190,7 +1196,7 @@
                     type: 'select2:select'
                 });
             }
-            $.each(warehouse.permissions, function (index, permission) {
+            $.each(warehouse.permissions, function(index, permission) {
                 form.find(`#permission-${permission.id}`).prop('checked', true)
             })
             if (warehouse.deleted_at != null) {
@@ -1205,7 +1211,7 @@
     /**
      * BRANCH PROCESS
      */
-    $(document).on('click', '.btn-create-branch', function (e) {
+    $(document).on('click', '.btn-create-branch', function(e) {
         e.preventDefault();
         const form = $('#branch-form')
         resetForm(form)
@@ -1214,12 +1220,12 @@
         form.find('.modal').modal('show').find('.modal-title').text(`{{ __('messages.branches.new_branch') }}`)
     })
 
-    $(document).on('click', '.btn-update-branch', function (e) {
+    $(document).on('click', '.btn-update-branch', function(e) {
         e.preventDefault();
         const id = $(this).attr('data-id'),
             form = $('#branch-form');
         resetForm(form)
-        $.get(`{{ route('admin.branch') }}/${id}`, function (branch) {
+        $.get(`{{ route('admin.branch') }}/${id}`, function(branch) {
             form.find('[name=id]').val(branch.id)
             form.find('[name=name]').val(branch.name)
             form.find('[name=phone]').val(branch.phone)
@@ -1237,22 +1243,30 @@
     })
 
     let branchMap = null;
-    $('#branch-modal').on('shown.bs.modal', function () {
+    $('#branch-modal').on('shown.bs.modal', function() {
         if (!branchMap) {
             branchMap = initGoongMap({
                 containerId: 'branch-map',
                 addressInputSelector: '#branch-form input[name="address"]',
                 addressPreviewSelector: '#branch-address-preview',
-                onLocationSelected: ({ lat, lng, address }) => {
-                    $('#branch-form input[name="address"]').val(JSON.stringify({ lat, lng, address }));
+                onLocationSelected: ({
+                    lat,
+                    lng,
+                    address
+                }) => {
+                    $('#branch-form input[name="address"]').val(JSON.stringify({
+                        lat,
+                        lng,
+                        address
+                    }));
                 }
             });
         }
     });
-    $('#branch-modal').on('hidden.bs.modal', function () {
+    $('#branch-modal').on('hidden.bs.modal', function() {
         if (branchMap) {
             branchMap.remove(); // Xóa bản đồ khỏi DOM
-            branchMap = null;   // Cho phép tạo lại map ở lần mở tiếp theo
+            branchMap = null; // Cho phép tạo lại map ở lần mở tiếp theo
         }
         $('#branch-form input[name="address"]').val('');
         $('#branch-address-preview').val('');
@@ -1262,7 +1276,7 @@
     /**
      * IMPORT PROCESS
      */
-    $(document).on('click', '.btn-create-import', function (e) {
+    $(document).on('click', '.btn-create-import', function(e) {
         e.preventDefault();
         const form = $('#import-form')
         resetForm(form)
@@ -1274,11 +1288,11 @@
         form.find('.modal').modal('show').find('.modal-title').text('New import')
     })
 
-    $(document).on('click', '.btn-select-variable', function () {
+    $(document).on('click', '.btn-select-variable', function() {
         let unit = JSON.parse($(this).find('input').val()),
             existVariable = false;
 
-        $('.import_detail-unit_id').each(function (i, select) {
+        $('.import_detail-unit_id').each(function(i, select) {
             if (select.value == unit.id) {
                 existVariable = true
                 let quantityInput = $(this).closest('tr').find(`[name='quantities[]']`)
@@ -1295,7 +1309,7 @@
 
     function htmlImportVariable(unit) {
         let options = ``
-        $.each(unit._variable.units, function (i, item) {
+        $.each(unit._variable.units, function(i, item) {
             options +=
                 `<option value="${item.id}" data-rate="${item.rate}" data-price="${item.price}" ${item.rate == unit.rate ? 'selected' : ''}>${item.term}</option>`
         })
@@ -1335,10 +1349,10 @@
     }
     //''''''''''''''''''''''''''''''''''''''''''''
 
-    $(document).on('change', `.import_detail-unit_id[name='unit_ids[]']`, function () {
+    $(document).on('change', `.import_detail-unit_id[name='unit_ids[]']`, function() {
         const newUnit = parseInt($(this).val()),
             current = $(this).closest('tr').find(`[name='current_unit_ids[]']`),
-            count = $(".import_detail-unit_id[name='unit_ids[]']").filter(function () {
+            count = $(".import_detail-unit_id[name='unit_ids[]']").filter(function() {
                 return $(this).val() == newUnit;
             }).length;
         if (count > 1) {
@@ -1350,25 +1364,25 @@
         }
     })
 
-    $(document).on('change', `#import-form [name='prices[]'], #import-form [name='quantities[]']`, function () {
+    $(document).on('change', `#import-form [name='prices[]'], #import-form [name='quantities[]']`, function() {
         totalImport()
     })
 
     function totalImport() {
-        const totalImport = $('#import-form').find(`.import-detail`).map(function () {
+        const totalImport = $('#import-form').find(`.import-detail`).map(function() {
             var price = parseFloat($(this).find(`[name='prices[]']`).val().split(',').join('')) || 0;
             var quantity = parseFloat($(this).find(`[name='quantities[]']`).val().split(',').join('')) || 1;
             return price * quantity;
-        }).get().reduce(function (total, value) {
+        }).get().reduce(function(total, value) {
             return total + value;
         }, 0);
         $('#import-summary').val(totalImport)
     }
 
-    $(document).on('click', '.btn-update-import', function () {
+    $(document).on('click', '.btn-update-import', function() {
         const id = $(this).attr('data-id');
 
-        $.get(` {{ route('admin.import') }}/${id}`, function (obj) {
+        $.get(` {{ route('admin.import') }}/${id}`, function(obj) {
             const form = $('#import-form');
             resetForm(form)
             $('#import-form').attr('action', `{{ route('admin.import.update') }}`)
@@ -1443,7 +1457,7 @@
     }
 
 
-    $(document).on('click', '.btn-view-import_detail', function () {
+    $(document).on('click', '.btn-view-import_detail', function() {
         const product_id = $(this).data('id')
         resetModalDataTable('import_detail-table');
         showImportDetails(product_id)
@@ -1464,7 +1478,7 @@
     //     $('#import_detail-table tbody').empty();
     // });
 
-    $(document).on('click', '.btn-view-export_detail', function () {
+    $(document).on('click', '.btn-view-export_detail', function() {
         const product_id = $(this).data('id');
         resetModalDataTable('export_detail-table');
         showExportDetails(product_id);
@@ -1478,7 +1492,7 @@
     /**
      * SUPPLIER PROCESS
      */
-    $(document).on('click', '.btn-create-supplier', function (e) {
+    $(document).on('click', '.btn-create-supplier', function(e) {
         e.preventDefault();
         const form = $('#supplier-form')
         resetForm(form)
@@ -1487,12 +1501,12 @@
         form.find('.modal').modal('show')
     })
 
-    $(document).on('click', '.btn-update-supplier', function (e) {
+    $(document).on('click', '.btn-update-supplier', function(e) {
         e.preventDefault();
         const id = $(this).attr('data-id'),
             form = $('#supplier-form');
         resetForm(form)
-        $.get(`{{ route('admin.supplier') }}/${id}`, function (supplier) {
+        $.get(`{{ route('admin.supplier') }}/${id}`, function(supplier) {
             form.find('[name=id]').val(supplier.id)
             form.find('[name=name]').val(supplier.name)
             form.find('[name=phone]').val(supplier.phone)
@@ -1508,23 +1522,31 @@
 
 
     let supplierMap = null;
-    $('#supplier-modal').on('shown.bs.modal', function () {
+    $('#supplier-modal').on('shown.bs.modal', function() {
         if (!supplierMap) {
             supplierMap = initGoongMap({
                 containerId: 'supplier-map',
                 addressInputSelector: '#supplier-form input[name="address"]',
                 addressPreviewSelector: '#supplier-address-preview',
-                onLocationSelected: ({ lat, lng, address }) => {
-                    $('#supplier-form input[name="address"]').val(JSON.stringify({ lat, lng , address }));
+                onLocationSelected: ({
+                    lat,
+                    lng,
+                    address
+                }) => {
+                    $('#supplier-form input[name="address"]').val(JSON.stringify({
+                        lat,
+                        lng,
+                        address
+                    }));
                 }
             });
         }
     });
 
-    $('#supplier-modal').on('hidden.bs.modal', function () {
+    $('#supplier-modal').on('hidden.bs.modal', function() {
         if (supplierMap) {
             supplierMap.remove(); // Xóa bản đồ khỏi DOM
-            supplierMap = null;   // Cho phép tạo lại map ở lần mở tiếp theo
+            supplierMap = null; // Cho phép tạo lại map ở lần mở tiếp theo
         }
         $('#supplier-form input[name="address"]').val('');
         $('#supplier-address-preview').val('');
@@ -1535,12 +1557,12 @@
     /**
      * EXPORT PROCESS
      */
-    $(document).on('click', '.btn-create-export', function (e) {
+    $(document).on('click', '.btn-create-export', function(e) {
         e.preventDefault();
         initCreateExport()
     })
 
-    $(document).on('click', '.btn-submit-export', function (e) {
+    $(document).on('click', '.btn-submit-export', function(e) {
         e.preventDefault();
         const btn = $(this)
         if ($(this).hasClass('is-invalid')) {
@@ -1640,9 +1662,9 @@
             </div>`)
     }
 
-    $(document).on('click', '.btn-update-export', function () {
+    $(document).on('click', '.btn-update-export', function() {
         const id = $(this).attr('data-id')
-        $.get(` {{ route('admin.export') }}/${id}`, function (obj) {
+        $.get(` {{ route('admin.export') }}/${id}`, function(obj) {
             const form = $('#export-form');
             resetForm(form)
             form.find('.btn.btn-submit-export').removeClass('is-invalid')
@@ -1663,7 +1685,7 @@
                     type: 'select2:select'
                 });
             }
-            $.each(obj.export_details, function (index, export_detail) {
+            $.each(obj.export_details, function(index, export_detail) {
                 export_detail.totalExportQuantity = obj.export_details.reduce((sum, item) => {
                     if (export_detail.stock_id == item.stock_id) {
                         return sum += item.quantity * item._unit.rate;
@@ -1742,11 +1764,11 @@
             </div>`;
     }
 
-    $(document).on('change', '[name=export_warehouse]', function () {
+    $(document).on('change', '[name=export_warehouse]', function() {
         const input = $(this).closest('.modal').find('.search-input')
         input.attr('data-url', '{{ route('admin.stock') }}?key=search&action=export&warehouse_id=' + $(this)
             .val())
-        const debouncedFunction = debounce(function () {
+        const debouncedFunction = debounce(function() {
             handleSearch(input);
         }, 300);
         debouncedFunction();
@@ -1756,7 +1778,7 @@
     /**
      * ORDER PROCESS
      */
-    $(document).on('click', '.btn-create-order', function (e) {
+    $(document).on('click', '.btn-create-order', function(e) {
         e.preventDefault();
         const form = $('#order-form')
         resetForm(form)
@@ -1852,22 +1874,22 @@
         totalOrder()
     }
 
-    function checkDiscount(card){
+    function checkDiscount(card) {
         const discount = JSON.parse(card.find('select option:selected').attr('data-discount'))
         if (discount) {
             const price = Number(card.find('.order_detail-discounted_price').val()),
                 quantity = Number(card.find('.order_detail-quantity').val())
-                value = discount.value,
+            value = discount.value,
                 type = discount.type,
                 minQ = discount.min_quantity,
                 buyQ = discount.buy_quantity,
                 getQ = discount.get_quantity,
                 groupSize = buyQ + getQ
-                discountPrice = 0
-                note = ``;
+            discountPrice = 0
+            note = ``;
             switch (type) {
                 case 2:
-                    if(quantity >= groupSize) {
+                    if (quantity >= groupSize) {
                         const freeItem = Math.floor(quantity / groupSize) * getQ;
                         discountPrice = freeItem * price
                         note = `Tặng miễn phí ${freeItem} sản phẩm (${discount.typeStr})`
@@ -1875,13 +1897,13 @@
                     }
                     break;
                 default:
-                    if(quantity >= minQ) {
+                    if (quantity >= minQ) {
                         const apply_type = discount.apply_type,
                             freeItem = Math.floor(quantity / minQ);
                         if (type == 1) {
                             discountPrice = apply_type === 'once' ? value : (value * freeItem)
                         } else {
-                            let perPrice = (value/100) * price
+                            let perPrice = (value / 100) * price
                             discountPrice = apply_type === 'once' ? perPrice : (perPrice * freeItem)
                         }
                         note = `${discount.name} giảm ${discountPrice}`
@@ -1894,17 +1916,17 @@
         }
     }
 
-    $(document).on('change', '.order_detail-unit_id', function () {
+    $(document).on('change', '.order_detail-unit_id', function() {
         const unit = $(this),
             price = Number(unit.find('option:selected').attr('data-price')),
             card = unit.closest('.detail.order-detail');
         card.find('.order_detail-discounted_price').val(price).prev().text('')
         card.find('.order_detail-discount').val(0).end().find('.order_detail-price').val(price)
-                                                .end().find('.order_detail-discounted_price').val(price)
+            .end().find('.order_detail-discounted_price').val(price)
         checkDiscount($(card))
     })
 
-    $(document).on('click', '.btn-quantity-detail', function () {
+    $(document).on('click', '.btn-quantity-detail', function() {
         const card = $(this).closest('.detail'),
             quantity = parseInt(card.find(`[name='quantities[]']`).val().split(',').join(''))
         if ($(this).hasClass('btn-dec')) {
@@ -1920,9 +1942,9 @@
         $(this).closest('.order-receipt').length ? totalOrder() : null
     })
 
-    $(document).on('click', '.btn-update-order', function () {
+    $(document).on('click', '.btn-update-order', function() {
         const id = $(this).attr('data-id')
-        $.get(` {{ route('admin.order') }}/${id}`, function (obj) {
+        $.get(` {{ route('admin.order') }}/${id}`, function(obj) {
             const form = $('#order-form');
             resetForm(form)
             form.find('.order-details').add('.customer-suggestions').empty()
@@ -1946,7 +1968,7 @@
             } else {
                 form.find('[name=customer_id]').empty()
             }
-            $.each(obj.details, function (index, detail) {
+            $.each(obj.details, function(index, detail) {
                 if (detail.stock_id != null) {
                     detail.totalSaleQuantity = obj.details.reduce((sum, item) => {
                         if (detail.stock_id == item.stock_id) {
@@ -1973,7 +1995,9 @@
     })
 
     function htmlOrderDetail(detail) {
-        let className = '', number = '', discountedPrice = ''
+        let className = '',
+            number = '',
+            discountedPrice = ''
         console.log(detail);
 
         if (detail.discount == null || detail.discount == 0) {
@@ -2066,7 +2090,7 @@
     }
 
 
-    $(document).on('click', '.btn-note-detail_stock', function (event) {
+    $(document).on('click', '.btn-note-detail_stock', function(event) {
         event.preventDefault();
         var card = $(this).closest('.order-detail, .order-services');
 
@@ -2090,7 +2114,7 @@
         });
     });
 
-    $(document).on('click', '.btn-price-order_detail', function () {
+    $(document).on('click', '.btn-price-order_detail', function() {
         const inputPrice = $(this).parent().find(`[name='prices[]']`),
             inputDiscount = $(this).parent().find(`[name='discounts[]']`),
             inputDiscountedPrice = $(this).parent().find(`[name='discounted_price[]']`),
@@ -2108,7 +2132,7 @@
                 detailAmount = Swal.getPopup().querySelector('#order_detail-amount');
                 detailAmount.value = inputDiscount.val()
                 detailAmount.select();
-                detailAmount.addEventListener('input', function () {
+                detailAmount.addEventListener('input', function() {
                     $(this).val($(this).val().replace(/(?!^-)[^0-9]/g, ''));
                 });
                 detailAmount.addEventListener('keyup', (event) => event.key === 'Enter' && Swal
@@ -2116,7 +2140,7 @@
             },
             preConfirm: () => {
                 const amount = parseInt(detailAmount.value),
-                        price = parseInt(inputPrice.val())
+                    price = parseInt(inputPrice.val())
                 // Kiểm tra xem cả hai trường đều được nhập và trường số tiền chỉ chứa giá trị số
                 if (!amount || isNaN(parseFloat(amount)) || amount < 0 || amount > price) {
                     Swal.showValidationMessage(`Invalid data!`);
@@ -2144,11 +2168,11 @@
         });
     })
 
-    $(document).on('change', '.order-discount', function () {
+    $(document).on('change', '.order-discount', function() {
         totalOrder()
     })
 
-    $(document).on('change', `[name='discounted_price[]']`, function () {
+    $(document).on('change', `[name='discounted_price[]']`, function() {
         let badge = $(this).parent().find('.badge'),
             inputDiscount = $(this).parent().find(`[name='discounts[]']`),
             discountedPrice = parseInt($(this).val().split(',').join('')),
@@ -2166,12 +2190,12 @@
         totalOrder()
     })
 
-    $(document).on('change', `.detail [name='quantities[]'], .detail [name='unit_ids[]']`, function () {
+    $(document).on('change', `.detail [name='quantities[]'], .detail [name='unit_ids[]']`, function() {
         const card = $(this).closest('.detail'),
             thisUnit = card.find(`[name='unit_ids[]']`).val(),
             thisStock = card.find(`[name='stock_ids[]']`).val(),
             currentUnit = card.find(`[name='current_unit_ids[]']`).val(),
-            countCheck = $(this).closest('form').find('.detail').filter(function () {
+            countCheck = $(this).closest('form').find('.detail').filter(function() {
                 var loopUnit = $(this).find(`[name='unit_ids[]']`).val(),
                     loopStock = $(this).find(`[name='stock_ids[]']`).val();
                 return loopUnit == thisUnit && loopStock == thisStock;
@@ -2197,12 +2221,12 @@
                 newUnit = card.find(`[name='unit_ids[]']`),
                 newQuantity = card.find(`[name='quantities[]']`),
                 unit_price = card.find(`[name='unit_ids[]'] option:selected`).attr('data-price'),
-                totalQuantity = tab.find(`[name='stock_ids[]'][value=${parseInt(stockId.val())}]`).map(function () {
+                totalQuantity = tab.find(`[name='stock_ids[]'][value=${parseInt(stockId.val())}]`).map(function() {
                     var rate = parseFloat($(this).closest('.detail').find(`[name='unit_ids[]'] option:selected`)
                         .attr('data-rate')) || 0;
                     var quantity = parseFloat($(this).closest('.detail').find(`[name='quantities[]']`).val()) || 0;
                     return rate * quantity;
-                }).get().reduce(function (total, value) {
+                }).get().reduce(function(total, value) {
                     return total + value;
                 }, 0);
             if (stockQuantity < totalQuantity) {
@@ -2227,18 +2251,18 @@
         let tab = '{{ Request::path() }}' == 'quantri/order/new' ? $('.tab-pane.active') : $('#order-form'),
             summary = 0,
             total = 0,
-            pay = $('.order-amount').map(function () {
+            pay = $('.order-amount').map(function() {
                 return parseFloat($(this).val().split(',').join('')) || 0;
-            }).get().reduce(function (sum, value) {
+            }).get().reduce(function(sum, value) {
                 return sum + value;
             }, 0),
             count = 0,
             discount = 0
-        tab.find('.order-detail').each(function () {
+        tab.find('.order-detail').each(function() {
             const quantity = parseInt($(this).find(`.order_detail-quantity`).val().split(',').join('')),
                 price = parseInt($(this).find(`.order_detail-discounted_price`).val().split(',').join('')),
                 discount_program = parseInt($(this).find(`.order_detail-discount_program`).val())
-                console.log(discount_program);
+            console.log(discount_program);
 
             let sum = quantity * price - discount_program
             $(this).find('.order_detail-total').val(sum)
@@ -2266,14 +2290,14 @@
         fillScoresInOrder()
     }
 
-    $(document).on('click', '.btn-print', function () {
+    $(document).on('click', '.btn-print', function() {
         const id = $(this).attr('data-id'),
             url = $(this).attr('data-url'),
             template = $(this).attr('data-template')
 
-        $.get(`${url}/${id}/print?template=${template}`, function (template) {
+        $.get(`${url}/${id}/print?template=${template}`, function(template) {
             $('#print-wrapper').html(template)
-            $('#print-wrapper').find('.barcode-value').each(function () {
+            $('#print-wrapper').find('.barcode-value').each(function() {
                 JsBarcode('#' + $(this).prev().attr('id'), $(this).val(), {
                     format: "CODE128",
                     lineColor: "#000000",
@@ -2301,7 +2325,7 @@
     /**
      * Xử lý thời gian thực
      */
-    $(document).on('change', 'form', function () {
+    $(document).on('change', 'form', function() {
         const id = $(this).find('[name=id]').val()
         if (!id) {
             $(this).find('[name=created_at]').val(moment().format('YYYY-MM-DD HH:mm'));
@@ -2311,7 +2335,7 @@
     /**
      * Xử lý khách hàng
      */
-    $(document).on('change', '[name=customer_id]', function () {
+    $(document).on('change', '[name=customer_id]', function() {
         fillCustomerSuggestions($(this).val())
     })
     /*==================== END ORDER ====================*/
@@ -2319,7 +2343,7 @@
     /**
      *  TRANSACTION PROCESS
      */
-    $(document).on('click', '.btn-create-transaction', function (e) {
+    $(document).on('click', '.btn-create-transaction', function(e) {
         e.preventDefault();
         const form = $('#transaction-form'),
             order_id = $(this).attr('data-order'),
@@ -2328,7 +2352,7 @@
         let note = ''
         resetForm(form)
         if (order_id) {
-            $.get(`{{ route('admin.order') }}/${order_id}`).then(function (order) {
+            $.get(`{{ route('admin.order') }}/${order_id}`).then(function(order) {
                 if (order) {
                     if (order._customer) {
                         var option = new Option(order._customer.name, order._customer.id, true, true);
@@ -2354,7 +2378,7 @@
             });
         } else {
             if (customer_id) {
-                $.get(`{{ route('admin.user') }}/${customer_id}`, function (customer) {
+                $.get(`{{ route('admin.user') }}/${customer_id}`, function(customer) {
                     var option = new Option(customer.name, customer.id, true, true);
                     form.find('[name=customer_id]').html(option).trigger({
                         type: 'select2:select'
@@ -2375,13 +2399,13 @@
         form.find('.modal').modal('show').find('.modal-title').text('{{ __('messages.transaction.new_transaction') }}')
     })
 
-    $(document).on('click', '.btn-update-transaction', function () {
+    $(document).on('click', '.btn-update-transaction', function() {
         const id = $(this).attr('data-id'),
             customer_id = $(this).attr('data-customer_id')
         const form = $('#transaction-form');
         resetForm(form)
         form.attr('action', `{{ route('admin.transaction.update') }}`)
-        $.get(` {{ route('admin.transaction') }}/${id}`, function (transaction) {
+        $.get(` {{ route('admin.transaction') }}/${id}`, function(transaction) {
             if (transaction.customer_id != null) {
                 var option = new Option(transaction._customer.name, transaction._customer.id, true,
                     true);
@@ -2412,7 +2436,7 @@
         })
     })
 
-    $(document).on('click', '.btn-convert-scores', function () {
+    $(document).on('click', '.btn-convert-scores', function() {
         const user_scores = $('[name=scores]'),
             original_scores = $('[name=original_scores]'),
             order_discount = $('[name=discount]')
@@ -2430,7 +2454,7 @@
                 convert_scores = Swal.getPopup().querySelector('#convert-scores');
                 convert_scores.value = user_scores.val()
                 convert_scores.select();
-                convert_scores.addEventListener('input', function () {
+                convert_scores.addEventListener('input', function() {
                     $(this).val($(this).val().replace(/(?!^-)[^0-9]/g, ''));
                 });
                 convert_scores.addEventListener('keyup', (event) => event.key === 'Enter' && Swal
@@ -2458,7 +2482,7 @@
 
     function fillCustomerSuggestions(id) {
         if (!id) return;
-        $.get(`{{ route('admin.user') }}/${id}/suggestions`, function (suggest) {
+        $.get(`{{ route('admin.user') }}/${id}/suggestions`, function(suggest) {
             let str =
                 `<span class="badge bg-secondary me-2 mb-2">Account since ${moment(suggest.created_at).format('DD/MM/YYYY')}</span>`
             if (suggest.countOrders) {
@@ -2725,7 +2749,7 @@
             serverSide: true,
             ajax: {
                 url: `{{ route('admin.transaction') }}?order_id=${order_id}`,
-                dataSrc: function (json) {
+                dataSrc: function(json) {
                     const totalOrder = json.totalOrder;
                     const totalAmount = json.totalAmount;
                     const transactionRemain = totalAmount - totalOrder;
@@ -2735,8 +2759,8 @@
                         .html(transactionRemain < 0 ?
                             `<span class="text-danger">${number_format(transactionRemain) + ' VND'}</span>` :
                             transactionRemain > 0 ?
-                                `<span class="text-success">${number_format(transactionRemain) + ' VND'}</span>` :
-                                number_format(transactionRemain) + ' VND')
+                            `<span class="text-success">${number_format(transactionRemain) + ' VND'}</span>` :
+                            number_format(transactionRemain) + ' VND')
                         .prev().text(transactionRemain < 0 ? `Underpaid` : transactionRemain > 0 ? `Overpaid` : `{{ __('messages.pay_in_full') }}`);
                     return json.data;
                 }
@@ -2765,7 +2789,7 @@
     /**
      *  EXPENSE PROCESS
      */
-    $(document).on('click', '.btn-create-expense', function (e) {
+    $(document).on('click', '.btn-create-expense', function(e) {
         e.preventDefault();
         const form = $('#expense-form')
         resetForm(form)
@@ -2777,38 +2801,134 @@
      *  DETAIL LOG
      */
     const translations_log = {
-        code: { vn: 'Mã', en: 'Code' },
-        name: { vn: 'Họ tên', en: 'Full Name' },
-        phone: { vn: 'Số điện thoại', en: 'Phone Number' },
-        email: { vn: 'Email', en: 'Email' },
-        avatar: { vn: 'Ảnh đại diện', en: 'Avatar' },
-        genderStr: { vn: 'Giới tính', en: 'Gender' },
-        password: { vn: 'Mật khẩu', en: 'Password' },
-        address: { vn: 'Địa chỉ', en: 'Address' },
-        local_id: { vn: 'Địa phương', en: 'Local' },
-        main_branch: { vn: 'Chi nhánh chính', en: 'Main Branch' },
-        scores: { vn: 'Điểm số', en: 'Scores' },
-        statusStr: { vn: 'Trạng thái', en: 'Status' },
-        note: { vn: 'Ghi chú', en: 'Note' },
-        remember_token: { vn: 'Token đăng nhập', en: 'Remember Token' },
-        deleted_at: { vn: 'Đã xoá lúc', en: 'Deleted At' },
-        created_at: { vn: 'Tạo lúc', en: 'Created At' },
-        updated_at: { vn: 'Cập nhật lúc', en: 'Updated At' },
-        excerpt: { vn: 'Miêu tả ngắn', en: 'Short Description' },
-        description: { vn: 'Mô tả', en: 'Description' },
-        slug: { vn: 'Slug', en: 'Slug' },
-        sku: { vn: 'Sku', en: 'Sku' },
-        specs: { vn: 'Thông số kỹ thuật', en: 'Specs' },
-        keyword: { vn: 'Từ khóa', en: 'Keyword' },
-        parent_id: { vn: 'Danh mục cha', en: 'Parent Category' },
-        branch_id: { vn: 'Chi nhánh', en: 'Branch' },
-        typeStr: { vn: 'Loại', en: 'Type' },
-        buy_quantity: { vn: 'Số lượng mua', en: 'Buy Quantity' },
-        get_quantity: { vn: 'Số lượng nhận', en: 'Get Quantity' },
-        min_quantity: { vn: 'Số lượng tối thiểu', en: 'Min Quantity' },
-        start_date: { vn: 'Ngày bắt đầu', en: 'Start Date' },
-        end_date: { vn: 'Ngày kết thúc', en: 'End Date' },
-        organ: { vn: 'Tổ chức', en: 'Organ' },
+        code: {
+            vn: 'Mã',
+            en: 'Code'
+        },
+        name: {
+            vn: 'Họ tên',
+            en: 'Full Name'
+        },
+        phone: {
+            vn: 'Số điện thoại',
+            en: 'Phone Number'
+        },
+        email: {
+            vn: 'Email',
+            en: 'Email'
+        },
+        avatar: {
+            vn: 'Ảnh đại diện',
+            en: 'Avatar'
+        },
+        genderStr: {
+            vn: 'Giới tính',
+            en: 'Gender'
+        },
+        password: {
+            vn: 'Mật khẩu',
+            en: 'Password'
+        },
+        address: {
+            vn: 'Địa chỉ',
+            en: 'Address'
+        },
+        local_id: {
+            vn: 'Địa phương',
+            en: 'Local'
+        },
+        main_branch: {
+            vn: 'Chi nhánh chính',
+            en: 'Main Branch'
+        },
+        scores: {
+            vn: 'Điểm số',
+            en: 'Scores'
+        },
+        statusStr: {
+            vn: 'Trạng thái',
+            en: 'Status'
+        },
+        note: {
+            vn: 'Ghi chú',
+            en: 'Note'
+        },
+        remember_token: {
+            vn: 'Token đăng nhập',
+            en: 'Remember Token'
+        },
+        deleted_at: {
+            vn: 'Đã xoá lúc',
+            en: 'Deleted At'
+        },
+        created_at: {
+            vn: 'Tạo lúc',
+            en: 'Created At'
+        },
+        updated_at: {
+            vn: 'Cập nhật lúc',
+            en: 'Updated At'
+        },
+        excerpt: {
+            vn: 'Miêu tả ngắn',
+            en: 'Short Description'
+        },
+        description: {
+            vn: 'Mô tả',
+            en: 'Description'
+        },
+        slug: {
+            vn: 'Slug',
+            en: 'Slug'
+        },
+        sku: {
+            vn: 'Sku',
+            en: 'Sku'
+        },
+        specs: {
+            vn: 'Thông số kỹ thuật',
+            en: 'Specs'
+        },
+        keyword: {
+            vn: 'Từ khóa',
+            en: 'Keyword'
+        },
+        parent_id: {
+            vn: 'Danh mục cha',
+            en: 'Parent Category'
+        },
+        branch_id: {
+            vn: 'Chi nhánh',
+            en: 'Branch'
+        },
+        typeStr: {
+            vn: 'Loại',
+            en: 'Type'
+        },
+        buy_quantity: {
+            vn: 'Số lượng mua',
+            en: 'Buy Quantity'
+        },
+        get_quantity: {
+            vn: 'Số lượng nhận',
+            en: 'Get Quantity'
+        },
+        min_quantity: {
+            vn: 'Số lượng tối thiểu',
+            en: 'Min Quantity'
+        },
+        start_date: {
+            vn: 'Ngày bắt đầu',
+            en: 'Start Date'
+        },
+        end_date: {
+            vn: 'Ngày kết thúc',
+            en: 'End Date'
+        },
+        organ: {
+            vn: 'Tổ chức',
+            en: 'Organ'
+        },
     };
     const locale = $('html').attr('lang') || 'vn';
     const emptyText = locale === 'en' ? 'empty' : 'trống';
@@ -2820,13 +2940,13 @@
     ];
 
 
-    $(document).on('click', '.btn-detail-log', function (e) {
+    $(document).on('click', '.btn-detail-log', function(e) {
         e.preventDefault();
         const id = $(this).data('id'),
             form = $('#log-form');
 
         resetForm(form); // nếu có
-        $.get(`{{ route('admin.log.show', '') }}/${id}`, function (log) {
+        $.get(`{{ route('admin.log.show', '') }}/${id}`, function(log) {
             const before = log.before_change || {};
             const after = log.after_change || {};
             const allKeys = Array.from(new Set([...Object.keys(before), ...Object.keys(after)]));
@@ -2839,11 +2959,11 @@
 
                 let beforeValue = (before[key] !== undefined && before[key] !== null) ? before[key] : emptyText;
                 let afterValue = (after[key] !== undefined && after[key] !== null) ? after[key] : emptyText;
-                if(beforeValue.startsWith('{') && beforeValue.endsWith('}')) {
-                   beforeValue = beforeValue.replace('{', '').replace('}', '').replace(/"/g, ' ');
+                if (beforeValue.startsWith('{') && beforeValue.endsWith('}')) {
+                    beforeValue = beforeValue.replace('{', '').replace('}', '').replace(/"/g, ' ');
                 }
-                if(afterValue.startsWith('{') && afterValue.endsWith('}')) {
-                   afterValue = afterValue.replace('{', '').replace('}', '').replace(/"/g, ' ');
+                if (afterValue.startsWith('{') && afterValue.endsWith('}')) {
+                    afterValue = afterValue.replace('{', '').replace('}', '').replace(/"/g, ' ');
                 }
                 rows += `
                     <tr ${(beforeValue != afterValue) ? 'style="background-color: #aaa;"' : ''}>
@@ -2859,12 +2979,12 @@
 
 
 
-    $(document).on('click', '.btn-update-expense', function (e) {
+    $(document).on('click', '.btn-update-expense', function(e) {
         e.preventDefault();
         const id = $(this).attr('data-id'),
             form = $('#expense-form');
         resetForm(form)
-        $.get(`{{ route('admin.expense') }}/${id}`, function (expense) {
+        $.get(`{{ route('admin.expense') }}/${id}`, function(expense) {
             form.find('[name=id]').val(expense.id)
             form.attr('action', `{{ route('admin.expense.update') }}`)
             form.find('.modal').modal('show')
@@ -2893,7 +3013,7 @@
     //Sắp lịch lấy thứ hai tuần sau
     let nextMonday = moment().endOf('week').add(1, 'days'); // Thứ hai tuần sau
 
-    $(document).on('change', '.btn-change-schedule', function () {
+    $(document).on('change', '.btn-change-schedule', function() {
         const element = $(this),
             user_id = $(this).attr('data-user_id'),
             main_branch = $(this).attr('data-main_branch'),
@@ -2909,7 +3029,7 @@
                 <input type="hidden" name="shift" value="${shift}">
                 <input type="hidden" name="date" value="${date}">
             </form>`);
-        submitForm(form).catch(function (errors) {
+        submitForm(form).catch(function(errors) {
             element.prop("checked", false);
         });
     })
@@ -2917,14 +3037,14 @@
     /**
      * WORK PROCESS
      */
-    $(document).ready(function () {
+    $(document).ready(function() {
         moment.locale('vi');
-        $(document).on('click', '.btn-update-work', function (e) {
+        $(document).on('click', '.btn-update-work', function(e) {
             e.preventDefault();
             const id = $(this).attr('data-id'),
                 form = $('#timekeeping-form');
             resetForm(form)
-            $.get(`{{ route('admin.work') }}/${id}`, function (work) {
+            $.get(`{{ route('admin.work') }}/${id}`, function(work) {
                 form.find('[name="sign_checkin"]').val(moment(work.sign_checkin).format(
                     'HH:mm'))
                 form.find('[name="sign_checkout"]').val(moment(work.sign_checkout).format(
@@ -2942,7 +3062,7 @@
         })
 
         //Tự sắp lịch
-        $(document).on('click', '.btn-self-schedule', function (e) {
+        $(document).on('click', '.btn-self-schedule', function(e) {
             e.preventDefault();
             const modal = $('#self-schedule-modal');
             renderSchedule(nextMonday, $('#self-schedule-table thead'));
@@ -2973,9 +3093,9 @@
 
     //Fill lịch cho modal chấm đăng ký lịch
     function fillSchedule() {
-        $.get(`{{ route('admin.work', ['key' => 'schedule']) }}`, function (works) {
+        $.get(`{{ route('admin.work', ['key' => 'schedule']) }}`, function(works) {
             //4-1611-4-6
-            $.each(works, function (index, work) {
+            $.each(works, function(index, work) {
                 const classComponent = `${work.branch_id}-${work.user_id}-${work.index}-${work.date}`;
                 $('#schedule-modal').find(`.${classComponent}`).prop('checked', true);
                 $('#self-schedule-modal').find(`.${classComponent}`).prop('checked', true);
@@ -3007,188 +3127,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@goongmaps/goong-js@1.0.9/dist/goong-js.js"></script>
 
 <script>
-    const GOONG_MAP_API_KEY = '{{ config("services.goong.map_key") }}';
-    const GOONG_REST_API_KEY = '{{ config("services.goong.rest_key") }}';
-
-    function debounce(func, wait, immediate) {
-        let timeout;
-        return function () {
-            const context = this,
-                args = arguments;
-            clearTimeout(timeout);
-            timeout = setTimeout(function () {
-                timeout = null;
-                if (!immediate) func.apply(context, args);
-            }, wait);
-            if (immediate && !timeout) func.apply(context, args);
-        };
-    }
-
-    function initGoongMap({
-        containerId,
-        defaultLat = 10.762622,
-        defaultLng = 106.660172,
-        onLocationSelected = () => {},
-        addressInputSelector = null,
-        addressPreviewSelector = null
-    }) {
-        goongjs.accessToken = GOONG_MAP_API_KEY;
-
-        const map = new goongjs.Map({
-            container: containerId,
-            style: 'https://tiles.goong.io/assets/goong_map_web.json',
-            center: [defaultLng, defaultLat],
-            zoom: 14,
-        });
-
-        let marker = new goongjs.Marker({ draggable: true })
-            .setLngLat([defaultLng, defaultLat])
-            .addTo(map);
-
-        function reverseGeocode(lat, lng, callback) {
-            $.ajax({
-                url: 'https://rsapi.goong.io/Geocode',
-                method: 'GET',
-                data: {
-                    latlng: `${lat},${lng}`,
-                    api_key: GOONG_REST_API_KEY
-                },
-                success: function (res) {
-                    const address = res.results[0]?.formatted_address || '';
-                    callback(address);
-                }
-            });
-        }
-
-        function geocodeAddress(address, callback) {
-            $.ajax({
-                url: 'https://rsapi.goong.io/Geocode',
-                method: 'GET',
-                data: {
-                    address: address,
-                    api_key: GOONG_REST_API_KEY
-                },
-                success: function (res) {
-                    if (res.results.length > 0) {
-                        const { lat, lng } = res.results[0].geometry.location;
-                        const formatted_address = res.results[0].formatted_address;
-                        callback({ lat, lng, address: formatted_address });
-                    }
-                }
-            });
-        }
-
-        function updateAddressInput(lat, lng, address) {
-            if (addressInputSelector) {
-                const input = document.querySelector(addressInputSelector);
-                const jsonValue = JSON.stringify({ address, lat, lng });
-                input.value = jsonValue;
-            }
-        }
-
-        function updatePreviewAddressInput(address) {
-            if (addressPreviewSelector) {
-                const input = document.querySelector(addressPreviewSelector);
-                input.value = address;
-            }
-        }
-
-        function updateMarkerAndCenter(lat, lng) {
-            marker.setLngLat([lng, lat]);
-            map.flyTo({ center: [lng, lat], zoom: 16 });
-        }
-
-        map.on('click', function (e) {
-            const { lat, lng } = e.lngLat;
-            updateMarkerAndCenter(lat, lng);
-            reverseGeocode(lat, lng, function (address) {
-                onLocationSelected({ lat, lng, address });
-                updateAddressInput(lat, lng, address);
-                updatePreviewAddressInput(address);
-            });
-        });
-
-        marker.on('dragend', function () {
-            const lngLat = marker.getLngLat();
-            reverseGeocode(lngLat.lat, lngLat.lng, function (address) {
-                onLocationSelected({ lat: lngLat.lat, lng: lngLat.lng, address });
-                updateAddressInput(lngLat.lat, lngLat.lng, address);
-                updatePreviewAddressInput(address);
-            });
-        });
-
-        if (addressPreviewSelector) {
-            const $input = $(addressPreviewSelector);
-            const $suggestions = $('<ul id="suggestions" class="autocomplete-list w-auto"></ul>');
-            $input.after($suggestions);
-
-            const defaultLocation = `${defaultLat},${defaultLng}`;
-            const radius = 20000;
-
-            // DEBOUNCED AUTOCOMPLETE
-            const handleAutocomplete = debounce(function () {
-                const inputValue = $input.val();
-                if (inputValue.length < 2) {
-                    $suggestions.empty();
-                    return;
-                }
-
-                $.ajax({
-                    url: 'https://rsapi.goong.io/place/autocomplete',
-                    method: 'GET',
-                    data: {
-                        input: inputValue,
-                        location: defaultLocation,
-                        radius: radius,
-                        limit: 10,
-                        api_key: GOONG_REST_API_KEY
-                    },
-                    success: function (res) {
-                        $suggestions.empty();
-
-                        if (res.predictions && res.predictions.length > 0) {
-                            res.predictions.forEach(function (place) {
-                                const $item = $('<li></li>').text(place.description);
-                                $item.on('click', function () {
-                                    const address = place.description;
-
-                                    // Vì autocomplete không trả về lat/lng, phải gọi geocode
-                                    geocodeAddress(address, function ({ lat, lng, address }) {
-                                        console.log('Selected address:', address, lat, lng);
-
-                                        $input.val(address);
-                                        $suggestions.empty();
-                                        updateMarkerAndCenter(lat, lng);
-                                        onLocationSelected({ lat, lng, address });
-                                        updateAddressInput(lat, lng, address);
-                                        updatePreviewAddressInput(address);
-                                    });
-                                });
-                                $suggestions.append($item);
-                            });
-                        } else {
-                            $suggestions.append('<li class="text-muted">Không tìm thấy kết quả</li>');
-                        }
-                    },
-                    error: function () {
-                        $suggestions.html('<li class="text-danger">Lỗi khi gọi API</li>');
-                    }
-                });
-            }, 300); // 300ms debounce
-
-            $input.on('input', handleAutocomplete);
-
-            // chọn ngoài thì ẩn
-            $(document).on('click', function (e) {
-                if (!$(e.target).closest(addressPreviewSelector).length) {
-                    $suggestions.empty();
-                }
-            });
-        }
-
-        return { map, marker };
-    }
-
+    const GOONG_MAP_API_KEY = '{{ config('services.goong.map_key') }}';
+    const GOONG_REST_API_KEY = '{{ config('services.goong.rest_key') }}';
 </script>
 
 <script src="{{ asset('admin/js/main.js') }}?v={{ $version_name }}"></script>
@@ -3196,3 +3136,4 @@
 @stack('scripts')
 
 </html>
+
