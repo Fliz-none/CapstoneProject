@@ -2,6 +2,37 @@
 @section('title')
     {{ $pageName }}
 @endsection
+@php
+    $settings = cache()->get('settings');
+@endphp
+<style>
+    /* Ẩn checkbox mặc định */
+    input[type="checkbox"].square-check {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 24px;
+        height: 24px;
+        border: 2px solid #999;
+        border-radius: 4px;
+        background-color: #fff;
+        position: relative;
+        cursor: pointer;
+    }
+
+    input[type="checkbox"].square-check:checked::after {
+        content: "✔";
+        color: green;
+        font-size: 18px;
+        position: absolute;
+        top: -2px;
+        left: 4px;
+    }
+
+    input[type="checkbox"].square-check:checked {
+        background-color: #fff;
+        border: 2px solid #999;
+    }
+</style>
 @section('content')
     <div class="row tabbar">
         <div class="col-12 col-lg-4 mb-2">
@@ -116,6 +147,33 @@
                                                 <input class="form-control-lg text-end form-control bg-white money order-summary" id="order-${nextCount}-summary" name="summary" type="text" value="0" placeholder="Amount" autocomplete="off" readonly>
                                             </div>
                                         </div>
+                                        @if(json_decode($settings['setting_score'])->check_score == 1)
+                                            <div class="row mb-3 order-user-scores d-none">
+                                                <div class="col-sm-6 d-flex align-items-center">
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                            <input type="checkbox" id="order-user_scores" name="user_scores" class="square-check">
+                                                        </div>
+                                                        <label for="order-user_scores" class="col-9">
+                                                            <p>Use</p>
+                                                            <p>Discount</p>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="d-flex align-items-center justify-content-end">
+                                                        <input type="number" class="form-control bg-white money order-scores_used" name="scores_used" value="0"/>
+                                                        <input type="hidden" class="order-current-scores_used" value="0"/>
+                                                        <span class="ms-3">Point</span>
+                                                    </div>
+                                                    <div class="d-flex align-items-center justify-content-end mt-2">
+                                                        <input type="number" class="form-control bg-white money order-score_to_money" value="0" readonly />
+                                                        <input type="hidden" class="order-money_discounted" value="0" />
+                                                        <span class="ms-3">VND</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
                                         <div class="order-payments" id="order-${nextCount}-payments">
                                         </div>
                                         <div class="row mb-3 row-change d-none">
@@ -178,6 +236,34 @@
             $('.tab-content > .tab-pane > form > .row > .col-12').css('min-height', 'calc(100vh - ' + $('header')
                 .outerHeight(true) + 'px)');
         });
+
+        $(document).on('change', '.order-scores_used', function(){
+            const input = $(this),
+                point = input.val(),
+                cur_point = input.closest('.order-user-scores').find('.order-current-scores_used');
+            if(point < 0) {
+                input.val(cur_point.val())
+            } else {
+                fillScoresInOrder(point)
+            }
+        })
+
+        $(document).on('change', '#order-user_scores', function(){
+            const checkbox = $(this),
+                tab = $('#order-contents .tab-pane.active'),
+                discount = Number(tab.find('.order-discount').val()),
+                money_discounted = Number(tab.find('.order-money_discounted').val()),
+                score_to_money = Number(tab.find('.order-score_to_money').val())
+
+            if (checkbox.is(':checked')) {
+                discount_price = discount - money_discounted + score_to_money
+                tab.find('.order-money_discounted').val(score_to_money)
+            } else {
+                discount_price = discount - money_discounted
+                tab.find('.order-money_discounted').val(0)
+            }
+            tab.find('.order-discount').val(discount_price).trigger('change')
+        })
 
         /**
          * Xử lý đóng tab

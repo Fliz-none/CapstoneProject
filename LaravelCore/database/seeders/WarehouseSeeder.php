@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Warehouse;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class WarehouseSeeder extends Seeder
@@ -16,9 +17,9 @@ class WarehouseSeeder extends Seeder
     public function run()
     {
         $warehouses = [
-            [1, 1, 1, 'Kho Nguyễn Văn Linh', 'Ninh Kiều, Cần Thơ', NULL, 2, NULL, '2024-06-09 17:09:32', '2024-08-31 19:54:55'],
-            [2, 2, 2, 'Kho Trần Hoàng Na', 'Ninh Kiều, Cần Thơ', NULL, 2, NULL, '2024-06-09 17:09:32', '2024-09-11 05:09:37'],
-            [3, 3, 3, 'Kho Nguyễn Văn Cừ', 'Ninh Kiều, Cần Thơ', NULL, 2, NULL, '2024-06-09 17:09:32', '2024-09-11 05:09:27'],
+            [1, 1, 1, 'Kho Nguyễn Văn Linh', 'Ninh Kiều, Cần Thơ', NULL, 2, NULL],
+            [2, 2, 2, 'Kho Trần Hoàng Na', 'Ninh Kiều, Cần Thơ', NULL, 2, NULL],
+            [3, 3, 3, 'Kho Ninh Kiều', 'Ninh Kiều, Cần Thơ', NULL, 2, NULL],
         ];
 
         foreach ($warehouses as $warehouse) {
@@ -30,8 +31,8 @@ class WarehouseSeeder extends Seeder
                 'note' => $warehouse[5],
                 'status' => $warehouse[6],
                 'deleted_at' => $warehouse[7],
-                'created_at' => $warehouse[8],
-                'updated_at' => $warehouse[9],
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ]);
         }
     }

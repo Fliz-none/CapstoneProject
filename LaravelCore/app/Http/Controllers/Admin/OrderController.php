@@ -395,8 +395,11 @@ class OrderController extends Controller
                         'status' => $request->has('status') ? $request->status : 0,
                         'note' => $request->note,
                     ]);
-                    if ($request->has('scores')) {
-                        optional($order->customer)->update(['scores' => $request->scores]);
+                    // if ($request->has('scores')) {
+                    //     optional($order->customer)->update(['scores' => $request->scores]);
+                    // }
+                    if ($request->has('user_scores')) {
+                        optional($order->customer)->update(['scores' => $order->customer->scores - $request->scores_used]);
                     }
                     if ($order) {
                         $export = Export::create([
@@ -469,7 +472,14 @@ class OrderController extends Controller
                                 'note' => 'Remaining money for order ' . $order->code,
                             ]);
                         }
-                        $order->sync_scores($order->paid);
+                        // $order->sync_scores($order->paid);
+                        $setting_score = json_decode(cache()->get('settings')['setting_score']);
+                        if($setting_score->check_score == 1 && $order->customer) {
+                            $convert = $setting_score->money_to_score;
+                            $order->customer->update([
+                                'scores' => $order->customer->scores + (intdiv($order->total, $convert->money) * $convert->score)
+                            ]);
+                        }
 
                         $response = array(
                             'id' => $order->id,

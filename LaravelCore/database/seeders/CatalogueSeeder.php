@@ -48,7 +48,7 @@ class CatalogueSeeder extends Seeder
                 'sort' => $catalogue[4],
                 'parent_id' => $catalogue[5],
                 'status' => $catalogue[6],
-                'is_featured' => collect([0, 0, 0, 0, 0, 0, 0, 0, 1])->random(),
+                'is_featured' => 1,
                 'note' => $catalogue[7],
                 'deleted_at' => $catalogue[8],
                 'created_at' => $catalogue[9],

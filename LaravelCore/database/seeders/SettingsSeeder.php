@@ -64,7 +64,7 @@ class SettingsSeeder extends Seeder
             ['banner_us_1', 'bg-contact-1.jpg'],
             ['banner_us_2', 'bg-contact-1.jpg'],
             ['banner_contact', 'bg-contact-1.jpg'],
-            ['setting_score', '{"money_to_score":{"money":"100000","score":"11"},"score_to_money":{"score":"10","money":"50005"}}'],
+            ['setting_score', '{"check_score":1,"money_to_score":{"money":"100","score":"1"},"score_to_money":{"score":"1","money":"1"}}'],
         ];
 
         foreach ($settings as $key => $setting) {

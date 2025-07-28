@@ -9,7 +9,7 @@
     <title> @yield('title') - {{ config('app.name') }}</title>
 
     {{-- Thẻ favicon --}}
-    <link type="image/x-icon" href="{{ asset('admin/images/logo/favicon_key.png') }}" rel="shortcut icon">
+    <link type="image/x-icon" href="{{ asset(env('FILE_STORAGE', '/storage') . '/' . cache()->get('settings')['favicon']) }}" rel="shortcut icon">
     {{-- Định nghĩa web app --}}
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -1506,7 +1506,7 @@
         })
     })
 
-    
+
     let supplierMap = null;
     $('#supplier-modal').on('shown.bs.modal', function () {
         if (!supplierMap) {
@@ -2263,6 +2263,7 @@
         summary = total - discount
         tab.find('.order-summary').val(summary > 0 ? summary : 0).change()
         tab.find('.order-due').val(summary - pay).change()
+        fillScoresInOrder()
     }
 
     $(document).on('click', '.btn-print', function () {
@@ -2475,7 +2476,8 @@
                         <input type="hidden" name="scores" value="${suggest.scores}">
                         <input type="hidden" name="original_scores" value="${suggest.scores}">`
                 } else {
-                    str += `<span class="badge bg-secondary me-2 mb-2">Currently has <span class="text-white fw-bold fs-5">${number_format(suggest.scores)}</span> points</span>`
+                    str += `<span class="badge bg-secondary me-2 mb-2">Currently has <span class="text-white fw-bold fs-5">${number_format(suggest.scores)}</span> points</span>
+                            <input type="hidden" name="original_scores" value="${suggest.scores}">`
                 }
             }
             if (suggest.debt) {
@@ -2497,7 +2499,59 @@
             }
             $('.customer-suggestions').html(str)
             $('.customer-information').val(suggest.name + (suggest.phone ? ' - ' + suggest.phone : ''))
+            $('.order-user-scores').removeClass('d-none').find('#order-user_scores').prop('checked', false)
+            fillScoresInOrder()
         })
+    }
+
+    function fillScoresInOrder(point = null) {
+        const tab = $('#order-contents .tab-pane.active')
+            total = Number(tab.find('.order-summary').val() || 0),
+            customer_id = tab.find(`select[name=customer_id] option:selected`).val(),
+            user_score = Number(tab.find('input[name=original_scores]').val() || 0),
+            dataScore = JSON.parse(`{!! cache()->get('settings')['setting_score'] !!}`),
+            convert = dataScore.score_to_money;
+
+
+        if (point) {
+            const density = point / convert.score,
+                cur_point = tab.find('.order-current-scores_used'),
+                discount = Number(tab.find('.order-discount').val()),
+                discounted = Number(tab.find('.order-money_discounted').val());
+
+            if (density * convert.money > total + discounted || Number(point) > user_score) {
+                pushToastify("Invalid score!", 'danger')
+                tab.find('.order-scores_used').val(cur_point.val()).end()
+            } else {
+                tab.find('.order-score_to_money').val(density * convert.money)
+                tab.find('.order-score_to_money').val(density * convert.money)
+                cur_point.val(point)
+                if($('#order-user_scores').is(':checked')) {
+                    $('#order-user_scores').trigger('change')
+                }
+            }
+        } else {
+            if (total > 0 && customer_id && !tab.find('#order-user_scores').is(':checked')) {
+                let scores_used = 0,
+                    score_to_money = 0;
+                if (user_score >= parseInt(convert.score)) {
+                    const moneyPerPoint = density = Math.floor(total / convert.money)
+                    if (density > 0) {
+                        scores_used = density * convert.score
+                        console.log(scores_used, user_score);
+                        if(scores_used > user_score) {
+                            scores_used = user_score
+                            score_to_money = scores_used / convert.score * convert.money
+                        } else {
+                            score_to_money = density * convert.money
+                        }
+                    }
+                }
+                tab.find('.order-scores_used').val(scores_used).end()
+                            .find('.order-current-scores_used').val(scores_used).end()
+                            .find('.order-score_to_money').val(score_to_money)
+            }
+        }
     }
 
     /**
@@ -3101,7 +3155,7 @@
                                     // Vì autocomplete không trả về lat/lng, phải gọi geocode
                                     geocodeAddress(address, function ({ lat, lng, address }) {
                                         console.log('Selected address:', address, lat, lng);
-                                        
+
                                         $input.val(address);
                                         $suggestions.empty();
                                         updateMarkerAndCenter(lat, lng);

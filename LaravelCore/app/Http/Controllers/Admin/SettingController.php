@@ -68,6 +68,7 @@ class SettingController extends Controller
     public function updateScore(Request $request) {
         try {
             $data = [
+                'check_score' => (int) $request->input('check_score', 0),
                 'money_to_score' => $request->input('money_to_score', []),
                 'score_to_money' => $request->input('score_to_money', []),
             ];

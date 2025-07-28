@@ -57,7 +57,7 @@ class UserSeeder extends Seeder
                 'name' => $user[1],
                 'phone' => $user[2],
                 'email' => $user[3],
-                'avatar' => $user[4],
+                'avatar' => null,
                 'gender' => $user[5],
                 'password' => $user[6],
                 'address' => $user[8],

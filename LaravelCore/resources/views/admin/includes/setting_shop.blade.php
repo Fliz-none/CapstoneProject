@@ -53,14 +53,14 @@ $scoreSettings = json_decode($settings['setting_score'] ?? '{}', true);
                         {{ __('messages.shop_setting.check_placeholder') }}
                     </small>
                 </label>
-            
+
                 <div class="col-sm-8">
                     <div class="btn-group" role="group" aria-label="Check Score Toggle">
-                        <input type="radio" class="btn-check" name="check_score" id="check_score_1" value="1" autocomplete="off" checked>
+                        <input type="radio" class="btn-check" name="check_score" id="check_score_1" value="1" autocomplete="off" {{ $scoreSettings['check_score'] == 1 ? 'checked' : ''}} >
                         <label class="btn btn-outline-primary" for="check_score_1">
                             {{ __('messages.shop_setting.open') }}
                         </label>
-                        <input type="radio" class="btn-check" name="check_score" id="check_score_0" value="0" autocomplete="off">
+                        <input type="radio" class="btn-check" name="check_score" id="check_score_0" value="0" autocomplete="off" {{ $scoreSettings['check_score'] == 0 ? 'checked' : ''}}>
                         <label class="btn btn-outline-secondary" for="check_score_0">
                             {{ __('messages.shop_setting.close') }}
                         </label>
@@ -68,7 +68,7 @@ $scoreSettings = json_decode($settings['setting_score'] ?? '{}', true);
                 </div>
             </div>
 
-            <div class="mb-3 row " id="money_to_score">
+            <div class="mb-3 row {{ $scoreSettings['check_score'] == 0 ? 'd-none' : ''}}" id="money_to_score">
                 <label class="col-sm-4 col-form-label" for="money_to_score">{{ __('messages.shop_setting.money_to_score') }}<br />
                     <small class="form-text text-muted"
                         id="money_to_score-help">{{ __('messages.shop_setting.money_to_score_placeholder') }}</small>
@@ -96,7 +96,7 @@ $scoreSettings = json_decode($settings['setting_score'] ?? '{}', true);
                 </div>
             </div>
 
-            <div class="mb-3 row" id="score_to_money">
+            <div class="mb-3 row {{ $scoreSettings['check_score'] == 0 ? 'd-none' : ''}}" id="score_to_money">
                 <label class="col-sm-4 col-form-label" for="score_to_money">{{ __('messages.shop_setting.score_to_money') }}<br />
                     <small class="form-text text-muted"
                         id="score_to_money-help">{{ __('messages.shop_setting.score_to_money_placeholder') }}</small>
@@ -119,7 +119,7 @@ $scoreSettings = json_decode($settings['setting_score'] ?? '{}', true);
                             <input class="form-control money" id="score_to_money_money" name="score_to_money[money]" type="text"
                                 value="{{ $scoreSettings['score_to_money']['money'] ?? '' }}">
                             <span class="input-group-text">{{ $config['currency'] }}</span>
-                        </div>  
+                        </div>
 
                     </div>
                 </div>

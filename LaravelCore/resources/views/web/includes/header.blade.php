@@ -5,18 +5,18 @@
     <div class="header-left">
         <div class="d-flex align-items-center">
             <div class="circle-btn home-btn me-4">
-                <a href="{{ route('home') }}" title="PHÒNG KHÁM THÚ Y TRUONGDUNG">
+                <a href="{{ route('home') }}" title="{{ $settings['company_name'] }}">
                     <img class="img-fluid" src="{{ asset('images/img/home.png') }}" alt="">
                 </a>
             </div>
-            <div class="header-search">
+            {{-- <div class="header-search">
                 <form action="{{ route('search') }}">
                     <input name="q" type="text" value="" placeholder="Nhập từ khóa tìm kiếm....">
                     <button class="border-0 bg-transparent p-0" type="submit">
                         <img src="{{ asset('images/img/search.png') }}" alt="">
                     </button>
                 </form>
-            </div>
+            </div> --}}
         </div>
     </div>
     <div class="header-content">

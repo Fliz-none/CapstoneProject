@@ -2,6 +2,9 @@
 @section('title')
     {{ $pageName }}
 @endsection
+@php
+    $settings = cache()->get('settings');
+@endphp
 @section('content')
     <div class="master-wrapper">
         <div class="container-fluid px-0">
@@ -10,12 +13,12 @@
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <div class="home-banner-slide">
-                                <img class="img-fluid object-fit-contain" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/'. $settings['banner_home_1']) }}" alt="Trang chủ" loading="lazy">
+                                <img class="img-fluid" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/'. $settings['banner_home_1']) }}" alt="Trang chủ" loading="lazy">
                             </div>
                         </div>
                         <div class="swiper-slide">
                             <div class="home-banner-slide">
-                                <img class="img-fluid object-fit-contain" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/'. $settings['banner_home_2']) }}" alt="Trang chủ" loading="lazy">
+                                <img class="img-fluid" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/'. $settings['banner_home_2']) }}" alt="Trang chủ" loading="lazy">
                             </div>
                         </div>
                     </div>

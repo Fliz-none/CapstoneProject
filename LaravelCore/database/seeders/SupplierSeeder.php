@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Supplier;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class SupplierSeeder extends Seeder
@@ -16,17 +17,16 @@ class SupplierSeeder extends Seeder
     public function run()
     {
         $suppliers = [
-            [1, 'BOSS', '0369124871', 'boss@gmail.com', 'Nguyễn Văn Linh', NULL, 1, NULL, NULL, '2024-06-09 17:09:32', '2024-06-09 17:09:32'],
-            [2, 'GFB PHARMA', '0348124872', 'gfbpharma@gmail.com', 'Nguyễn Văn Cừ nối dài', NULL, 1, NULL, NULL, '2024-06-09 17:09:32', '2024-06-09 17:09:32'],
-            [3, 'Pedigree', '0369124873', 'tddiamonds@gmail.com', '30/4', NULL, 1, NULL, NULL, '2024-06-09 17:09:32', '2024-06-09 17:09:32'],
-            [4, 'T&D Diamonds', '0369124874', 'diamond@gmail.com', '3/2', NULL, 1, NULL, NULL, '2024-06-09 17:09:32', '2024-07-09 16:21:21'],
-            [5, 'PRO-PET', '0369124875', 'propet@gmail.com', 'Hùng Vương', NULL, 1, NULL, NULL, '2024-06-09 17:09:32', '2024-06-09 17:09:32'],
-            [6, 'Cát LaPaw', '0369124876', 'lapaw@gmail.com', 'Cách Mạng Tháng 8', NULL, 1, NULL, NULL, '2024-06-09 17:09:32', '2024-06-09 17:09:32'],
-            [7, 'Nhà cung cấp Cà Mau', '0939463469', 'keydigital@gmail.com', 'Cà Mau', 'DOOKL', 1, NULL, '2024-07-09 16:24:44', '2024-07-09 16:23:08', '2024-07-09 16:24:44'],
-            [8, 'Nhà cung cấp HCM', '0376378379', 'hcmct@gmail.com', '13 Nguyễn Trãi P13 Q.GÒ Vấp Tp HCM', 'PETRUM', 1, NULL, '2024-07-09 16:24:44', '2024-07-09 16:24:34', '2024-07-09 16:24:44'],
-            [9, 'Nước Lọc', '0979639763', 'nuoclocngon@gmail.com', '27 Ngô Gia Tự', 'AQUAFINA', 1, NULL, NULL, '2024-07-09 16:26:55', '2024-07-10 22:32:05'],
-            [10, 'TRUONGDUNGPET', '0911677154', NULL, NULL, NULL, 1, NULL, NULL, '2024-09-18 07:56:10', '2024-09-18 07:56:10'],
-           
+                [1, 'Công ty TNHH Minh Phúc', '0369124871', 'minhphuc.co@gmail.com', '12 Nguyễn Trãi, Q.1, TP.HCM', NULL, 1, NULL],
+                [2, 'Công ty TNHH Lam Sơn', '0348124872', 'lamson.group@gmail.com', '85 Hoàng Văn Thụ, Q.Phú Nhuận, TP.HCM', NULL, 1, NULL],
+                [3, 'Công ty TNHH Hưng Thịnh Phát', '0369124873', 'hungthinhphat.ltd@gmail.com', '102 Lê Lợi, TP.Cần Thơ', NULL, 1, NULL],
+                [4, 'Công ty TNHH Thái Minh', '0369124874', 'thaiminh.jsc@gmail.com', '64 Hai Bà Trưng, Q.1, TP.HCM', NULL, 1, NULL],
+                [5, 'Công ty TNHH Thành Đạt', '0369124875', 'thanhdat.corp@gmail.com', '19 Lê Văn Việt, Q.9, TP.HCM', NULL, 1, NULL],
+                [6, 'Công ty CP Gia An', '0369124876', 'giaan.group@gmail.com', '47 Nguyễn Văn Linh, TP.Đà Nẵng', NULL, 1, NULL],
+                [7, 'Công ty TNHH Phương Nam', '0939463469', 'phuongnam.biz@gmail.com', 'Số 3 Trần Hưng Đạo, TP.Cà Mau', 'DOOKL', 1, NULL],
+                [8, 'Công ty TNHH Tân Đại Phát', '0376378379', 'tandaiphat.vn@gmail.com', '222 Pasteur, Q.3, TP.HCM', 'PETRUM', 1, NULL],
+                [9, 'Công ty CP Minh Tâm', '0979639763', 'minhtam.ct@gmail.com', '88 Phạm Ngũ Lão, TP.Cần Thơ', 'AQUAFINA', 1, NULL],
+                [10, 'Công ty TNHH Đông Phong', '0911677154', 'dongphong.dev@gmail.com', '10B Phan Đăng Lưu, Q.Bình Thạnh, TP.HCM', NULL, 1, NULL],
         ];
 
         foreach ($suppliers as $supplier) {
@@ -39,9 +39,9 @@ class SupplierSeeder extends Seeder
                 'organ' => $supplier[5],
                 'status' => $supplier[6],
                 'note' => $supplier[7],
-                'deleted_at' => $supplier[8],
-                'created_at' => $supplier[9],
-                'updated_at' => $supplier[10],
+                'deleted_at' => null,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ]);
         }
     }

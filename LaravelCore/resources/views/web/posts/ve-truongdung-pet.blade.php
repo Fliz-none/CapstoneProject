@@ -14,12 +14,12 @@
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <div class="home-banner-slide">
-                                <img class="img-fluid object-fit-contain" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/'. $settings['banner_us_1']) }}" alt="Trang chủ" loading="lazy">
+                                <img class="img-fluid" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/'. $settings['banner_us_1']) }}" alt="Trang chủ" loading="lazy">
                             </div>
                         </div>
                         <div class="swiper-slide">
                             <div class="home-banner-slide">
-                                <img class="img-fluid object-fit-contain" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/'. $settings['banner_us_2']) }}" alt="Trang chủ" loading="lazy">
+                                <img class="img-fluid" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/'. $settings['banner_us_2']) }}" alt="Trang chủ" loading="lazy">
                             </div>
                         </div>
                     </div>

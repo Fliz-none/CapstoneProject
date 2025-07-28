@@ -21,7 +21,7 @@ class ShopController extends Controller
             'order' => [
                 'nullable',
                 'string',
-                Rule::in(['created_at-asc', 'created_at-desc', 'name-asc', 'name-desc']), 
+                Rule::in(['created_at-asc', 'created_at-desc', 'name-asc', 'name-desc']),
             ],
         ]);
         $pageName = 'Cửa hàng';
@@ -35,7 +35,6 @@ class ShopController extends Controller
          * @var \Illuminate\Pagination\LengthAwarePaginator|null
          */
         $query = Product::whereIn('status', [2, 3]);
-
         // Lọc theo từ khóa tìm kiếm
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');

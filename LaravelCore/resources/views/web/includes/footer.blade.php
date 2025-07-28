@@ -77,9 +77,9 @@
             </div>
         </div>
         <div class="fixed-ele">
-            <a class="hotline-btn" href="tel:0344333586" title="">
+            {{-- <a class="hotline-btn" href="tel:0344333586" title="">
                 <img class="img-fluid" src="{{ asset('images/img/hotline-btn.png') }}" alt="">
-            </a>
+            </a> --}}
             <a class="backtop-btn" id="backTop" href="#" title="">
                 <img src="{{ asset('images/img/backtotop.png') }}" alt="">
             </a>

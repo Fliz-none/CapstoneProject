@@ -24,7 +24,7 @@
                     <small class="form-text text-muted" id="company_introduce-help">Brief introduction about the company</small>
                 </label>
                 <div class="col-sm-8">
-                    <input class="form-control @error('company_introduce') is-invalid @enderror" id="company_introduce" name="company_introduce" type="text" value="{{ $settings['company_introduce'] ?? '' }}">
+                    <textarea class="form-control @error('company_introduce') is-invalid @enderror" id="company_introduce" name="company_introduce" type="text" rows="3">{{ $settings['company_introduce'] ?? '' }}</textarea>
                     @error('company_introduce')
                         <span class="invalid-feedback d-block" role="alert"> <strong>{{ $message }}</strong>
                         </span>
@@ -38,7 +38,7 @@
                     </small>
                 </label>
                 <div class="col-sm-8">
-                    <input class="form-control @error('company_description') is-invalid @enderror" id="company_description" name="company_description" type="text" value="{{ $settings['company_description'] ?? '' }}">
+                    <textarea class="form-control @error('company_description') is-invalid @enderror" id="company_description" name="company_description" rows="3">{{ $settings['company_description'] ?? '' }}</textarea>
                     @error('company_description')
                         <span class="invalid-feedback d-block" role="alert"> <strong>{{ $message }}</strong>
                         </span>

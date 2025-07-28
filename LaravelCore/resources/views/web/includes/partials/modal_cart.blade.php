@@ -28,7 +28,7 @@
                                 {{ $product->name }} - {{ $item->unit->variable->name }} - {{ $item->unit->term }}
                             </h6>
                             <span class="mini-cart-quantity">
-                                {{ $item->quantity }} × {{ number_format($item->unit->price) . ' ' . $config['currency'] }} 
+                                {{ $item->quantity }} × {{ number_format($item->unit->price) . ' ' . $config['currency'] }}
                             </span>
                         </div>
 
@@ -61,7 +61,7 @@
                 </p>
                 <div class="d-flex gap-2 w-100 justify-content-center">
                     {!! $is_login ? '<a href="' . route('checkout') . '" class="key-btn-success" style="width: 50%;">Thanh toán</a>' : '' !!}
-                    <a href="{{ route('shop') }}" class="key-btn-info" style="width: 50%;">Vào cửa hàng</a>
+                    <a href="{{ route('shop') }}" class="key-btn-info d-flex justify-content-center" style="width: 50%;">Vào cửa hàng</a>
                 </div>
             </div>
         </div>

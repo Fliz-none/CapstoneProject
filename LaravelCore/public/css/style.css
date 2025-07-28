@@ -12640,7 +12640,7 @@ ul {
 .footer {
   position: relative;
   padding: 70px 0 20px 0;
-  background: #575556;
+  background: #3333cc !important;
 }
 @media (max-width: 992px) {
   .footer {
