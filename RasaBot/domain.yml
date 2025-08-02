@@ -1,0 +1,64 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - mood_great
+  - mood_unhappy
+  - bot_challenge
+  - check_order
+  - cancel_order
+  - check_stock
+
+responses:
+  utter_greet:
+    - text: "Chào bạn, hôm nay bạn cảm thấy thế nào?"
+
+  utter_cheer_up:
+    - text: "Dưới đây là một vài hình ảnh đẹp giúp bạn vui lên:"
+      image: "https://i.imgur.com/nGF1K8f.jpg"
+
+  utter_did_that_help:
+    - text: "Thông tin đó có giúp ích cho bạn không?"
+
+  utter_happy:
+    - text: "Tuyệt vời, hãy tiếp tục nhé!"
+
+  utter_goodbye:
+    - text: "Tạm biệt bạn nhé!"
+
+  utter_iamabot:
+    - text: "Tôi là một trợ lý ảo, được phát triển bởi nhóm SMS."
+
+  utter_cancel_denied:
+    - text: "Đã hủy thao tác hủy đơn hàng."
+
+entities:
+  - order_id
+  - product_name
+
+slots:
+  order_id:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: order_id
+  product_name:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: product_name
+
+actions:
+  - action_check_order
+  - action_ask_to_confirm_cancel
+  - action_cancel_order
+  - action_check_stock
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

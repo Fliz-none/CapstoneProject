@@ -31,8 +31,5 @@ Homestead.json
 auth.json
 
 # Chatbot AI
-/venv/
-vocab.pkl
-vector_store.pkl
-answer_vectors.pkl
-/__pycache__/
+.rasa/cache/
+actions/__pycache__

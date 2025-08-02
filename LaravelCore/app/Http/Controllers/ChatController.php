@@ -9,6 +9,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class ChatController extends Controller
 {
@@ -52,9 +54,9 @@ class ChatController extends Controller
             }
         } else {
             abort(404);
-            if ($request->ajax()) {
-            } else {
-            }
+            // if ($request->ajax()) {
+            // } else {
+            // }
         }
     }
 
@@ -92,6 +94,26 @@ class ChatController extends Controller
             DB::rollBack();
             return response()->json('An error occurred, while sending the message!', 500);
         }
+    }
+
+    public function generate_token()
+    {
+        $id = Auth::id(); // user đã đăng nhập
+        
+        $payload = [
+            'iss' => config('app.url'),
+            'sub' => $id,
+            'iat' => time(),
+            'exp' => time() + 1800, // token có hiệu lực 30 ph
+            'aud' => 'RasaBot',
+            'role' => 'customer',
+        ];
+
+        $jwt = JWT::encode($payload, env('JWT_SECRET'), 'HS256');
+
+        return response()->json([
+            'token' => $jwt,
+        ]);
     }
 
 }
