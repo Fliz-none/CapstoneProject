@@ -1,0 +1,112 @@
+version: "3.1"
+
+nlu:
+  - intent: check_order
+    examples: |
+      - tôi muốn kiểm tra đơn hàng [DH00123](order_id)
+      - mã đơn của tôi là [DH00003](order_id)
+      - đơn hàng của tôi là [DH00973](order_id)
+      - kiểm tra đơn [DH00223](order_id) giúp tôi
+      - đơn hàng [DH00333](order_id) đã đến đâu rồi?
+      - đơn [DH00343](order_id) đã được gửi chưa?
+      - [DH00123](order_id) đã được xác nhận chưa?
+      - đơn hàng [DH02121](order_id) có đang giao không?
+      - kiểm tra trạng thái đơn [DH01013](order_id)
+      - tôi muốn biết đơn [DH01223](order_id) đã giao chưa
+      - kiểm tra giúp tôi đơn hàng [DH2123](order_id)
+      - tra cứu đơn hàng [DH2123](order_id)
+      - đơn hàng [DH2123](order_id) có vấn đề gì không?
+      - xem giúp đơn hàng [DH00123](order_id) nhé
+      - check đơn hàng [DH00123](order_id) giúp tôi
+      - kiểm tra giúp đơn hàng mã [DH00123](order_id)
+      - đơn mã [DH00123](order_id) sao lâu thế?
+      - kiểm tra tình trạng đơn [DH00123](order_id)
+      - tôi chưa nhận được đơn [DH00123](order_id)
+      - đơn hàng [DH00123](order_id) của tôi đâu?
+      - [DH00123](order_id) vẫn chưa thấy giao
+      - tôi đặt đơn hàng [DH00123](order_id), kiểm tra giúp
+      - xem đơn [DH00123](order_id)
+      - tình trạng đơn hàng [DH00123](order_id) thế nào rồi?
+      - mã đơn hàng [DH00123](order_id) đã xử lý chưa?
+      - đơn hàng có mã [DH00123](order_id) đang ở đâu?
+      - [DH00123](order_id) đang vận chuyển đến đâu?
+      - kiểm tra lộ trình đơn hàng [DH00123](order_id)
+      - đơn hàng [DH00123](order_id) đang ở đâu?
+      - tình trạng vận chuyển đơn hàng [DH00123](order_id)
+      - tôi cần tra đơn [DH00123](order_id)
+      - đơn hàng số [DH00123](order_id)
+      - tìm đơn hàng [DH00123](order_id)
+      - đơn hàng của tôi mã [DH00123](order_id)
+      - đơn [DH04523](order_id) giao tới chưa?
+      - tình trạng đơn [DH00123](order_id)?
+      - đơn hàng [DH04523](order_id) bị trễ không?
+      - trạng thái đơn hàng [DH07123](order_id)?
+      - đơn hàng [DH00123](order_id) sao chưa tới?
+      - đơn hàng mã [DH87123](order_id) vẫn chưa thấy
+      - trạng thái xử lý đơn [DH02223](order_id)
+      - tình hình đơn hàng [DH15523](order_id) thế nào?
+      - đơn hàng của tôi [DH00323](order_id) sao chưa đến?
+      - đơn [DH12123](order_id) còn trong kho không?
+      - đơn hàng [DH44123](order_id) bị giữ ở đâu?
+      - check giúp đơn [DH023123](order_id)
+      - có thông tin gì về đơn [DH022123](order_id) không?
+      - đơn hàng [DH05523](order_id) bị lỗi gì à?
+      - Đơn [DH25523](order_id) sao giao hàng lâu vậy?
+
+  - intent: cancel_order
+    examples: |
+      - tôi muốn hủy đơn hàng [DH43123](order_id)
+      - hủy đơn [DH28123](order_id)
+      - shop hủy giúp em đơn [DH99123](order_id) đi ạ
+      - Làm sao hủy đơn [DH22123](order_id)
+      - tôi muốn hủy đơn [DH12345](order_id)
+      - hủy đơn hàng [DH54321](order_id) giúp tôi
+      - làm ơn hủy đơn [DH23456](order_id) giùm em
+      - tôi cần hủy đơn hàng có mã [DH87654](order_id)
+      - đơn [DH11223](order_id) này tôi không nhận nữa
+      - hủy gấp đơn [DH99887](order_id) dùm tôi
+      - tôi đặt nhầm đơn [DH66778](order_id), muốn hủy
+      - đơn [DH44556](order_id) không cần nữa, hủy giúp
+      - không nhận đơn [DH77665](order_id) nữa
+      - bỏ đơn hàng [DH12398](order_id) đi
+      - em muốn hủy đơn [DH00111](order_id)
+      - hủy đơn [DH00222](order_id) ngay giúp tôi
+      - tôi cần hủy đơn hàng này: [DH00333](order_id)
+      - đơn hàng [DH00444](order_id) bị lỗi, tôi muốn hủy
+      - shop cancel đơn [DH00555](order_id) giúp
+      - tôi không cần đơn [DH00666](order_id) nữa
+      - [DH00777](order_id) là đơn tôi muốn hủy
+      - xin hủy đơn [DH00888](order_id)
+      - đơn [DH00999](order_id) đặt nhầm rồi
+      - cancel đơn hàng [DH01010](order_id)
+      - bỏ đơn hàng mã [DH01111](order_id) đi
+      - hủy đơn hàng mã số [DH01212](order_id)
+      - tôi không lấy hàng trong đơn [DH01313](order_id)
+      - hủy đơn gấp [DH01414](order_id)
+      - tôi muốn hủy đơn hàng vừa đặt, mã [DH01515](order_id)
+      - đơn hàng [DH01616](order_id) không đúng, cần hủy
+      - hủy giúp đơn có mã [DH01717](order_id)
+      - đơn hàng [DH01818](order_id) bị trễ, hủy giúp tôi
+      - tôi không có nhu cầu nữa, hủy đơn [DH01919](order_id)
+      - tôi cần cancel đơn [DH02020](order_id)
+      - hủy đơn [DH02121](order_id) vì lý do cá nhân
+      - không nhận đơn hàng [DH02222](order_id)
+      - đơn [DH02323](order_id) bị sai, tôi muốn hủy
+      - hủy đơn hàng [DH02424](order_id) trước khi giao
+      - tôi muốn ngừng đơn [DH02525](order_id)
+      - nhờ shop hủy đơn [DH02626](order_id)
+      - không cần đơn hàng này [DH02727](order_id)
+      - hủy đơn này [DH02828](order_id) nhanh giúp tôi
+      - đơn hàng mã [DH02929](order_id) không còn cần thiết
+      - hủy đơn đi [DH03030](order_id)
+      - dừng đơn hàng [DH03131](order_id)
+      - tôi muốn cancel đơn [DH03232](order_id)
+      - đơn [DH03333](order_id) là sai, hủy giúp
+      - đơn hàng [DH03434](order_id) đặt nhầm, cần hủy
+      - làm sao để hủy đơn hàng [DH03535](order_id)?
+      - shop hỗ trợ hủy đơn [DH03636](order_id) giúp em
+      - bạn có thể hỗ trợ hủy đơn không?
+      
+  - regex: order_id
+    examples: |
+      - DH\d{5}

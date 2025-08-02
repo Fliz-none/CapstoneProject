@@ -30,6 +30,7 @@ Homestead.json
 .phpactor.json
 auth.json
 
-# Chatbot AI
-.rasa/cache/
-actions/__pycache__
+# RasaBot AI
+RasaBot/.rasa/cache/
+RasaBot/actions/__pycache__
+RasaBot/models

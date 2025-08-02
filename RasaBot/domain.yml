@@ -14,27 +14,37 @@ intents:
 
 responses:
   utter_greet:
+    - text: "Chào, bạn cần giúp đỡ gì không?."
     - text: "Chào bạn, hôm nay bạn cảm thấy thế nào?"
 
   utter_cheer_up:
     - text: "Dưới đây là một vài hình ảnh đẹp giúp bạn vui lên:"
-      image: "https://i.imgur.com/nGF1K8f.jpg"
+      image: "https://t3.ftcdn.net/jpg/07/69/68/76/360_F_769687673_7TgHc6Ng88ra2FQb8JJsQRQJGcFFwBtO.jpg"
 
   utter_did_that_help:
     - text: "Thông tin đó có giúp ích cho bạn không?"
+    - text: "Bạn cần cung cấp thêm thông tin không?"
 
   utter_happy:
+    - text: "Thật thú vị!"
     - text: "Tuyệt vời, hãy tiếp tục nhé!"
 
   utter_goodbye:
     - text: "Tạm biệt bạn nhé!"
+    - text: "Bye bạn nhé!"
+    - text: "Hẹn gặp lại sớm nhé!"
 
   utter_iamabot:
     - text: "Tôi là một trợ lý ảo, được phát triển bởi nhóm SMS."
+    - text: "Mình là bot được nhóm SMS tạo ra để hỗ trợ bạn."
+    - text: "Bạn đang trò chuyện với trợ lý ảo SMSBot nè!"
+    - text: "Tôi là SMSBot trợ lý ảo đáng tin của bạn."
 
   utter_cancel_denied:
+    - text: "Oke bạn nhé."
+    - text: "Oke nhé."
     - text: "Đã hủy thao tác hủy đơn hàng."
-
+  
 entities:
   - order_id
   - product_name
