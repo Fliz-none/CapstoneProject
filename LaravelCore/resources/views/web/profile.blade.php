@@ -48,7 +48,6 @@
                                         <h3 class="fw-semibold">{{ $user->name }}</h3>
                                         <p class="text-muted">{{ $user->email }}</p>
                                         <p class="text-muted">{{ $user->phone }}</p>
-                                        <p class="text-muted">{{ $user->address }}</p>
                                         <p class="text-muted">{{ $user->created_at->format('d/m/Y') }}</p>
                                         <a class="key-btn-info mb-3 btn-web-profile" href="#">Chỉnh sửa thông tin</a>
                                         {!! $user->hasAnyPermission(\App\Models\User::ACCESS_ADMIN) ? '<a href="' . route('admin.home') . '" class="key-btn-dark mb-3">Truy cập trang quản trị</a>' : '' !!}

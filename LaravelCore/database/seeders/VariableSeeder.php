@@ -19,12 +19,12 @@ class VariableSeeder extends Seeder
     public function run()
     {
         $variables = [
-            [1, 1, 'Gạo Jasmine 5kg', null, 120000, 1, null, now()->subDays(19), now()],
+            [1, 1, 'Gạo Jasmine 50kg', null, 120000, 1, null, now()->subDays(19), now()],
             [2, 2, 'Lavie 500ml', null, 6000, 1, null, now()->subDays(18), now()],
             [3, 3, 'Bộ nồi 5 chiếc', null, 750000, 1, null, now()->subDays(17), now()],
             [4, 4, 'SRM Senka 100g', null, 95000, 1, null, now()->subDays(16), now()],
             [5, 5, 'Thịt ba rọi 500g', null, 85000, 1, null, now()->subDays(15), now()],
-            [6, 6, 'Bút TL-08 Xanh', null, 4000, 1, null, now()->subDays(14), now()],
+            [6, 6, 'Bút TL-08 đỏ', null, 4000, 1, null, now()->subDays(14), now()],
             [7, 7, 'Tai nghe Baseus A1', null, 490000, 1, null, now()->subDays(13), now()],
             [8, 8, 'Sunlight 1L', null, 45000, 1, null, now()->subDays(12), now()],
             [9, 9, 'Clear Men 650g', null, 120000, 1, null, now()->subDays(11), now()],
@@ -71,8 +71,64 @@ class VariableSeeder extends Seeder
             [50, 15, 'Tã Bobby M28', null, 0, 1, null, now(), now()],
         ];
 
+        $unitTerms = [
+            1 => 'Gói',
+            2 => 'Chai',
+            3 => 'Bộ',
+            4 => 'Tuýp',
+            5 => 'Gói',
+            6 => 'Cái',
+            7 => 'Cái',
+            8 => 'Chai',
+            9 => 'Chai',
+            10 => 'Cái',
+            11 => 'Cái',
+            12 => 'Cái',
+            13 => 'Cái',
+            14 => 'Hộp',
+            15 => 'Gói',
+            16 => 'Hộp',
+            17 => 'Bộ',
+            18 => 'Lần',
+            19 => 'Lon',
+            20 => 'Gói',
+            21 => 'Gói',
+            22 => 'Gói',
+            23 => 'Lốc',
+            24 => 'Thùng',
+            25 => 'Bộ',
+            26 => 'Bộ',
+            27 => 'Tuýp',
+            28 => 'Tuýp',
+            29 => 'Gói',
+            30 => 'Gói',
+            31 => 'Cái',
+            32 => 'Cái',
+            33 => 'Cái',
+            34 => 'Cái',
+            35 => 'Chai',
+            36 => 'Chai',
+            37 => 'Chai',
+            38 => 'Chai',
+            39 => 'Cái',
+            40 => 'Cái',
+            41 => 'Cái',
+            42 => 'Cái',
+            43 => 'Cái',
+            44 => 'Cái',
+            45 => 'Cái',
+            46 => 'Cái',
+            47 => 'Hộp',
+            48 => 'Hộp',
+            49 => 'Gói',
+            50 => 'Gói',
+        ];
+
+
 
         foreach ($variables as $key => $variable) {
+            $variableId = $variable[0];
+            $term = $unitTerms[$variableId] ?? 'Cái';
             Variable::create([
                 'id' => $variable[0],
                 'product_id' => $variable[1],
@@ -86,8 +142,8 @@ class VariableSeeder extends Seeder
             ]);
             
             Unit::create([
-                'variable_id' => $variable[0],
-                'term' => Arr::random(['Cái', 'Gói', 'Thùng', 'Hộp', 'Chai']),
+                'variable_id' => $variableId,
+                'term' => $term,
                 'rate' => 1,
                 'price' => Arr::random([10000, 20000, 50000, 100000, 200000, 70000, 5000]),
                 'barcode' => strtoupper(Str::random(10)), 

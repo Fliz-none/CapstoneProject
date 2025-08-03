@@ -41,13 +41,13 @@ class Expense extends Model
     {
         switch (true) {
             case $this->payment == '0':
-                $result = 'Other';
+                $result = __('messages.datatable.other');
                 break;
             case $this->payment == '1':
-                $result = 'Cash';
+                $result = __('messages.datatable.cash');
                 break;
             default:
-                $result = 'Bank transfer';
+                $result = __('messages.datatable.transfer');
                 break;
         }
         return $result;

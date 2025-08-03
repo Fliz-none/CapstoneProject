@@ -81,12 +81,31 @@
                         </thead>
                         <tbody>
                             @forelse ($logs as $log)
+                                @php
+                                    $user = App\Models\User::find($log->user_id);
+                                    $user->name ? $userName = $user->name : $userName = __('messages.unknown');
+
+                                    switch ($log->action) {
+                                        case 1:
+                                            $actionText = __('messages.create');
+                                            break;
+                                        case 2:
+                                            $actionText = __('messages.update');
+                                            break;
+                                        case 3:
+                                            $actionText = __('messages.delete');
+                                            break;
+                                        default:
+                                            $actionText = __('messages.unknown');
+                                            break;
+                                    }
+                                @endphp
                                 <tr>
                                     <td><a class="cursor-pointer btn-detail-log text-primary fw-bold" data-id=" {{ $log->id }}">{{ $log->code }}</a> </td>
-                                    <td>{{ $log->user_id }}</td>
-                                    <td>{{ $log->action }}</td>
-                                    <td>{{ $log->object }}</td>
+                                    <td>{{ $userName }}</td>
+                                    <td>{{ $actionText }}</td>
                                     <td>{{ $log->type }}</td>
+                                    <td>{{ $log->object }}</td>
                                     <td>{{ $log->ip }}</td>
                                     <td>{{ $log->agent }}</td>
                                     <td>{{ $log->platform }}</td>
@@ -108,6 +127,9 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
+            const table = $('#log-table').DataTable({
+                language: config.datatable.lang,
+            })
             $('.btn-activity-log').on('click', function(e) {
                 e.preventDefault();
                 console.log('click');

@@ -32,6 +32,20 @@
         background-color: #fff;
         border: 2px solid #999;
     }
+
+    .tab-pane .order-details::before {
+    content: "{{ __('messages.order_new.content') }}";
+    width: 90%;
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: var(--bs-secondary);
+    opacity: 0.5;
+}
 </style>
 @section('content')
     <div class="row tabbar">
@@ -41,7 +55,7 @@
                     <div class="position-relative search-form">
                         <input class="form-control form-control-lg search-input" id="order-search-input"
                             data-url="{{ route('admin.stock') }}?key=search" type="text" autocomplete="off"
-                            placeholder="Search products (F3)">
+                            placeholder="{{ __('messages.order_new.search') }}">
                         <div class="form-control-icon">
                             <i class="bi bi-search"></i>
                         </div>
@@ -73,7 +87,7 @@
             const nextCount = $('.order-tab').length + 1
             if (nextCount > 5) {
                 Toastify({
-                    text: "You can create up to 5 orders at the same time.",
+                    text: {!! json_encode(__('messages.order_new.tab')) !!},
                     duration: 3000,
                     close: true,
                     gravity: "top",
@@ -95,7 +109,7 @@
                                     <div class="card-body p-3">
                                         <div class="form-group has-icon-left mb-0">
                                             <div class="position-relative">
-                                                <textarea class="form-control form-control-lg border border-0" id="order-${nextCount}-note" name="note" rows="1" placeholder="Note"></textarea>
+                                                <textarea class="form-control form-control-lg border border-0" id="order-${nextCount}-note" name="note" rows="1" placeholder="{{ __('messages.note') }}"></textarea>
                                                 <div class="form-control-icon">
                                                     <i class="bi bi-pen"></i>
                                                 </div>
@@ -108,20 +122,20 @@
                                 <div class="card h-100">
                                     <div class="card-body d-flex flex-column">
                                         <div class="row">
-                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-created_at">Created At</label>
+                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-created_at">{{ __('messages.post.created_at') }}</label>
                                             <div class="col-sm-8">
                                                 <input class="form-control-plaintext text-end order-created_at" id="order-${nextCount}-created_at" name="created_at" type="datetime-local" max="{{ date('Y-m-d') }}" inputmode="numeric" autocomplete="off" required>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-customer_id">
-                                                Customer&nbsp;
+                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center text-nowrap" for="order-${nextCount}-customer_id">
+                                            {{__('messages.dashboard_customers')}}&nbsp;
                                                 <a class="btn btn-link btn-create-user rounded-pill p-0" type="button">
                                                     <i class="bi bi-plus-circle"></i>
                                                 </a>
                                             </label>
                                             <div class="col-sm-8">
-                                                <select class="form-control-plaintext form-control select2 order-customer_id" id="order-${nextCount}-customer_id" name="customer_id" data-ajax--url="{{ route('admin.user', ['key' => 'select2']) }}" data-placeholder="Search customers (F4)" required autocomplete="off">
+                                                <select class="form-control-plaintext form-control select2 order-customer_id" id="order-${nextCount}-customer_id" name="customer_id" data-ajax--url="{{ route('admin.user', ['key' => 'select2']) }}" data-placeholder="{{ __('messages.order_new.search_cus') }} (F4}}" required autocomplete="off">
                                                 </select>
                                             </div>
                                         </div>
@@ -129,20 +143,20 @@
                                         </div>
                                         <hr />
                                         <div class="row mb-3 row-total">
-                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-total">Total <span class="order-count px-1">0</span> items&nbsp;</label>
+                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center text-nowrap" for="order-${nextCount}-total">{{ __('messages.dashboard_table_total')}} <span class="order-count px-1">0</span> {{ __('messages.items') }}&nbsp;</label>
                                             <div class="col-sm-8">
                                                 <input class="form-control-lg bg-white text-end form-control bg-white money order-total" id="order-${nextCount}-total" name="total" type="text" value="0" placeholder="Total money of the order" autocomplete="off" readonly>
                                             </div>
                                         </div>
                                         <div class="row row-discount">
-                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-discount">Discount</label>
+                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-discount">{{__('messages.discount')}}</label>
                                             <div class="col-sm-8">
                                                 <input class="form-control-lg text-end form-control bg-white money order-discount" id="order-${nextCount}-discount" name="discount" type="text" value="0" onclick="this.select()" placeholder="Amount or Percentage" autocomplete="off">
                                             </div>
                                         </div>
                                         <hr />
                                         <div class="row mb-3 row-summary">
-                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-summary">Amount due</label>
+                                            <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-${nextCount}-summary">{{ __('messages.amount_due')}}</label>
                                             <div class="col-sm-8">
                                                 <input class="form-control-lg text-end form-control bg-white money order-summary" id="order-${nextCount}-summary" name="summary" type="text" value="0" placeholder="Amount" autocomplete="off" readonly>
                                             </div>
@@ -155,8 +169,8 @@
                                                             <input type="checkbox" id="order-user_scores" name="user_scores" class="square-check">
                                                         </div>
                                                         <label for="order-user_scores" class="col-9">
-                                                            <p>Use</p>
-                                                            <p>Discount</p>
+                                                            <p>{{ __('messages.use') }}</p>
+                                                            <p>{{ __('messages.sidebar.discount') }}</p>
                                                         </label>
                                                     </div>
                                                 </div>
@@ -164,7 +178,7 @@
                                                     <div class="d-flex align-items-center justify-content-end">
                                                         <input type="number" class="form-control bg-white money order-scores_used" name="scores_used" value="0"/>
                                                         <input type="hidden" class="order-current-scores_used" value="0"/>
-                                                        <span class="ms-3">Point</span>
+                                                        <span class="ms-3">{{ __('messages.point')}}</span>
                                                     </div>
                                                     <div class="d-flex align-items-center justify-content-end mt-2">
                                                         <input type="number" class="form-control bg-white money order-score_to_money" value="0" readonly />
@@ -193,9 +207,9 @@
                                         <div class="form-group mb-3">
                                             <div class="btn-group btn-group-lg dropup w-100" role="group">
                                                 <input class="btn-check order-payment" id="order-${nextCount}-payment-1" type="radio" value="1" autocomplete="off" name="payment">
-                                                <label class="btn btn-outline-info" for="order-${nextCount}-payment-1">Cash</label>
+                                                <label class="btn btn-outline-info" for="order-${nextCount}-payment-1">{{ __('messages.datatable.cash') }}</label>
                                                 <input class="btn-check order-payment" id="order-${nextCount}-payment-2" type="radio" value="2" autocomplete="off" name="payment">
-                                                <label class="btn btn-outline-info" for="order-${nextCount}-payment-2">Bank Transfer</label>
+                                                <label class="btn btn-outline-info" for="order-${nextCount}-payment-2">{{ __('messages.datatable.transfer') }}</label>
                                             </div>
                                         </div>
                                         <div class="form-group mb-0">
@@ -203,7 +217,7 @@
                                                 @if (!empty(Auth::user()->hasAnyPermission(App\Models\User::UPDATE_ORDER, App\Models\User::CREATE_ORDER)))
                                                     <input name="status" type="hidden" value="3">
                                                     <input name="id" type="hidden">
-                                                    <button class="btn btn-lg btn-info btn-submit" type="submit">Save</button>
+                                                    <button class="btn btn-lg btn-info btn-submit" type="submit">{{ __('messages.save') }}</button>
                                                 @endif
                                             </div>
                                         </div>
@@ -420,7 +434,7 @@
                 html: `
                     <select id="payment-select" class="form-select form-control-lg mb-3">
                         ${optionsHtml}
-                    </select>
+                    </select>card-body order-details
                     <input id="payment-amount" class="form-control form-control-lg mb-3 money" placeholder="Amount" value="${tab.find('input.order-summary').val()}">`,
                 showCancelButton: true,
                 confirmButtonText: 'Save',

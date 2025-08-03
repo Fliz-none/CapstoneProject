@@ -68,7 +68,7 @@
                     url: `{{ route('admin.role') }}`
                 },
                 columns: [
-                    config.datatable.columns.id,
+                    config.datatable.columns.code,
                     config.datatable.columns.name, {
                         data: 'permissions',
                         name: 'permissions',

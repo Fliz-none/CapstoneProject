@@ -1002,6 +1002,27 @@ return [
             '*.max' => 'Each attachment may not be greater than 10MB.',
         ],
     ],
+    'new_import' => 'New import',
+    'add_category' => 'Add category',
+    'delete_category' => 'Delete category',
+    'barcode' => 'Barcode',
+    'invalid_score' => 'Invalid',
+    'point' => 'Point',
+    'use' => 'Use',
+    'debt' => 'In debt',
+    'current_has' => 'Currently has',
+    'purchased' => 'Purchased',
+    'times' => 'times',
+    'account_since' => 'Account since',
+    'not_purchased' => 'No purchases yet',
+    'items' => 'items',
+    'amount_due' => 'Amount due',
+    'order_new' => [
+        'search' => 'Search product (F3)',
+        'search_cus' => 'Search customer (F4)',
+        'tab' => 'Maximum 5 orders',
+        'content' => 'Please add products to create an order',
+    ],
 
 
 ];

@@ -72,8 +72,9 @@ class OrderObserver
      */
     public function updated(Order $model)
     {
-           $oldData = self::$oldData[$model->id] ?? [];
-        $newData = $model->toArray();
+        $oldData = self::$oldData[$model->id] ?? [];
+        // Tạo dữ liệu với accessor đầy đủ nhưng ẩn quan hệ
+        $newData = $model->makeHidden(['transactions', 'details', 'customer', 'dealer', 'branch'])->toArray();
         // Nếu chỉ có deleted_at thay đổi thì không log trong updated
         if (!(count($newData) === 1 && isset($newData['deleted_at']))) {
             $this->logAction($model, '2', $oldData, $newData);

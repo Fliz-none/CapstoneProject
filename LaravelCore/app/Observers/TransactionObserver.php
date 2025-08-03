@@ -33,7 +33,7 @@ class TransactionObserver
         Log::create([
             'user_id' => Auth::id(),
             'action' => $action,
-            'type' => 'Product',
+            'type' => 'Transaction',
             'object' => 'TRA' . str_pad($Model->id, 5, "0", STR_PAD_LEFT),
             'geolocation' => json_encode($geo),
             'agent' => $agent->browser(),

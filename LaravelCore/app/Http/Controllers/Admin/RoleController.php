@@ -43,6 +43,7 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
+       
         if (isset($request->key)) {
             $objs = Role::query();
             switch ($request->key) {
@@ -74,6 +75,27 @@ class RoleController extends Controller
                     $roles->orWhere('roles.id', 1);
                 }
                 return Datatables::of($roles)
+                    ->addColumn('code', function ($obj) {
+                        if ($this->user->can(User::UPDATE_ROLE)) {
+                            $code = '<a class="btn btn-link text-decoration-none btn-update-role fw-bold p-0" data-id="' . $obj->id . '">' . $obj->code . '</a>';
+                        } else {
+                            $code = '<span class="fw-bold">' . $obj->code . '</span>';
+                        }
+                        return $code . '<br/><small>' . $obj->created_at->format('d/m/Y H:i') . '</small>';
+                    })
+                    ->filterColumn('code', function ($query, $keyword) {
+                        $array = explode('/', $keyword);
+                        $query->when(count($array) > 1, function ($query) use ($keyword, $array) {
+                            $date = (count($array) == 3 ? $array[2] : date('Y')) . '-' . str_pad($array[1], 2, "0", STR_PAD_LEFT) . '-' . str_pad($array[0], 2, "0", STR_PAD_LEFT);
+                            $query->whereDate('created_at', $date);
+                        });
+                        $query->when(count($array) == 1, function ($query) use ($keyword) {
+                            $numericKeyword = ltrim(preg_replace('/[^0-9]/', '', $keyword), '0');
+                            if (!empty($numericKeyword)) {
+                                $query->where('roles.id', 'like', "%" . $numericKeyword . "%");
+                            }
+                        });
+                    })
                     ->editColumn('name', function ($obj) {
                         if (!empty($this->user->can(User::READ_ROLES))) {
                             return '<a class="btn btn-link text-decoration-none text-start btn-update-role" data-id="' . $obj->id . '">' . $obj->name . '</a>';
@@ -96,7 +118,7 @@ class RoleController extends Controller
                             return '<span class="badge bg-primary">' . $permission->name . '</span>';
                         }))) . ' and ' . (count($obj->permissions) - 15) . ' more permissions' : 'No permissions assigned';
                     })
-                    ->rawColumns(['name', 'permissions', 'action'])
+                    ->rawColumns(['name', 'permissions', 'action', 'code'])
                     ->make(true);
             } else {
                 $pageName = self::NAME . ' management';

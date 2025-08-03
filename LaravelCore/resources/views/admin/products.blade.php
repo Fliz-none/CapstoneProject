@@ -40,20 +40,20 @@
                     <div class="d-inline-block process-btns d-none">
                         <a class="btn btn-primary btn-barcode-product mb-3 ms-2" type="button">
                             <i class="bi bi-upc-scan"></i>
-                            Barcode
+                            {{ __('messages.barcode') }}
                         </a>
                         @if (!empty(Auth::user()->can(App\Models\User::UPDATE_PRODUCT)))
                             <button class="btn mb-3 btn-add-catalogues-product ms-2 btn-outline-primary" type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-blockquote-left" viewBox="0 0 16 16">
                                     <path d="M2.5 3a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1zm5 3a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-5 3a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1zm3-5.5v1.5h2v1H5.5v2h-1v-2H2.5v-1.2h2.2v-1.5h1z" />
                                 </svg>
-                                Add category
+                              {{ __('messages.add_category') }}
                             </button>
                             <button class="btn mb-3 btn-remove-catalogues-product ms-2 btn-outline-danger" type="button">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-blockquote-left" viewBox="0 0 16 16">
                                     <path d="M2.5 3a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1zm5 3a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-5 3a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1zM2 7.6h3v0.8H2v-0.8z" />
                                 </svg>
-                                Delete category
+                                {{ __('messages.delete_category') }}
                             </button>
                         @endif
                         @if (!empty(Auth::user()->can(App\Models\User::DELETE_PRODUCTS)))

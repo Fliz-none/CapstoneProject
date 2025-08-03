@@ -109,7 +109,7 @@ input.money {
 
 /* END AJAX SEARCH */
 
-.tab-pane .order-details::before {
+/* .tab-pane .order-details::before {
     content: "Please search for products to add to the order";
     width: 90%;
     position: absolute;
@@ -121,7 +121,7 @@ input.money {
     text-align: center;
     color: var(--bs-secondary);
     opacity: 0.5;
-}
+} */
 
 .order-detail .btn {
     visibility: hidden;

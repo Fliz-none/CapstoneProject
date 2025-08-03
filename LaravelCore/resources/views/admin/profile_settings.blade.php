@@ -97,20 +97,6 @@
                                 </div>
                                 <div class="row align-items-center mb-4">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Used for shipping and receiving goods">{{ __('messages.profile.address') }}</h6>
-                                    </div>
-                                    <div class="col-sm-9 text-secondary">
-                                        <input class="form-control @error('address') is-invalid @enderror @error('address') is-invalid @enderror" id="profile-address" name="{{ __('messages.profile.address') }}" type="text"
-                                            value="{{ Auth::user()->address ?? old('address') }}" placeholder="{{ __('messages.profile.enter_address') }}">
-                                        @error('address')
-                                            <span class="invalid-feedback d-block" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="row align-items-center mb-4">
-                                    <div class="col-sm-3">
                                         <h6 class="mb-0" data-bs-toggle="tooltip" data-bs-title="Used to verify you are the account owner updating this information">{{ __('messages.profile.password') }}</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">

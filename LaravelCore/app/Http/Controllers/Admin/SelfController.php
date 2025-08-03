@@ -82,7 +82,6 @@ class SelfController extends Controller
             'gender' => ['required', 'in:0,1,2'],
             'email' => ['required', 'email', 'min:5', 'max:125', Rule::unique('users')->ignore($request->id)],
             'phone' => ['required', 'numeric', 'digits:10', 'regex:/^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/', Rule::unique('users')->ignore($request->id)],
-            'address' => ['string', 'max:191']
         ];
 
         $messages = [
@@ -96,9 +95,6 @@ class SelfController extends Controller
             'phone.digit' => __('messages.profile.phone_digit'),
             'phone.regex' => __('messages.profile.phone_regex'),
             'phone.unique' => __('messages.profile.phone_unique'),
-
-            'address.string' => __('messages.profile.address_string'),
-            'address.max' => __('messages.profile.address_max'),
 
             'gender.required' => __('messages.profile.gender_required'),
             'gender.in' => __('messages.profile.gender_in'),
@@ -124,7 +120,6 @@ class SelfController extends Controller
             $user->email = $request->email;
             $user->phone = $request->phone;
             $user->gender = $request->gender;
-            $user->address = $request->address;
             $user->save();
 
             return back()->with('response', [

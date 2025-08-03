@@ -70,7 +70,7 @@ class VariableObserver
     public function updated(Variable $model)
     {
          $oldData = self::$oldData[$model->id] ?? [];
-        $newData = $model->toArray();
+        $newData = $model->getOriginal();
         // Nếu chỉ có deleted_at thay đổi thì không log trong updated
         if (!(count($newData) === 1 && isset($newData['deleted_at']))) {
             $this->logAction($model, '2', $oldData, $newData);

@@ -12,7 +12,7 @@ class Variable extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'variables';
-    protected $appends = ['statusStr', 'fullName'];
+    protected $appends = ['statusStr', 'fullName','product_name'];
 
     protected $fillable = [
         'product_id',
@@ -56,6 +56,12 @@ class Variable extends Model
     public function getCodeAttribute()
     {
         return 'VAR' . str_pad($this->id, 5, "0", STR_PAD_LEFT);
+    }
+
+
+    public function getProductNameAttribute()
+    {
+        return $this->_product->name;
     }
 
 

@@ -1271,6 +1271,7 @@
                     lng,
                     address
                 }) => {
+                    console.log(lat, lng, address);
                     $('#branch-form input[name="address"]').val(JSON.stringify({
                         lat,
                         lng,
@@ -1303,7 +1304,7 @@
         form.find('#import-stocks').empty()
         form.attr('action', `{{ route('admin.import.create') }}`)
         form.find('.btn-print.print-import').addClass('d-none').removeAttr('data-id')
-        form.find('.modal').modal('show').find('.modal-title').text('New import')
+        form.find('.modal').modal('show').find('.modal-title').text('{{ __('messages.new_import') }}')
     })
 
     $(document).on('click', '.btn-select-variable', function() {
@@ -2516,23 +2517,23 @@
         if (!id) return;
         $.get(`{{ route('admin.user') }}/${id}/suggestions`, function(suggest) {
             let str =
-                `<span class="badge bg-secondary me-2 mb-2">Account since ${moment(suggest.created_at).format('DD/MM/YYYY')}</span>`
+                `<span class="badge bg-secondary me-2 mb-2">{{ __('messages.account_since') }} ${moment(suggest.created_at).format('DD/MM/YYYY')}</span>`
             if (suggest.countOrders) {
-                str += `<span class="badge bg-secondary me-2 mb-2">Purchased <span class="text-white fw-bold fs-5">${number_format(suggest.countOrders)}</span> times</span>`
+                str += `<span class="badge bg-secondary me-2 mb-2">{{__('messages.purchased')}} <span class="text-white fw-bold fs-5">${number_format(suggest.countOrders)}</span> {{__('messages.times')}}</span>`
                 if (suggest.countPayments) {
                     str += `<span class="badge bg-secondary me-2 mb-2">Average number of payments per order: <span class="text-white fw-bold fs-5">${number_format(suggest.countPayments)} times</span></span>`
                 }
             } else {
-                str += `<span class="badge bg-secondary me-2 mb-2">No purchases yet</span>`
+                str += `<span class="badge bg-secondary me-2 mb-2">{{__('messages.not_purchased')}}</span>`
             }
             if (suggest.scores) {
                 if (suggest.scores > 1000) {
                     str +=
-                        `<span class="badge bg-success btn-convert-scores cursor-pointer me-2 mb-2">Currently has <span class="text-white fw-bold fs-5">${number_format(suggest.scores)}</span> points</span>
+                        `<span class="badge bg-success btn-convert-scores cursor-pointer me-2 mb-2">{{__('messages.current_has')}} <span class="text-white fw-bold fs-5">${number_format(suggest.scores)}</span> {{__('messages.profile.point')}}</span>
                         <input type="hidden" name="scores" value="${suggest.scores}">
                         <input type="hidden" name="original_scores" value="${suggest.scores}">`
                 } else {
-                    str += `<span class="badge bg-secondary me-2 mb-2">Currently has <span class="text-white fw-bold fs-5">${number_format(suggest.scores)}</span> points</span>
+                    str += `<span class="badge bg-secondary me-2 mb-2">{{__('messages.current_has')}} <span class="text-white fw-bold fs-5">${number_format(suggest.scores)}</span> {{__('messages.profile.point')}}</span>
                             <input type="hidden" name="original_scores" value="${suggest.scores}">`
                 }
             }
@@ -2540,7 +2541,7 @@
                 $format = suggest.debt > 0 ? {
                     'color': 'danger',
                     'sign': '-',
-                    'string': 'In debt '
+                    'string': '{{ __('messages.debt') }} '
                 } : {
                     'color': 'success',
                     'sign': '+',
@@ -2562,7 +2563,7 @@
 
     function fillScoresInOrder(point = null) {
         const tab = $('#order-contents .tab-pane.active')
-            total = Number(tab.find('.order-summary').val() || 0),
+        total = Number(tab.find('.order-summary').val() || 0),
             customer_id = tab.find(`select[name=customer_id] option:selected`).val(),
             user_score = Number(tab.find('input[name=original_scores]').val() || 0),
             dataScore = JSON.parse(`{!! cache()->get('settings')['setting_score'] !!}`),
@@ -2576,13 +2577,13 @@
                 discounted = Number(tab.find('.order-money_discounted').val());
 
             if (density * convert.money > total + discounted || Number(point) > user_score) {
-                pushToastify("Invalid score!", 'danger')
+                pushToastify("{{ __('messages.invalid_score') }}", 'danger')
                 tab.find('.order-scores_used').val(cur_point.val()).end()
             } else {
                 tab.find('.order-score_to_money').val(density * convert.money)
                 tab.find('.order-score_to_money').val(density * convert.money)
                 cur_point.val(point)
-                if($('#order-user_scores').is(':checked')) {
+                if ($('#order-user_scores').is(':checked')) {
                     $('#order-user_scores').trigger('change')
                 }
             }
@@ -2595,7 +2596,7 @@
                     if (density > 0) {
                         scores_used = density * convert.score
                         console.log(scores_used, user_score);
-                        if(scores_used > user_score) {
+                        if (scores_used > user_score) {
                             scores_used = user_score
                             score_to_money = scores_used / convert.score * convert.money
                         } else {
@@ -2604,8 +2605,8 @@
                     }
                 }
                 tab.find('.order-scores_used').val(scores_used).end()
-                            .find('.order-current-scores_used').val(scores_used).end()
-                            .find('.order-score_to_money').val(score_to_money)
+                    .find('.order-current-scores_used').val(scores_used).end()
+                    .find('.order-score_to_money').val(score_to_money)
             }
         }
     }
@@ -2839,7 +2840,7 @@
         },
         name: {
             vn: 'Họ tên',
-            en: 'Full Name'
+            en: 'Name'
         },
         phone: {
             vn: 'Số điện thoại',
@@ -2961,15 +2962,71 @@
             vn: 'Tổ chức',
             en: 'Organ'
         },
+        methodStr: {
+            vn: 'Phương thức',
+            en: 'Method'
+        },customer_name: {
+            vn: 'Tên khách hàng',
+            en: 'Customer Name'
+        },branch_name: {
+            vn: 'Chi nhánh',
+            en: 'Branch'
+        },dealer_name: {
+            vn: 'Nhà cung cấp',
+            en: 'Dealer'
+        },paid: {
+            vn: 'Đã thanh toán',
+            en: 'Paid'
+        },receive: {
+            vn: 'Đã nhận',
+            en: 'Received'
+        },refund: {
+            vn: 'Hoàn trả',
+            en: 'Refund'
+        },total: {
+            vn: 'Tổng',
+            en: 'Total'
+        }, discount: {
+            vn: 'Giảm giá',
+            en: 'Discount'
+        },quantity: {
+            vn: 'Số lượng',
+            en: 'Quantity'
+        },lot: {
+            vn: 'Lô',
+            en: 'Lot'
+        },expired: {
+            vn: 'Hạn xử dụng',
+            en: 'Expiration Date'
+        },product_name: {
+            vn: 'Tên Sản phẩm',
+            en: 'Product name'
+        }
+        
     };
     const locale = $('html').attr('lang') || 'vn';
     const emptyText = locale === 'en' ? 'empty' : 'trống';
-    const hiddenKeys = [
+    const hiddenKeys = [ 'dealer_id','customer_id', 'branch_id','permissions', 'email_verified_at', 'import_detail_id',
         'password', 'remember_token', 'avatar', 'local', 'avatarUrl',
         'fullAddress', 'status', 'fullName', 'id', 'gender',
-        'roles', '_local', '_branch', 'galleryUrl', 'gallery', 'sort',
-        'allow_review', 'type', 'value', 'deleted_at', 'updated_at', 'created_at', 'addressObject'
+        'roles', '_local', '_branch', 'galleryUrl', 'gallery', 'sort', 'product_id',
+        'allow_review', 'type', 'value', 'deleted_at', 'updated_at', 'created_at', 'addressObject','method','branch','dealer','transactions','customer','_product'
     ];
+
+    function formatLogValue(value) {
+    if (value === null || value === undefined) return emptyText;
+
+    if (typeof value === 'object' && value.string) {
+        return value.string;
+    }
+
+    if (typeof value === 'object') {
+        return JSON.stringify(value);
+    }
+
+    return String(value);
+}
+
 
 
     $(document).on('click', '.btn-detail-log', function(e) {
@@ -2977,7 +3034,7 @@
         const id = $(this).data('id'),
             form = $('#log-form');
 
-        resetForm(form); // nếu có
+        resetForm(form); 
         $.get(`{{ route('admin.log.show', '') }}/${id}`, function(log) {
             const before = log.before_change || {};
             const after = log.after_change || {};
@@ -2991,12 +3048,21 @@
 
                 let beforeValue = (before[key] !== undefined && before[key] !== null) ? before[key] : emptyText;
                 let afterValue = (after[key] !== undefined && after[key] !== null) ? after[key] : emptyText;
+
+                beforeValue = formatLogValue(before[key]);
+                afterValue = formatLogValue(after[key]);
+
+                beforeValue = String(beforeValue);
+                afterValue = String(afterValue);
+
                 if (beforeValue.startsWith('{') && beforeValue.endsWith('}')) {
                     beforeValue = beforeValue.replace('{', '').replace('}', '').replace(/"/g, ' ');
                 }
+
                 if (afterValue.startsWith('{') && afterValue.endsWith('}')) {
                     afterValue = afterValue.replace('{', '').replace('}', '').replace(/"/g, ' ');
                 }
+
                 rows += `
                     <tr ${(beforeValue != afterValue) ? 'style="background-color: #aaa;"' : ''}>
                         <td><strong>${label}</strong>: ${beforeValue}</td>
@@ -3168,4 +3234,3 @@
 @stack('scripts')
 
 </html>
-
