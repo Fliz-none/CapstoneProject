@@ -3,7 +3,7 @@
 @endphp
 {{-- <link href="{{ asset('admin/css/bootstrap.css') }}" rel="stylesheet"> --}}
 <div id="print-container" style="font-size: 75%; color: #000000">
-    <div class="container-fluid print-template">
+    <div class="container-fluid print-template"> 
         <div class="row">
             <div class="col-12">
                 <h6 class="text-center mb-0 py-3">IMPORT {{ $import->code }}</h6>
@@ -55,7 +55,7 @@
     <div class="row mt-3">
         <div class="col-12 text-center">
             THANK YOU AND SEE YOU AGAIN<br />
-            HOTLINE: {{ cache('settings')->company_phone }}<br />
+            HOTLINE: {{ cache('settings')['company_hotline'] }}<br />
             <small>Please return within 24 hours if there is any issue with the goods</small>
         </div>
     </div>

@@ -72,6 +72,6 @@
         </div>
     @endif
     <div class="row mt-3">
-        <div class="col-12 text-center">THIS DOCUMENT IS NOT A VALID INVOICE<br />FOR DETAILS, PLEASE CONTACT {{ cache('settings')->company_phone }}</div>
+        <div class="col-12 text-center">THIS DOCUMENT IS NOT A VALID INVOICE<br />FOR DETAILS, PLEASE CONTACT {{ cache('settings')['company_hotline'] }}</div>
     </div>
 </div>
