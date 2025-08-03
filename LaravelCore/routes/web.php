@@ -121,6 +121,7 @@ Route::group(['prefix' => 'quantri'], function () {
     });
 
     Route::group(['prefix' => 'product'], function () {
+        Route::get('download_template', [ProductController::class, 'downloadTemplate'])->name('admin.product.download_template');
         Route::get('{key?}/{action?}', [ProductController::class, 'index'])->name('admin.product');
         Route::post('/sort', [ProductController::class, 'sort'])->name('admin.product.sort');
         Route::post('/save', [ProductController::class, 'save'])->name('admin.product.save');

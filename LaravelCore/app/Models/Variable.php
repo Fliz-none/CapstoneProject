@@ -12,7 +12,7 @@ class Variable extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'variables';
-    protected $appends = ['statusStr', 'fullName','product_name'];
+    protected $appends = ['statusStr', 'fullName', 'quantitySold','product_name'];
 
     protected $fillable = [
         'product_id',
@@ -86,6 +86,15 @@ class Variable extends Model
                 break;
         }
         return $name;
+    }
+
+    public function getQuantitySoldAttribute()
+    {
+        return $this->units->sum(function ($unit) {
+            return $unit->details->sum(function ($detail) use ($unit) {
+                return $detail->quantity * $unit->rate;
+            });
+        });
     }
 
     public function convertUnit($quantity = null)

@@ -386,6 +386,10 @@ return [
     'product' => [
         'product' => 'Product',
         'product_name' => 'Product name',
+        'price' => 'Price',
+        'total_stock' => 'Total stock',
+        'limit_stock' => 'Inventory limit',
+        'quantity_sold' => 'Quantity sold',
         'product_management' => 'Product Management',
         'online_and_offline' => 'Online and Offline Sale',
         'short_description' => 'Short description',
@@ -403,8 +407,13 @@ return [
         'minimum_stock' => 'Minimum Stock',
         'allow_review' => 'Allow Monitoring',
         'sort' => 'Sort',
+        'select_catalogue' => 'Select catalogues',
+        'download_template' => 'Download Template',
         'import_excel' => 'Import from Excel',
         'export_excel' => 'Export to Excel',
+        'export' => 'Export',
+        'column_required' => 'Please select column to export',
+        'catalogue_required' => 'Please select product catelogue',
 
         'product_sku_unique' => 'SKU already exists',
         'sort_success' => 'Successfully sorted',
@@ -417,12 +426,22 @@ return [
         'export_success' => 'Excel exported successfully',
         'but' => ', but',
         'but_end' => ' items could not be updated',
+
+        'catalogue' => 'Catalogue',
+        'variable_name' => 'Variable name',
+        'attribute' => 'Attribute',
+        'term' => 'Term',
+        'rate' => 'Rate',
+        'barcode' => 'Barcode',
+
+        'no_file' => 'No files uploaded',
+        'update_data' => 'Data update successful',
     ],
 
     //Category
     'category' => [
-        'category' => 'Catelogue',
-        'category_management' => 'Catelogue Management',
+        'category' => 'Category',
+        'category_management' => 'Category Management',
         'new_catalogue' => 'New Category',
         'catagory_array' => 'Categories: ',
         'category_name' => 'Category Name',

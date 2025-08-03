@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Imports\UnitsImport;
+use App\Models\Attribute;
 use App\Models\Catalogue;
 use App\Models\Unit;
 use App\Models\Variable;
@@ -23,6 +24,11 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
 class ProductController extends Controller
 {
     const NAME = 'Product';
@@ -37,24 +43,23 @@ class ProductController extends Controller
         }
         $this->middleware(['admin', 'auth']);
         $this->middleware(function ($request, $next) {
-        // Locale đã được set xong ở đây
-        Controller::init();
-         self::$MESSAGES = [
-            'sku.required'=> Controller::$NOT_EMPTY,
-            'sku.unique'=> __('messages.product.product_sku_unique'),
-            'sku.string' =>  'SKU: ' . Controller::$DATA_INVALID,
-            'sku.max' => 'SKU: ' . Controller::$MAX,
-            'name.required' => Controller::$NOT_EMPTY,
-            'name.string' => Controller::$DATA_INVALID,
-            'name.max' => Controller::$MAX,
-            'status.numeric' => Controller::$DATA_INVALID,
-            'catalogues.required' => __('messages.category.category_required'),
-            'catalogues.array' => __('messages.category.category_array') . Controller::$DATA_INVALID,
-        ];
+            // Locale đã được set xong ở đây
+            Controller::init();
+            self::$MESSAGES = [
+                'sku.required' => Controller::$NOT_EMPTY,
+                'sku.unique' => __('messages.product.product_sku_unique'),
+                'sku.string' =>  'SKU: ' . Controller::$DATA_INVALID,
+                'sku.max' => 'SKU: ' . Controller::$MAX,
+                'name.required' => Controller::$NOT_EMPTY,
+                'name.string' => Controller::$DATA_INVALID,
+                'name.max' => Controller::$MAX,
+                'status.numeric' => Controller::$DATA_INVALID,
+                'catalogues.required' => __('messages.category.category_required'),
+                'catalogues.array' => __('messages.category.category_array') . Controller::$DATA_INVALID,
+            ];
 
-        return $next($request);
+            return $next($request);
         });
-
     }
 
     /**
@@ -70,18 +75,25 @@ class ProductController extends Controller
                 case 'render':
                     $request->validate([
                         'columns' => 'required',
-                        'catalogue_id' => 'required|numeric',
+                        'catalogue_ids' => 'required',
                     ], [
-                        'columns.required' => Controller::$MIN,
-                        'catalogue_id.required' => __('messages.category.category_required'),
+                        'columns.required' =>  __('messages.product.column_required'),
+                        'catalogue_ids.required' => __('messages.product.catalogue_required'),
                     ]);
-                    $catalogue_ids = Controller::getDescendantIds($request->catalogue_id);
-                    $catalogue_ids[] = $request->catalogue_id;
+                    $catalogue_ids = [];
+
+                    foreach ($request->catalogue_ids as $catalogue_id) {
+                        $descendants = Controller::getDescendantIds($catalogue_id);
+                        $catalogue_ids = array_merge($catalogue_ids, $descendants, [$catalogue_id]);
+                    }
+
+                    // Loại bỏ trùng lặp nếu có
+                    $catalogue_ids = array_unique($catalogue_ids);
+
+                    // Truy vấn sản phẩm
                     $objs = Product::with('variables.units')
-                        ->when($request->catalogue_id, function ($query) use ($catalogue_ids) {
-                            $query->whereHas('catalogues', function ($query) use ($catalogue_ids) {
-                                $query->whereIn('catalogues.id', $catalogue_ids);
-                            });
+                        ->whereHas('catalogues', function ($query) use ($catalogue_ids) {
+                            $query->whereIn('catalogues.id', $catalogue_ids);
                         })
                         ->orderBy('sort', 'ASC')
                         ->get();
@@ -375,9 +387,8 @@ class ProductController extends Controller
 
     public function create(Request $request)
     {
-        dd($request->all());
         $rules = [
-            'sku' => ['nullable','unique:products', 'string', 'max:125'],
+            'sku' => ['nullable', 'unique:products', 'string', 'max:125'],
             'name' => ['required', 'string', 'max:125'],
             'status' => ['nullable', 'numeric'],
             'catalogues' => ['required', 'array'],
@@ -570,33 +581,227 @@ class ProductController extends Controller
         return response()->json($response, 200);
     }
 
+    public function downloadTemplate()
+    {
+        $spreadsheet = new Spreadsheet();
+
+        // === Sheet 1: Products ===
+        $productSheet = $spreadsheet->getActiveSheet();
+        $productSheet->setTitle('Products');
+        $productSheet->fromArray([__('messages.product.product_name'), __('messages.product.catalogue'), __('messages.product.variable_name'), __('messages.product.attribute'), __('messages.product.term'), __('messages.product.rate'), __('messages.product.barcode'), __('messages.product.price')], null, 'A1');
+        $columnWidths = [
+            'A' => 30, // Product name
+            'B' => 25, // Catalogue
+            'C' => 25, // Variable name
+            'D' => 35, // Attribute
+            'E' => 20, // Term
+            'F' => 10, // Rate
+            'G' => 25, // Barcode
+            'H' => 15, // Price
+        ];
+
+        foreach ($columnWidths as $col => $width) {
+            $productSheet->getColumnDimension($col)->setWidth($width);
+        }
+
+        $styleArray = [
+            'font' => [
+                'bold' => true,
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+        ];
+        $productSheet->getStyle('A1:H1')->applyFromArray($styleArray);
+
+        // === Sheet 2: Attributes ===
+        $attributeSheet = $spreadsheet->createSheet();
+        $attributeSheet->setTitle('Attributes');
+        $attributeSheet->fromArray(['id', 'name'], null, 'A1');
+        $attributes = Attribute::select('id', 'key', 'value')->get();
+        $attributeData = $attributes->map(function ($item) {
+            return [
+                $item->id,
+                strip_tags($item->key . ' - ' . $item->value)
+            ];
+        })->toArray();
+        $attributeSheet->fromArray($attributeData, null, 'A2');
+        foreach (range('A', 'B') as $col) {
+            $attributeSheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        // === Sheet 3: Catalogues ===
+        $catalogueSheet = $spreadsheet->createSheet();
+        $catalogueSheet->setTitle('Catalogues');
+        $catalogueSheet->fromArray(['id', 'name'], null, 'A1');
+
+        $catalogues = Catalogue::select('id', 'name')->get();
+        $catalogueData = $catalogues->map(fn($item) => [$item->id, strip_tags($item->name)])->toArray();
+        $catalogueSheet->fromArray($catalogueData, null, 'A2');
+        $productSheet->getStyle('A1:H1')->applyFromArray([
+            'font' => ['bold' => true],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+        ]);
+
+        // Tự động tính dòng cuối
+        $lastRow = $productSheet->getHighestRow();
+
+        // Border cho toàn bộ bảng
+        $productSheet->getStyle("A1:H10")->applyFromArray([
+            'font' => ['name' => 'Times New Roman'],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => 'FF000000'],
+                ],
+            ],
+        ]);
+        foreach (range('A', 'B') as $col) {
+            $catalogueSheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        // === Dropdown chọn Attribute (column D)
+        $productSheet = $spreadsheet->setActiveSheetIndex(0);
+
+        for ($row = 2; $row <= 101; $row++) {
+            // Dropdown cho column B - Catalogue
+            $catalogueValidation = $productSheet->getCell("B{$row}")->getDataValidation();
+            $catalogueValidation->setType(DataValidation::TYPE_LIST)
+                ->setFormula1('=Catalogues!B2:B' . ($catalogueSheet->getHighestRow()))
+                ->setAllowBlank(true)
+                ->setShowDropDown(true)
+                ->setShowInputMessage(true);
+
+            // Dropdown cho column D - Attribute
+            $attributeValidation = $productSheet->getCell("D{$row}")->getDataValidation();
+            $attributeValidation->setType(DataValidation::TYPE_LIST)
+                ->setFormula1('=Attributes!B2:B' . ($attributeSheet->getHighestRow()))
+                ->setAllowBlank(true)
+                ->setShowDropDown(true)
+                ->setShowInputMessage(true);
+        }
+
+        // === Xuất file
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'product_template.xlsx';
+        $tempFile = tempnam(sys_get_temp_dir(), $fileName);
+        $writer->save($tempFile);
+
+        return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
+    }
+
+
     public function refill(Request $request)
     {
-        $request->validate([
-            'refill_file' => 'required',
-        ]);
-        $data = Excel::toArray(new UnitsImport, $request->file('refill_file'));
-        $invalidRow = [];
-        foreach ($data[0] as $row) {
-            $u = Unit::find($row['unit_id']);
-            if (Hash::check($u->created_at, $row['unit_created_at'])) {
-                Unit::where('id', $row['unit_id'])->update(['price' => $row['gia']]);
-            } else {
-                $invalidRow[] = $row['ten_san_pham'] . ' - ' . $row['unit_id'];
+        if (!$request->hasFile('refill_file')) {
+
+            return response()->json(['errors' => ['file' => __('messages.product.no_file')]], 422);
+        }
+
+        if (!empty($this->user->can(User::CREATE_PRODUCT))) {
+            DB::beginTransaction();
+            try {
+                $file = $request->file('refill_file');
+                $spreadsheet = IOFactory::load($file->getPathname());
+                $sheet = $spreadsheet->getSheetByName('Products');
+                $rows = $sheet->toArray(null, true, true, true);
+
+                // Lấy danh sách ánh xạ tên -> ID cho catalogue và attribute
+                $catalogueMap = Catalogue::pluck('id', 'name')->mapWithKeys(fn($id, $name) => [strip_tags($name) => $id]);
+                $attributeMap = Attribute::get()->mapWithKeys(function ($item) {
+                    $key = strip_tags($item->key . ' - ' . $item->value);
+                    return [$key => $item->id];
+                });
+
+                foreach ($rows as $index => $row) {
+                    // Bỏ qua dòng tiêu đề
+                    if ($index === 1) continue;
+
+                    $productName = $row['A'] ?? null;
+                    $catalogueName = trim($row['B'] ?? '');
+                    $variableName = $row['C'] ?? null;
+                    $attributeName = trim($row['D'] ?? '');
+                    $term = $row['E'] ?? null;
+                    $rate = $row['F'] ?? null;
+                    $barcode = $row['G'] ?? null;
+                    $price = $row['H'] ?? null;
+
+                    $catalogueId = $catalogueMap[$catalogueName] ?? null;
+                    $attributeId = $attributeMap[$attributeName] ?? null;
+
+                    if (empty($productName)) continue;
+
+                    $product = Product::firstOrCreate([
+                        'name' => $productName,
+                        'slug' => Str::slug($productName)
+                    ]);
+
+                    $catalogueProduct = DB::table('catalogue_product')->where('product_id', $product->id)
+                        ->where('catalogue_id', $catalogueId)
+                        ->first();
+
+                    if (($product->wasRecentlyCreated || !$catalogueProduct) && $catalogueName) {
+                        DB::table('catalogue_product')->insert([
+                            'product_id' => $product->id,
+                            'catalogue_id' => $catalogueId,
+                        ]);
+                    }
+
+                    if (empty($variableName)) continue;
+
+                    $variable = Variable::updateOrCreate(
+                        [
+                            'product_id' => $product->id,
+                            'name'       => $variableName,
+                        ],
+                        []
+                    );
+
+                    $attributeVariable = DB::table('attribute_variable')->where('variable_id', $variable->id)
+                        ->where('attribute_id', $attributeId)
+                        ->first();
+
+                    if (!$attributeVariable && $attributeName) {
+                        DB::table('attribute_variable')->insert([
+                            'variable_id' => $variable->id,
+                            'attribute_id' => $attributeId,
+                        ]);
+                    }
+
+                    if (empty($term)) continue;
+
+                    Unit::updateOrCreate(
+                        [
+                            'variable_id' => $variable->id,
+                            'term'       => $term,
+                        ],
+                        [
+                            'rate' => $rate,
+                            'barcode' => $barcode,
+                            'price' => $price,
+                        ]
+                    );
+                }
+
+                DB::commit();
+                cache()->forget('products');
+                return response()->json(array(
+                    'status' => 'success',
+                    'msg' => __('messages.product.update_data')
+                ), 200);
+            } catch (\Exception $e) {
+                DB::rollBack();
+                log_exception($e);
+                Controller::resetAutoIncrement(['products', 'variables', 'units', 'catalogue_product', 'attribute_variable']);
+                return response()->json(['errors' => ['error' => [__('messages.error') . $e->getMessage()]]], 422);
             }
-        }
-        $msg = __('messages.product.import_success');
-        $status = '';
-        if (count($invalidRow)) {
-            $msg .= __('messages.product.but') . count($invalidRow) . __('messages.product.but_end') . implode(', ', $invalidRow);
         } else {
-            $status = 'success';
+            return response()->json(['errors' => ['role' => [__('messages.role')]]], 422);
         }
-        $response = array(
-            'status' => $status,
-            'msg' => $msg
-        );
-        return response()->json($response, 200);
     }
 
     public function remove_catalogues(Request $request)
