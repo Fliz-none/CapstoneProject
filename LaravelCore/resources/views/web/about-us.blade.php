@@ -143,22 +143,22 @@
     }
 </style>
 @section('content')
-    <div class='master-wrapper'>
-        <div class="container-fluid px-0">
-            <div class="home-banner-wrapper">
-                <div class="swiper">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide">
-                            <div class="home-banner-slide"><img class="img-fluid" src="http://localhost:8000/storage/banner-8.jpg" alt="Trang chủ" loading="lazy"></div>
-                        </div>
-                        <div class="swiper-slide">
-                            <div class="home-banner-slide"><img class="img-fluid" src="http://localhost:8000/storage/banner-9.jpg" alt="Trang chủ" loading="lazy"></div>
-                        </div>
-                    </div><span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+    <div class="container-fluid px-0">
+        <div class="home-banner-wrapper">
+            <div class="swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="home-banner-slide"><img class="img-fluid" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/'. $settings['banner_us_1']) }}" alt="Trang chủ" loading="lazy"></div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="home-banner-slide"><img class="img-fluid" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/'. $settings['banner_us_1']) }}" alt="Trang chủ" loading="lazy"></div>
+                    </div>
                 </div><span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
-                <div class="swiper-pagination"></div>
-            </div>
+            </div><span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+            <div class="swiper-pagination"></div>
         </div>
+    </div>
+    <div class='master-wrapper'>
         <div class="home-story-wrapper" id="iuoqvj">
             <div class="bg-blur"></div>
             <div class="child-container position-relative overflow-hidden">

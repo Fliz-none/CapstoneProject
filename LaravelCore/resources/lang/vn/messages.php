@@ -389,6 +389,10 @@ return [
     'product' => [
         'product' => 'Sản phẩm',
         'product_name' => 'Tên sản phẩm',
+        'price' => 'Giá',
+        'total_stock' => 'Tồn kho',
+        'limit_stock' => 'Giới hạn tồn kho',
+        'quantity_sold' => 'Đã bán',
         'product_management' => 'Quản lí sản phẩm',
         'short_description' => 'Mô tả ngắn',
         'online_and_offline' => 'Bán trực tuyến và bán trực tiếp',
@@ -406,8 +410,13 @@ return [
         'minimum_stock' => 'Tồn kho tối thiểu',
         'allow_review' => 'Cho phép theo dõi',
         'sort' => 'Sắp xếp',
+        'select_catalogue' => 'Chọn danh mục',
+        'download_template' => 'Tải mẫu',
         'import_excel' => 'Nhập từ excel',
         'export_excel' => 'Xuất ra excel',
+        'export' => 'Xuất',
+        'column_required' => 'Vui lòng chọn cột cần xuất',
+        'catalogue_required' => 'Vui lòng chọn danh mục sản phẩm',
 
         'product_sku_unique' => 'Đã tồn tại mã SKU',
 
@@ -420,6 +429,16 @@ return [
         'export_success' => 'Xuất excel thành cộng',
         'but' => ', do',
         'but_end' => ' vật phẩm không thể được cập nhật ',
+
+        'catalogue' => 'Danh mục',
+        'variable_name' => 'Tên biến thể',
+        'attribute' => 'Thuộc tính',
+        'term' => 'Đơn vị',
+        'rate' => 'Tỉ lệ',
+        'barcode' => 'Mã vạch',
+
+        'no_file' => 'Không có file được tải lên',
+        'update_data' => 'Cập nhật dữ liệu thành công',
     ],
 
     //Category

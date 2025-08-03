@@ -1,10 +1,10 @@
 @php
     $columnTitles = [
-        'name' => 'Product Name',
-        'price' => 'Price',
-        'sum_stock' => 'Total Stock',
-        'stock_limit' => 'Stock Threshold',
-        'created_at' => 'Created Date',
+        'name' => __('messages.product.product_name'),
+        'price' => __('messages.product.price'),
+        'sum_stock' => __('messages.product.total_stock'),
+        'stock_limit' => __('messages.product.limit_stock'),
+        'quantity_sold' => __('messages.product.quantity_sold'),
     ];
 @endphp
 <div id="render-container">
@@ -15,14 +15,11 @@
                     @foreach ($columns as $column)
                         <th>{{ $columnTitles[$column] ?? $column }}</th>
                     @endforeach
-                    <th>unit_id</th>
-                    <th>unit_created_at</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($products as $product)
                     @foreach ($product->variables as $variable)
-                        @foreach ($variable->units as $unit)
                             <tr>
                                 @foreach ($columns as $column)
                                     <td>
@@ -32,19 +29,19 @@
                                             @break
 
                                             @case('price')
-                                                {{ $unit->price }}
+                                                {{ number_format($variable->units->sortBy('rate')->first()->price) }}
                                             @break
 
                                             @case('sum_stock')
-                                                {{ $variable->sumStocks() }}
+                                                {{ number_format($variable->sumStocks()) }}
                                             @break
 
                                             @case('stock_limit')
-                                                {{ $variable->stock_limit }}
+                                                {{ number_format($variable->stock_limit) }}
                                             @break
 
-                                            @case('created_at')
-                                                {{ isset($unit->created_at) ? \Carbon\Carbon::parse($unit->created_at)->format('d/m/Y') : '' }}
+                                            @case('quantity_sold')
+                                                {{ number_format($variable->quantitySold) }}
                                             @break
 
                                             @default
@@ -52,14 +49,7 @@
                                         @endswitch
                                     </td>
                                 @endforeach
-                                <td>
-                                    {{ $unit->id }}
-                                </td>
-                                <td>
-                                    {{ Hash::make($unit->created_at) }}
-                                </td>
                             </tr>
-                        @endforeach
                     @endforeach
                 @endforeach
             </tbody>

@@ -66,9 +66,13 @@
                 </div>
                 <div class="col-12 col-md-6 d-flex justify-content-end">
                     @if (!empty(Auth::user()->can(App\Models\User::READ_PRODUCTS)))
+                            <a class="btn btn-success mb-3 me-2" href="{{ route('admin.product.download_template') }}">
+                                <i class="bi bi-box-arrow-down"></i>
+                                {{ __('messages.product.download_template') }}
+                            </a>
                         <form action="" method="post">
                             <button class="btn k-btn-info mb-3 btn-refill-product" type="button">
-                                <i class="bi bi-box-arrow-down"></i>
+                                <i class="bi bi-box-arrow-in-up"></i>
                                 {{ __('messages.product.import_excel') }}
                             </button>
                             <input class="d-none" id="refill-file" name="refill_file" type="file" accept=".xlsx, .xls">
@@ -76,7 +80,7 @@
                     @endif
                     @if (!empty(Auth::user()->can(App\Models\User::READ_PRODUCTS)))
                         <button class="btn btn-warning mb-3 ms-2 btn-render-product" type="button">
-                            <i class="bi bi-box-arrow-in-up"></i>
+                            <i class="bi bi-box-arrow-down"></i>
                             {{ __('messages.product.export_excel') }}
                         </button>
                     @endif
@@ -135,13 +139,13 @@
                 let selectedColumns = $('.render-checkbox:checked').map(function() {
                     return $(this).val();
                 }).get();
-                let catalogue_id = $('#render-product-modal').find('[name="catalogue"]').val();
+                let catalogue_ids = $('#render-product-modal').find('[name="catalogues[]"]').val();
                 $.ajax({
                     url: `{{ route('admin.product') }}/?key=render`,
                     type: 'GET',
                     data: {
                         columns: selectedColumns,
-                        catalogue_id: catalogue_id,
+                        catalogue_ids: catalogue_ids,
                     },
                     success: function(template) {
                         $('#render-wrapper').html(template);
