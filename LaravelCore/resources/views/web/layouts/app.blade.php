@@ -188,7 +188,7 @@
             @if (auth()->check())
                 loadMessages(true);
             @endif
-            
+
             $(document).on('click', '.btn-login', function(event) {
                 let form = $('#loginForm');
                 submitForm(form).done(function(response) {
@@ -196,13 +196,13 @@
                 });
             });
             // Bắt sự kiện nhấn Enter trong input
-            $('#loginForm input').on('keydown', function (e) {
+            $('#loginForm input').on('keydown', function(e) {
                 if (e.key === 'Enter') {
                     let form = $('#loginForm');
                     submitForm(form).done(function(response) {
                         location.reload();
                     });
-                }                
+                }
             });
             function submitLogoutForm() {
                 const form = $("#logout-form");
@@ -241,13 +241,6 @@
                 }
             });
 
-            // Chọn file
-            $(document).on('change', '#chatAttachments', function() {
-                console.log(this.files);
-                console.log($(this).val());
-                
-                
-            });
         });
     </script>
 

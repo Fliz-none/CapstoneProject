@@ -108,14 +108,10 @@ class ChatController extends Controller
 
             DB::beginTransaction();
 
-            // Tìm hoặc tạo cuộc trò chuyện
-            $conversation = Conversation::firstOrCreate([
-                'id' => $conversationId,
-                'created_by' => Auth::id(),
-            ]);
-
+            // Tìm cuộc trò chuyện
+            $conversation = Conversation::find($conversationId);
             //Authorization
-            if (!$conversation->users->contains(Auth::id())) {
+            if ($conversation == null || !$conversation->users->contains(Auth::id())) {
                 abort(403);
             }
 
@@ -151,12 +147,12 @@ class ChatController extends Controller
                 $uuidName = Str::uuid() . '.' . $extension;
 
                 $path = $file->storeAs('', $uuidName, 'chat_attachments');
-
+                $is_image = in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'svg']);
                 $message->attachments()->create([
                     'file_name' => $file->getClientOriginalName(),
                     'file_url' => asset('storage/chat/' . $uuidName),
                     'mime_type' => $file->getMimeType(),
-                    'size' => $file->getSize(),
+                    'is_image' => $is_image
                 ]);
             }
         } catch (\Exception $e) {

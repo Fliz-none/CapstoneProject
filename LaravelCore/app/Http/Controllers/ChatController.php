@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\PusherBroadcast;
+use App\Models\Attachment;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\User;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use Illuminate\Support\Str;
 
 class ChatController extends Controller
 {
@@ -60,60 +62,83 @@ class ChatController extends Controller
         }
     }
 
-
     public function broadcast(Request $request)
     {
         DB::beginTransaction();
         try {
             $request->validate([
-                'message' => 'string|max:192',
+                'message' => 'nullable|string|max:192',
+                'attachments.*' => 'file|max:20480', // 204Mb max mỗi file
             ], [
-                'message.string' => 'The message field must be a string.',
-                'message.max' => 'The message field must not be greater than 192 characters.',
+                'message.string' => 'Kiểu dữ liệu không hợp lệ.',
+                'message.max' => 'Tin nhắn quá dài',
             ]);
 
             $messageText = $request->get('message');
+
+            // Tạo hoặc lấy conversation
             $conversation = Conversation::firstOrCreate([
                 'customer_id' => Auth::id(),
                 'created_by' => Auth::id(),
             ]);
-            if ($conversation->wasRecentlyCreated) {
-                $admins = User::permission(User::ACCESS_ADMIN)->pluck('id');
-                $conversation->users()->syncWithoutDetaching($admins);
-            }
+
+            $admins = User::permission(User::ACCESS_ADMIN)->pluck('id');
+            $conversation->users()->syncWithoutDetaching($admins);
+
+            // Tạo message (có thể rỗng nếu chỉ gửi file)
             $message = Message::create([
                 'conversation_id' => $conversation->id,
                 'sender_id' => Auth::id(),
                 'content' => $messageText,
             ]);
 
+            // Tách file ảnh và file khác
+            if ($request->hasFile('attachments')) {
+                foreach ($request->file('attachments') as $file) {
+                    $uuidName = Str::uuid() . '.' . $file->getClientOriginalExtension();
+                    $file->storeAs('', $uuidName, 'chat_attachments'); // vẫn đúng path
+
+                    // Optionally lưu DB
+                    Attachment::create([
+                        'message_id' => $message->id,
+                        'file_name' => $file->getClientOriginalName(),
+                        'file_url' => asset('storage/chat/' . $uuidName),
+                        'mime_type' => $file->getMimeType(),
+                        'size' => $file->getSize(),
+                    ]);
+                }
+            }
+
             broadcast(new PusherBroadcast($message));
             DB::commit();
+
+            return response()->json(['success' => true, 'message_id' => $message->id]);
         } catch (\Exception $e) {
             log_exception($e);
             DB::rollBack();
-            return response()->json('An error occurred, while sending the message!', 500);
+            return response()->json('An error occurred while sending the message!', 500);
         }
     }
 
-    public function generate_token()
-    {
-        $id = Auth::id(); // user đã đăng nhập
-        
-        $payload = [
-            'iss' => config('app.url'),
-            'sub' => $id,
-            'iat' => time(),
-            'exp' => time() + 1800, // token có hiệu lực 30 ph
-            'aud' => 'RasaBot',
-            'role' => 'customer',
-        ];
 
-        $jwt = JWT::encode($payload, env('JWT_SECRET'), 'HS256');
+    // public function generate_token()
+    // {
+    //     $id = Auth::id(); // user đã đăng nhập
 
-        return response()->json([
-            'token' => $jwt,
-        ]);
-    }
+    //     $payload = [
+    //         'iss' => config('app.url'),
+    //         'sub' => $id,
+    //         'iat' => time(),
+    //         'exp' => time() + 1800, // token có hiệu lực 30 ph
+    //         'aud' => 'RasaBot',
+    //         'role' => 'customer',
+    //     ];
+
+    //     $jwt = JWT::encode($payload, env('JWT_SECRET'), 'HS256');
+
+    //     return response()->json([
+    //         'token' => $jwt,
+    //     ]);
+    // }
 
 }
