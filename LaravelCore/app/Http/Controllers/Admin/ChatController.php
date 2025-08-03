@@ -67,6 +67,7 @@ class ChatController extends Controller
                                 $q->where('name', 'like', '%' . $search . '%');
                             });
                         })
+                        ->orderBy('created_at', 'desc')
                         ->get();
                     return view('admin.chat.conversations', ['conversations' => $conversations ?? [], 'active_id' => $active_id]);
                 default:
@@ -86,9 +87,9 @@ class ChatController extends Controller
         // Validate message + files
         $request->validate([
             'conversation_id' => 'required|numeric',
-            'message' => 'string|max:192',
+            'message' => 'nullable|string|max:192',
             'attachments' => 'nullable|array|max:5', // Tối đa 5 files
-            'attachments.*' => 'file|max:10240',     // Mỗi file ≤ 10MB
+            'attachments.*' => 'nullable|file|max:102400',     // Mỗi file ≤ 100MB
         ], [
             'conversation_id.required' => __('messages.chat.conversation_id.required'),
             'message.string' => __('messages.chat.message.string'),

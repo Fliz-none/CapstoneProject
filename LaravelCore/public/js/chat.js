@@ -133,6 +133,30 @@ $(".chat-input textarea").on("keydown", function (e) {
     }
 });
 
-$(".chat-input span").on("click", handleChat);
+
+// -----------------------------
+// Emoji
+// -----------------------------
+
+$('#toggleEmojiPicker').on('click', function (e) {
+    e.stopPropagation(); // tránh tắt ngay khi click
+    $('#emojiPicker').toggle();
+});
+
+// Click ngoài emoji box thì ẩn đi
+$(document).on('click', function () {
+    $('#emojiPicker').hide();
+});
+
+// Click emoji để chèn vào textarea
+$(document).on('click', '#emojiPicker .emoji', function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+    const emoji = $(this).text();
+    $('#message').val($('#message').val() + emoji);
+    $('#emojiPicker').hide();
+});
+
+$("#send-btn").on("click", handleChat);
 $(".close-btn").on("click", () => $("body").removeClass("show-chatbot"));
 $(".chatbot-toggler").on("click", () => $("body").toggleClass("show-chatbot"));

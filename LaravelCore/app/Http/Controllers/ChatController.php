@@ -68,7 +68,7 @@ class ChatController extends Controller
         try {
             $request->validate([
                 'message' => 'nullable|string|max:192',
-                'attachments.*' => 'file|max:20480', // 204Mb max mỗi file
+                'attachments.*' => 'file|max:102400', // 100Mb max mỗi file
             ], [
                 'message.string' => 'Kiểu dữ liệu không hợp lệ.',
                 'message.max' => 'Tin nhắn quá dài',

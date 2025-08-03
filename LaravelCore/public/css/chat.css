@@ -186,6 +186,11 @@ header h2 {
     align-items: center;
     font-size: 1.35rem;
 }
+@media (min-width: 1026px) {
+    .chatbot .chatbox {
+        height: calc(70vh - 55px);
+    }
+}
 @media (max-width: 1026px) {
     .chatbot-toggler {
         right: 20px;
@@ -257,7 +262,7 @@ header h2 {
         width: 100%;
     }
     .chatbot .chatbox {
-        height: 0%;
+        height: 85%;
         padding: 25px 15px 10px;
     }
     .chatbot .chat-input {
@@ -309,4 +314,16 @@ header h2 {
     height: 35px;
     object-fit: cover;
     margin: 0 5px;
+}
+
+#emojiPicker .emoji {
+    font-size: 20px;
+    cursor: pointer;
+    margin: 4px;
+    display: inline-block;
+}
+
+#emojiPicker .emoji:hover {
+    background-color: #f0f0f0;
+    border-radius: 4px;
 }
