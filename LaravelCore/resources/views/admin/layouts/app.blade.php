@@ -601,10 +601,10 @@
         const form = $('#variable-form');
         const str = `
                 <tr class="variable-unit">
-                    <td><input class="form-control" name="unit_barcode[]" type="text" placeholder="Barcode"></td>
-                    <td><input class="form-control" name="unit_term[]" type="text" placeholder="Name" required></td>
-                    <td><input class="form-control money" name="unit_price[]" type="text" placeholder="Price" required></td>
-                    <td><input class="form-control" name="unit_rate[]" type="text" placeholder="Conversion rate" required></td>
+                    <td><input class="form-control" name="unit_barcode[]" type="text" placeholder="{{ __('messages.product.barcode') }}"></td>
+                    <td><input class="form-control" name="unit_term[]" type="text" placeholder="{{__('messages.dashboard_table_name')}}" required></td>
+                    <td><input class="form-control money" name="unit_price[]" type="text" placeholder="{{ __('messages.product.price') }}" required></td>
+                    <td><input class="form-control" name="unit_rate[]" type="text" placeholder="{{ __('messages.product.rate')}}" required></td>
                     <td>
                         <input name="unit_id[]" type="hidden">
                         <form action="{{ route('admin.unit.remove') }}" method="post" class="save-form">

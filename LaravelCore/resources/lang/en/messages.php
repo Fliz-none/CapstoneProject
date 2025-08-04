@@ -933,6 +933,10 @@ return [
         'staff_number__*__required' => 'Please enter the number of staff.',
         'staff_number__*__integer' => 'Number of staff must be an integer.',
         'staff_number__*__min' => 'Number of staff must be at least 1.',
+
+        'currency' => 'Please enter a currency.',
+        'hourly_salary_required' => 'Please enter the hourly salary.',
+        'hourly_salary_numeric' => 'Hourly salary must be a number.',
     ],
 
     // OrderController

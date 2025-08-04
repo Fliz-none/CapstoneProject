@@ -416,9 +416,9 @@ class SettingController extends Controller
             'staff_number.*.integer' => __('messages.setting_controller.staff_number__*__integer'),
             'staff_number.*.min' => __('messages.setting_controller.staff_number__*__min'),
 
-            'currency.required' => 'Please enter a currency.',
-            'hourly_salary.required' => 'Please enter the hourly salary.',
-            'hourly_salary.numeric' => 'Hourly salary must be numeric.',
+            'currency.required' => __('messages.setting_controller.currency'),
+            'hourly_salary.required' => __('messages.setting_controller.hourly_salary_required'),
+            'hourly_salary.numeric' => __('messages.setting_controller.hourly_salary_numeric'),
 
         ]);
 
