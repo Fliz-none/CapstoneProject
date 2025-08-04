@@ -47,6 +47,18 @@
                     display: none;
                 }
             }
+
+            #emojiPicker .emoji {
+                font-size: 20px;
+                cursor: pointer;
+                margin: 4px;
+                display: inline-block;
+            }
+
+            #emojiPicker .emoji:hover {
+                background-color: #f0f0f0;
+                border-radius: 4px;
+            }
         </style>
         <button class="btn btn-sm btn-outline-primary float-end" id="toggle-fullscreen">
             <i class="bi bi-arrows-fullscreen"></i>
@@ -83,10 +95,16 @@
                         <form class="border-top bg-white p-2" id="send-message" method="POST" action="{{ route('admin.chat.broadcast') }}" enctype="multipart/form-data">
                             @csrf
                             <!-- Dòng icon trên đầu -->
-                            <div class="d-flex align-items-center gap-2 mb-2 px-2">
-                                <button class="btn btn-link text-muted p-1" type="button" title="Emoji">
+                            <div class="d-flex align-items-center gap-2 mb-2 px-2 position-relative">
+                                <button class="btn btn-link text-muted p-1" id="toggleEmojiPicker" type="button" title="Emoji">
                                     <i class="bi bi-emoji-smile fs-5"></i>
                                 </button>
+
+                                <!-- Danh sách Emoji (dropdown) -->
+                                <div class="border bg-white p-2 rounded shadow-sm position-absolute" id="emojiPicker" style="display: none; top: 100%; left: 0; z-index: 100; max-height: 200px; overflow-y: auto; width: 260px;">
+                                    <!-- emoji sẽ được render bằng JS -->
+                                </div>
+
                                 <label class="btn btn-link text-muted p-1 m-0" for="attachments" title="Attachment">
                                     <i class="bi bi-paperclip fs-5"></i>
                                 </label>
@@ -96,7 +114,7 @@
                             <!-- Textarea + nút gửi -->
                             <div class="d-flex align-items-end gap-2 px-3 pb-3">
                                 <textarea class="form-control border-0 rounded-3 bg-light px-3 py-2" id="message" name="message" style="resize: none;" rows="2" placeholder="{{ __('messages.chat.@') }}"></textarea>
-                                <button class="btn btn-primary" type="submit">
+                                <button class="btn btn-primary just-icon" type="submit">
                                     <i class="bi bi-send"></i>
                                 </button>
                             </div>
@@ -137,7 +155,7 @@
             const isSender = type === 'broadcast';
             const align = isSender ? 'end' : 'start';
             const bg = isSender ? 'bg-chat-primary' : 'bg-chat-secondary';
-            const avatar = createAvatar(message.sender, isSender ? 'end' : 'start');
+            const avatar = createAvatar(message.sender, isSender ? 'end ms-3' : 'start');
             let html = '';
             if (message.attachments && message.attachments.length > 0) {
                 message.attachments.forEach(att => {
@@ -152,10 +170,11 @@
                                 </div>
                             </div>
                         </div>
+                    ${isSender ? avatar : '<div class="me-3" style="width: 50px"></div>'}
                     </li>`;
                 });
             }
-
+            if (!message.content) return html;
             html += `<li class="d-flex justify-content-${align} mb-4">
                     ${!isSender ? avatar : ''}
                     <div style="max-width: 50%; width: fit-content;" class="${isSender ? 'me-3' : ''}">
@@ -278,6 +297,7 @@
                 if ($(this).scrollTop() == 0) loadMessages(false);
             });
 
+            // Gửi tin - Send message
             $('#send-message').on('submit', function(e) {
                 e.preventDefault();
                 if (!conversationId) return;
@@ -305,8 +325,7 @@
                     $('#message').val('');
                     $('#attachments').val('');
                     $('#preview-attachments').empty();
-                    $form.find('[type="submit"]').prop('disabled', false).html(
-                        '<i class="bi bi-send"></i>');
+                    $form.find('[type="submit"]').prop('disabled', false).html('<i class="bi bi-send"></i>');
                 });
             });
 
@@ -456,7 +475,7 @@
                     loadConversations();
                     pushToastify(res.msg, 'success');
                     console.log(res);
-                    
+
                 },
                 error: function(err) {
                     console.log(err);
@@ -468,6 +487,54 @@
             $(item).parent().remove();
             selected_ids = selected_ids.filter(id => id !== $(item).data('id'));
         }
+
+        // -----------------------------
+        // Emoji
+        // -----------------------------
+
+        $('#toggleEmojiPicker').on('click', function(e) {
+            e.stopPropagation(); // tránh tắt ngay khi click
+            $('#emojiPicker').toggle();
+        });
+
+        // Click ngoài emoji box thì ẩn đi
+        $(document).on('click', function() {
+            $('#emojiPicker').hide();
+        });
+
+        // Click emoji để chèn vào textarea
+        $(document).on('click', '#emojiPicker .emoji', function(e) {
+            e.stopPropagation();
+            const emoji = $(this).text();
+            insertAtCursor($('#message')[0], emoji);
+            $('#emojiPicker').hide();
+        });
+
+        const emojiList = [...
+            `💕😉😀😃😄😁😆😅🤣😂🙂🙃🫠😉😊😇🥰😍🤩😘😗😚😙🥲😋😛😜🤪😝🤑🤗🤭🫢🫣🤫🤔🫡🤐🤨💅🤳💪🦻👃👄🫦`
+        ];
+        const $emojiPicker = $('#emojiPicker');
+
+        function renderEmojis() {
+            $emojiPicker.empty();
+            emojiList.forEach((emoji, index) => {
+                $emojiPicker.append(`<span class="emoji">${emoji}</span>`);
+            });
+        }
+
+        renderEmojis();
+        // Hàm chèn emoji vào vị trí con trỏ
+        function insertAtCursor(textarea, emoji) {
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const text = textarea.value;
+
+            textarea.value = text.slice(0, start) + emoji + text.slice(end);
+            textarea.selectionStart = textarea.selectionEnd = start + emoji.length;
+            textarea.focus(); // giữ focus
+        }
+
+        
         // -----------------------------
         // Init
         // -----------------------------

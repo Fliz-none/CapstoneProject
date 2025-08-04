@@ -26,36 +26,59 @@ function sendChatMessageToServer(message, attachments, onSuccess, onError) {
 function renderPreview() {
     const previewBox = $("#previewAttachments").empty();
     selectedFiles.forEach((file, index) => {
+        const loadingId = `loading-${index}`;
+        // Gắn khung loading trước
+        const loadingPreview = `
+            <div class="preview-item position-relative" data-index="${index}" id="${loadingId}">
+                <div class="d-flex justify-content-center align-items-center" style="width:100px; height:100px;">
+                    <div class="spinner-border text-primary" role="status" style="width:2rem; height:2rem;">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>`;
+        previewBox.append(loadingPreview);
+
         const reader = new FileReader();
         reader.onload = function (e) {
             const fileUrl = e.target.result;
             let preview = `<div class="preview-item position-relative" data-index="${index}">
-                                <button class="btn-remove-file position-absolute top-0 end-0 btn btn-sm btn-danger"><i class="bi bi-x"></i></button>`;
+                                <button class="btn-remove-file position-absolute top-0 end-0 btn btn-sm btn-danger">
+                                    <i class="bi bi-x"></i>
+                                </button>`;
 
             if (file.type.startsWith("image/")) {
                 preview += `<img src="${fileUrl}" class="thumb img-fluid" title="${file.name}">`;
             } else if (file.type.startsWith("video/")) {
-                preview += `<video controls style="max-width:100px; max-height:100px;" title="${file.name}">
+                preview += `<video controls style="width:35px; height:35px; object-fit:contain" title="${file.name}">
                                 <source src="${fileUrl}" type="${file.type}">
                                 Video not supported
                             </video>`;
             } else {
+                console.log(file.type);
+                
                 preview += `<div class="border p-2 rounded bg-light d-flex align-items-center" style="max-width:100px;">
                                 <i class="bi bi-file-earmark me-2"></i>
-                                <span class="text-truncate fs-6" title="${file.name}">${file.name}</span>
+                                <span class="text-truncate" style="font-size:8px;" title="${file.name}">${file.name}</span>
                             </div>`;
             }
 
             preview += `</div>`;
-            previewBox.append(preview);
+
+            // Thay thế loading bằng preview thật
+            const $newPreview = $(preview).hide();
+            $(`#${loadingId}`).replaceWith($newPreview);
+            $newPreview.fadeIn(300);
         };
 
         reader.readAsDataURL(file);
     });
 }
 
+
 // Khi chọn file
 $(document).on("change", "#chatAttachments", function (e) {
+    console.log('change');
+    
     const files = Array.from(e.target.files);
 
     if (files.length + selectedFiles.length > 5) {
@@ -133,6 +156,30 @@ $(".chat-input textarea").on("keydown", function (e) {
     }
 });
 
-$(".chat-input span").on("click", handleChat);
+
+// -----------------------------
+// Emoji
+// -----------------------------
+
+$('#toggleEmojiPicker').on('click', function (e) {
+    e.stopPropagation(); // tránh tắt ngay khi click
+    $('#emojiPicker').toggle();
+});
+
+// Click ngoài emoji box thì ẩn đi
+$(document).on('click', function () {
+    $('#emojiPicker').hide();
+});
+
+// Click emoji để chèn vào textarea
+$(document).on('click', '#emojiPicker .emoji', function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+    const emoji = $(this).text();
+    $('#message').val($('#message').val() + emoji);
+    $('#emojiPicker').hide();
+});
+
+$("#send-btn").on("click", handleChat);
 $(".close-btn").on("click", () => $("body").removeClass("show-chatbot"));
 $(".chatbot-toggler").on("click", () => $("body").toggleClass("show-chatbot"));

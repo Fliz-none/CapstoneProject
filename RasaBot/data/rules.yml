@@ -45,3 +45,27 @@ rules:
     steps:
       - intent: check_stock
       - action: action_check_stock
+
+  #Hỏi thông tin chung về sản phẩm 
+  - rule: Khách hỏi sản phẩm
+    steps:
+      - intent: check_product
+      - action: action_check_product
+
+  # Hỏi thong tin cửa hàng
+  - rule: Khách hỏi thông tin cửa hàng
+    steps:
+      - intent: ask_company
+      - action: action_ask_company
+
+  # Hỏi về chi nhánh / cơ sở
+  - rule: Khách hỏi chi nhánh
+    steps:
+      - intent: ask_branch
+      - action: action_ask_branch
+
+  # Hỏi bài đăng, fanpage, post
+  - rule: Khách hỏi bài viết
+    steps:
+      - intent: ask_post
+      - action: action_ask_post

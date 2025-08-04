@@ -1225,13 +1225,21 @@ function submitForm(frm) {
             }
         },
         error: function error(errors) {
+            if (btn.hasClass('just-icon')) {
+                btn.prop("disabled", false).html('<i class="bi bi-arrow-repeat"></i>');
+                console.log('có class just-icon');
+                
+            } else {
+                btn.prop("disabled", false).html(str);
+            }
             clearTimeout(processing);
             Swal.close();
             $("input.select2-search__field").removeAttr("style");
-            btn.prop("disabled", false).html(str);
             if (errors.status == 419 || errors.status == 401) {
                 showLoginForm();
             } else if (errors.status == 422) {
+                console.log('ôââ');
+                
                 frm.find(".is-invalid")
                     .removeClass("is-invalid")
                     .next()
@@ -1254,8 +1262,6 @@ function submitForm(frm) {
                     }
                 });
             } else {
-                console.log(errors);
-
                 pushToastify("Unknown error. Please contact the software developer for assistance.", 'danger')
             }
             if (!frm.find(".modal").length) {

@@ -1,0 +1,215 @@
+version: "3.1"
+
+nlu:
+  - intent: check_product
+    examples: |
+      - [Bộ nồi inox 5 chiếc](product_name) có chống dính không?
+      - [Tã dán Bobby size M](product_name) phù hợp cho bé mấy kg?
+      - thành phần của [Gạo thơm Jasmine](product_name) gồm những gì?
+      - hướng dẫn sử dụng [Sữa rửa mặt Senka](product_name)?
+      - [Tai nghe Bluetooth Baseus](product_name) có chống ồn không?
+      - [Dao gọt trái cây inox](product_name) có bị gỉ không?
+      - [Nước lau sàn Sunlight](product_name) có mùi hương gì?
+      - [Snack rong biển Oishi](product_name) sản xuất ở đâu?
+      - hạn sử dụng của [Sữa đặc ông thọ 380g](product_name) là bao lâu?
+      - [Áo thun cotton nam](product_name) có co giãn không?
+      - [Đầm hoa xòe nữ tính](product_name) hợp với dáng người nào?
+      - [Dịch vụ giao hàng nhanh](product_name) áp dụng khu vực nào?
+      - công dụng chính của [Dầu gội Clear Men 650g](product_name) là gì?
+      - giới thiệu tính năng [Tai nghe Bluetooth Baseus](product_name)
+      - [Bút bi Thiên Long TL-08](product_name) có mực màu gì?
+      - [Bột trà matcha latte](product_name) pha thế nào ngon nhất?
+      - [Nhẫn bạc S925 đơn giản](product_name) có dễ đen không?
+      - kích thước của [Hộp khô gà số 1](product_name) là bao nhiêu?
+      - [Chảo chống dính](product_name) dùng được bếp từ không?
+      - [Mì Hảo Hảo](product_name) có vị cay không?
+      - [Nước khoáng Lavie 500ml](product_name) có khoáng chất gì?
+      - đối tượng sử dụng [Combo chăm sóc da](product_name) là ai?
+      - [Thịt heo ba rọi](product_name) bảo quản như thế nào?
+      - [Bột nêm Agingon](product_name) có chứa bột ngọt không?
+      - [Socola nhập khẩu Ferrero Rocher](product_name) xuất xứ từ nước nào?
+      - bao bì của [Snack rong biển Oishi](product_name) như thế nào?
+      - [Bộ nồi inox 5 chiếc](product_name) gồm những kích cỡ nào?
+      - cách bảo quản [Sữa rửa mặt Senka](product_name) như thế nào?
+      - [Tã dán Bobby size M](product_name) có thấm hút tốt không?
+      - độ dài của [Dao gọt trái cây inox](product_name) là bao nhiêu cm?
+      - [Snack rong biển Oishi](product_name) có bao nhiêu calo một gói?
+      - [Nước khoáng Lavie 500ml](product_name) có gas không?
+      - thành phần dinh dưỡng của [Sữa đặc ông thọ 380g](product_name) gồm gì?
+      - độ bền của [Bộ nồi inox 5 chiếc](product_name) như thế nào?
+      - [Sữa rửa mặt Senka](product_name) có gây kích ứng không?
+      - shop có thông tin xuất xứ [Mì Hảo Hảo](product_name) không?
+      - [Dao gọt trái cây inox](product_name) phù hợp cho trái cây nào?
+      - [Dịch vụ giao hàng nhanh](product_name) có giao ngoài giờ không?
+      - ưu điểm của [Tai nghe Bluetooth Baseus](product_name) là gì?
+      - [Bột nêm Agingon](product_name) có nguồn gốc ở đâu?
+      - [Socola nhập khẩu Ferrero Rocher](product_name) bảo quản thế nào để không chảy?
+      - công dụng phụ của [Dầu gội Clear Men 650g](product_name) là gì?
+      - [Tã dán Bobby size M](product_name) có vón cục khi thấm nước không?
+      - [Áo thun cotton nam](product_name) có bị phai màu không?
+      - [Combo chăm sóc da](product_name) có đầy đủ hướng dẫn không?
+      - [Thịt heo ba rọi](product_name) có đạt chuẩn an toàn thực phẩm không?
+      - [Gạo thơm Jasmine](product_name) là gạo mùa nào?
+      - [Chảo chống dính](product_name) có dễ vệ sinh không?
+      - [Hộp khô gà số 1](product_name) có cay không?
+      - [Bột trà matcha latte](product_name) xuất xứ Nhật hay Việt?
+      - shop có hướng dẫn bảo quản [Snack rong biển Oishi](product_name) không?
+      - [Đầm hoa xòe nữ tính](product_name) chất liệu gì?
+      - [Nhẫn bạc S925 đơn giản](product_name) bảo hành thế nào?
+      - [Nước khoáng Lavie 500ml](product_name) có dùng được cho trẻ em không?
+      - tuổi thọ trung bình của [Bộ nồi inox 5 chiếc](product_name) là bao lâu?
+      - [Bút bi Thiên Long TL-08](product_name) viết được bao nhiêu trang?
+      - shop mô tả rõ chất liệu [Dao gọt trái cây inox](product_name) giúp mình
+      - [Tai nghe Bluetooth Baseus](product_name) kết nối xa được bao nhiêu mét?
+      - [Socola nhập khẩu Ferrero Rocher](product_name) có hạt không?
+      - [Tã dán Bobby size M](product_name) có tem chống hàng giả không?
+      - shop có giấy kiểm định [Sữa đặc ông thọ 380g](product_name) không?
+      - [Combo chăm sóc da](product_name) dùng được cho da nhạy cảm không?
+      - [Dịch vụ giao hàng nhanh](product_name) có cam kết đúng giờ không?
+      - [Áo thun cotton nam](product_name) có cần giặt tay không?
+      - shop tư vấn cách sử dụng [Bột trà matcha latte](product_name)
+      - [Snack rong biển Oishi](product_name) có vị mặn nhiều không?
+      - shop mô tả công năng của [Nước lau sàn Sunlight](product_name)
+      - [Mì Hảo Hảo](product_name) có chứng nhận an toàn thực phẩm không?
+      - [Thịt heo ba rọi](product_name) có đóng khay hay bán lẻ?
+      - [Dao gọt trái cây inox](product_name) có bảo hành không?
+      - [Chảo chống dính](product_name) có bị móp méo khi rơi không?
+      - độ dày của [Bộ nồi inox 5 chiếc](product_name) khoảng bao nhiêu mm?
+      - [Tai nghe Bluetooth Baseus](product_name) có micro không?
+      - shop chia sẻ xuất xứ [Nước khoáng Lavie 500ml](product_name) giúp mình
+      - [Sữa rửa mặt Senka](product_name) có phù hợp nam giới không?
+      - [Đầm hoa xòe nữ tính](product_name) mặc mùa nào hợp nhất?
+      - [Nhẫn bạc S925 đơn giản](product_name) có kèm hộp không?
+      - kích cỡ [Áo thun cotton nam](product_name) có bao nhiêu size?
+      - shop hướng dẫn giặt [Tã dán Bobby size M](product_name) giúp em
+      - [Bánh quy LU Pháp](product_name) thuộc danh mục nào trong catalogue?
+      - [Sữa tươi Vinamilk 1L](product_name) có những loại nào?
+      - [Áo sơ mi nam ngắn tay](product_name) có mấy size?
+      - [Dầu ăn Simply](product_name) được đóng gói theo đơn vị nào?
+      - có chương trình khuyến mãi nào áp dụng cho [Nước ngọt Coca-Cola 1.5L](product_name) không?
+      - [Tủ lạnh LG Inverter 300L](product_name) thuộc loại thiết bị nào?
+      - [Bột giặt Ariel hương Downy](product_name) có loại 3kg không?
+      - đơn vị tính của [Thịt bò xay tươi](product_name) là gì?
+      - [Nồi cơm điện Sunhouse](product_name) hiện đang giảm giá bao nhiêu phần trăm?
+      - sản phẩm [Kem đánh răng Sensodyne](product_name) nằm trong nhóm hàng nào?
+      - [Gạo lứt đỏ](product_name) có loại đóng gói nhỏ không?
+      - [Sữa đặc Ông Thọ 380g](product_name) có giá khuyến mãi hôm nay không?
+      - có bao nhiêu lựa chọn mùi hương cho [Nước xả Comfort](product_name)?
+      - [Khăn giấy Bless You](product_name) bán theo đơn vị nào?
+      - sản phẩm [Tai nghe Sony WH-CH510](product_name) thuộc dòng nào trong catalogue?
+      - có những biến thể màu nào cho [Áo khoác dù nam](product_name)?
+      - [Thùng mì Hảo Hảo tôm chua cay](product_name) gồm bao nhiêu gói?
+      - [Trà Oolong Cozy 25 túi](product_name) đang được giảm bao nhiêu phần trăm?
+      - [Kem dưỡng da Nivea Soft](product_name) có phiên bản mini không?
+      - kích thước của từng loại [Hộp cơm Lock&Lock](product_name) khác nhau như thế nào?
+      - [Sữa Ensure Gold](product_name) đang thuộc chương trình ưu đãi nào?
+      - [Cà phê sữa đá Highlands](product_name) có loại lon và bịch không?
+      - [Nước tẩy Toilet Duck](product_name) có các dung tích nào?
+      - giá gốc và giá sau giảm của [Máy sấy tóc Panasonic](product_name) là bao nhiêu?
+      - đơn vị đóng gói của [Gạo ST25](product_name) là gì?
+      - [Chảo chống dính Elmich](product_name) có những size nào?
+      - có áp dụng giảm giá cho đơn hàng nhiều [Sữa chua Vinamilk](product_name) không?
+      - [Nước rửa tay Lifebuoy 500ml](product_name) có loại refill không?
+      - sản phẩm [Sữa hạt TH True Nut](product_name) có các loại vị gì?
+      - [Bút bi Thiên Long TL-08](product_name) bán theo hộp hay lẻ?
+      - chương trình tặng quà nào đang áp dụng với [Kem chống nắng Anessa](product_name)?
+      - [Dầu gội Rejoice 650g](product_name) có dạng gói nhỏ không?
+      - sản phẩm [Thịt gà phi lê](product_name) được bán theo gram hay kg?
+      - sản phẩm [Thùng nước suối Aquafina](product_name) có bao nhiêu chai?
+      - có những màu nào cho mẫu [Áo dài cách tân nữ](product_name)?
+      - [Nước mắm Nam Ngư](product_name) đang có combo tiết kiệm nào?
+      - [Sữa tắm Lifebuoy](product_name) có bao nhiêu loại hương?
+      - mỗi đơn vị [Snack Poca vị rong biển](product_name) nặng bao nhiêu gam?
+      - [Combo đồ dùng học tập](product_name) gồm những sản phẩm nào?
+      - [Lò vi sóng Sharp](product_name) có các phiên bản công suất nào?
+      - [Sữa chua uống Probi](product_name) có đóng thùng không?
+      - [Bánh tráng cuốn thịt heo](product_name) có bán theo phần không?
+      - số lượng trong mỗi đơn vị của [Khăn giấy ướt Mamamy](product_name) là bao nhiêu tờ?
+      - hiện tại [Bàn chải đánh răng Colgate](product_name) có giá ưu đãi không?
+      - [Balo laptop Xiaomi](product_name) có mấy mẫu thiết kế?
+      - sản phẩm [Phở gói Vifon](product_name) đang thuộc danh mục nào?
+      - [Combo làm đẹp 5 món](product_name) có được giảm thêm khi mua online không?
+      - đơn vị tính của [Bánh tráng nướng](product_name) trong đơn hàng là gì?
+      - [Sữa Friso Gold](product_name) có loại 400g và 900g không?
+      - [Tã quần Moony](product_name) đang có chương trình tích điểm nào?
+      - sản phẩm [Trà sữa matcha Ichitan](product_name) thuộc danh mục nào?
+      - các biến thể về kích cỡ của [Giày thể thao Nike Air](product_name) là gì?
+      - có được tặng kèm quà khi mua [Sữa rửa mặt Innisfree](product_name) không?
+      - đơn vị bán lẻ của [Mì 3 miền](product_name) là gói hay thùng?
+      - [Áo hoodie nỉ unisex](product_name) có bao nhiêu size?
+      - [Khăn mặt cotton cao cấp](product_name) đang khuyến mãi gì?
+      - có loại không đường cho [Sữa đậu nành Fami](product_name) không?
+      - [Cà phê G7 hòa tan](product_name) có bán theo set quà tết không?
+      - chương trình giảm giá cho [Bếp ga Rinnai](product_name) kéo dài đến khi nào?
+      - [Sữa chua nếp cẩm Ba Vì](product_name) bán theo combo mấy hộp?
+      - các mùi hương hiện có của [Tinh dầu sả chanh](product_name) là gì?
+      - [Ốp lưng điện thoại iPhone](product_name) có bao nhiêu mẫu mã?
+      - mỗi hộp [Bánh Custas Orion](product_name) có mấy cái bánh?
+      - [Túi đựng laptop chống sốc](product_name) có loại 14 inch không?
+      - [Nước xịt phòng Glade](product_name) có loại refill không?
+      - [Sữa công thức Dielac Alpha](product_name) có đang giảm giá mùa tựu trường không?
+      - sản phẩm [Mặt nạ dưỡng da Mediheal](product_name) có combo tiết kiệm không?
+      - [Hộp cơm giữ nhiệt Zebra](product_name) có dung tích bao nhiêu?
+      - đơn vị bán của [Thịt heo xay](product_name) là theo khay hay theo cân?
+      - [Khẩu trang 4 lớp](product_name) có đóng gói theo bịch không?
+      - combo mua 1 tặng 1 áp dụng với [Kem đánh răng P/S](product_name) không?
+      - [Nước rửa chén Sunlight chanh](product_name) có size 750ml không?
+      - danh mục của [Bột bánh xèo Ajinomoto](product_name) là gì trong hệ thống?
+      - [Sữa Ensure nước vị vani](product_name) có loại chai 250ml không?
+      - [Sữa đặc Ngôi Sao Phương Nam](product_name) có combo 3 lon không?
+      - [Áo mưa bộ 2 lớp](product_name) có những màu nào?
+      - có loại mini nào cho [Nước hoa Versace Bright Crystal](product_name) không?
+      - biến thể màu của [Thớt gỗ tự nhiên](product_name) có gì đặc biệt?
+      - đơn vị đo của [Bơ thực vật Tường An](product_name) là gì?
+      - [Thùng bia Heineken](product_name) có bao nhiêu lon?
+      - sản phẩm [Tủ đựng quần áo vải không dệt](product_name) có loại nhiều ngăn không?
+      - [Trà](product_name) loại này có giảm cân không?
+      - công dụng của [Gối](product_name) này là gì?
+      - [Sữa tươi](product_name) có đường hay không đường?
+      - mô tả sản phẩm [Nước ngọt Pepsi](product_name) giúp mình với
+      - [Bút chì gỗ HB](product_name) dùng cho học sinh được không?
+      - [Mì cay Hàn Quốc](product_name) vị có nồng không?
+      - thành phần của [Nước rửa chén](product_name) là gì?
+      - [Khẩu trang y tế](product_name) có mấy lớp bảo vệ?
+      - nguồn gốc của [Cà phê sữa đá](product_name) là gì?
+      - kích cỡ [Giày thể thao trắng](product_name) là bao nhiêu?
+      - hạn sử dụng của [Sữa chua uống Vinamilk](product_name) là bao lâu?
+      - [Chảo chống dính Lock&Lock](product_name) dùng cho bếp nào?
+      - [Máy sấy tóc Philips](product_name) có mấy tốc độ gió?
+      - tính năng nổi bật của [Tủ lạnh Samsung Inverter](product_name) là gì?
+      - [Váy xòe đen đơn giản](product_name) có tôn dáng không?
+      - cách sử dụng [Kem chống nắng Biore UV](product_name) ra sao?
+      - [Balo laptop 15.6 inch](product_name) có chống nước không?
+      - [Ổ cắm điện đa năng](product_name) có bảo vệ quá tải không?
+      - [Giấy vệ sinh cao cấp](product_name) có thơm không?
+      - xuất xứ của [Gạo ST25 loại 1](product_name) từ đâu?
+      - [Bàn chải đánh răng trẻ em](product_name) dùng được bao lâu?
+      - thông tin về [Nước giặt Ariel dịu nhẹ](product_name) là gì?
+      - [Xịt khử mùi toàn thân nam](product_name) có mùi lâu không?
+      - [Bình giữ nhiệt LocknLock 500ml](product_name) giữ nóng bao lâu?
+      - [Kem dưỡng da ban đêm](product_name) có gây nhờn không?
+      - [Ốp lưng iPhone 13 Pro](product_name) có chống sốc không?
+      - [Mì Omachi lẩu thái chua cay](product_name) có cay không?
+      - công dụng của [Tẩy trang L’Oreal 3-in-1](product_name) là gì?
+      - cách pha [Trà sữa Thái xanh thơm](product_name) thế nào ngon?
+      - [Tai nghe có dây gaming Sony](product_name) phù hợp cho game nào?
+      - [Khăn mặt cotton 100% mềm](product_name) dùng có thấm nước không?
+      - chi tiết về [Kem tẩy lông Veet Silk Fresh](product_name) giúp mình
+      - [Nồi chiên không dầu 3L Elmich](product_name) có dễ vệ sinh không?
+      - [Máy ép chậm BlueStone 150W](product_name) hoạt động thế nào?
+      - [Tã quần Huggies Dry Pants M36](product_name) dùng cho bé bao nhiêu ký?
+      - [Kem đánh răng Sensodyne Cool Mint](product_name) có dành cho răng nhạy cảm không?
+      - [Bánh quy bơ Danisa hộp thiếc](product_name) có mấy vị?
+      - [Bột giặt OMO Matic Comfort hương](product_name) có bị khô da không?
+      - [Sữa rửa mặt Cetaphil Gentle Skin](product_name) dùng cho da gì?
+      - thông tin mô tả [Chai thủy tinh đựng nước 1L](product_name) giúp mình
+      - [Dầu gội TRESemmé Salon Detox 650g](product_name) có gội được mỗi ngày không?
+      - bao bì của [Snack khoai tây Lay’s Stax vị phô mai](product_name) ra sao?
+      - thành phần chính của [Bánh gạo One One mè đen](product_name) là gì?
+      - [Mực in Canon 303 dùng cho máy nào](product_name)?
+      - cách sử dụng [Dung dịch vệ sinh phụ nữ Dạ Hương](product_name) đúng cách?
+      - [Thịt bò đông lạnh nạc vai Úc](product_name) có mềm không?
+      - thông tin hạn dùng [Dầu ăn Meizan đậu nành 1L](product_name)?
+      - [Máy lọc không khí Sharp FP-J30E](product_name) có lọc được bụi mịn không?
+      - [Kem trị mụn Decumar gel nghệ nano](product_name) có dùng ban đêm được không?
+

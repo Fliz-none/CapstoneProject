@@ -100,9 +100,13 @@ function submitForm(frm) {
             }
         },
         error: function error(errors) {
+            if (btn.hasClass('just-icon')) {
+                btn.prop("disabled", false).html('<i class="bi bi-arrow-repeat"></i>');
+            } else {
+                btn.prop("disabled", false).html('<i class="bi bi-arrow-repeat"></i> Thử lại');
+            }
             clearTimeout(processing);
             Swal.close();
-            btn.prop("disabled", false).html(str);
             if (errors.status == 419 || errors.status == 401) {
                 window.location.href = config.routes.login;
             } else if (errors.status == 422) {
@@ -112,17 +116,11 @@ function submitForm(frm) {
                     .remove("span");
                 $.each(errors.responseJSON.errors, function (i, error) {
                     var el = frm.find('[name="' + i + '"]');
-                    if (
-                        el.length && !el.hasClass("d-none") && el.attr("type") != "hidden" && el.attr("type") != "radio" && !el.prop("hidden")
-                    ) {
+                    if (el.length && !el.hasClass("d-none") && el.attr("type") != "hidden" && el.attr("type") != "radio" && !el.prop("hidden")) {
                         el.addClass("is-invalid")
                             .next()
                             .remove("span.response");
-                        el.after(
-                            $(
-                                `<span class="text-danger response">${error[0]}</span>`
-                            )
-                        );
+                        el.after($(`<span class="text-danger response">${error[0]}</span>`));
                     } else {
                         Swal.fire("Alert!", error[0], "info");
                     }
