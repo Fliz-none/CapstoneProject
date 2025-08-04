@@ -37,7 +37,7 @@
                             <!-- widget search -->
                             <div class="widget-pet search cbcl-filterform">
                                 <div class="widget-header">
-                                    <h5 class="mb-0">Tìm sản phẩm</h5>
+                                    <h5 class="mb-0">{{ __('lang_web.shop.search_product') }}</h5>
                                 </div>
                                 <div class="widget-body filter-input-field">
                                     <div class="input-box">
@@ -50,7 +50,7 @@
                             <!-- widget catalogue -->
                             <div class="widget-pet search cbcl-filterform">
                                 <div class="widget-header">
-                                    <h5 class="mb-0">Danh mục</h5>
+                                    <h5 class="mb-0">{{ __('lang_web.shop.category_product') }}</h5>
                                 </div>
                                 <div class="widget-body filter-input-field">
                                     <ul class="list-group">
@@ -73,23 +73,23 @@
                                         data-bs-target="#widget-sidebar" type="button" aria-controls="widget-sidebar"><i
                                             class="bi bi-sliders fs-5"></i></button>
                                 </div>
-                                <div class="products-count">Từ {{ $products->firstItem() }} đến
-                                    {{ $products->lastItem() }} trong số {{ $products->total() }} sản phẩm</div>
+                                <div class="products-count">{{ __('lang_web.shop.from') }} {{ $products->firstItem() }} {{ __('lang_web.shop.to') }}
+                                    {{ $products->lastItem() }} {{ __('lang_web.shop.in') }} {{ $products->total() }} {{ __('lang_web.shop.product') }}</div>
                                 <div class="select-box">
                                     <select name="order" class="form-select">
-                                        <option value="default" selected disabled hidden>Sắp xếp theo</option>
+                                        <option value="default" selected disabled hidden>{{ __('lang_web.shop.sort_by') }}</option>
                                         <option value="default" disabled
-                                            {{ request('order') === 'default' ? 'selected' : '' }}>Măc định</option>
+                                            {{ request('order') === 'default' ? 'selected' : '' }}>{{ __('lang_web.shop.default') }}</option>
                                         <option value="created_at-asc"
-                                            {{ request('order') === 'created_at-asc' ? 'selected' : '' }}>Cũ nhất trước
+                                            {{ request('order') === 'created_at-asc' ? 'selected' : '' }}>{{ __('lang_web.shop.oldest') }}
                                         </option>
                                         <option value="created_at-desc"
-                                            {{ request('order') === 'created_at-desc' ? 'selected' : '' }}>Mới nhất trước
+                                            {{ request('order') === 'created_at-desc' ? 'selected' : '' }}>{{ __('lang_web.shop.newest') }}
                                         </option>
                                         <option value="name-asc" {{ request('order') === 'name-asc' ? 'selected' : '' }}>
-                                            Tên A-Z</option>
+                                            {{ __('lang_web.shop.a_z') }}  </option>
                                         <option value="name-desc" {{ request('order') === 'name-desc' ? 'selected' : '' }}>
-                                            Tên Z-A</option>
+                                            {{ __('lang_web.shop.z_a') }}</option>
                                     </select>
                                     <span class="svg-ic">
                                         <svg width="12" height="8" viewBox="0 0 12 8" fill="none"
@@ -119,10 +119,10 @@
                                                     title="{{ $product->name }}">
                                                     {{ $product->name }}
                                                 </a>
-                                                <p class="short">Biến thể:
+                                                <p class="short">{{ __('lang_web.shop.variant') }}:
                                                     {{ $product->variables->pluck('name')->take(3)->implode(', ') }}{{ $product->variables->count() > 3 ? '...' : '' }}
                                                 </p>
-                                                <p class="price">Giá: <span>{!! $product->displayPrice() !!}</span></p>
+                                                <p class="price">{{ __('lang_web.shop.price')}}: <span>{!! $product->displayPrice() !!}</span></p>
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <div class="product-ratting">
                                                         <ul>

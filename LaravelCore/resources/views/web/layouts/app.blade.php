@@ -15,7 +15,7 @@
         }
     @endphp
     <link type="image/x-icon" href="{{ $favicon }}" rel="shortcut icon">
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name') }} - @yield('title')</title>
 
     <link href="{{ asset('css/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
@@ -67,11 +67,68 @@
         {{-- Include MomentJS --}}
         <script src="{{ asset('admin/vendors/momentjs/moment.min.js') }}"></script>
         <script src="{{ asset('admin/vendors/momentjs/moment-with-locales.js') }}"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </div>
-
     <script>
-        moment.locale('vi');
+        $(document).ready(function() {
 
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            /**
+             * LANGUAGES
+             */
+            $('.btn-change-language').on('click', function() {
+                const currentLocale = '{{ app()->getLocale() }}';
+
+                Swal.fire({
+                    title: '{{ __('messages.lang.select_language') }}',
+                    html: `
+            <select id="locale_selector" class="form-select">
+                <option value="vn" ${currentLocale === 'vn' ? 'selected' : ''}>🇻🇳 {{ __('messages.lang.vi') }}</option>
+                <option value="en" ${currentLocale === 'en' ? 'selected' : ''}>🇺🇸 {{ __('messages.lang.en') }}</option>
+            </select>
+        `,
+                    showCancelButton: true,
+                    confirmButtonText: '{{ __('messages.save') }}',
+                    cancelButtonText: '{{ __('messages.cancel') }}',
+                }).then((result) => {
+                        const newLocale = $('#locale_selector').val();
+                        // Chỉ gửi request nếu ngôn ngữ thay đổi
+                        if (newLocale && newLocale !== currentLocale) {
+                            $.ajax({
+                                url: "{{ route('change.language.ajax') }}",
+                                method: 'POST',
+                                data: {
+                                    locale: newLocale,
+                                    _token: '{{ csrf_token() }}'
+                                },
+                                success: function() {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: '{{ __('messages.lang.language_changed_success') }}',
+                                        timer: 1500,
+                                        showConfirmButton: false
+                                    }).then(() => location.reload());
+                                },
+                                error: function() {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: '{{ __('messages.error_occurred') }}',
+                                        text: '{{ __('messages.try_again_later') }}'
+                                    });
+                                }
+                            });
+                        }
+                });
+            });
+
+
+
+        });
         let config = {
             routes: {
                 login: "{{ route('login.auth') }}",
@@ -109,6 +166,8 @@
         let auth_id = @json(auth()->id());
         let offset = 0;
         let loading = false;
+
+
 
         function createChatLi(message, auth_id = null) {
             const type = message.sender_id == auth_id ? 'outgoing' : 'incoming';
@@ -188,7 +247,7 @@
             @if (auth()->check())
                 loadMessages(true);
             @endif
-            
+
             $(document).on('click', '.btn-login', function(event) {
                 let form = $('#loginForm');
                 submitForm(form).done(function(response) {
@@ -196,14 +255,15 @@
                 });
             });
             // Bắt sự kiện nhấn Enter trong input
-            $('#loginForm input').on('keydown', function (e) {
+            $('#loginForm input').on('keydown', function(e) {
                 if (e.key === 'Enter') {
                     let form = $('#loginForm');
                     submitForm(form).done(function(response) {
                         location.reload();
                     });
-                }                
+                }
             });
+
             function submitLogoutForm() {
                 const form = $("#logout-form");
                 form.attr("action", "/logout");
@@ -245,8 +305,8 @@
             $(document).on('change', '#chatAttachments', function() {
                 console.log(this.files);
                 console.log($(this).val());
-                
-                
+
+
             });
         });
     </script>
@@ -585,12 +645,13 @@
     @stack('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
+
             $(document).on('click', '.btn-add-to-cart', function(e) {
                 e.preventDefault();
                 const form = $(this).closest('form');
                 if (form.find('[name=quantity]').val() <= 0 || form.find('.btn-select-unit.active').length <= 0) {
                     Toastify({
-                        text: "Vui lòng chọn đơn vị, số lượng hợp lệ cho sản phẩm này!",
+                        text: "{{ __('lang_web.cart.quantity_error') }}",
                         duration: 3000,
                         newWindow: true,
                         close: true,
@@ -607,7 +668,7 @@
                 submitForm(form).done(function(response) {
                     form.find('[name=quantity]').val(1);
                     form.find('[type=submit]:last').prop("disabled", false).html(
-                        '<i class="bi bi-basket3"></i> <span>Thêm vào giỏ hàng</span>');
+                        '<i class="bi bi-basket3"></i> <span>{{ __('lang_web.product.add_to_cart') }}</span>');
                     updateMiniCart(response.cart);
                 });
             });

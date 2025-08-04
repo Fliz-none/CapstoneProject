@@ -64,7 +64,6 @@
                             </div>
                         </div>
                     </div>
-
                     <br>
                     <div class="row">
                         <div class="col-12 text-end">
@@ -78,9 +77,6 @@
     </div>
 </form>
 @else
-    <div class="alert alert-warning">
-        Vui lòng <a href="{{ route('login') }}">đăng nhập</a> để thay đổi thông tin cá nhân.
-    </div>
 @endif
 
 

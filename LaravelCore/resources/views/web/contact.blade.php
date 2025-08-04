@@ -21,10 +21,10 @@
             <div class="container">
                 <div class="titlebox text-center">
                     <h2 class="fw-semibold">
-                        Chúng tôi muốn lắng nghe từ bạn
+                        {{__('lang_web.contact.hear')}}
                     </h2>
                     <p class="">
-                        Đội ngũ của chúng tôi luôn sẵn sàng hỗ trợ.
+                        {{__('lang_web.contact.support')}}
                     </p>
                 </div>
                 <div class="boxlist-info">
@@ -47,7 +47,7 @@
                         </div>
                         <div class="info">
                             <h3 class="title">
-                                Hotline
+                                {{__('lang_web.footer.phone')}}
                             </h3>
                             <p class="desc">
                                 {{ $settings['company_hotline'] }}
@@ -60,7 +60,7 @@
                         </div>
                         <div class="info">
                             <h3 class="title">
-                                Địa chỉ
+                                {{__('lang_web.contact.address')}}
                             </h3>
                             <p class="desc">
                                 {{ $settings['company_address'] }}
@@ -84,10 +84,10 @@
                 <div class="social-networks">
                     <div class="social-networks-titlebox">
                         <h3 class="title">
-                            Liên kết mạng xã hội
+                            {{__('lang_web.contact.link')}}
                         </h3>
                         <span class="desc">
-                            Theo dõi chúng tôi qua:
+                            {{__('lang_web.contact.follow')}}:
                         </span>
                     </div>
                     <div class="social-list">
@@ -109,10 +109,10 @@
                 <div class="row">
                     <div class="col-lg-5 col-12">
                         <div class="titlebox">
-                            <h3 class="fw-semibold">
-                                Địa chỉ {{ $settings['company_name'] }}
-                            </h3>
-                            <span class="desc">Tìm đến {{ $settings['company_name'] }} tại:</span>
+                            <h4 class="fw-semibold ">
+                                {{__('lang_web.contact.address')}} {{ $settings['company_name'] }}
+                            </h4>
+                            <span class="desc">{{__('lang_web.contact.find_us')}}:</span>
                         </div>
                         <div class="office-list">
                             @php
@@ -127,7 +127,7 @@
                                     <div class="office-item">
                                         <a href="{{ $url }}" target="_blank">
                                             <div class="office-name">
-                                                Chi nhánh {{ $index + 1 }}: {{ $branch->address }}
+                                                {{__('lang_web.contact.branch')}} {{ $index + 1 }}: {{ $branch->address }}
                                             </div>
                                         </a>
                                         <a href="tel:{{ $settings['company_hotline'] }}">

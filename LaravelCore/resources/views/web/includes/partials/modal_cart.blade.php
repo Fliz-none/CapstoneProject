@@ -1,7 +1,7 @@
 <!-- cartModal -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
     <div class="offcanvas-header bg-warning">
-        <h5 class="offcanvas-title text-white" id="offcanvasCartLabel">Giỏ hàng của bạn</h5>
+        <h5 class="offcanvas-title text-white" id="offcanvasCartLabel">{{__('lang_web.cart.your_cart')}}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <hr class="m-1">
@@ -43,7 +43,7 @@
                         <img src="{{ asset('images/cart-x.png') }}" alt="" class="img-fluid mb-2"
                             style="width: 50px;">
                     </div>
-                    <p>Không có sản phẩm nào trong giỏ hàng</p>
+                    <p>{{__('lang_web.cart.no_cart')}}</p>
                 </div>
             @endif
         </div>
@@ -57,11 +57,11 @@
             @endphp
             <div class="col-12 text-center">
                 <p class="mb-3 fw-bold mini-cart-total">
-                    <trong>Tạm tính: <span>{{ number_format($is_login && $user->cart ? $user->cart->total : 0) . ' ' . $config['currency'] }}</span></trong>
+                    <trong>{{__('lang_web.cart.temp_total')}}: <span>{{ number_format($is_login && $user->cart ? $user->cart->total : 0) . ' ' . $config['currency'] }}</span></trong>
                 </p>
                 <div class="d-flex gap-2 w-100 justify-content-center">
-                    {!! $is_login ? '<a href="' . route('checkout') . '" class="key-btn-success d-flex justify-content-center" style="width: 50%;">Thanh toán</a>' : '' !!}
-                    <a href="{{ route('shop') }}" class="key-btn-info d-flex justify-content-center" style="width: 50%;">Vào cửa hàng</a>
+                    {!! $is_login ? '<a href="' . route('checkout') . '" class="key-btn-success d-flex justify-content-center" style="width: 50%;">'.__('lang_web.cart.pay').'</a>' : '' !!}
+                    <a href="{{ route('shop') }}" class="key-btn-info d-flex justify-content-center" style="width: 50%;">{{__('lang_web.cart.go_to_store')}}</a>
                 </div>
             </div>
         </div>
