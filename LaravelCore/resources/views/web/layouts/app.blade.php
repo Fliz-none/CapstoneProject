@@ -134,12 +134,20 @@
                                             <img src="${attachment.file_url}" alt="attachment" class="rounded thumb img-fluid w-100">
                                         </div>
                                     </li>`;
+                        } //video
+                        else if (attachment.mime_type.startsWith('video/')) {
+                            html += `<li class="chat ${type}">
+                                        <span class="material-symbols-outlined bg-white" style="width: 40px;"></span>
+                                        <div class="w-50 d-inline-block">
+                                            <video src="${attachment.file_url}" controls alt="attachment" class="rounded thumb img-fluid w-100">
+                                        </div>
+                                    </li>`;
                         } else {
                             //Open file with attachment file_url by browser
                             html += `<li class="chat ${type}">
                                         <span class="material-symbols-outlined bg-white" style="width: 40px;"></span>
                                         <a href="${attachment.file_url}" target="_blank"
-                                        class="text-decoration-none text-truncate border p-1 d-inline-block"
+                                        class="text-decoration-none text-truncate fs-6 border p-1 d-inline-block"
                                         style="max-width: 150px;" title="${attachment.file_name}">
                                         <i class="bi bi-file-earmark-fill"></i> ${attachment.file_name}</a>
                                     </li>`;
@@ -150,6 +158,8 @@
                     return '';
                 }
             }
+            if(!message.content && !message.attachments) return '';
+            if(!message.content && message.attachments) return attachments();
             return `${attachments()}
                     <li class="chat ${type}">
                         <span class="material-symbols-outlined bg-white" style="width: 40px;">${avatar()}</span>

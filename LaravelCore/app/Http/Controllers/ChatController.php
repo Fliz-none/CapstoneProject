@@ -109,7 +109,7 @@ class ChatController extends Controller
                 }
             }
 
-            broadcast(new PusherBroadcast($message));
+            broadcast(new PusherBroadcast($message->load('attachments')));
             DB::commit();
 
             return response()->json(['success' => true, 'message_id' => $message->id]);

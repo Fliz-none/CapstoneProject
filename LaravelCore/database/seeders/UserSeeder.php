@@ -17,10 +17,10 @@ class UserSeeder extends Seeder
     {
         $faker = Faker::create('vi_VN');
         $users = [
-            [1, 'Super Admin', '0939403090', 'admin@gmail.com', 'TKH000001.jpg', 0, Hash::make('Admin@123'), null, null, null, null, 2, null, null, 1, '2024-08-01 22:53:25', null, null, 'token1', null, '2024-01-15 13:12:15', '2024-09-14 17:25:57'],
-            [2, 'Lê Hải Đăng', '0942852755', 'lhd4388@gmail.com', null, 0, Hash::make('haidang1210'), null, null, null, null, 2, null, null, 1, '2024-08-16 09:12:54', null, null, null, null, '2024-06-09 10:09:31', '2024-09-14 06:52:10'],
-            [3, 'Lê Hoàng Thắng', '0358351262', 'thangle2003ss@gmail.com', 'TKH00003.webp', 0, Hash::make('Admin@123'), null, null, null, null, 2, null, null, 1, null, null, null, null, null, '2024-06-09 10:09:31', '2024-08-15 05:00:00'],
-            [4, 'Test', '0939550105', 'test@gmail.com', null, 1, Hash::make('Admin@123'), null, 'Hưng Phú', '20', null, 1, null, null, 1, '2024-04-27 19:02:00', null, null, null, null, '2024-04-25 18:01:40', null],
+            [1, 'Super Admin', '0939403090', 'admin@gmail.com', 'TKH000001.jpg', 0, Hash::make('Admin@123'), null, null, null, null, 2, null, null, 1, '2024-08-01 22:53:25', null, '2024-06-09 10:09:31', 'token1', null, '2024-01-15 13:12:15', '2024-09-14 17:25:57'],
+            [2, 'Lê Hải Đăng', '0942852755', 'lhd4388@gmail.com', null, 0, Hash::make('haidang1210'), null, null, null, null, 2, null, null, 1, '2024-08-16 09:12:54', null, '2024-06-09 10:09:31', null, null, '2024-06-09 10:09:31', '2024-09-14 06:52:10'],
+            [3, 'Lê Hoàng Thắng', '0358351262', 'thangle2003ss@gmail.com', 'TKH00003.webp', 0, Hash::make('Admin@123'), null, null, null, null, 2, null, null, 1, null, null, '2024-06-09 10:09:31', null, null, '2024-06-09 10:09:31', '2024-08-15 05:00:00'],
+            [4, 'Test', '0939550105', 'test@gmail.com', null, 1, Hash::make('Admin@123'), null, 'Hưng Phú', '20', null, 1, null, null, 1, '2024-04-27 19:02:00', null, '2024-06-09 10:09:31', null, null, '2024-04-25 18:01:40', null],
         ];
 
         // Thêm 50 user giả

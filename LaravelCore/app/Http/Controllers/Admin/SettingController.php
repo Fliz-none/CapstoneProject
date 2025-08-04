@@ -513,7 +513,7 @@ class SettingController extends Controller
 
         $bladeContent = "@extends('web.layouts.app')\n\n"
             . "@section('title')\n"
-            . $request->input('title') . "\n"
+            . "About Us" . "\n"
             . "@endsection\n\n"
             . $css . "\n"
             . "@section('content')\n"
