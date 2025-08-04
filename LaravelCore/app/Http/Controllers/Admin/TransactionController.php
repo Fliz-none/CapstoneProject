@@ -294,11 +294,11 @@ class TransactionController extends Controller
                         'note' => $request->note,
                         'date' => Carbon::now(),
                     ]);
-                    $transaction->order->sync_scores($transaction->amount);
+                    // $transaction->order->sync_scores($transaction->amount);
 
                     $response = array(
                         'status' => 'success',
-                        'msg' => 'Transaction added successfully: ' . $transaction->id
+                        'msg' => __('messages.created') . __('messages.transaction.transaction') . ' ' . $transaction->code
                     );
                     DB::commit();
                 } catch (\Exception $e) {
@@ -326,7 +326,7 @@ class TransactionController extends Controller
                                     'date' => Carbon::now(),
                                     'note' => $request->note,
                                 ]);
-                                $order->sync_scores($transaction->amount);
+                                // $order->sync_scores($transaction->amount);
 
                                 $totalAmount -= $amount;
                                 array_push($ids, $order->id);
@@ -364,7 +364,7 @@ class TransactionController extends Controller
                     DB::beginTransaction();
                     $status = $request->status == 'pay' ? 1 : -1;
                     $transaction = Transaction::find($request->id);
-                    $transaction->order->sync_scores($request->amount * $status - $transaction->amount);
+                    // $transaction->order->sync_scores($request->amount * $status - $transaction->amount);
                     if ($transaction) {
                         $transaction->update([
                             'order_id' => $request->order_id,
@@ -377,7 +377,7 @@ class TransactionController extends Controller
 
                         $response = array(
                             'status' => 'success',
-                            'msg' => 'Transaction updated successfully: ' . $transaction->id
+                            'msg' => __('messages.updated') . __('messages.transaction.transaction') . ' ' . $transaction->code
                         );
                         DB::commit();
                     } else {
@@ -408,13 +408,13 @@ class TransactionController extends Controller
         if ($this->user->can(User::DELETE_TRANSACTION)) {
             foreach ($request->choices as $key => $id) {
                 $obj = Transaction::with('order')->find($id);
-                $obj->order->sync_scores($obj->amount * -1);
+                // $obj->order->sync_scores($obj->amount * -1);
                 $obj->delete();
-                array_push($success, $obj->name);
+                array_push($success, $obj->code);
             }
             $msg = '';
             if (count($success)) {
-                $msg .= 'Deleted ' . self::NAME . ' ' . implode(', ', $success) . '. ';
+                $msg .=  __('messages.deleted') . __('messages.transaction.transaction') . ' ' . implode(', ', $success) . '. ';
             }
             $response = array(
                 'status' => 'success',
