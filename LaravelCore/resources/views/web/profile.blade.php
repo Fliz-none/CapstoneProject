@@ -31,7 +31,7 @@
                 <div class="col-12 col-md-8">
                     <div class="profile-wrapper">
                         <div class="profile-header">
-                            <h2 class="fw-semibold">Thông tin cá nhân</h2>
+                            <h2 class="fw-semibold">{{ __('lang_web.profile.profile') }}</h2>
                         </div>
                         @php
                             $user = auth()->user();
@@ -49,8 +49,8 @@
                                         <p class="text-muted">{{ $user->email }}</p>
                                         <p class="text-muted">{{ $user->phone }}</p>
                                         <p class="text-muted">{{ $user->created_at->format('d/m/Y') }}</p>
-                                        <a class="key-btn-info mb-3 btn-web-profile" href="#">Chỉnh sửa thông tin</a>
-                                        {!! $user->hasAnyPermission(\App\Models\User::ACCESS_ADMIN) ? '<a href="' . route('admin.home') . '" class="key-btn-dark mb-3">Truy cập trang quản trị</a>' : '' !!}
+                                        <a class="key-btn-info mb-3 btn-web-profile" href="#">{{ __('lang_web.profile.update_profile') }}</a>
+                                        {!! $user->hasAnyPermission(\App\Models\User::ACCESS_ADMIN) ? '<a href="' . route('admin.home') . '" class="key-btn-dark mb-3"> '.__('lang_web.profile.access_admin').' </a>' : '' !!}
                                         <a class="key-btn-danger mb-3" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                             {{ __('messages.profile.logout') }}
                                             <i class="icon-mid bi bi-box-arrow-right me-2"></i>

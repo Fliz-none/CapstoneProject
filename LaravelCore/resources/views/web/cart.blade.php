@@ -11,9 +11,9 @@
             <div class="textbox">
                 <div class="child-container">
                     <h3 class="fw-semibold text-dark" >
-                        Giỏ hàng
+                      {{__('lang_web.cart.cart')}}
                     </h3>
-                    <span> Giỏ hàng của bạn </span>
+                    <span> {{__('lang_web.cart.your_cart')}} </span>
                 </div>
             </div>
         </div>
@@ -25,7 +25,7 @@
                         <div class="d-flex justify-content-center">
                             <img src="assets/images/cart-x.png" alt="" class="img-fluid mb-2">
                         </div>
-                        <p>Không có sản phẩm nào trong giỏ hàng</p>
+                        <p>{{__('lang_web.cart.no_cart')}}</p>
                         <a href="index.html" class="cta-btn btn-save-modal">
                             <span class="">Trở lại trang chủ</span>
                         </a>

@@ -21,7 +21,7 @@
                     </div>
                     <div class="footer-menu mx-0">
                         <div class="footer-menu-item f-width">
-                            <h5 class="fw-semibold">LIÊN HỆ</h5>
+                            <h5 class="fw-semibold">{{ __('lang_web.header.contact') }}</h5>
 
                             <ul class="menu-list ic-list">
                                 <li>
@@ -36,10 +36,13 @@
                                         Email: {{ $settings['company_email'] }}
                                     </a>
                                 </li>
+                                @php
+                                    $company_name = $settings['company_name'] ?? 'SM Solution';
+                                @endphp
                                 <li class="align-items-start">
                                     <img class="img-fluid" src="{{ asset('images/img/phone.png') }}" alt="">
                                     <p>
-                                        <span>Điện thoại: {{ $settings['company_hotline'] }}</span>
+                                        <span>{{ __('lang_web.footer.phone') }}: {{ $settings['company_hotline'] }}</span>
                                     </p>
                                 </li>
                             </ul>
@@ -49,25 +52,25 @@
                 <div class="col-lg-2 col-12">
                     <div class="footer-menu">
                         <div class="footer-menu-item w-100">
-                            <h5 class="menu-item-name">DANH MỤC</h5>
+                            <h5 class="menu-item-name">{{ __('lang_web.footer.category') }}</h5>
                             <ul class="menu-list">
                                 <li>
                                     <a href="{{ route('home') }}" title=" Trang chủ">
-                                        Trang chủ
+                                        {{ __('lang_web.header.home') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a href="{{ route('post', ['sub' => 'about-us']) }}" title=" Giới thiệu">
-                                        Giới thiệu
+                                        {{ __('lang_web.footer.about_us') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a href="{{ route('post', ['sub' => 'posts']) }}" title=" Tin tức truyền thông">
-                                        Tin tức truyền thông
+                                        {{ __('lang_web.header.posts') }}
                                     </a>
                                 <li>
                                     <a href="{{ route('post', ['sub' => 'about-us']) }}" title=" Liên hệ">
-                                        Liên hệ
+                                        {{ __('lang_web.header.contact') }}
                                     </a>
                             </ul>
                         </div>
@@ -90,15 +93,15 @@
         </button>
         <div class="chatbot">
             <header>
-                <h2>Chat with us</h2>
+                <h2>{{ __('lang_web.footer.chat_with_us') }}</h2>
                 <span class="close-btn material-symbols-outlined"><i class="bi bi-x"></i></span>
             </header>
             <ul class="chatbox">
             </ul>
             <div class="chat-input d-flex">
-                <input type="file" name="attachments[]" id="chatAttachments" class="d-none" multiple accept="image/*,video/*,audio/*,application/*,text/*,doc">
+                <input class="d-none" id="chatAttachments" type="file" name="attachments[]" multiple accept="image/*,video/*,audio/*,application/*,text/*,doc">
                 <p class="btn btn-select-attachments fw-bold my-auto" onclick="document.querySelector('#chatAttachments').click()" style="color: rgb(66, 91, 237)"><i class="bi bi-paperclip"></i></p>
-                <textarea name="message" placeholder="Enter a message..." spellcheck="false" required></textarea>
+                <textarea name="message" placeholder="{{ __('lang_web.footer.message') }}" spellcheck="false" required></textarea>
                 <span class="material-symbols-rounded" id="send-btn"><i class="bi bi-send"></i></span>
             </div>
         </div>

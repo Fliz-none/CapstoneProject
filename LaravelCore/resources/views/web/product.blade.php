@@ -61,15 +61,12 @@
                     <div class="col-12 col-md-7">
                         <div class="product-information">
                             <h3 class="product-name">{!! $product->name !!}</h3>
-                            <div class="product-sku">
-                                <p><strong>Mã sản phẩm:</strong> {!! $product->sku !!}</p>
-                            </div>
                             <div class="product-catalog">
-                                <p><strong>Danh mục: </strong>{!! $product->catalogsName() !!} </p>
+                                <p><strong>{{ __('lang_web.product.catelogue') }}: </strong>{!! $product->catalogsName() !!} </p>
                             </div>
                             <div class="product-variable mt-4">
                                 @if ($product->variables->count())
-                                    <h4 class="mb-0">Các tùy chọn</h4>
+                                    <h4 class="mb-0">{{ __('lang_web.product.choices')}}</h4>
                                     <div class="product-variable-tab-menu">
                                         <div class="nav">
                                             @foreach ($product->variables as $index => $variable)
@@ -95,7 +92,7 @@
                                                         <p>• {!! $variable->description !!}</p>
                                                     @endif
                                                     <div class="variable-details">
-                                                        <h6 class="text-uppercase my-2">Quy cách đóng gói</h6>
+                                                        <h6 class="text-uppercase my-2">{{ __('lang_web.product.pack') }}</h6>
                                                         <div class="variable-units d-flex align-items-center">
                                                             @forelse ($variable->units as $unit)
                                                                 <div class="variable-unit me-2">
@@ -105,7 +102,7 @@
                                                                         </a>
                                                                     </div>
                                                                     <div class="variable-unit-description ps-2 pt-2 text-muted">
-                                                                        Số lượng còn: {{ $unit->sum_stock }}
+                                                                        {{ __('lang_web.product.quantity') }}: {{ $unit->sum_stock }}
                                                                     </div>
                                                                 </div>
                                                             @empty
@@ -138,7 +135,7 @@
                                                         <input name="quantity" type="hidden" value="1">
                                                         <button class="key-btn-dark btn-add-to-cart" type="submit" title="Add to Cart">
                                                             <i class="bi bi-basket3"></i>
-                                                            <span>Thêm vào giỏ hàng</span>
+                                                            <span>{{ __('lang_web.product.add_to_cart') }}</span>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -157,22 +154,22 @@
                         <div class="description-tab">
                             <ul class="nav nav-underline" id="pills-tab" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="description-tab" data-bs-toggle="pill" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">Mô tả sản phẩm</button>
+                                    <button class="nav-link active" id="description-tab" data-bs-toggle="pill" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">{{ __('lang_web.product.desc') }}</button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="review-tab" data-bs-toggle="pill" data-bs-target="#reviews" type="button" role="tab" aria-controls="review" aria-selected="false">Đánh giá</button>
+                                    <button class="nav-link" id="review-tab" data-bs-toggle="pill" data-bs-target="#reviews" type="button" role="tab" aria-controls="review" aria-selected="false">{{ __('lang_web.product.review') }}</button>
                                 </li>
                             </ul>
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active p-3" id="description" role="tabpanel" aria-labelledby="description-tab" tabindex="0">
                                     <h5>{{ $product->excerpt }}</h5>
                                     <p>
-                                        {!! $product->description ?? 'Không có mô tả sản phẩm' !!}
+                                        {!! $product->description ?? __('lang_web.product.no_desc') !!}
                                     </p>
                                 </div>
                                 <div class="tab-pane fade p-3" id="reviews" role="tabpanel" aria-labelledby="review-tab" tabindex="0">
                                     <p>
-                                        Không có đánh giá nào cho sản phẩm này.
+                                        {!! $product->review ?? __('lang_web.product.no_review') !!}
                                     </p>
                                 </div>
                             </div>

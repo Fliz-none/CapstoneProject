@@ -33,7 +33,7 @@
                     <div class="story-content-top">
                         <div class="story-content-title text-center">
                             <p class="fw-semibold">
-                                CÂU CHUYỆN {{ $settings['company_name'] }}
+                                {{ __('lang_web.home.story') }} {{ $settings['company_name'] }}
                             </p>
                             <h4>
                                 {{ $settings['company_slogan'] }}
@@ -49,7 +49,7 @@
         </div><div class="product-showcase-wrapper home-product key-bg-section" style="background-image: url({{ asset(env('FILE_STORAGE', '/storage/') . '/bg-contact-1.jpg') }})">
             <div class="container">
                 <div class="p-4 text-center">
-                    <h2 class="text-dark fw-semibold fs-1 mb-3">Các sản phẩm của {{ $settings['company_name'] }}</h2>
+                    <h2 class="text-dark fw-semibold fs-1 mb-3">{{ __('lang_web.home.products_of') }} {{ $settings['company_name'] }}</h2>
                 </div>
             </div>
             <div class="product-showcase--inner">
@@ -58,14 +58,14 @@
                         <div class="product-slide--inner">
                             <div class="product-sapo">
                                 <p class="product-cate text-uppercase">
-                                    Sản phẩm nổi bật
+                                   {{ __('lang_web.home.featured_products') }}
                                 </p>
                                 <p class="product-des">
                                     {{ $settings['company_name'] }} <br />
-                                    Cung cấp những sản phẩm chất lượng và mang lại cho khách hàng sự hài lòng và yên tâm.
+                                    {{ __('lang_web.home.product_des') }}
                                 </p>
                                 <a class="cta-btn bg-warning" href="{{ route('product') }}">
-                                    Xem tất cả sản phẩm
+                                    {{ __('lang_web.home.all_products') }}
                                 </a>
                                 <div class="custom-slide-nav">
                                     <div class="swiper-button-prev">
@@ -118,10 +118,10 @@
                 <div class="home-news-head">
                     <div class="home-news-title">
                         <p class="fw-semibold">
-                            TRUYỀN THÔNG
+                            {{ __('lang_web.home.media') }}
                         </p>
                         <h4>
-                            Tin tức - Sự kiện
+                            {{ __('lang_web.home.news_events') }}
                         </h4>
                     </div>
 
@@ -181,7 +181,7 @@
             @endforeach
             <div class="news-cta text-center">
                 <a class="cta-btn  bg-warning" href="{{ route('post', ['sub' => 'posts']) }}">
-                    Xem tất cả
+                    {{ __('lang_web.home.view_all') }}
                 </a>
             </div>
         </div>
