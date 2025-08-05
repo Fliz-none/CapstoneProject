@@ -16,3 +16,17 @@ stories:
     intent: goodbye
   - action: utter_goodbye
 
+- story: hỏi giờ mở cửa
+  steps:
+  - intent: ask_opening_hours
+  - action: utter_opening_hours
+
+- story: hỏi chính sách đổi trả
+  steps:
+  - intent: ask_return_policy
+  - action: utter_return_policy
+
+- story: hỏi phương thức thanh toán
+  steps:
+  - intent: ask_payment_methods
+  - action: utter_payment_methods

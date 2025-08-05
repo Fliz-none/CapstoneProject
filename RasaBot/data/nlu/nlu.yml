@@ -99,3 +99,133 @@ nlu:
       - thoy
       - thoyy
       - thoyyy
+
+  - intent: ask_opening_hours
+    examples: |
+      - Cửa hàng có mở suốt tuần không?
+      - Lịch làm việc của shop như thế nào?
+      - Cửa hàng mở buổi sáng từ mấy giờ?
+      - Có làm việc vào ngày chủ nhật không?
+      - Shop mở cửa buổi trưa chứ?
+      - Buổi chiều mấy giờ là đóng cửa?
+      - Hôm nay shop có mở cửa không?
+      - Ngày mai cửa hàng có hoạt động không?
+      - Có thể đến vào buổi tối không?
+      - Có thể ghé qua vào giờ trưa không?
+      - Shop hoạt động đến mấy giờ mỗi ngày?
+      - Mỗi ngày shop làm việc trong bao lâu?
+      - Mình đến lúc 9h tối có kịp không?
+      - Bao nhiêu giờ thì shop đóng cửa?
+      - Giờ làm việc trong tuần của cửa hàng như thế nào?
+      - Thời gian mở cửa mỗi ngày có giống nhau không?
+      - Cuối tuần có làm việc không?
+      - Mấy giờ sáng thì bắt đầu mở cửa?
+      - Thứ hai cửa hàng có mở không?
+      - Shop có làm việc xuyên suốt không nghỉ không?
+      - Có làm ca đêm không?
+      - Lịch mở cửa trong tuần ra sao?
+      - Giờ đóng cửa của cửa hàng là bao nhiêu?
+      - Có phục vụ khách ban đêm không?
+      - Mình đến lúc 7h sáng được không?
+      - Shop có hoạt động 24/24 không?
+      - Shop có đóng cửa sớm vào cuối tuần không?
+      - Shop mở mấy giờ sáng?
+      - Có thể đến mua hàng sau 9 giờ tối không?
+      - Có làm việc ngày lễ không?
+
+  - intent: ask_return_policy
+    examples: |
+      - Nếu sản phẩm bị hư thì mình đổi như thế nào?
+      - Đổi trả có cần hóa đơn không?
+      - Sản phẩm đã qua sử dụng có được đổi không?
+      - Mình lỡ làm hỏng sản phẩm thì có đổi được không?
+      - Đổi size quần áo có mất phí không?
+      - Chính sách đổi trả trong bao nhiêu ngày?
+      - Có được hoàn tiền nếu không hài lòng không?
+      - Có thể đổi sang sản phẩm khác được không?
+      - Có hỗ trợ đổi màu sản phẩm không?
+      - Có cho đổi sản phẩm khi đã bóc tem không?
+      - Nếu sản phẩm không giống mô tả thì xử lý sao?
+      - Chính sách hoàn tiền như thế nào?
+      - Mình có cần gửi lại hộp khi đổi hàng không?
+      - Đổi hàng có cần lý do không?
+      - Có hỗ trợ đổi sản phẩm nếu không đúng size không?
+      - Làm sao để yêu cầu bảo hành?
+      - Có bảo hành tại nhà không?
+      - Khi nào thì sản phẩm không được bảo hành?
+      - Bảo hành có tính phí không?
+      - Cần mang gì khi đi bảo hành?
+      - Có trung tâm bảo hành riêng không?
+      - Bảo hành bao lâu thì xong?
+      - Đổi sản phẩm ở chi nhánh khác được không?
+      - Shop có đến nhà lấy sản phẩm lỗi không?
+      - Có thể đổi hàng trực tiếp tại cửa hàng không?
+      - Mua online có được đổi trả như mua trực tiếp không?
+      - Sản phẩm khuyến mãi có được đổi trả không?
+      - Có được kiểm tra sản phẩm trước khi đổi không?
+      - Có hướng dẫn đổi trả cụ thể không?
+      - Khi đổi trả có cần quay video mở hàng không?
+
+  - intent: ask_payment_methods
+    examples: |
+      - Có thể thanh toán bằng thẻ ATM không?
+      - Bên mình có chấp nhận ví ZaloPay không?
+      - Có hỗ trợ thanh toán bằng VNPay không?
+      - Cửa hàng có cho trả góp không?
+      - Có được thanh toán qua Internet Banking không?
+      - Thanh toán bằng tiền mặt được không?
+      - Cửa hàng có máy quẹt thẻ không?
+      - Có thể thanh toán bằng thẻ tín dụng không?
+      - Shop có nhận chuyển khoản qua app ngân hàng không?
+      - Có thể quét mã để thanh toán không?
+      - Có thể thanh toán không dùng tiền mặt không?
+      - Có áp dụng QR code của ngân hàng không?
+      - Cửa hàng có dùng ví ShopeePay không?
+      - Có thể thanh toán qua Apple Pay không?
+      - Có thể dùng Google Pay để thanh toán không?
+      - Có hỗ trợ chia nhỏ thanh toán không?
+      - Có thể thanh toán trước một phần được không?
+      - Shop có yêu cầu thanh toán trước không?
+      - Có thanh toán tại điểm giao hàng không?
+      - Có phải thanh toán ngay khi đặt hàng không?
+      - Có chính sách hoàn tiền khi thanh toán lỗi không?
+      - Có xuất biên lai khi thanh toán không?
+      - Có thể thanh toán bằng USD không?
+      - Có thể trả bằng ngoại tệ không?
+      - Có cần thanh toán ngay không hay được nợ?
+      - Có hỗ trợ thanh toán sau không?
+      - Có thể thanh toán bằng thẻ MasterCard không?
+      - Thanh toán qua thẻ quốc tế có mất phí không?
+      - Có thể thanh toán bằng thẻ chip không?
+      - Khi thanh toán bằng thẻ có cần ký tên không?
+      - Những phương thức thanh toán nào được chấp nhận ở đây?
+      - Ở shop mình thanh toán bằng cách nào vậy?
+      - Shop chấp nhận những hình thức thanh toán nào?
+      - Thanh toán đơn hàng thì có mấy cách?
+      - Nếu mình không có tiền mặt thì thanh toán sao?
+      - Bên shop có nhận thanh toán bằng ví điện tử không?
+      - Khi mua hàng online thì thanh toán như thế nào?
+      - Cách thức thanh toán tại cửa hàng là gì?
+      - Mình muốn biết các phương án thanh toán của shop?
+      - Shop có hỗ trợ thanh toán không dùng tiền mặt không?
+      - Ở đây có chấp nhận thanh toán bằng ví không?
+      - Có những lựa chọn nào khi thanh toán?
+      - Shop có cho thanh toán khi nhận hàng không?
+      - Mình chuyển khoản được chứ?
+      - Thanh toán bằng QR có được không?
+      - Shop có chấp nhận thanh toán điện tử không?
+      - Những hình thức trả tiền mà shop áp dụng là gì?
+      - Khi giao hàng có thể trả tiền luôn không?
+      - Nếu mình dùng thẻ thì có cần báo trước không?
+      - Dùng thẻ tín dụng có được giảm giá không?
+      - Shop có ưu đãi gì nếu thanh toán online không?
+      - Nếu mình dùng ZaloPay có được hỗ trợ gì không?
+      - Shop có tính phí khi dùng thẻ không?
+      - Có cần phải trả trước đơn hàng không?
+      - Nếu không có tiền mặt thì còn cách nào khác không?
+      - Khi mua offline thì thanh toán như thế nào?
+      - Có hỗ trợ các loại ví điện tử phổ biến không?
+      - Thanh toán qua ngân hàng có dễ không?
+      - Nếu không dùng được Momo thì còn cách nào?
+      - Dùng Internet Banking để thanh toán thì thao tác ra sao?
+                

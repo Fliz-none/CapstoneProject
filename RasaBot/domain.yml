@@ -15,6 +15,7 @@ intents:
   - ask_company
   - ask_branch
   - ask_post
+  - ask_promotions
 
 responses:
   utter_greet:
@@ -48,7 +49,17 @@ responses:
     - text: "Oke bạn nhé."
     - text: "Oke nhé."
     - text: "Đã hủy thao tác hủy đơn hàng."
-  
+
+  utter_opening_hours:
+    - text: "Cửa hàng mở cửa từ 8:00 sáng đến 9:00 tối mỗi ngày, kể cả cuối tuần."
+
+  utter_return_policy:
+    - text: "Shop hỗ trợ đổi trả trong vòng 7 ngày với sản phẩm còn nguyên tem mác và chưa qua sử dụng."
+
+  utter_payment_methods:
+    - text: "Shop hỗ trợ thanh toán bằng tiền mặt, chuyển khoản, ví điện tử (Momo, ZaloPay, VNPay), và thẻ ngân hàng."
+
+
 entities:
   - order_id
   - product_name
@@ -76,6 +87,7 @@ actions:
   - action_ask_company
   - action_ask_branch
   - action_ask_post
+  - action_ask_promotions
   
 session_config:
   session_expiration_time: 60
