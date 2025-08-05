@@ -174,7 +174,7 @@ class PostController extends Controller
                         }
                         return $str;
                     })
-                    ->rawColumns(['checkboxes', 'title', 'author', 'category', 'image', 'status', 'action', 'content'])
+                    ->rawColumns(['checkboxes', 'title', 'author', 'category', 'image', 'status', 'action', 'content','code'])
                     ->setTotalRecords($objs->count())
                     ->make(true);
             } else {

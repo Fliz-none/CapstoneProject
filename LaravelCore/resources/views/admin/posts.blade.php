@@ -86,7 +86,7 @@
                     url: `{{ route('admin.post') }}` + window.location.search
                 },
                 columns: [
-                    config.datatable.columns.id, {
+                    config.datatable.columns.code, {
                         data: 'title',
                         name: 'title'
                     }, {
