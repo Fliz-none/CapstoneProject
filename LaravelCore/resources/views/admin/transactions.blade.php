@@ -22,10 +22,6 @@
             <div class="row">
                 <div class="col-12 col-lg-10">
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_TRANSACTION)))
-                        <a class="btn btn-info mb-3 block btn-create-transaction">
-                            <i class="bi bi-plus-circle"></i>
-                            {{ __('messages.add') }}
-                        </a>
                     @endif
                 </div>
                 <div class="col-12 col-lg-2">
