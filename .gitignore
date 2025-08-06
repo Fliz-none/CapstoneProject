@@ -34,5 +34,10 @@ auth.json
 RasaBot/.rasa/cache/
 RasaBot/actions/__pycache__
 RasaBot/models
+<<<<<<< HEAD
 RasaBot/.venv
 RasaBot/venv
+=======
+RasaBot/venv
+RasaBot/__pycache__
+>>>>>>> 52c31fe3e48d8dbb90eb9cccc1a10d2e645015ba

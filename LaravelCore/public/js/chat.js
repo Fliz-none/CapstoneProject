@@ -146,7 +146,53 @@ function handleChat() {
             }
         }
     );
+    sendMessageToRasa(
+        userMessage,
+        function (response) {
+            sendingEl.remove();
+            // Có thể append response vào chat nếu muốn
+        },
+        function (errors) {
+            sendingEl.remove();
+            if (errors.status == 419 || errors.status == 401) {
+                window.location.href = config.routes.login;
+            } 
+        }
+    );
 }
+
+async function sendMessageToRasa(message, onSuccess, onError) {
+    try {
+        // Lấy JWT từ Laravel
+        const doomRes = await fetch(config.routes.jwt_token, {
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                "Content-Type": "application/json"
+            }
+        });
+        const doomm = await doomRes.json();  
+        // Gửi message đến Rasa
+        const rasaRes = await fetch( config.routes.rasa_webhook_url,{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + doomm.token
+            },
+            
+            body: JSON.stringify({
+                sender: config.user.id,
+                message: message
+            })
+        });
+
+        const data = await rasaRes.json();
+        if (onSuccess) onSuccess(data);
+    } catch (err) {
+        if (onError) onError(err);
+    }
+}
+
 
 // Bind các sự kiện gửi
 $(".chat-input textarea").on("keydown", function (e) {
@@ -183,3 +229,5 @@ $(document).on('click', '#emojiPicker .emoji', function (e) {
 $("#send-btn").on("click", handleChat);
 $(".close-btn").on("click", () => $("body").removeClass("show-chatbot"));
 $(".chatbot-toggler").on("click", () => $("body").toggleClass("show-chatbot"));
+
+

@@ -78,7 +78,12 @@
                 local: "{{ URL::to('locals') }}",
                 pusher: {
                     broadcast: "{{ route('chat.broadcast') }}",
-                }
+                },
+                jwt_token: "{{ route('chat.jwt_token') }}",
+                rasa_webhook_url: "{{ env('RASA_WEBHOOK_URL', 'http://localhost:8000/webhooks/smssolutions/webhook') }}"
+            },
+             user: {
+                id: {{ Auth::check() ? Auth::id() : 'null' }}
             },
             sweetAlert: {
                 confirm: {

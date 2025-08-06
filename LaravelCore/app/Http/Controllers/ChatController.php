@@ -111,8 +111,6 @@ class ChatController extends Controller
 
             broadcast(new PusherBroadcast($message->load('attachments')));
             DB::commit();
-
-            return response()->json(['success' => true, 'message_id' => $message->id]);
         } catch (\Exception $e) {
             log_exception($e);
             DB::rollBack();
@@ -120,25 +118,19 @@ class ChatController extends Controller
         }
     }
 
+    public function generate_token()
+    {
+        $id = Auth::id(); // Lấy ID user hiện tại
 
-    // public function generate_token()
-    // {
-    //     $id = Auth::id(); // user đã đăng nhập
+        $payload = [
+            'sub' => (string) $id,                  // subject – ID người dùng
+            'iat' => time(),               // issued at – thời điểm tạo
+            'exp' => time() + 1800,        // expire – 30 phút sau
+        ];
 
-    //     $payload = [
-    //         'iss' => config('app.url'),
-    //         'sub' => $id,
-    //         'iat' => time(),
-    //         'exp' => time() + 1800, // token có hiệu lực 30 ph
-    //         'aud' => 'RasaBot',
-    //         'role' => 'customer',
-    //     ];
-
-    //     $jwt = JWT::encode($payload, env('JWT_SECRET'), 'HS256');
-
-    //     return response()->json([
-    //         'token' => $jwt,
-    //     ]);
-    // }
-
+        $jwt = JWT::encode($payload, env('JWT_SECRET'), 'HS256');
+        return response()->json([
+            'token' => $jwt,
+        ]);
+    }
 }
