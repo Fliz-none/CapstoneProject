@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="vi">
 @php
-    $pageName = $pageName ?? '';
+$pageName = $pageName ?? '';
 @endphp
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @php
-        if (cache()->get('settings')['favicon']) {
-            $favicon = asset(env('FILE_STORAGE', '/storage') . '/' . cache()->get('settings')['favicon']);
-        } else {
-            $favicon = asset('admin/images/logo/favicon_key.png');
-        }
+if (cache()->get('settings')['favicon']) {
+    $favicon = asset(env('FILE_STORAGE', '/storage') . '/' . cache()->get('settings')['favicon']);
+} else {
+    $favicon = asset('admin/images/logo/favicon_key.png');
+}
     @endphp
     <link type="image/x-icon" href="{{ $favicon }}" rel="shortcut icon">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
@@ -78,9 +78,10 @@
                 local: "{{ URL::to('locals') }}",
                 pusher: {
                     broadcast: "{{ route('chat.broadcast') }}",
+                    ai_broadcast: "{{ route('chat.ai_broadcast') }}",
                 },
                 jwt_token: "{{ route('chat.jwt_token') }}",
-                rasa_webhook_url: "{{ env('RASA_WEBHOOK_URL', 'http://localhost:8000/webhooks/smssolutions/webhook') }}"
+                rasa_webhook_url: "{{ env('RASA_WEBHOOK_URL', 'http://localhost:8001/webhooks/smssolutions/webhook') }}"
             },
              user: {
                 id: {{ Auth::check() ? Auth::id() : 'null' }}

@@ -14,6 +14,7 @@ class Message extends Model
         'conversation_id',
         'sender_id',
         'content',
+        'json_data',
         'is_seen',
         'answer_id',
      ];
@@ -33,6 +34,26 @@ class Message extends Model
             return $value;
         }
     }
+
+    public function setJsonDataAttribute($value)
+    {
+        if (is_array($value) || is_object($value)) {
+            $value = json_encode($value);
+        }
+
+        $this->attributes['json_data'] = Crypt::encryptString($value);
+    }
+
+    public function getJsonDataAttribute($value)
+    {
+        try {
+            $decrypted = Crypt::decryptString($value);
+            return json_decode($decrypted, true) ?? $decrypted;
+        } catch (\Exception $e) {
+            return $value;
+        }
+    }
+
 
     public function conversation()
     {

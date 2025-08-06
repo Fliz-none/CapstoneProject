@@ -221,7 +221,10 @@ class ActionCheckProduct(Action):
                 product_data = Helper.dict_with_serialized_datetimes(result)
                 dispatcher.utter_message(
                     text=f"Sản phẩm `{product_name}` có thông tin chi tiết như sau:",
-                    json_message={"product": product_data}
+                      json_message={
+                        "action": "ask_product",
+                        "product": product_data
+                    }
                 )
             else:
                 dispatcher.utter_message(text=f"Không tìm thấy sản phẩm `{product_name}`.")
@@ -240,7 +243,10 @@ class ActionAskBranch(Action):
             if results:
                 dispatcher.utter_message(
                     text="Các chi nhánh của cửa hàng gồm:",
-                    json_message={"branches": results}
+                    json_message={
+                        "branches": results, 
+                        "action": "ask_branch"
+                    }
                 )
             else:
                 dispatcher.utter_message(text="Không tìm thấy chi nhánh nào.")
@@ -269,7 +275,10 @@ class ActionAskPost(Action):
 
                 dispatcher.utter_message(
                     text="Dưới đây là một số bài viết mới nhất:",
-                    json_message={"posts": results}
+                    json_message={
+                        "posts": results,
+                        "action": "ask_post"
+                    }
                 )
             else:
                 dispatcher.utter_message(text="Hiện tại chưa có bài viết nào.")
@@ -307,7 +316,10 @@ class ActionAskCompany(Action):
 
                 dispatcher.utter_message(
                     text="Đây là thông tin chi tiết của công ty:",
-                    json_message={"shop_info": shop_info}
+                    json_message={
+                        "shop_info": shop_info,
+                        "action": "ask_company"
+                    }
                 )
             else:
                 dispatcher.utter_message(text="Chưa có thông tin cấu hình.")
@@ -326,90 +338,48 @@ class ActionAskPromotions(Action):
             dispatcher.utter_message(text="Bạn muốn hỏi khuyến mãi ở chi nhánh nào?")
             return []
 
-        try:
-            # Truy vấn các khuyến mãi theo chi nhánh
-            results = db.fetch_all("""
-                SELECT d.*
-                FROM discounts d
-                JOIN branches b ON d.branch_id = b.id
-                WHERE (
-                    LOWER(b.name) COLLATE utf8mb4_general_ci LIKE %s
-                    OR SOUNDEX(b.name) = SOUNDEX(%s)
-                )
-                ORDER BY d.start_date DESC
-                LIMIT 5
-            """, (f"%{branch.lower()}%", branch))
+        # Bỏ dấu và lowercase tên chi nhánh người dùng nhập
+        branch_no_accent = unidecode(branch).lower()
 
-            if results:
-                for row in results:
-                    if "start_date" in row and isinstance(row["start_date"], datetime):
-                        row["start_date"] = row["start_date"].isoformat()
-                    if "end_date" in row and isinstance(row["end_date"], datetime):
-                        row["end_date"] = row["end_date"].isoformat()
+        # Lấy tất cả các chi nhánh và bỏ dấu để so sánh
+        all_branches = db.fetch_all("SELECT id, name FROM branches")
 
-                dispatcher.utter_message(
-                    text=f"Đây là các khuyến mãi tại chi nhánh '{branch}':",
-                    json_message={"promotions": results}
-                )
-            else:
-                dispatcher.utter_message(
-                    text=f"Hiện tại chưa có khuyến mãi nào tại chi nhánh '{branch}'."
-                )
-        except Exception as e:
-            dispatcher.utter_message(text=f"Lỗi hệ thống: {str(e)}. Vui lòng thử lại sau.")
+        matched_branch_ids = []
+        for b in all_branches:
+            name_no_accent = unidecode(b["name"]).lower()
+            if branch_no_accent in name_no_accent:
+                matched_branch_ids.append(b["id"])
+
+        if not matched_branch_ids:
+            dispatcher.utter_message(text=f"Không tìm thấy chi nhánh nào giống '{branch}'")
+            return []
+
+        # Truy vấn khuyến mãi theo danh sách branch_id tìm được
+        format_strings = ','.join(['%s'] * len(matched_branch_ids))
+        query = f"""
+            SELECT d.*
+            FROM discounts d
+            WHERE d.branch_id IN ({format_strings})
+            ORDER BY d.start_date DESC
+            LIMIT 5
+        """
+        results = db.fetch_all(query, matched_branch_ids)
+
+        if results:
+            for row in results:
+                if "start_date" in row and isinstance(row["start_date"], datetime):
+                    row["start_date"] = row["start_date"].isoformat()
+                if "end_date" in row and isinstance(row["end_date"], datetime):
+                    row["end_date"] = row["end_date"].isoformat()
+
+            dispatcher.utter_message(
+                text=f"Đây là các khuyến mãi tại chi nhánh gần giống '{branch}':",
+                json_message={
+                    "promotions": results,
+                    "action": "ask_promotions"
+                }
+            )
+        else:
+            dispatcher.utter_message(text=f"Không có khuyến mãi nào tại chi nhánh gần giống '{branch}'.")
 
         return []
-
-# class ActionAskPromotions(Action):
-#     def name(self) -> str:
-#         return "action_ask_promotions"
-
-#     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
-#         branch = tracker.get_slot("branch_name")
-
-#         if not branch:
-#             dispatcher.utter_message(text="Bạn muốn hỏi khuyến mãi ở chi nhánh nào?")
-#             return []
-
-#         # Bỏ dấu và lowercase tên chi nhánh người dùng nhập
-#         branch_no_accent = unidecode(branch).lower()
-
-#         # Lấy tất cả các chi nhánh và bỏ dấu để so sánh
-#         all_branches = db.fetch_all("SELECT id, name FROM branches")
-
-#         matched_branch_ids = []
-#         for b in all_branches:
-#             name_no_accent = unidecode(b["name"]).lower()
-#             if branch_no_accent in name_no_accent:
-#                 matched_branch_ids.append(b["id"])
-
-#         if not matched_branch_ids:
-#             dispatcher.utter_message(text=f"Không tìm thấy chi nhánh nào giống '{branch}'")
-#             return []
-
-#         # Truy vấn khuyến mãi theo danh sách branch_id tìm được
-#         format_strings = ','.join(['%s'] * len(matched_branch_ids))
-#         query = f"""
-#             SELECT d.*
-#             FROM discounts d
-#             WHERE d.branch_id IN ({format_strings})
-#             ORDER BY d.start_date DESC
-#             LIMIT 5
-#         """
-#         results = db.fetch_all(query, matched_branch_ids)
-
-#         if results:
-#             for row in results:
-#                 if "start_date" in row and isinstance(row["start_date"], datetime):
-#                     row["start_date"] = row["start_date"].isoformat()
-#                 if "end_date" in row and isinstance(row["end_date"], datetime):
-#                     row["end_date"] = row["end_date"].isoformat()
-
-#             dispatcher.utter_message(
-#                 text=f"Đây là các khuyến mãi tại chi nhánh gần giống '{branch}':",
-#                 json_message={"promotions": results}
-#             )
-#         else:
-#             dispatcher.utter_message(text=f"Không có khuyến mãi nào tại chi nhánh gần giống '{branch}'.")
-
-#         return []

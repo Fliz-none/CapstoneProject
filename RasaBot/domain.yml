@@ -16,10 +16,13 @@ intents:
   - ask_branch
   - ask_post
   - ask_promotions
+  - ask_payment_methods
+  - ask_return_policy
+  - ask_opening_hours
 
 responses:
   utter_greet:
-    - text: "Chào, bạn cần giúp đỡ gì không?."
+    - text: "Chào, bạn cần giúp đỡ gì không?"
     - text: "Chào bạn, hôm nay bạn cảm thấy thế nào?"
 
   utter_cheer_up:

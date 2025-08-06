@@ -150,13 +150,36 @@ function handleChat() {
         userMessage,
         function (response) {
             sendingEl.remove();
-            // Có thể append response vào chat nếu muốn
+            if (Array.isArray(response)) {
+                response.forEach(botMessage => {
+                    if (botMessage.text) {
+                        $.ajax({
+                            url: config.routes.pusher.ai_broadcast, 
+                            method: "POST",
+                            headers: {
+                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
+                            },
+                            data: {
+                                message: botMessage.text,
+                                json_data: botMessage.custom
+                            },
+                            success: function (res) {
+                               console.log(res);
+                            },
+                            error: function (err) {
+                                console.error("Lỗi gửi về ai_broadcast:", err);
+                            }
+                        });
+                        $(".chatbox").scrollTop($(".chatbox")[0].scrollHeight); // Scroll to bottom
+                    }
+                });
+            }
         },
         function (errors) {
             sendingEl.remove();
             if (errors.status == 419 || errors.status == 401) {
                 window.location.href = config.routes.login;
-            } 
+            }
         }
     );
 }
