@@ -1,0 +1,25 @@
+# Đây là gói Rasa core
+rasa==3.6.21
+
+# SDK cho custom actions
+rasa-sdk==3.6.2
+
+# Đọc file .env
+python-dotenv==1.1.1
+
+# MySQL connector
+PyMySQL==1.1.1
+
+# FastAPI server
+fastapi
+
+# Uvicorn server để chạy FastAPI
+uvicorn[standard]
+
+# Thư viện HTTP client
+httpx
+
+# Thư viện JWT
+pyjwt
+
+unidecode

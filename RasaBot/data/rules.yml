@@ -69,3 +69,27 @@ rules:
     steps:
       - intent: ask_post
       - action: action_ask_post
+
+  # Hỏi về ưu đãi của các chi nhánh của cửa hàng hoặc toàn bộ cửa hàng
+  - rule: Khách hỏi ưu đãi
+    steps:
+      - intent: ask_promotions
+      - action: action_ask_promotions
+
+  # Hỏi về giờ mở cửa của cửa hàng
+  - rule: Trả lời về giờ mở cửa
+    steps:
+    - intent: ask_opening_hours
+    - action: utter_opening_hours
+
+   # Hỏi về giờ chính sách đổi trả
+  - rule: Trả lời về chính sách đổi trả
+    steps:
+    - intent: ask_return_policy
+    - action: utter_return_policy
+
+  # Hỏi về phương thức thanh toán
+  - rule: Trả lời về phương thức thanh toán
+    steps:
+    - intent: ask_payment_methods
+    - action: utter_payment_methods

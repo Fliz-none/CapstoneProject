@@ -1,0 +1,172 @@
+version: "3.1"
+
+nlu:
+  - intent: ask_promotions
+    examples: |
+      - Ở [CN Nguyễn Văn Linh](branch_name) có sale cuối tuần không?
+      - Mua hàng tại [CN Nguyễn Văn Linh](branch_name) được giảm giá không?
+      - [CN Nguyễn Văn Linh](branch_name) có ưu đãi dành cho khách mới không?
+      - [CN Nguyễn Văn Linh](branch_name) có tặng kèm quà không?
+      - [CN Nguyễn Văn Linh](branch_name) có chương trình tích điểm không?
+      - [CN Nguyễn Văn Linh](branch_name) có flash sale hôm nay không?
+      - [CN Nguyễn Văn Linh](branch_name) đang có ưu đãi nào đặc biệt không?
+      - [CN Nguyễn Văn Linh](branch_name) có giảm giá sinh nhật không?
+      - Ở [CN Nguyễn Văn Linh](branch_name) có mua 1 tặng 1 không?
+      - [CN Trần Hoàng Na](branch_name) có chương trình khuyến mãi không?
+      - [CN Trần Hoàng Na](branch_name) đang giảm giá sản phẩm nào vậy?
+      - [CN Trần Hoàng Na](branch_name) có freeship không?
+      - [CN Trần Hoàng Na](branch_name) có ưu đãi thanh toán online không?
+      - [CN Trần Hoàng Na](branch_name) đang có deal hot nào?
+      - [CN Trần Hoàng Na](branch_name) có giảm giá dịp lễ không?
+      - [CN Trần Hoàng Na](branch_name) có chương trình đồng giá không?
+      - [CN Trần Hoàng Na](branch_name) đang có ưu đãi cuối tuần gì?
+      - [CN Trần Hoàng Na](branch_name) có giảm giá cho sinh viên không?
+      - [CN Trần Hoàng Na](branch_name) có quà tặng kèm hóa đơn không?
+      - [CN Ninh Kiều](branch_name) có khuyến mãi gì hôm nay?
+      - [CN Ninh Kiều](branch_name) đang có chương trình giảm giá nào?
+      - [CN Ninh Kiều](branch_name) có ưu đãi dịp lễ không?
+      - [CN Ninh Kiều](branch_name) có sale Black Friday không?
+      - [CN Ninh Kiều](branch_name) có tặng voucher không?
+      - [CN Ninh Kiều](branch_name) đang chạy chương trình ưu đãi gì?
+      - [CN Ninh Kiều](branch_name) có giảm giá nếu mua combo không?
+      - [CN Ninh Kiều](branch_name) có ưu đãi giao hàng miễn phí không?
+      - [CN Ninh Kiều](branch_name) có ưu đãi khi đặt hàng trước không?
+      - [CN Ninh Kiều](branch_name) có giảm giá cho khách hàng thân thiết không?
+      - Mua ở [CN Nguyễn Văn Linh](branch_name) có được khuyến mãi không?
+      - [CN Trần Hoàng Na](branch_name) có áp dụng mã giảm giá không?
+      - [CN Ninh Kiều](branch_name) có ưu đãi đặc biệt cuối tháng không?
+      - [CN Trần Hoàng Na](branch_name) có chương trình ưu đãi cho dịp Tết không?
+      - Ở [CN Ninh Kiều](branch_name) có giảm giá khi thanh toán qua ví Momo không?
+      - [CN Nguyễn Văn Linh](branch_name) có giảm giá cho lần mua đầu tiên không?
+      - [CN Trần Hoàng Na](branch_name) có giảm giá nếu mua số lượng lớn không?
+      - [CN Ninh Kiều](branch_name) có ưu đãi khi giới thiệu bạn bè không?
+      - [CN Nguyễn Văn Linh](branch_name) đang chạy chương trình giảm giá nào nổi bật?
+      - [CN Trần Hoàng Na](branch_name) có ưu đãi đặc biệt cho khách VIP không?
+      - Ở [Cửa Hàng Nguyễn Văn Linh](branch_name) có đang chạy ưu đãi nào không?
+      - [Trần Hoàng Na](branch_name) hiện có chương trình giảm giá nào đặc biệt không?
+      - Tôi muốn hỏi [CN Ninh Kiều](branch_name) có tặng voucher khi mua không?
+      - [Nguyễn Văn Linh](branch_name) đang có khuyến mãi mùa hè gì không?
+      - Bên [Chi nhánh Trần Hoàng Na](branch_name) có ưu đãi gì cho khách hàng mới không?
+      - [Ninh Kiều](branch_name) có chương trình quà tặng đi kèm sản phẩm không?
+      - Mua ở [Cửa Hàng Trần Hoàng Na](branch_name) có được freeship không vậy?
+      - [CN Nguyễn Văn Linh](branch_name) có áp dụng mã giảm giá dịp lễ không?
+      - [Cửa Hàng Ninh Kiều](branch_name) đang có flash sale trong tuần này không?
+      - [Chi nhánh Nguyễn Văn Linh](branch_name) có chính sách giảm giá sinh nhật không?
+      - Tôi có thể nhận ưu đãi gì khi mua tại [Trần Hoàng Na](branch_name)?
+      - [Ninh Kiều](branch_name) có chương trình tích điểm đổi quà không?
+      - Ở [CN Trần Hoàng Na](branch_name) có giảm giá combo không?
+      - [Nguyễn Văn Linh](branch_name) có ưu đãi khi đặt hàng qua app không?
+      - [Cửa Hàng Ninh Kiều](branch_name) có khuyến mãi cho khách VIP không?
+      - [Chi nhánh Trần Hoàng Na](branch_name) đang giảm giá mặt hàng nào?
+      - Tôi muốn biết [CN Nguyễn Văn Linh](branch_name) có khuyến mãi Black Friday không?
+      - [Ninh Kiều](branch_name) có ưu đãi miễn phí giao hàng không?
+      - Mua tại [Trần Hoàng Na](branch_name) có tặng kèm sản phẩm không?
+      - [Cửa Hàng Nguyễn Văn Linh](branch_name) có giảm giá thanh toán online không?
+      - [CN Ninh Kiều](branch_name) có chương trình mua 1 tặng 1 không?
+      - [Trần Hoàng Na](branch_name) có ưu đãi cho đơn hàng trên 500k không?
+      - Ở [Nguyễn Văn Linh](branch_name) có chương trình giảm giá cuối tuần không?
+      - [Cửa Hàng Ninh Kiều](branch_name) có ưu đãi khi mua lần đầu không?
+      - [Chi nhánh Nguyễn Văn Linh](branch_name) đang chạy chương trình đồng giá không?
+      - [Trần Hoàng Na](branch_name) có sale dịp lễ Quốc Khánh không?
+      - [CN Ninh Kiều](branch_name) có ưu đãi khi giới thiệu bạn bè không?
+      - Tôi muốn hỏi [Nguyễn Văn Linh](branch_name) có tặng phiếu mua hàng không?
+      - Ở [Trần Hoàng Na](branch_name) có giảm giá nếu mua nhiều sản phẩm không?
+      - [Ninh Kiều](branch_name) có chương trình khuyến mãi riêng cho sinh viên không?
+      - [Cửa Hàng Nguyễn Văn Linh](branch_name) có ưu đãi cho khách thanh toán qua ví Momo không?
+      - [Trần Hoàng Na](branch_name) đang có deal hot nào vậy?
+      - [Ninh Kiều](branch_name) có chương trình giảm giá Tết không?
+      - Tôi muốn biết [Chi nhánh Nguyễn Văn Linh](branch_name) có ưu đãi dịp Noel không?
+      - [Trần Hoàng Na](branch_name) có giảm giá nếu mua trước không?
+      - [Cửa Hàng Ninh Kiều](branch_name) có tặng quà sinh nhật khách hàng không?
+      - [CN Nguyễn Văn Linh](branch_name) có giảm giá cho khách hàng thân thiết không?
+      - [Trần Hoàng Na](branch_name) có ưu đãi hoàn tiền không?
+      - [Ninh Kiều](branch_name) có chương trình khuyến mãi nhân dịp khai trương không?
+      - [Cửa Hàng Trần Hoàng Na](branch_name) có ưu đãi gì vào cuối tháng này không?
+      - [Chi nhánh Ninh Kiều](branch_name) đang giảm giá sản phẩm mới không?
+      - Mua hàng ở [Nguyễn Văn Linh](branch_name) có tặng kèm phiếu quà tặng không?
+      - [Trần Hoàng Na](branch_name) có chương trình ưu đãi thanh toán thẻ không?
+      - [Ninh Kiều](branch_name) có giảm giá cho nhóm khách mua chung không?
+      - Tôi cần biết [Cửa Hàng Nguyễn Văn Linh](branch_name) có ưu đãi khi đặt trước không?
+      - [Trần Hoàng Na](branch_name) đang khuyến mãi giảm giá ship không?
+      - [Ninh Kiều](branch_name) có ưu đãi cho khách hàng doanh nghiệp không?
+      - [CN Nguyễn Văn Linh](branch_name) có ưu đãi nào hấp dẫn hôm nay không?
+      - [CN Nguyễn Văn Linh](branch_name) có khuyến mãi gì đặc biệt cho khách mua online không?
+      - Tôi muốn hỏi [CN Trần Hoàng Na](branch_name) có chương trình khuyến mãi dịp cuối năm không?
+      - [CN Ninh Kiều](branch_name) đang có ưu đãi nào cho khách mua số lượng lớn không?
+      - Khi mua hàng ở [CN Nguyễn Văn Linh](branch_name), tôi có được tích điểm không?
+      - [CN Trần Hoàng Na](branch_name) có chính sách giảm giá cho thành viên thân thiết không?
+      - Tôi cần biết [CN Ninh Kiều](branch_name) có ưu đãi giao hàng trong ngày không?
+      - [CN Nguyễn Văn Linh](branch_name) có chương trình sale nhân dịp khai trương không?
+      - Ở [CN Trần Hoàng Na](branch_name) có ưu đãi gì dành cho khách hàng doanh nghiệp không?
+      - [CN Ninh Kiều](branch_name) có giảm giá nếu mua sản phẩm combo không?
+      - [CN Nguyễn Văn Linh](branch_name) có chương trình ưu đãi giảm giá phí ship không?
+      - Tôi muốn biết [CN Trần Hoàng Na](branch_name) có quà tặng khi mua sản phẩm mới ra mắt không?
+      - [CN Ninh Kiều](branch_name) có đang áp dụng chương trình ưu đãi nào cho dịp sinh nhật không?
+      - Ở [CN Nguyễn Văn Linh](branch_name) có khuyến mãi cho khách hàng đặt trước không?
+      - [CN Trần Hoàng Na](branch_name) có ưu đãi nào dành cho khách mua qua website không?
+      - [CN Ninh Kiều](branch_name) đang giảm giá dịp kỷ niệm thành lập không?
+      - Tôi muốn hỏi mua ở [CN Nguyễn Văn Linh](branch_name) có được nhận mã ưu đãi không?
+      - [CN Trần Hoàng Na](branch_name) có chương trình giảm giá riêng cho khách thanh toán thẻ tín dụng không?
+      - [CN Ninh Kiều](branch_name) có ưu đãi nào khi mua sản phẩm trong giờ vàng không?
+      - Ở [CN Nguyễn Văn Linh](branch_name) có đang khuyến mãi giảm giá dịch vụ kèm theo không?
+      - [CN Trần Hoàng Na](branch_name) có chính sách giảm giá đặc biệt vào cuối tuần này không?
+      - [CN Ninh Kiều](branch_name) có khuyến mãi gì hấp dẫn khi đặt hàng trước Tết không?
+      - Tôi muốn biết mua ở [CN Nguyễn Văn Linh](branch_name) có tặng voucher giảm giá lần sau không?
+      - [CN Trần Hoàng Na](branch_name) có ưu đãi gì khi mua hóa đơn từ 1 triệu không?
+      - [CN Ninh Kiều](branch_name) có giảm giá cho khách hàng cũ quay lại mua không?
+      - [CN Nguyễn Văn Linh](branch_name) đang triển khai chương trình ưu đãi nào trong tuần lễ vàng không?
+      - [CN Trần Hoàng Na](branch_name) có ưu đãi gì khi mua sản phẩm mới nhất không?
+      - Tôi muốn hỏi [CN Ninh Kiều](branch_name) có giảm giá khi đặt hàng qua fanpage không?
+      - [CN Nguyễn Văn Linh](branch_name) có khuyến mãi gì dành cho khách mua combo quà tặng không?
+      - [CN Trần Hoàng Na](branch_name) có chương trình giảm giá cho nhóm khách đi cùng không?
+      - [CN Ninh Kiều](branch_name) có đang chạy khuyến mãi flash sale trong tháng này không?
+      - [Hoàng Na](branch_name) có khuyến mãi gì không?
+      - Tôi muốn hỏi [Văn Linh](branch_name) đang có ưu đãi gì?
+      - [Ninh Kiều](branch_name) có chương trình giảm giá nào không?
+      - Ở [Hoàng Na](branch_name) có đang chạy chương trình sale không?
+      - Mua hàng tại [Văn Linh](branch_name) có được tặng gì không?
+      - [Ninh Kiều](branch_name) có khuyến mãi mừng khai trương không?
+      - Ưu đãi tại [Hoàng Na](branch_name) hôm nay là gì?
+      - [Văn Linh](branch_name) có giảm giá mùa hè không?
+      - Có chương trình nào ở [Ninh Kiều](branch_name) dịp này không?
+      - [Hoàng Na](branch_name) có tặng mã giảm giá không?
+      - Có flash sale nào đang diễn ra ở [Văn Linh](branch_name) không?
+      - [Ninh Kiều](branch_name) có khuyến mãi cho học sinh không?
+      - Ưu đãi cuối tuần ở [Hoàng Na](branch_name) có hấp dẫn không?
+      - Tôi cần biết [Văn Linh](branch_name) có khuyến mãi khi mua combo không?
+      - Ở [Ninh Kiều](branch_name) có chương trình mua 1 tặng 1 không?
+      - [Hoàng Na](branch_name) có ưu đãi nào dịp lễ không?
+      - [Văn Linh](branch_name) có đang giảm giá dịch vụ nào không?
+      - [Ninh Kiều](branch_name) có quà tặng gì cho khách hàng mới không?
+      - Tôi muốn hỏi [Hoàng Na](branch_name) có khuyến mãi trong tháng 8 không?
+      - [Văn Linh](branch_name) có ưu đãi cho khách đặt online không?
+      - [Ninh Kiều](branch_name) có giảm giá ship không?
+      - [Hoàng Na](branch_name) có áp dụng chương trình tích điểm không?
+      - Tôi nghe [Văn Linh](branch_name) có giảm giá nhân dịp khai trương, đúng không?
+      - Có giảm giá đặc biệt nào ở [Ninh Kiều](branch_name) cho hội viên không?
+      - [Hoàng Na](branch_name) có giảm giá nếu mua nhiều không?
+      - [Văn Linh](branch_name) có ưu đãi nào khi thanh toán qua ví điện tử không?
+      - [Ninh Kiều](branch_name) có khuyến mãi tặng quà không?
+      - Tôi muốn hỏi có chương trình giảm giá gì ở [Hoàng Na](branch_name) hôm nay không?
+      - [Văn Linh](branch_name) có tặng voucher khi mua đơn lớn không?
+      - [Ninh Kiều](branch_name) có đang có event giảm giá không?
+      - [Hoàng Na](branch_name) có khuyến mãi cho khách quen không?
+      - [Văn Linh](branch_name) có chương trình ưu đãi cho dịp lễ lớn không?
+      - Ưu đãi gì đang diễn ra tại [Ninh Kiều](branch_name)?
+      - Có giảm giá nào ở [Hoàng Na](branch_name) cho khách đặt qua web không?
+      - [Văn Linh](branch_name) có khuyến mãi nếu đi theo nhóm không?
+      - Tôi muốn xem các ưu đãi tại [Ninh Kiều](branch_name)
+      - [Hoàng Na](branch_name) có ưu đãi sinh nhật không?
+      - Mua hàng ở [Văn Linh](branch_name) hôm nay có được gì không?
+      - [Ninh Kiều](branch_name) đang có giảm giá giờ vàng không?
+      - Tôi nghe nói [Hoàng Na](branch_name) đang giảm giá nhiều, có đúng không?
+      - [Văn Linh](branch_name) có ưu đãi đặc biệt khi đặt sớm không?
+      - Ưu đãi gì dành cho khách doanh nghiệp tại [Ninh Kiều](branch_name)?
+      - Có chương trình tích lũy điểm ở [Hoàng Na](branch_name) không?
+      - Tôi muốn hỏi [Văn Linh](branch_name) có ưu đãi hoàn tiền không?
+      - [Ninh Kiều](branch_name) có khuyến mãi khi dùng app không?
+      - [Hoàng Na](branch_name) đang có chương trình gì hấp dẫn?
+      - [Văn Linh](branch_name) có khuyến mãi gì khi giới thiệu bạn bè không?
+      - [Ninh Kiều](branch_name) có sale dịp Tết không?
+      - [Hoàng Na](branch_name) có giảm giá khi mua lần đầu không?
+      - Có chương trình khuyến mãi nào tại [Văn Linh](branch_name) dịp 2/9 không?
