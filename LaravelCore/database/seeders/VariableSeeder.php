@@ -19,116 +19,98 @@ class VariableSeeder extends Seeder
     public function run()
     {
         $variables = [
-            [1, 1, 'Gạo Jasmine 50kg', null, 120000, 1, null, now()->subDays(19), now()],
-            [2, 2, 'Lavie 500ml', null, 6000, 1, null, now()->subDays(18), now()],
-            [3, 3, 'Bộ nồi 5 chiếc', null, 750000, 1, null, now()->subDays(17), now()],
-            [4, 4, 'SRM Senka 100g', null, 95000, 1, null, now()->subDays(16), now()],
-            [5, 5, 'Thịt ba rọi 500g', null, 85000, 1, null, now()->subDays(15), now()],
-            [6, 6, 'Bút TL-08 đỏ', null, 4000, 1, null, now()->subDays(14), now()],
-            [7, 7, 'Tai nghe Baseus A1', null, 490000, 1, null, now()->subDays(13), now()],
-            [8, 8, 'Sunlight 1L', null, 45000, 1, null, now()->subDays(12), now()],
-            [9, 9, 'Clear Men 650g', null, 120000, 1, null, now()->subDays(11), now()],
-            [10, 10, 'Áo cotton size M', null, 75000, 1, null, now()->subDays(10), now()],
-            [11, 11, 'Đầm hoa size S', null, 145000, 1, null, now()->subDays(9), now()],
-            [12, 12, 'Nhẫn bạc nữ', null, 110000, 1, null, now()->subDays(8), now()],
-            [13, 13, 'Dao inox mini', null, 25000, 1, null, now()->subDays(7), now()],
-            [14, 14, 'Cá hộp 150g', null, 27000, 1, null, now()->subDays(6), now()],
-            [15, 15, 'Tã Bobby M20', null, 115000, 1, null, now()->subDays(5), now()],
-            [16, 16, 'Ferrero Rocher 16v', null, 175000, 1, null, now()->subDays(4), now()],
-            [17, 17, 'Combo skincare', null, 320000, 1, null, now()->subDays(3), now()],
-            [18, 18, 'Gói giao hàng 2H', null, 25000, 1, null, now()->subDays(2), now()],
-            [19, 19, 'Sữa đặc 380g', null, 27000, 1, null, now()->subDays(1), now()],
-            [20, 20, 'Snack rong biển Oishi', null, 15000, 1, null, now(), now()],
-            [21, 1, 'Gạo Jasmine túi 5kg', null, 1, 1, null, now()->subDays(3), now()],
-            [22, 1, 'Gạo Jasmine túi 10kg', null, 0, 1, null, now()->subDays(2), now()],
-            [23, 2, 'Lavie 500ml lốc 6 chai', null, 1, 1, null, now()->subDays(4), now()],
-            [24, 2, 'Lavie 500ml lốc 24 chai', null, 0, 1, null, now()->subDays(2), now()],
-            [25, 3, 'Bộ nồi 5 chiếc inox cao cấp', null, 1, 1, null, now()->subDays(5), now()],
-            [26, 3, 'Bộ nồi kèm xửng hấp', null, 0, 1, null, now()->subDays(2), now()],
-            [27, 4, 'SRM Senka 120g', null, 1, 1, null, now()->subDays(2), now()],
-            [28, 4, 'SRM Senka mini 50g', null, 0, 1, null, now()->subDays(1), now()],
-            [29, 5, 'Thịt ba rọi 300g', null, 1, 1, null, now()->subDays(1), now()],
-            [30, 5, 'Thịt ba rọi 1kg', null, 1, 1, null, now(), now()],
-            [31, 6, 'Bút TL-08 xanh', null, 0, 1, null, now()->subDays(3), now()],
-            [32, 6, 'Bút TL-08 đen', null, 1, 1, null, now()->subDays(2), now()],
-            [33, 7, 'Tai nghe Baseus A1 đen', null, 1, 1, null, now()->subDays(2), now()],
-            [34, 7, 'Tai nghe Baseus A1 trắng', null, 0, 1, null, now()->subDays(1), now()],
-            [35, 8, 'Sunlight 1L hương chanh', null, 1, 1, null, now()->subDays(1), now()],
-            [36, 8, 'Sunlight 1L lavender', null, 0, 1, null, now(), now()],
-            [37, 9, 'Clear Men bạc hà 650g', null, 1, 1, null, now()->subDays(1), now()],
-            [38, 9, 'Clear Men mát lạnh 650g', null, 1, 1, null, now(), now()],
-            [39, 10, 'Áo cotton M đen', null, 0, 1, null, now(), now()],
-            [40, 10, 'Áo cotton M trắng', null, 1, 1, null, now(), now()],
-            [41, 11, 'Đầm hoa S cổ tim', null, 1, 1, null, now()->subDays(2), now()],
-            [42, 11, 'Đầm hoa S kẻ caro', null, 0, 1, null, now(), now()],
-            [43, 12, 'Nhẫn bạc nữ S925 size 6', null, 1, 1, null, now(), now()],
-            [44, 12, 'Nhẫn bạc nữ S925 size 7', null, 0, 1, null, now(), now()],
-            [45, 13, 'Dao inox dài 12cm', null, 1, 1, null, now(), now()],
-            [46, 13, 'Dao inox tay cầm gỗ', null, 0, 1, null, now(), now()],
-            [47, 14, 'Cá hộp 150g sốt cà', null, 1, 1, null, now(), now()],
-            [48, 14, 'Cá hộp 150g tiêu đen', null, 1, 1, null, now(), now()],
-            [49, 15, 'Tã Bobby M62', null, 1, 1, null, now(), now()],
-            [50, 15, 'Tã Bobby M28', null, 0, 1, null, now(), now()],
-        ];
+            // [id, product_id, name, description, stock_limit, status, deleted_at, created_at, updated_at]
+            [1, 1, '5kg', null, 50, 1, null, now()->subDays(10), now()],
+            [2, 1, '10kg', null, 30, 1, null, now()->subDays(10), now()],
 
-        $unitTerms = [
-            1 => 'Gói',
-            2 => 'Chai',
-            3 => 'Bộ',
-            4 => 'Tuýp',
-            5 => 'Gói',
-            6 => 'Cái',
-            7 => 'Cái',
-            8 => 'Chai',
-            9 => 'Chai',
-            10 => 'Cái',
-            11 => 'Cái',
-            12 => 'Cái',
-            13 => 'Cái',
-            14 => 'Hộp',
-            15 => 'Gói',
-            16 => 'Hộp',
-            17 => 'Bộ',
-            18 => 'Lần',
-            19 => 'Lon',
-            20 => 'Gói',
-            21 => 'Gói',
-            22 => 'Gói',
-            23 => 'Lốc',
-            24 => 'Thùng',
-            25 => 'Bộ',
-            26 => 'Bộ',
-            27 => 'Tuýp',
-            28 => 'Tuýp',
-            29 => 'Gói',
-            30 => 'Gói',
-            31 => 'Cái',
-            32 => 'Cái',
-            33 => 'Cái',
-            34 => 'Cái',
-            35 => 'Chai',
-            36 => 'Chai',
-            37 => 'Chai',
-            38 => 'Chai',
-            39 => 'Cái',
-            40 => 'Cái',
-            41 => 'Cái',
-            42 => 'Cái',
-            43 => 'Cái',
-            44 => 'Cái',
-            45 => 'Cái',
-            46 => 'Cái',
-            47 => 'Hộp',
-            48 => 'Hộp',
-            49 => 'Gói',
-            50 => 'Gói',
+            [3, 2, '500ml', null, 100, 1, null, now()->subDays(9), now()],
+            [4, 2, '1.5L', null, 60, 1, null, now()->subDays(9), now()],
+
+            [5, 3, 'Bộ 5 nồi', null, 20, 1, null, now()->subDays(8), now()],
+            [6, 3, 'Bộ 6 nồi + xửng', null, 10, 1, null, now()->subDays(8), now()],
+
+            [7, 4, '100g', null, 40, 1, null, now()->subDays(7), now()],
+            [8, 4, '150g', null, 25, 1, null, now()->subDays(7), now()],
+
+            [9, 5, '300g', null, 60, 1, null, now()->subDays(6), now()],
+            [10, 5, '500g', null, 45, 1, null, now()->subDays(6), now()],
+
+            [11, 6, 'Xanh', null, 80, 1, null, now()->subDays(5), now()],
+            [12, 6, 'Đen', null, 70, 1, null, now()->subDays(5), now()],
+
+            [13, 7, 'A1 trắng', null, 15, 1, null, now()->subDays(4), now()],
+            [14, 7, 'A1 đen', null, 18, 1, null, now()->subDays(4), now()],
+
+            [15, 8, '1L chanh', null, 100, 1, null, now()->subDays(3), now()],
+            [16, 8, '1L lavender', null, 90, 1, null, now()->subDays(3), now()],
+
+            [17, 9, '650g', null, 70, 1, null, now()->subDays(2), now()],
+            [18, 9, 'Mát lạnh 650g', null, 60, 1, null, now()->subDays(2), now()],
+
+            [19, 10, 'Size M', null, 25, 1, null, now()->subDay(), now()],
+            [20, 10, 'Size L', null, 30, 1, null, now()->subDay(), now()],
         ];
 
 
+        $units = [
+            [1, 'Gói', 1, 12000, '8930000000011'],
+            [1, 'Bao', 10, 115000, '8930000000012'],
+
+            [2, 'Chai', 1, 6000, '8930000000021'],
+            [2, 'Bao', 20, 110000, '8930000000022'],
+
+            [3, 'Chai', 1, 7000, '8930000000031'],
+            [3, 'Thùng', 10, 70000, '8930000000032'],
+
+            [4, 'Chai', 1, 10000, '8930000000041'],
+            [4, 'Thùng', 10, 100000, '8930000000042'],
+
+            [5, 'Combo', 1, 140000, '8930000000051'],
+
+            [6, 'Combo', 1, 16000, '8930000000061'],
+
+            [7, 'Chai', 1, 12000, '8930000000071'],
+            [7, 'Thùng', 12, 135000, '8930000000072'],
+
+            [8, 'Chai', 1, 13000, '8930000000081'],
+            [8, 'Lốc 6 chai', 6, 89000, '8930000000082'],
+
+            [9, 'Bịch', 1, 30000, '8930000000091'],
+
+            [10, 'Bịch', 1, 45000, '8930000000101'],
+
+            [11, 'Cái', 1, 8500, '8930000000111'],
+            [11, 'Hộp 2 cái', 2, 16000, '8930000000112'],
+
+            [12, 'Cái', 1, 8800, '8930000000121'],
+            [12, 'Hộp 2 cái', 10, 19000, '8930000000122'],
+
+            [13, 'Cái', 1, 19000, '8930000000131'],
+            [13, 'Thùng 10 cái', 10, 108000, '8930000000132'],
+
+            [14, 'Cái', 1, 19000, '8930000000141'],
+            [14, 'Thùng 10 cái', 10, 108000, '8930000000142'],
+
+            [15, 'Chai', 1, 10000, '8930000000151'],
+            [15, 'Lốc 12 chai', 12, 110000, '8930000000152'],
+
+            [16, 'Chai', 1, 11000, '8930000000161'],
+            [16, 'Thùng', 10, 250000, '8930000000162'],
+
+            [17, 'Chai', 1, 13000, '8930000000171'],
+            [17, 'Thùng', 10, 125000, '8930000000172'],
+
+            [18, 'Chai', 1, 14000, '8930000000181'],
+            [18, 'Thùng', 15, 195000, '8930000000182'],
+
+            [19, 'Cái', 1, 200000, '8930000000191'],
+            [19, 'Bộ 2 cái', 2, 390000, '8930000000192'],
+
+            [20, 'Cái', 1, 210000, '8930000000201'],
+            [20, 'Bộ 2 cái', 2, 410000, '8930000000202'],
+        ];
 
         foreach ($variables as $key => $variable) {
-            $variableId = $variable[0];
-            $term = $unitTerms[$variableId] ?? 'Cái';
             Variable::create([
                 'id' => $variable[0],
                 'product_id' => $variable[1],
@@ -140,15 +122,18 @@ class VariableSeeder extends Seeder
                 'created_at' => $variable[7],
                 'updated_at' => $variable[8]
             ]);
-            
+        }
+
+        foreach ($units as $unit) {
             Unit::create([
-                'variable_id' => $variableId,
-                'term' => $term,
-                'rate' => 1,
-                'price' => Arr::random([10000, 20000, 50000, 100000, 200000, 70000, 5000]),
-                'barcode' => strtoupper(Str::random(10)), 
+                'variable_id' => $unit[0],
+                'term' => $unit[1],
+                'rate' => $unit[2],
+                'price' => $unit[3],
+                'barcode' => $unit[4],
             ]);
         }
+
 
         DB::statement("
                 INSERT INTO `attribute_variable` (`attribute_id`, `variable_id`) VALUES
