@@ -2965,7 +2965,7 @@
     const locale = $('html').attr('lang') || 'vn';
     const emptyText = locale === 'en' ? 'empty' : 'trống';
     const hiddenKeys = [
-        'password', 'remember_token', 'avatar', 'local', 'avatarUrl',
+        'password', 'remember_token', 'avatar', 'local', 'avatarUrl','email_verified_at','defaultAddress',
         'fullAddress', 'status', 'fullName', 'id', 'gender',
         'roles', '_local', '_branch', 'galleryUrl', 'gallery', 'sort',
         'allow_review', 'type', 'value', 'deleted_at', 'updated_at', 'created_at', 'addressObject'
