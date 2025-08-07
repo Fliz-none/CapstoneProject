@@ -63,8 +63,7 @@
                                             <th>{{ __('messages.datatable.time') }}</th>
                                             <th>{{ __('messages.expense.image') }}</th>
                                             <th>{{ __('messages.note') }}</th>
-                                            <th>{{ __('messages.expense.created_by') }}</th>
-                                            <th> {{ __('messages.expense.receive') }}</th>
+                                            <th>{{ __('messages.expense.receive') }}</th>
                                             <th>{{ __('messages.datatable.amount') }}</th>
                                             <th></th>
                                             <th>
@@ -99,16 +98,15 @@
                 },
                 columns: [
                     config.datatable.columns.code,
-                    config.datatable.columns.created_at,
-                    config.datatable.columns.avatar, {
+                    config.datatable.columns.created_at,{
+                        data: 'image',
+                        name: 'image',
+                    }, {
                         data: 'note',
                         name: 'note',
                     }, {
-                        data: 'user',
-                        name: 'user',
-                    }, {
-                        data: 'receiver',
-                        name: 'receiver',
+                        data: 'user_id',
+                        name: 'user_id',
                     }, {
                         data: 'amount',
                         name: 'amount',

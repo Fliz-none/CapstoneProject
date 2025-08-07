@@ -183,7 +183,7 @@
                                                     <div class="d-flex align-items-center justify-content-end mt-2">
                                                         <input type="number" class="form-control bg-white money order-score_to_money" value="0" readonly />
                                                         <input type="hidden" class="order-money_discounted" value="0" />
-                                                        <span class="ms-3">VND</span>
+                                                        <span class="ms-3">{{cache()->get('settings')['currency']}}</span>
                                                     </div>
                                                 </div>
                                             </div>

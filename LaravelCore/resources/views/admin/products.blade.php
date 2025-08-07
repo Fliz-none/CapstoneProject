@@ -64,12 +64,13 @@
                         @endif
                     </div>
                 </div>
-                <div class="col-12 col-md-6 d-flex justify-content-end">
-                    @if (!empty(Auth::user()->can(App\Models\User::READ_PRODUCTS)))
-                            <a class="btn btn-success mb-3 me-2" href="{{ route('admin.product.download_template') }}">
+                <div class="col-12 col-md-6">
+                    <div class="d-flex justify-content-end align-items-end h-100">
+                        @if (!empty(Auth::user()->can(App\Models\User::READ_PRODUCTS)))
+                            <button class="btn btn-success mb-3 me-2" href="{{ route('admin.product.download_template') }}">
                                 <i class="bi bi-box-arrow-down"></i>
                                 {{ __('messages.product.download_template') }}
-                            </a>
+                            </button>
                         <form action="" method="post">
                             <button class="btn k-btn-info mb-3 btn-refill-product" type="button">
                                 <i class="bi bi-box-arrow-in-up"></i>
@@ -77,13 +78,12 @@
                             </button>
                             <input class="d-none" id="refill-file" name="refill_file" type="file" accept=".xlsx, .xls">
                         </form>
-                    @endif
-                    @if (!empty(Auth::user()->can(App\Models\User::READ_PRODUCTS)))
                         <button class="btn btn-warning mb-3 ms-2 btn-render-product" type="button">
                             <i class="bi bi-box-arrow-down"></i>
                             {{ __('messages.product.export_excel') }}
                         </button>
                     @endif
+                    </div>
                 </div>
             </div>
             <div class="card">

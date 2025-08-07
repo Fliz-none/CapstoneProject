@@ -2548,7 +2548,7 @@
                     'string': 'Has '
                 }
                 str +=
-                    `<span class="badge bg-${$format['color']} me-2 mb-2">${$format['string']} <span class="text-white fw-bold fs-5">${$format['sign']}${number_format(Math.abs(suggest.debt))} VND</span></span>`
+                    `<span class="badge bg-${$format['color']} me-2 mb-2">${$format['string']} <span class="text-white fw-bold fs-5">${$format['sign']}${number_format(Math.abs(suggest.debt))} {{ cache()->get('settings')['currency'] }}</span></span>`
             }
             if (suggest.averagePaymentDelay) {
                 str +=
@@ -3002,7 +3002,7 @@
             vn: 'Tên Sản phẩm',
             en: 'Product name'
         }
-        
+
     };
     const locale = $('html').attr('lang') || 'vn';
     const emptyText = locale === 'en' ? 'empty' : 'trống';
@@ -3034,7 +3034,7 @@
         const id = $(this).data('id'),
             form = $('#log-form');
 
-        resetForm(form); 
+        resetForm(form);
         $.get(`{{ route('admin.log.show', '') }}/${id}`, function(log) {
             const before = log.before_change || {};
             const after = log.after_change || {};
@@ -3086,16 +3086,17 @@
             form.find('[name=id]').val(expense.id)
             form.attr('action', `{{ route('admin.expense.update') }}`)
             form.find('.modal').modal('show')
-            if (expense.receiver_id != null) {
-                var option = new Option(expense.receiver.name, expense.receiver_id, true, true);
-                form.find('[name=receiver_id]').append(option).trigger({
+            if (expense.user_id != null) {
+                var option = new Option(expense.user.name, expense.user_id, true, true);
+                form.find('[name=user_id]').append(option).trigger({
                     type: 'select2:select'
                 });
             } else {
-                form.find('[name=receiver_id]').val(null).trigger("change")
+                form.find('[name=user_id]').val(null).trigger("change")
             }
             form.find(`[name=payment][value="${expense.payment}"]`).prop('checked', true)
             form.find(`[name=amount]`).val(Math.abs(expense.amount))
+            form.find(`[name=note]`).val(expense.note)
             form.find(`[name=note]`).val(expense.note)
             form.find(`[name='status']`).prop('checked', expense.status);
             $('#expense-avatar-preview').attr('src', expense.avatarUrl)

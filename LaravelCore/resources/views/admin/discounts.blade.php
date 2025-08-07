@@ -263,7 +263,7 @@
                     }
                     break;
                 case 1:
-                    $('.discount-price').removeClass('d-none').find('[name=value]').addClass('money').end().find('.discount-value-type').text('VND')
+                    $('.discount-price').removeClass('d-none').find('[name=value]').addClass('money').end().find('.discount-value-type').text(`{{ cache()->get('settings')['currency'] }}`)
                     if (a && b) {
                         form.find('[name=value]').val(Math.floor(a))
                         form.find('[name=min_quantity]').val(b)

@@ -29,6 +29,7 @@ return[
         'news_events' => 'Tin tức - Sự kiện',
         'view_all' => 'Xem tất cả',
     ],
+
     'shop' => [
         'price' => 'Giá',
         'variant' => 'Biến thể',
@@ -56,10 +57,48 @@ return[
         'quantity_error' => 'Vui lòng chọn đơn vị và số lượng hợp lệ cho sản phẩm này!',
     ],
 
+    'post' => [
+        'useful_info' => 'Nếu bạn thấy thông tin này hữu ích',
+        'share' => 'Chia sẻ ngay',
+        'recommend' => 'Có thể bạn quan tâm',
+        'no_relationship' => 'Không có bài viết liên quan',
+        'share_post' => 'Chia sẻ bài viết',
+        'share_with' => 'Chia sẻ qua',
+        'share_success' => 'Đã sao chép liên kết bài viết!',
+        'share_error' => 'Không thể sao chép liên kết.',
+    ],
+
     'profile' => [
-        'profile' => 'Hồ sơ của bạn',
+        'profile' => 'Hồ sơ của tôi',
         'update_profile' => 'Cập nhật hồ sơ',
         'access_admin' => 'Truy cập quản trị',
+        'fullname' => 'Họ và tên',
+        'phone' => 'Số điện thoại',
+        'gender' => 'Giới tính',
+        'gender_male' => 'Nam',
+        'gender_female' => 'Nữ',
+        'gender_other' => 'Khác',
+        'save' => 'Cập nhật',
+
+        'user_address' => 'Xem địa chỉ',
+        'select_address' => 'Chọn địa chỉ',
+        'create_address' => 'Thêm',
+        'update_address' => 'Chỉnh sửa',
+        'remove_address' => 'Xóa',
+        'new_address' => 'Địa chỉ mới',
+        'add_address_success' => 'Đã thêm địa chỉ mới',
+        'update_address_success' => 'Cập nhật địa chỉ thành công',
+        'unauthentic' => 'Vui lòng đăng nhập để thực hiện thao tác',
+
+        'address_required' => 'Địa chỉ không hợp lệ',
+        'recipient_name_required' => 'Vui lòng điền tên người nhận!',
+        'recipient_phone_required' => 'Vui lòng điền số điện thoại nhận hàng!',
+
+        'address' => 'Địa chỉ',
+        'delivery_address' => 'Địa chỉ nhận hàng',
+        'recipient_name' => 'Tên người nhận',
+        'recipient_phone' => 'Số điện thoại người nhận',
+        'address_default' => 'Đặt làm mặc định',
     ],
 
     'contact' => [
@@ -83,5 +122,9 @@ return[
         'no_desc' => 'Không có mô tả',
         'no_review' => 'Chưa có đánh giá',
     ],
+
+    'checkout' => [
+        'address_required' => 'Vui lòng chọn địa chỉ nhận hàng',
+    ]
 
 ];

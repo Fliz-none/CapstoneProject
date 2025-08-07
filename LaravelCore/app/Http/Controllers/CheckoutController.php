@@ -26,15 +26,28 @@ class CheckoutController extends Controller
 
     public function cod(Request $request)
     {
-        $user = Auth::user();
-        $cart = $user->cart;
-
-        return $this->processOrder($user, $cart,  1,  'Paid via Cash on Delivery');
+        $rules = [
+            'address' => ['required'],
+        ];
+        $messages = [
+            'address.required' => __('lang_web.checkout.address_required'),
+        ];
+        $request->validate($rules, $messages);
+        session(['checkout_address' => $request->address]);
+        return $this->processOrder(Auth::user(),  1,  'Paid via Cash on Delivery');
     }
 
     public function vnpay(Request $request)
     {
+        $rules = [
+            'address' => ['required'],
+        ];
+        $messages = [
+            'address.required' => __('lang_web.checkout.address_required'),
+        ];
+        $request->validate($rules, $messages);
         try {
+            session(['checkout_address' => $request->address]);
             $user = Auth::user();
             $cart = $user->cart;
             if (!$cart || $cart->items->count() == 0) {
@@ -114,14 +127,12 @@ class CheckoutController extends Controller
             ]);
         }
 
-        $user = Auth::user();
-        $cart = $user->cart;
-
-        return $this->processOrder($user, $cart,  2, 'Paid via VNPay');
+        return $this->processOrder(Auth::user(),  2, 'Paid via VNPay');
     }
 
-    private function processOrder($user, $cart, $method = 2, $note = null)
+    private function processOrder($user, $method, $note = null)
     {
+        $cart = $user->cart;
         if (!$cart || $cart->items->isEmpty()) {
             return redirect()->route('checkout')->with('response', [
                 'status' => 'error',
@@ -148,11 +159,14 @@ class CheckoutController extends Controller
                 'branch_id' => session()->get('sale_branch') ?? Branch::first()->id,
                 'customer_id' => $user->id,
                 'method' => $method,
+                'address' => session('checkout_address'),
                 'total' => $cart->total,
                 'discount' => $cart->discount ?? 0,
                 'status' => 2,
                 'note' => $cart->note,
             ]);
+
+            session()->forget('checkout_address');
 
             foreach ($cart->items as $item) {
                 $stock = $stocks[$item->id];
@@ -179,11 +193,8 @@ class CheckoutController extends Controller
 
             $cart->items()->delete();
 
-            DB::commit();
-
-            $order_code = $order->code;
-            $pageName = 'Thank You';
-            return view('web.thankyou', compact('order_code', 'pageName'));
+            DB::commit();;
+            return redirect()->route('profile');
         } catch (\Exception $e) {
             DB::rollBack();
             log_exception($e);

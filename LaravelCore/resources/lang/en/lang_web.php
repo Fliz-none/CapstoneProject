@@ -33,7 +33,7 @@ return [
     'shop' =>[
         'price' => 'Price',
         'variant' => 'Variant',
-        'product' => 'Product',
+        'product' => 'Product(s)',
         'from' => 'From',
         'to' => 'to',
         'in' => 'in',
@@ -57,11 +57,48 @@ return [
         'quantity_error' => 'Please select a valid unit and quantity for this product!',
     ],
 
+    'post' => [
+        'useful_info' => 'If you find this information helpful',
+        'share' => 'Share',
+        'recommend' => 'Recommended for you',
+        'no_relationship' => 'No related posts',
+        'share_post' => 'Share this post',
+        'share_with' => 'Share with',
+        'share_success' => 'Article link copied!',
+        'share_error' => 'Link cannot be copied.',
+    ],
+
     'profile' =>[
-        'profile' => 'Your Profile',
+        'profile' => 'My Profile',
         'update_profile' => 'Update Profile',
         'access_admin' => 'Access Admin',
-        
+        'fullname' => 'Fullname',
+        'phone' => 'Phone number',
+        'gender' => 'Gender',
+        'gender_male' => 'Male',
+        'gender_female' => 'Female',
+        'gender_other' => 'Other',
+        'save' => 'Update',
+
+        'user_address' => 'View address',
+        'select_address' => 'Select address',
+        'create_address' => 'Add',
+        'update_address' => 'Edit',
+        'remove_address' => 'Delete',
+        'new_address' => 'New address',
+        'add_address_success' => 'New address added',
+        'update_address_success' => 'Update address successfully',
+        'unauthentic' => 'Please login to perform the operation',
+
+        'address_required' => 'Invalid address',
+        'recipient_name_required' => 'Please fill in recipient name!',
+        'recipient_phone_required' => 'Please fill in the phone number to receive the goods!',
+
+        'address' => 'Address',
+        'delivery_address' => 'Delivery address',
+        'recipient_name' => 'Recipient name',
+        'recipient_phone' => 'Recipient phone number',
+        'address_default' => 'Set as default',
     ],
 
     'contact' =>[
@@ -78,12 +115,16 @@ return [
         'catelogue' => 'Catelogue',
         'choices' => 'Choices',
         'pack' => 'Packaging',
-        'quantity' => 'Quantity left',
+        'quantity' => 'Quantity available',
         'add_to_cart' => 'Add to Cart',
         'desc' => 'Descriptions',
         'review' => 'Reviews',
         'no_desc' => 'No description',
         'no_review' => 'No reviews',
     ],
+
+    'checkout' => [
+        'address_required' => 'Please select delivery address',
+    ]
 
 ];

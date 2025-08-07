@@ -22,6 +22,7 @@ class CreateDetailsTable extends Migration
             $table->unsignedDouble('price', 10, 0)->default(0);
             $table->decimal('discount', 10, 0)->default(0)->nullable();
             $table->unsignedDouble('discount_program', 10, 0)->default(0)->nullable();
+            $table->text('reviews')->nullable();
             $table->string('note')->nullable();
             $table->softDeletes();
             $table->timestamps();

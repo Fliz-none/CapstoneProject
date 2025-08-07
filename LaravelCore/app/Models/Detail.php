@@ -20,6 +20,7 @@ class Detail extends Model
         'price',
         'discount',
         'discount_program',
+        'reviews',
         'note',
     ];
 

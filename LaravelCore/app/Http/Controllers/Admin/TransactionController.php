@@ -208,7 +208,7 @@ class TransactionController extends Controller
                         });
                     })
                     ->addColumn('amount', function ($obj) {
-                        return number_format($obj->amount) . 'VMD';
+                        return number_format($obj->amount) . ' ' . cache()->get('settings')['currency'];
                     })
                     ->addColumn('cash', function ($obj) {
                         if ($obj->payment <= 1) {

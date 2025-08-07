@@ -290,7 +290,6 @@ Route::group(['prefix' => 'quantri'], function () {
         Route::post('score', [SettingController::class, 'updateScore'])->name('admin.setting.score');
 
         Route::post('website', [SettingController::class, 'updateWebsite'])->name('admin.setting.website');
-
     });
 
     Route::group(['prefix' => 'role'], function () {
@@ -332,13 +331,20 @@ Route::get('tim-kiem/{q?}', [HomeController::class, 'home'])->name('search');
 Route::get('lien-he', [HomeController::class, 'contact'])->name('contact');
 Route::get('tai-khoan', [ProfileController::class, 'profile'])->name('profile');
 Route::post('tai-khoan', [ProfileController::class, 'change_infor'])->name('profile.change_infor');
+Route::post('dia-chi', [ProfileController::class, 'update_address'])->name('profile.update_address');
+Route::post('xoa-dia-chi', [ProfileController::class, 'remove_address'])->name('profile.remove_address');
 Route::get('tai-khoan/don-hang', [ProfileController::class, 'orders'])->name('profile.orders');
 Route::get('tai-khoan/thiet-lap', [ProfileController::class, 'updatePassword'])->name('profile.update.password');
 Route::get('tai-khoan/doi-mat-khau', [ProfileController::class, 'updateSettings'])->name('profile.update.settings');
 Route::get('tai-khoan', [ProfileController::class, 'profile'])->name('profile');
+Route::get('profile/{key?}/{action?}', [ProfileController::class, 'index'])->name('profile.index');
+Route::post('danh-gia-san-pham', [ProfileController::class, 'order_rate'])->name('profile.order_rate');
+Route::post('huy-don-hang/{order_id?}', [ProfileController::class, 'order_cancel'])->name('profile.order_cancel');
 Route::get('don-hang', [ProfileController::class, 'orders'])->name('orders');
 
-Route::get('about-us', [function (){ return view('web.about-us'); }])->name('about-us');
+Route::get('about-us', [function () {
+    return view('web.about-us');
+}])->name('about-us');
 Route::get('shop', [ShopController::class, 'index'])->name('shop');
 Route::get('product/{catalogue?}/{slug?}', [WebProductController::class, 'index'])->name('product');
 Route::post('/change-language', [LanguageController::class, 'changeLanguage'])

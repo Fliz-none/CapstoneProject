@@ -77,7 +77,7 @@ class Discount extends Model
             case '0':
                 return "Discount $this->value%";
             case '1':
-                return 'Discount ' . number_format($this->value) . ' VND';
+                return 'Discount ' . number_format($this->value) . ' ' . cache()->get('settings')['currency'];
             case '2':
                 return "Buy $this->buy_quantity get $this->get_quantity";
             default:

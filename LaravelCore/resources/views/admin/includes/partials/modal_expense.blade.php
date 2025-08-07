@@ -12,7 +12,7 @@
                         <div class="col-12 col-md-7">
                             <div class="mb-3 form-group">
                                 <label data-bs-toggle="tooltip" data-bs-title="The recipient of this expense voucher" for="expense-receiver_id">{{ __('messages.expense.receive') }}</label>
-                                <select class="form-select select2" id="expense-receiver_id" name="receiver_id" data-ajax--url="{{ route('admin.user', ['key' => 'select2']) }}" data-placeholder="{{ __('messages.expense.select_receive') }}">
+                                <select class="form-select select2" id="expense-receiver_id" name="user_id" data-ajax--url="{{ route('admin.user', ['key' => 'select2']) }}" data-placeholder="{{ __('messages.expense.select_receive') }}">
                                 </select>
                             </div>
                             <div class="mb-3 form-group">
@@ -41,6 +41,7 @@
                             <div class="form-group">
                                 <label data-bs-toggle="tooltip" data-bs-title="Categorize expenses by specific purpose" for="expense-note">{{__('messages.expense.category') }}</label>
                                 <select class="form-control" name="group" id="expense-group">
+                                    <option selected disabled hidden>{{__('messages.expense.category') }}</option>
                                     @php
                                         $expense_group = cache()->get('settings')['expense_group'] ?? '[]';
                                     @endphp
@@ -60,7 +61,7 @@
                                     <label class="form-label ratio ratio-1x1 select-avatar" for="expense-avatar">
                                         <img class="img-fluid rounded-4 object-fit-cover" id="expense-avatar-preview" src="{{ asset('admin/images/placeholder.webp') }}" alt="Avatar">
                                     </label>
-                                    <input class="form-control" id="expense-avatar" name="avatar" type="file" hidden accept="image/*">
+                                    <input class="form-control" id="expense-avatar" name="image" type="file" hidden accept="image/*">
                                     <div class="d-grid">
                                         <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{ __('messages.expense.remove') }}</button>
                                     </div>
