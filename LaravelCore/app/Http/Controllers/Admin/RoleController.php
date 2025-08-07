@@ -221,7 +221,7 @@ class RoleController extends Controller
                         DB::commit();
                         $response = [
                             'status' => 'success',
-                            'msg' => __('messages.updated') . __('messages.roles.role') . ' ' . $role->name,
+                            'msg' => __('messages.updated') . ' ' . $role->name,
                         ];
                     } else {
                         DB::rollBack();

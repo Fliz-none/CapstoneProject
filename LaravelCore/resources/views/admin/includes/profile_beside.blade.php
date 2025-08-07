@@ -88,7 +88,13 @@
                         <tbody>
                             @forelse ($logs as $log)
                                 <tr>
-                                    <td><a class="cursor-pointer btn-detail-log text-primary fw-bold" data-id=" {{ $log->id }}">{{ $log->code }}</a> </td>
+                                    <td>
+                                        @if ($log->action == '2')
+                                           <a class="cursor-pointer btn-detail-log text-primary fw-bold" data-id=" {{ $log->id }}">{{ $log->code }}</a> 
+                                        @else
+                                        <a class="cursor-pointer text-primary" data-id=" {{ $log->id }}">{{ $log->code }}</a> 
+                                        @endif
+                                    </td>
                                     <td>{{ $log->user->name }}</td>
                                    <td>{{ $log->action_name }}</td>
                                     <td>{{ $log->type }}</td>

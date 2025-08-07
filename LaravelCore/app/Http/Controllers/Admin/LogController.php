@@ -8,6 +8,7 @@ use Jenssegers\Agent\Agent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Models\Log;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -69,7 +70,11 @@ class LogController extends Controller
                 $logs = Log::with(['_user', 'branch'])->orderByDesc('created_at');
                 return DataTables::of($logs)
                     ->addColumn('code', function ($log) {
+                    if (!empty($this->user->can(User::READ_LOGS))) {
                         $code = '<a class="cursor-pointer btn-detail-log text-primary fw-bold" data-id="' . $log->id . '">' . $log->code . '</a>';
+                    } else {
+                        $code = $log->code;
+                    }
                         return $code . '<br/><small>' . optional($log->created_at)->format('d/m/Y H:i') . '</small>';
                     })
                     ->filterColumn('code', function ($query, $keyword) {
