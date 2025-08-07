@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\OutOfStockException;
+use App\Models\CartItem;
 use App\Models\Setting;
+use App\Models\Stock;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use StockChecker;
 
 class CartController extends Controller
 {
@@ -19,44 +24,62 @@ class CartController extends Controller
 
     public function add(Request $request)
     {
-        // Validate
         $request->validate([
             'unit_id' => 'required|exists:units,id',
             'quantity' => 'required|integer|min:1',
+            'lat' => 'nullable|numeric',
+            'lng' => 'nullable|numeric',
         ]);
+
+        DB::beginTransaction();
         try {
             /** @var \App\Models\User|null */
             $user = Auth::user();
+            $unitId = $request->unit_id;
+            $requestedQuantity = $request->quantity;
+            $userLat = $request->lat;
+            $userLng = $request->lng;
 
-            // Lấy hoặc tạo giỏ hàng cho user, tìm unit
             $cart = $user->cart()->firstOrCreate(['user_id' => $user->id]);
-            $unit = Unit::findOrFail($request->unit_id);
 
-            // Kiểm tra nếu unit đã có trong cart -> cập nhật số lượng
-            $existingItem = $cart->items()->where('unit_id', $request->unit_id)->first();
-            if ($existingItem) {
-                $existingItem->increment('quantity', $request->quantity);
-            } else {
-                $cart->items()->create([
-                    'unit_id' => $request->unit_id,
-                    'quantity' => $request->quantity,
+            // Lấy các item hiện tại trong cart của unit này
+            $existingItems = $cart->items()->where('unit_id', $unitId)->get();
+            $addedQuantity = $existingItems->sum('quantity');
+            $totalNeeded = $requestedQuantity + $addedQuantity;
+
+            // Gọi hàm phân bổ stock mới cho tổng quantity
+            $allocator = new StockChecker();
+            $allocations = $allocator->allocateStockForUnit($unitId, $totalNeeded, $userLat, $userLng);
+            // Xoá các item cũ
+            $cart->items()->where('unit_id', $unitId)->delete();
+            // Tạo lại theo phân bổ mới
+            foreach ($allocations as $allocation) {
+                $stock = Stock::find($allocation['stock_id']);
+                $item = CartItem::create([
+                    'unit_id' => $unitId,
+                    'quantity' => $allocation['quantity'],
+                    'stock_id' => $stock->id,
                     'cart_id' => $cart->id,
-                    'price' => $unit->price,
+                    'price' => $stock->import_detail->unit->price,
+                    'allocated_to_warehouse_id' => $allocation['allocated_to_warehouse_id'] ?? null,
                 ]);
             }
-
+            
+            DB::commit();
             return response()->json([
                 'status' => 'success',
                 'msg' => 'Added to cart successfully!',
-                'cart' => $cart->load('items.unit.variable.product'), // load lại các quan hệ nếu cần
-            ], 200);
-        } catch (OutOfStockException $e) {
-            return response()->json([
-                'status' => 'error',
-                'msg' => 'The product is out of stock! Please choose another product.',
                 'cart' => $cart->load('items.unit.variable.product'),
             ], 200);
+        } catch (OutOfStockException $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 'error',
+                'msg' => $e->getMessage(),
+                'cart' => optional($cart)->load('items.unit.variable.product'),
+            ], 200);
         } catch (\Exception $e) {
+            DB::rollBack();
             log_exception($e);
             return response()->json([
                 'status' => 'error',
@@ -78,13 +101,7 @@ class CartController extends Controller
 
             // Lấy hoặc tạo giỏ hàng cho user, tìm unit
             $cart = $user->cart()->firstOrCreate(['user_id' => $user->id]);
-            $unit = Unit::findOrFail($request->unit_id);
-
-            $existingItem = $cart->items()->where('unit_id', $request->unit_id)->first();
-            if ($existingItem) {
-                $existingItem->delete();
-            }
-
+            $cart->items()->where('unit_id', $request->unit_id)->delete();
             return response()->json([
                 'status' => 'success',
                 'msg' => 'Removed from cart successfully!',

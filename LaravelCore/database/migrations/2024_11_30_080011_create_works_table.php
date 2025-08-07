@@ -24,7 +24,6 @@ class CreateWorksTable extends Migration
             $table->dateTime('sign_checkout');
             $table->dateTime('real_checkout')->nullable();
             $table->string('image_checkout')->nullable();
-            $table->unsignedInteger('serve_time')->default(0);
             $table->string('note')->nullable();
             $table->timestamps();
 

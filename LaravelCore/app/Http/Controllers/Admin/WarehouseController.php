@@ -16,7 +16,7 @@ class WarehouseController extends Controller
             'name' => ['required', 'string', 'min:2', 'max:125'],
             'branch_id' => ['nullable', 'numeric',],
             'note' => ['nullable', 'string', 'min:2', 'max:125'],
-            'address' => ['nullable', 'string', 'min:2', 'max:125'],
+            'address' => ['required', 'string', 'min:2', 'max:255'],
         ];
         public static array $MESSAGES = [];
 
@@ -43,6 +43,7 @@ class WarehouseController extends Controller
             'address.string' => Controller::$DATA_INVALID,
             'address.min' => Controller::$MIN,
             'address.max' => Controller::$MAX,
+            'address.required' => Controller::$NOT_EMPTY,
             'branch_id.numeric' => Controller::$DATA_INVALID,
         ];
 
@@ -132,6 +133,9 @@ class WarehouseController extends Controller
                         } else {
                             return $obj->name;
                         }
+                    })
+                    ->editColumn('address', function ($obj) {
+                        return $obj->addressObject->address;
                     })
                     ->editColumn('branch', function ($obj) {
                         if ($obj->branch_id) {

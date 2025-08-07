@@ -96,33 +96,33 @@
                     confirmButtonText: '{{ __('messages.save') }}',
                     cancelButtonText: '{{ __('messages.cancel') }}',
                 }).then((result) => {
-                        const newLocale = $('#locale_selector').val();
-                        // Chỉ gửi request nếu ngôn ngữ thay đổi
-                        if (newLocale && newLocale !== currentLocale) {
-                            $.ajax({
-                                url: "{{ route('change.language.ajax') }}",
-                                method: 'POST',
-                                data: {
-                                    locale: newLocale,
-                                    _token: '{{ csrf_token() }}'
-                                },
-                                success: function() {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: '{{ __('messages.lang.language_changed_success') }}',
-                                        timer: 1500,
-                                        showConfirmButton: false
-                                    }).then(() => location.reload());
-                                },
-                                error: function() {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: '{{ __('messages.error_occurred') }}',
-                                        text: '{{ __('messages.try_again_later') }}'
-                                    });
-                                }
-                            });
-                        }
+                    const newLocale = $('#locale_selector').val();
+                    // Chỉ gửi request nếu ngôn ngữ thay đổi
+                    if (newLocale && newLocale !== currentLocale) {
+                        $.ajax({
+                            url: "{{ route('change.language.ajax') }}",
+                            method: 'POST',
+                            data: {
+                                locale: newLocale,
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function() {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '{{ __('messages.lang.language_changed_success') }}',
+                                    timer: 1500,
+                                    showConfirmButton: false
+                                }).then(() => location.reload());
+                            },
+                            error: function() {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: '{{ __('messages.error_occurred') }}',
+                                    text: '{{ __('messages.try_again_later') }}'
+                                });
+                            }
+                        });
+                    }
                 });
             });
 
@@ -649,36 +649,76 @@
             $(document).on('click', '.btn-add-to-cart', function(e) {
                 e.preventDefault();
                 const form = $(this).closest('form');
+
+                // Kiểm tra điều kiện số lượng và đơn vị
                 if (form.find('[name=quantity]').val() <= 0 || form.find('.btn-select-unit.active').length <= 0) {
                     Toastify({
                         text: "{{ __('lang_web.cart.quantity_error') }}",
                         duration: 3000,
-                        newWindow: true,
                         close: true,
                         gravity: "top",
                         position: "center",
-                        stopOnFocus: true, // Prevents dismissing of toast on hover
+                        stopOnFocus: true,
                     }).showToast();
                     return false;
                 }
-                // Mở modal Bootstrap
-                var offcanvasCart = new bootstrap.Offcanvas($('#offcanvasCart'));
-                offcanvasCart.show();
-
-                submitForm(form).done(function(response) {
-                    form.find('[name=quantity]').val(1);
-                    form.find('[type=submit]:last').prop("disabled", false).html(
-                        '<i class="bi bi-basket3"></i> <span>{{ __('lang_web.product.add_to_cart') }}</span>');
-                    updateMiniCart(response.cart);
-                });
+                const btn = $(this);
+                btn.prop("disabled", true).html('<span class="spinner-border spinner-border-sm"></span>');
+                // Lấy vị trí nếu có, không có thì vẫn submit form
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        function(position) {
+                            form.find('[name=lat]').val(position.coords.latitude);
+                            form.find('[name=lng]').val(position.coords.longitude);
+                            submitCartForm(form, btn);
+                        },
+                        function(error) {
+                            // Nếu người dùng từ chối hoặc có lỗi, vẫn submit
+                            console.warn("Vị trí không lấy được, vẫn tiếp tục...");
+                            submitCartForm(form, btn);
+                        }, {
+                            timeout: 5000
+                        }
+                    );
+                } else {
+                    submitCartForm(form, btn); // Trình duyệt không hỗ trợ
+                }
             });
 
-            function updateMiniCart(cart) {
-                // Update mini cart icon
+            function submitCartForm(form, btn) {
+                var offcanvasCart = new bootstrap.Offcanvas($('#offcanvasCart'));
+                offcanvasCart.show();
+                submitForm(form).done(function(response) {
+                    form.find('[name=quantity]').val(1);
+                    btn.prop("disabled", false).html(
+                        '<i class="bi bi-basket3"></i> <span>{{ __('lang_web.product.add_to_cart') }}</span>'
+                    );
+                    updateMiniCart(response.cart);
+                });
+            }
 
-                // Update cart menu
-                var miniCartHtml = '';
+            function updateMiniCart(cart) {
+                // Gom nhóm các cart item theo unit_id
+                const groupedItems = {};
+
                 cart.items.forEach(function(item) {
+                    const unitId = item.unit_id;
+                    if (!groupedItems[unitId]) {
+                        groupedItems[unitId] = {
+                            ...item,
+                            quantity: parseFloat(item.quantity),
+                            sub_total: parseFloat(String(item.sub_total).replace(/,/g, ''))
+                        };
+                    } else {
+                        // Cộng dồn quantity và sub_total
+                        groupedItems[unitId].quantity += parseFloat(item.quantity);
+                        groupedItems[unitId].sub_total += parseFloat(String(item.sub_total).replace(/,/g, ''));
+                    }
+                });
+
+                // Tạo HTML từ các item đã gom nhóm
+                let miniCartHtml = '';
+                Object.values(groupedItems).forEach(function(item) {
                     const product = item.unit.variable.product;
                     miniCartHtml += `
                         <div class="mini-cart-item">
@@ -695,19 +735,17 @@
                             <div class="mini-cart-info">
                                 <h6>${product.name} - ${item.unit.variable.name} - ${item.unit.term}</h6>
                                 <span class="mini-cart-quantity">
-                                    ${item.quantity} × ${number_format(item.unit.price) + ' {{ $config['currency'] }}'}
+                                    ${item.quantity} × ${number_format(item.unit.price)} {{ $config['currency'] }}
                                 </span>
                             </div>
                             <div class="mini-cart-price">
-                                ${item.sub_total + ' {{ $config['currency'] }}'}
+                                ${number_format(item.sub_total)} {{ $config['currency'] }}
                             </div>
                         </div>`;
                 });
-                $('.mini-cart-items').html(miniCartHtml);
 
-                //Update count
+                $('.mini-cart-items').html(miniCartHtml);
                 $('.mini-cart-count').text(cart.count);
-                // Update subtotal
                 $('.mini-cart-total span').text(number_format(cart.total) + ' {{ $config['currency'] }}');
             }
 

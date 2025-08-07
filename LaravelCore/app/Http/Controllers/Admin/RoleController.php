@@ -71,9 +71,6 @@ class RoleController extends Controller
         } else {
             if ($request->ajax()) {
                 $roles = Role::query();
-                if ($this->user->hasRole('Super Admin')) {
-                    $roles->orWhere('roles.id', 1);
-                }
                 return Datatables::of($roles)
                     ->addColumn('code', function ($obj) {
                         if ($this->user->can(User::UPDATE_ROLE)) {

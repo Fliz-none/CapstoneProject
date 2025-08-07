@@ -1206,10 +1206,55 @@
             if (warehouse.deleted_at != null) {
                 form.find('.btn[type=submit]:last-child').addClass('d-none')
             }
+            let addressObj = {};
+            try {
+                addressObj = JSON.parse(warehouse.address || '{}');
+                $('#warehouse-address-preview').val(addressObj.address);
+                config.address.defaultLat = addressObj.lat || config.address.defaultLat;
+                config.address.defaultLng = addressObj.lng || config.address.defaultLng;
+                console.log(addressObj);
+
+            } catch (e) {
+                console.warn('Invalid address JSON', warehouse.address);
+            }
             form.attr('action', `{{ route('admin.warehouse.update') }}`)
             form.find('.modal').modal('show').find('.modal-title').text(warehouse.name)
         })
     })
+
+     let warehouseMap = null;
+    $('#warehouse-modal').on('shown.bs.modal', function() {
+        if (!warehouseMap) {
+            warehouseMap = initGoongMap({
+                defaultLat: config.address.defaultLat,
+                defaultLng: config.address.defaultLng,
+                containerId: 'warehouse-map',
+                addressInputSelector: '#warehouse-form input[name="address"]',
+                addressPreviewSelector: '#warehouse-address-preview',
+                onLocationSelected: ({
+                    lat,
+                    lng,
+                    address
+                }) => {
+                    console.log(lat, lng, address);
+                    $('#warehouse-form input[name="address"]').val(JSON.stringify({
+                        lat,
+                        lng,
+                        address
+                    }));
+                }
+            });
+        }
+    });
+
+    $('#warehouse-modal').on('hidden.bs.modal', function() {
+        if (warehouseMap) {
+            warehouseMap = null; // Cho phép tạo lại map ở lần mở tiếp theo
+        }
+        $('#warehouse-map').empty();
+        $('#warehouse-form input[name="address"]').val('');
+        $('#warehouse-address-preview').val('');
+    });
     // =========== END WAREHOUSE ===========
 
     /**

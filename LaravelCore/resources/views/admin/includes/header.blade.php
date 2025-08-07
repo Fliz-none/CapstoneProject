@@ -13,7 +13,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto mb-lg-0">
-                    <a class="btn btn-change-language" style="margin-top: .35rem">
+                    <a class="btn btn-change-language d-flex align-items-center" style="margin-top: .35rem">
                         <i class="bi bi-translate fs-5 text-primary" data-bs-toggle="tooltip" data-bs-title="{{ __('messages.profile.language') }}"></i>
                     </a>
                     <li class="nav-item dropdown me-3 nav-notifications">

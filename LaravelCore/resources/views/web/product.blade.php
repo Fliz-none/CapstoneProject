@@ -102,7 +102,7 @@
                                                                         </a>
                                                                     </div>
                                                                     <div class="variable-unit-description ps-2 pt-2 text-muted">
-                                                                        {{ __('lang_web.product.quantity') }}: {{ $unit->sum_stock }}
+                                                                        {{ __('lang_web.product.quantity') }}: {{ $unit->getSumStock() }}
                                                                     </div>
                                                                 </div>
                                                             @empty
@@ -133,6 +133,8 @@
                                                     <div>
                                                         <input name="unit_id" type="hidden">
                                                         <input name="quantity" type="hidden" value="1">
+                                                        <input type="hidden" name="lng">
+                                                        <input type="hidden" name="lat">
                                                         <button class="key-btn-dark btn-add-to-cart" type="submit" title="Add to Cart">
                                                             <i class="bi bi-basket3"></i>
                                                             <span>{{ __('lang_web.product.add_to_cart') }}</span>

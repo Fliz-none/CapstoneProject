@@ -29,7 +29,7 @@
                         For any inquiries about your order, please contact us:<br>
                         <strong>Hotline:</strong> {{ $config['company_hotline'] }}<br>
                         <strong>Email:</strong> {{ $config['company_email'] }}<br>
-                        {!! isset($order_code) ? '<strong>Order Code:</strong> ' . $order_code : '' !!}
+                        {!! isset($order->code) ? '<strong>Order Code:</strong> ' . $order->code : '' !!}
                         </p>
                         <a href="{{ route('home') }}" class="cta-btn btn-save-modal">
                             <span class="">Trang chủ</span>

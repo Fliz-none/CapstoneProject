@@ -26,6 +26,11 @@ class Branch extends Model
     {
         return $this->belongsToMany(User::class);
     }
+    //Quản lý cart
+    public function carts()
+    {
+        return $this->belongsToMany(Cart::class);
+    }
 
     public function orders()
     {

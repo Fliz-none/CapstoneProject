@@ -21,6 +21,11 @@ class Cart extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function responsible_branch()
+    {
+        return $this->hasMany(Branch::class);
+    }
     public function getTotalAttribute()
     {
         return collect($this->items)->sum(function ($item) {
