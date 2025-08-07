@@ -168,6 +168,9 @@ return [
         'timekeeping' => 'Timekeeping',
         'schedule' => 'Schedule Work',
         'activity' => 'Activity Log',
+        'no_activity' => 'No activity log available.',
+        'attendance_history' => 'Attendance History',
+        'no_attendance_history' => 'No attendance history available.',
         'point' => 'Point',
         'logout' => 'Logout',
         'name' => 'Name',
@@ -262,7 +265,7 @@ return [
         'user' => 'User',
         'action' => 'Action',
         'object' => 'Object',
-        'code_user' => 'Code',
+        'object_code' => 'Object code',
         'browser' => 'Browser',
         'location' => 'Location',
         'platform' => 'Platform',
@@ -627,6 +630,9 @@ return [
         'checkout_error' => 'Check-out time must be after check-in time',
         'checkin_invaled' => 'Invalid check-in time format',
         'checkout_invaled' => 'Invalid check-out time format',
+        'check_in' => 'Check-in',
+        'check_out' => 'Check-out',
+        'serve_time' => 'Serve Time(minutes)'
     ],
 
     // Post

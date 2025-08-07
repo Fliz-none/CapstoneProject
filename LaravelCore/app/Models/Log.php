@@ -10,11 +10,19 @@ class Log extends Model
     use HasFactory;
 
     protected $table = 'logs';
-    protected $appends = ['code', 'ip'];
+    protected $appends = ['code', 'ip', 'action_name'];
 
     protected $fillable = [
-        'user_id', 'action', 'type', 'object', 'geolocation',
-        'agent', 'platform', 'device', 'before_change', 'after_change',
+        'user_id',
+        'action',
+        'type',
+        'object',
+        'geolocation',
+        'agent',
+        'platform',
+        'device',
+        'before_change',
+        'after_change',
     ];
 
     public function branch()
@@ -40,6 +48,20 @@ class Log extends Model
     public function getCodeAttribute()
     {
         return 'LOG' . str_pad($this->id, 5, "0", STR_PAD_LEFT);
+    }
+
+    public function getActionNameAttribute()
+    {
+        switch ($this->action) {
+            case 1:
+                return __('messages.create');
+            case 2:
+                return __('messages.update');
+            case 3:
+                return __('messages.delete');
+            default:
+                return __('messages.unknown');
+        }
     }
 
     public function getPosition()

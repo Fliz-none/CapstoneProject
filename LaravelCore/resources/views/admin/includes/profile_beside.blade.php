@@ -41,6 +41,12 @@
             </a>
         </li>
         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-4">
+            <a class="btn-attendance-history cursor-pointer">
+                <i class="bi bi-calendar2-week me-2"></i>
+                {{ __('messages.profile.attendance_history') }}
+            </a>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap p-4">
             <a class="btn-activity-log cursor-pointer">
                 <i class="bi bi-ui-checks me-2"></i>
                 {{ __('messages.profile.activity') }}
@@ -55,12 +61,12 @@
     </ul>
 </div>
 
-<!-- Modal -->
+<!-- Modal Activity Log -->
 <div class="modal fade" id="activityLogModal" tabindex="-1" aria-labelledby="activityLogLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header bg-info">
-                <h5 class="modal-title text-white" id="activityLogLabel">Lịch sử hoạt động</h5>
+                <h5 class="modal-title text-white" id="activityLogLabel">{{ __('messages.profile.activity') }}</h5>
                 <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Đóng"></button>
             </div>
             <div class="modal-body">
@@ -72,7 +78,7 @@
                                 <th>{{ __('messages.log.user') }}</th>
                                 <th>{{ __('messages.log.action') }}</th>
                                 <th>{{ __('messages.log.object') }}</th>
-                                <th>{{ __('messages.log.code_user') }}</th>
+                                <th>{{ __('messages.log.object_code') }}</th>
                                 <th>{{ __('messages.log.location') }}</th>
                                 <th>{{ __('messages.log.browser') }}</th>
                                 <th>{{ __('messages.log.platform') }}</th>
@@ -101,9 +107,15 @@
                                     }
                                 @endphp
                                 <tr>
-                                    <td><a class="cursor-pointer btn-detail-log text-primary fw-bold" data-id=" {{ $log->id }}">{{ $log->code }}</a> </td>
-                                    <td>{{ $userName }}</td>
-                                    <td>{{ $actionText }}</td>
+                                    <td>
+                                        @if ($log->action == '2')
+                                           <a class="cursor-pointer btn-detail-log text-primary fw-bold" data-id=" {{ $log->id }}">{{ $log->code }}</a> 
+                                        @else
+                                        <a class="cursor-pointer text-primary" data-id=" {{ $log->id }}">{{ $log->code }}</a> 
+                                        @endif
+                                    </td>
+                                    <td>{{ $log->user->name }}</td>
+                                   <td>{{ $log->action_name }}</td>
                                     <td>{{ $log->type }}</td>
                                     <td>{{ $log->object }}</td>
                                     <td>{{ $log->ip }}</td>
@@ -113,7 +125,55 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td class="text-center text-muted" colspan="9">Không có lịch sử hoạt động.</td>
+                                    <td class="text-center text-muted" colspan="9">{{ __('messages.profile.np_activity') }}</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Attendance History -->
+<div class="modal fade" id="attendanceHistoryModal" tabindex="-1" aria-labelledby="attendanceHistoryLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header bg-info">
+                <h5 class="modal-title text-white" id="attendanceHistoryLabel">{{ __('messages.profile.attendance_history') }}</h5>
+                <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-hover table-borderless" id="work-table">
+                        <thead>
+                            <tr>
+                               <th>{{ __('messages.datatable.code') }}</th>
+                                <th>{{ __('messages.log.user') }}</th>
+                                <th>{{ __('messages.datatable.branch') }}</th>
+                                <th>{{ __('messages.work_schedule.shift') }}</th>
+                                <th>{{ __('messages.work_schedule.check_in') }}</th>
+                                <th>{{ __('messages.work_schedule.check_out') }}</th>
+                                <th>{{ __('messages.work_schedule.serve_time') }}</th>
+                                <th>{{ __('messages.note') }}</th>
+                            </tr>
+                        </thead>    
+                        <tbody>
+                            @forelse ($works as $work)
+                                <tr>
+                                    <td><a class="cursor-pointer btn-detail-work text-primary fw-bold" data-id=" {{ $work->id }}">{{ $work->code }}</a> </td>
+                                    <td>{{ $work->user->name ?? '—' }}</td>
+                                    <td>{{ $work->branch->name ?? '—' }}</td>
+                                    <td style="white-space: pre-line;"> {{ $work->shift_info }}</td>
+                                    <td>{{ $work->real_checkin ?? '—' }}</td>
+                                    <td>{{ $work->real_checkout ?? '—' }}</td>
+                                    <td>{{ $work->serve_time }}</td>
+                                    <td>{{ $work->note ?? '—' }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td class="text-center text-muted" colspan="10">Không có lịch sử chấm công.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -132,8 +192,12 @@
             })
             $('.btn-activity-log').on('click', function(e) {
                 e.preventDefault();
-                console.log('click');
                 $('#activityLogModal').modal('show');
+            });
+
+            $('.btn-attendance-history').on('click', function(e) {
+                e.preventDefault();
+                $('#attendanceHistoryModal').modal('show');
             });
         })
     </script>

@@ -1,0 +1,122 @@
+version: "3.1"
+
+nlu:
+  - intent: check_stock
+    examples: |
+      - [Gạo thơm Jasmine](product_name) còn hàng không?
+      - shop còn [Nước khoáng Lavie 500ml](product_name) không?
+      - kiểm tra tồn kho [Bộ nồi inox 5 chiếc](product_name) giúp mình
+      - còn hàng [Sữa rửa mặt Senka](product_name) không?
+      - [Thịt heo ba rọi](product_name) còn không?
+      - shop còn [Bút bi Thiên Long TL-08](product_name) không vậy?
+      - [Tai nghe Bluetooth Baseus](product_name) còn hàng chứ?
+      - sản phẩm [Nước lau sàn Sunlight](product_name) còn không?
+      - [Dầu gội Clear Men 650g](product_name) còn mấy chai?
+      - có còn [Áo thun cotton nam](product_name) không?
+      - hàng [Đầm hoa xòe nữ tính](product_name) còn không?
+      - [Nhẫn bạc S925 đơn giản](product_name) còn tồn kho không?
+      - [Dao gọt trái cây inox](product_name) có hàng không?
+      - kiểm tra giúp [Cá hộp Vissan 150g](product_name) còn không?
+      - sản phẩm [Tã dán Bobby size M](product_name) còn không vậy?
+      - [Socola nhập khẩu Ferrero Rocher](product_name) còn hàng không?
+      - shop còn [Combo chăm sóc da](product_name) không?
+      - hàng [Dịch vụ giao hàng nhanh](product_name) còn chứ?
+      - [Sữa đặc ông thọ 380g](product_name) còn bao nhiêu hộp?
+      - [Snack rong biển Oishi](product_name) còn tồn kho không?
+      - kiểm tra giúp mình sản phẩm [Gạo thơm Jasmine](product_name)
+      - có hàng [Nước khoáng Lavie 500ml](product_name) không?
+      - còn tồn kho [Bộ nồi inox 5 chiếc](product_name) chứ?
+      - [Sữa rửa mặt Senka](product_name) còn không ạ?
+      - [Thịt heo ba rọi](product_name) còn số lượng không?
+      - em cần kiểm tra [Tai nghe Bluetooth Baseus](product_name)
+      - cho hỏi [Combo chăm sóc da](product_name) còn nhiều không?
+      - shop còn bán [Dầu gội Clear Men 650g](product_name) không?
+      - hôm nay còn hàng [Socola nhập khẩu Ferrero Rocher](product_name) chứ?
+      - sản phẩm [Snack rong biển Oishi](product_name) còn chứ?
+      - cho em hỏi [Sữa đặc ông thọ 380g](product_name) còn bao nhiêu hộp?
+      - shop có bán [Bột trà matcha latte](product_name) không?
+      - [Hộp khô gà số 1](product_name) có bán số lượng nhiều không?
+      - có bán [Bột nêm Agingon] (product_name) không ạ?
+      - Mình muốn hỏi còn [Mì Hảo Hảo] (product_name) không ạ?
+      - có [Chảo chống dính] (product_name) không shop?
+      - Cho mình biết sản phẩm [Sữa rửa mặt Senka](product_name) còn trong kho không?
+      - Mình cần kiểm tra xem [Gạo thơm Jasmine](product_name) có sẵn không?
+      - [Tai nghe Bluetooth Baseus](product_name) hiện tại còn hàng không vậy?
+      - Shop check giúp [Nước khoáng Lavie 500ml](product_name) có còn không?
+      - Mình muốn biết số lượng [Bộ nồi inox 5 chiếc](product_name) hiện còn bao nhiêu?
+      - [Dầu gội Clear Men 650g](product_name) còn tồn trong kho không shop?
+      - Hàng [Nhẫn bạc S925 đơn giản](product_name) bây giờ còn chứ?
+      - Shop báo mình biết [Thịt heo ba rọi](product_name) còn hàng không nha?
+      - Bạn kiểm tra giúp [Đầm hoa xòe nữ tính](product_name) còn lại bao nhiêu cái?
+      - Xin hỏi [Dao gọt trái cây inox](product_name) đang có sẵn không?
+      - Mình định mua [Snack rong biển Oishi](product_name), shop còn chứ?
+      - [Sữa đặc ông thọ 380g](product_name) hiện tại kho còn không ạ?
+      - Mình cần thông tin về hàng tồn của [Socola nhập khẩu Ferrero Rocher](product_name)
+      - Shop cho biết số lượng tồn của [Tã dán Bobby size M](product_name) với
+      - [Combo chăm sóc da](product_name) còn nhiều không shop?
+      - Em muốn hỏi sản phẩm [Nước lau sàn Sunlight](product_name) có sẵn không ạ?
+      - Cho mình hỏi [Tai nghe Bluetooth Baseus](product_name) còn ship được không?
+      - Cửa hàng hiện còn [Gạo thơm Jasmine](product_name) không bạn?
+      - Có thể kiểm tra tồn kho [Sữa rửa mặt Senka](product_name) giúp mình không?
+      - Mình đang cần gấp [Mì Hảo Hảo](product_name), còn hàng không shop?
+      - Shop xác nhận giúp [Chảo chống dính](product_name) còn không ạ?
+      - [Dao gọt trái cây inox](product_name) hiện tại còn tồn kho không?
+      - Cho hỏi hiện còn nhiều [Thịt heo ba rọi](product_name) không vậy?
+      - Mình muốn đặt [Bột nêm Agingon](product_name), còn hàng chứ shop?
+      - Xin shop báo tồn kho của [Hộp khô gà số 1](product_name)
+      - Cho mình xem tồn kho [Snack rong biển Oishi](product_name) hiện nay
+      - Shop check giúp mình [Sữa đặc ông thọ 380g](product_name) còn mấy lon?
+      - Mình kiểm tra số lượng còn của [Bộ nồi inox 5 chiếc](product_name) nha
+      - Còn hàng [Áo thun cotton nam](product_name) để đặt luôn không shop?
+      - Mình cần xác minh tồn kho [Nước khoáng Lavie 500ml](product_name) gấp
+      - [Espresso](product_name) còn hàng không?
+      - shop còn [Espresso](product_name) không?
+      - có bán [Espresso](product_name) không?
+      - kiểm tra giúp [Espresso](product_name)
+      - [Coffee](product_name) có còn hàng không?
+      - [Cà phê capuchino](product_name) còn không?
+      - Có còn [Cà phê](product_name) không vậy shop?
+      - Shop còn [cafe](product_name) không?
+      - [Đậu đỏ](product_name) còn hàng không shop?
+      - [Bánh rán](product_name) còn bao nhiêu cái ạ?
+      - [Bánh rán](product_name) còn nhiều không ạ?
+      - [Trà sữa](product_name) shop có không?
+      - [Bộ bài tây](product_name) có không ạ?
+      - [Trà](product_name) còn bao nhiêu hộp ạ?
+      - [Trà](product_name) còn nhiều không ạ?
+      - Em muốn mua [Cà phê](product_name) ạ?
+      - [Trà sữa bột](product_name) có hong shop?
+      - Shop có bán [Mì tôm chua cay] không ạ?
+      - Em muốn mua [Cà phê](product_name) ạ?
+      - Mình muốn mua [Cà phê](product_name) ạ?      
+      - Cho mình biết sản phẩm [Sữa rửa mặt Senka](product_name) còn trong kho không?
+      - Mình cần kiểm tra xem [Gạo thơm Jasmine](product_name) có sẵn không?
+      - [Tai nghe Bluetooth Baseus](product_name) hiện tại còn hàng không vậy?
+      - Shop check giúp [Nước khoáng Lavie 500ml](product_name) có còn không?
+      - Mình muốn biết số lượng [Bộ nồi inox 5 chiếc](product_name) hiện còn bao nhiêu?
+      - [Dầu gội Clear Men 650g](product_name) còn tồn trong kho không shop?
+      - Hàng [Nhẫn bạc S925 đơn giản](product_name) bây giờ còn chứ?
+      - Shop báo mình biết [Thịt heo ba rọi](product_name) còn hàng không nha?
+      - Bạn kiểm tra giúp [Đầm hoa xòe nữ tính](product_name) còn lại bao nhiêu cái?
+      - Xin hỏi [Dao gọt trái cây inox](product_name) đang có sẵn không?
+      - Mình định mua [Snack rong biển Oishi](product_name), shop còn chứ?
+      - [Sữa đặc ông thọ 380g](product_name) hiện tại kho còn không ạ?
+      - Mình cần thông tin về hàng tồn của [Socola nhập khẩu Ferrero Rocher](product_name)
+      - Shop cho biết số lượng tồn của [Tã dán Bobby size M](product_name) với
+      - [Combo chăm sóc da](product_name) còn nhiều không shop?
+      - Em muốn hỏi sản phẩm [Nước lau sàn Sunlight](product_name) có sẵn không ạ?
+      - Cho mình hỏi [Tai nghe Bluetooth Baseus](product_name) còn ship được không?
+      - Cửa hàng hiện còn [Gạo thơm Jasmine](product_name) không bạn?
+      - Có thể kiểm tra tồn kho [Sữa rửa mặt Senka](product_name) giúp mình không?
+      - Mình đang cần gấp [Mì Hảo Hảo](product_name), còn hàng không shop?
+      - Shop xác nhận giúp [Chảo chống dính](product_name) còn không ạ?
+      - [Dao gọt trái cây inox](product_name) hiện tại còn tồn kho không?
+      - Cho hỏi hiện còn nhiều [Thịt heo ba rọi](product_name) không vậy?
+      - Mình muốn đặt [Bột nêm Agingon](product_name), còn hàng chứ shop?
+      - Xin shop báo tồn kho của [Hộp khô gà số 1](product_name)
+      - Cho mình xem tồn kho [Snack rong biển Oishi](product_name) hiện nay
+      - Shop check giúp mình [Sữa đặc ông thọ 380g](product_name) còn mấy lon?
+      - Mình kiểm tra số lượng còn của [Bộ nồi inox 5 chiếc](product_name) nha
+      - Còn hàng [Áo thun cotton nam](product_name) để đặt luôn không shop?
+      - Mình cần xác minh tồn kho [Nước khoáng Lavie 500ml](product_name) gấp
+

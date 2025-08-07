@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Events\PusherBroadcast;
+use App\Models\Attachment;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+use Illuminate\Support\Str;
 
 class ChatController extends Controller
 {
@@ -52,46 +56,112 @@ class ChatController extends Controller
             }
         } else {
             abort(404);
-            if ($request->ajax()) {
-            } else {
-            }
+            // if ($request->ajax()) {
+            // } else {
+            // }
         }
     }
-
 
     public function broadcast(Request $request)
     {
         DB::beginTransaction();
         try {
             $request->validate([
-                'message' => 'string|max:192',
+                'message' => 'nullable|string|max:192',
+                'attachments.*' => 'file|max:102400', // 100Mb max mỗi file
             ], [
-                'message.string' => 'The message field must be a string.',
-                'message.max' => 'The message field must not be greater than 192 characters.',
+                'message.string' => 'Kiểu dữ liệu không hợp lệ.',
+                'message.max' => 'Tin nhắn quá dài',
             ]);
 
             $messageText = $request->get('message');
+
+            // Tạo hoặc lấy conversation
             $conversation = Conversation::firstOrCreate([
                 'customer_id' => Auth::id(),
                 'created_by' => Auth::id(),
             ]);
-            if ($conversation->wasRecentlyCreated) {
-                $admins = User::permission(User::ACCESS_ADMIN)->pluck('id');
-                $conversation->users()->syncWithoutDetaching($admins);
-            }
+
+            $admins = User::permission(User::ACCESS_ADMIN)->pluck('id');
+            $conversation->users()->syncWithoutDetaching($admins);
+
+            // Tạo message (có thể rỗng nếu chỉ gửi file)
             $message = Message::create([
                 'conversation_id' => $conversation->id,
                 'sender_id' => Auth::id(),
                 'content' => $messageText,
             ]);
 
-            broadcast(new PusherBroadcast($message));
+            // Tách file ảnh và file khác
+            if ($request->hasFile('attachments')) {
+                foreach ($request->file('attachments') as $file) {
+                    $uuidName = Str::uuid() . '.' . $file->getClientOriginalExtension();
+                    $file->storeAs('', $uuidName, 'chat_attachments'); // vẫn đúng path
+
+                    // Optionally lưu DB
+                    Attachment::create([
+                        'message_id' => $message->id,
+                        'file_name' => $file->getClientOriginalName(),
+                        'file_url' => asset('storage/chat/' . $uuidName),
+                        'mime_type' => $file->getMimeType(),
+                        'size' => $file->getSize(),
+                    ]);
+                }
+            }
+
+            broadcast(new PusherBroadcast($message->load('attachments')));
             DB::commit();
         } catch (\Exception $e) {
             log_exception($e);
             DB::rollBack();
-            return response()->json('An error occurred, while sending the message!', 500);
+            return response()->json('An error occurred while sending the message!', 500);
         }
     }
 
+    public function generate_token()
+    {
+        $id = Auth::id(); // Lấy ID user hiện tại
+
+        $payload = [
+            'sub' => (string) $id,                  // subject – ID người dùng
+            'iat' => time(),               // issued at – thời điểm tạo
+            'exp' => time() + 1800,        // expire – 30 phút sau
+        ];
+
+        $jwt = JWT::encode($payload, env('JWT_SECRET'), 'HS256');
+        // dd($jwt);
+        return response()->json([
+            'token' => $jwt,
+        ]);
+    }
+
+    public function ai_broadcast(Request $request)
+    {
+        $request->validate([
+            'message' => 'nullable|string|max:192',
+        ], [
+            'message.string' => 'Kiểu dữ liệu không hợp lệ.',
+            'message.max' => 'Tin nhắn quá dài',
+        ]);
+        //dd($request->message);
+
+        try {
+            // Lấy conversation đầu tiên theo user
+            $conversation = Conversation::where('customer_id', Auth::id())->first();
+
+            // Tạo message
+            $message = Message::create([
+                'conversation_id' => $conversation->id,
+                'sender_id' => 1,
+                'content' => $request->message,
+                'json_data' => $request->json_data
+            ]);
+
+            // Gửi event broadcast
+            broadcast(new PusherBroadcast($message->load('attachments')));
+
+        } catch (\Exception $e) {
+            log_exception($e);
+        }
+    }
 }

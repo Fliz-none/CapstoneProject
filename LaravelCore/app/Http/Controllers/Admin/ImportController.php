@@ -500,7 +500,7 @@ class ImportController extends Controller
                         DB::commit();
                         $response = [
                             'status' => 'success',
-                            'msg' => __('messages.updated') . $old->code,
+                            'msg' => __('messages.updated') . ' ' . $old->code,
                         ];
                         return response()->json($response, 200);
                     } else {

@@ -3006,8 +3006,8 @@
     };
     const locale = $('html').attr('lang') || 'vn';
     const emptyText = locale === 'en' ? 'empty' : 'trống';
-    const hiddenKeys = [ 'dealer_id','customer_id', 'branch_id','permissions', 'email_verified_at', 'import_detail_id',
-        'password', 'remember_token', 'avatar', 'local', 'avatarUrl',
+    const hiddenKeys = [
+        'password', 'remember_token', 'avatar', 'local', 'avatarUrl','email_verified_at','defaultAddress',
         'fullAddress', 'status', 'fullName', 'id', 'gender',
         'roles', '_local', '_branch', 'galleryUrl', 'gallery', 'sort', 'product_id',
         'allow_review', 'type', 'value', 'deleted_at', 'updated_at', 'created_at', 'addressObject','method','branch','dealer','transactions','customer','_product'

@@ -19,6 +19,7 @@ class CreateAttachmentsTable extends Migration
             $table->string('file_name');
             $table->string('file_url');
             $table->string('mime_type');
+            $table->boolean('is_image')->default(false);
             $table->foreign('message_id')->references('id')->on('messages')->onDelete('cascade');
             $table->unique(['message_id', 'file_name'], 'unique_message_file');
             $table->timestamps();

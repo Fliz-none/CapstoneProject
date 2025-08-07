@@ -1,0 +1,95 @@
+version: "3.1"
+
+rules:
+  # Chào tạm biệt
+  - rule: Trả lời khi người dùng nói tạm biệt
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye
+
+  # Bot giới thiệu bản thân
+  - rule: Trả lời khi người dùng hỏi "bạn có phải là bot không?"
+    steps:
+      - intent: bot_challenge
+      - action: utter_iamabot
+
+  # Kiểm tra đơn hàng
+  - rule: Xử lý kiểm tra đơn hàng
+    steps:
+      - intent: check_order
+      - action: action_check_order
+
+  # Người dùng yêu cầu hủy đơn hàng → Hỏi lại để xác nhận
+  - rule: Yêu cầu xác nhận khi người dùng muốn hủy đơn hàng
+    steps:
+      - intent: cancel_order
+      - action: action_ask_to_confirm_cancel
+
+  # Nếu người dùng xác nhận (affirm) → Tiến hành hủy đơn hàng
+  - rule: Xác nhận hủy đơn hàng nếu đã có order_id
+    condition:
+      - slot_was_set:
+          - order_id: true
+    steps:
+      - intent: affirm
+      - action: action_cancel_order
+
+  # Nếu người dùng từ chối (deny) → Hủy thao tác
+  - rule: Từ chối hủy đơn hàng
+    steps:
+      - intent: deny
+      - action: utter_cancel_denied
+
+  #Hỏi thông tin sản phẩm trong kho
+  - rule: Khách hỏi tồn kho
+    steps:
+      - intent: check_stock
+      - action: action_check_stock
+
+  #Hỏi thông tin chung về sản phẩm 
+  - rule: Khách hỏi sản phẩm
+    steps:
+      - intent: check_product
+      - action: action_check_product
+
+  # Hỏi thong tin cửa hàng
+  - rule: Khách hỏi thông tin cửa hàng
+    steps:
+      - intent: ask_company
+      - action: action_ask_company
+
+  # Hỏi về chi nhánh / cơ sở
+  - rule: Khách hỏi chi nhánh
+    steps:
+      - intent: ask_branch
+      - action: action_ask_branch
+
+  # Hỏi bài đăng, fanpage, post
+  - rule: Khách hỏi bài viết
+    steps:
+      - intent: ask_post
+      - action: action_ask_post
+
+  # Hỏi về ưu đãi của các chi nhánh của cửa hàng hoặc toàn bộ cửa hàng
+  - rule: Khách hỏi ưu đãi
+    steps:
+      - intent: ask_promotions
+      - action: action_ask_promotions
+
+  # Hỏi về giờ mở cửa của cửa hàng
+  - rule: Trả lời về giờ mở cửa
+    steps:
+    - intent: ask_opening_hours
+    - action: utter_opening_hours
+
+   # Hỏi về giờ chính sách đổi trả
+  - rule: Trả lời về chính sách đổi trả
+    steps:
+    - intent: ask_return_policy
+    - action: utter_return_policy
+
+  # Hỏi về phương thức thanh toán
+  - rule: Trả lời về phương thức thanh toán
+    steps:
+    - intent: ask_payment_methods
+    - action: utter_payment_methods

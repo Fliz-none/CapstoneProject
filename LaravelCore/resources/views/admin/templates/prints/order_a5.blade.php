@@ -24,7 +24,7 @@
                     <h6 class="text-uppercase mb-0">{{ $settings['company_brandname'] }}</h6>
                     <small class="mb-0">{{ $settings['company_address'] }}</small><br>
                     <small class="mb-0">Website: {{ $settings['company_website'] }}</small><br>
-                    <small class="mb-0">Phone: {{ $settings['company_phone'] }}</small>
+                    <small class="mb-0">Phone: {{ $settings['company_hotline'] }}</small>
                 </div>
                 <div class="col-4 ms-auto">
                     <p class="mb-0">Invoice Code: <strong>{{ $order->code }}</strong></p>

@@ -168,7 +168,9 @@ return [
         'timekeeping' => 'Chấm công',
         'schedule' => 'Lịch làm việc',
         'activity' => 'Nhật ký hoạt động',
-        'point' => 'Điểm',
+        'no_activity' => 'Không có lịch sử hoạt động.',
+        'attendance_history' => 'Nhật ký chấm công',
+        'point' => 'Điểm thưởng',
         'logout' => 'Đăng xuất',
         'name' => 'Họ và tên',
         'gender' => 'Giới tính',
@@ -264,14 +266,14 @@ return [
         'user' => 'Người dùng',
         'action' => 'Hành động',
         'object' => 'Đối tượng',
-        'code_user' => 'Mã',
+        'object_code' => 'Mã đối tượng',
         'browser' => 'Trình duyệt',
         'location' => 'Vị trí',
         'platform' => 'Nền tảng',
         'device' => 'Thiết bị',
         'before_change' => 'Trước khi thay đổi',
         'after_change' => 'Sau khi thay đổi',
-        'log' =>'Nhật kí'
+        'log' => 'Nhật kí'
     ],
 
     // Đơn hàng
@@ -587,8 +589,8 @@ return [
 
     //Work schedule
     'work_schedule' => [
-        'your_phone'=>'Vui lòng dùng điện thoại của bạn để check-in hoặc check-out',
-        'success_atendance'=>'Bạn đã hoàn thành chấm công ngày hôm nay',
+        'your_phone' => 'Vui lòng dùng điện thoại của bạn để check-in hoặc check-out',
+        'success_atendance' => 'Bạn đã hoàn thành chấm công ngày hôm nay',
         'salary' => 'Lương',
         'work_schedule' => 'Lịch làm việc',
         'summary' => 'Tổng kết',
@@ -611,7 +613,7 @@ return [
         'total_shift' => 'Tổng số ca',
         'no_shift' => 'Không có ca làm việc',
         'not_available' => 'Không có sẵn',
-        'shift' => 'Ca',
+        'shift' => 'Ca làm việc',
         'shift_enough' => ' đã đủ số lượng nhân viên đăng ký cho ca này.',
 
         'shift_success' => 'Đăng ký ca thành công ',
@@ -630,7 +632,9 @@ return [
         'checkout_error' => 'Thời gian check-out phải sau thời gian check-in',
         'checkin_invaled' => 'Lỗi định dạng thời gian check-in',
         'checkout_invaled' => 'Lỗi định dạng thời gian check-out',
-
+        'check_in' => 'Thời gian vào',
+        'check_out' => 'Thời gian ra',
+        'serve_time' => 'Thời gian làm việc(phút)'
     ],
 
     //Post
@@ -951,34 +955,34 @@ return [
     ],
 
     //OrderController
-    'date'=>'ngày',
-    'receiver'=>'Người nhận',
-    'built'=>'Được thiết kế với ',
-    'by'=>' bởi',
+    'date' => 'ngày',
+    'receiver' => 'Người nhận',
+    'built' => 'Được thiết kế với ',
+    'by' => ' bởi',
     'order_controller' => [
         'customer' => 'Khách hàng',
         'product' => 'Sản phẩm',
         'unit' => 'Đơn vị',
         'order' => 'Đơn hàng',
-        'rate' =>'Tỉ lệ',
+        'rate' => 'Tỉ lệ',
         'quantity' => 'Số lượng',
 
-        'min'=>'Không thể bé hơn 0!',
+        'min' => 'Không thể bé hơn 0!',
 
         'order_discount' => 'Giảm giá đơn hàng',
         'order_note' => 'Ghi chú đơn hàng',
         'order_detail' => 'Chi tiết đơn hàng',
 
-        'product_price'=> 'Giá sản phẩm',
-        'product_quantity'=> 'Số lượng sản phẩm',
-        'product_discount'=> 'Giảm giá sản phẩm',
-        'product_note'=> 'Ghi chú sản phẩm',
+        'product_price' => 'Giá sản phẩm',
+        'product_quantity' => 'Số lượng sản phẩm',
+        'product_discount' => 'Giảm giá sản phẩm',
+        'product_note' => 'Ghi chú sản phẩm',
 
-        'unit_rate'=> 'Tỉ lệ đơn vị',
+        'unit_rate' => 'Tỉ lệ đơn vị',
 
-        'payment_method'=> 'Phương thức thanh toán',
-        'payment_amount'=> 'Số tiền thanh toán',
-        'status'=> 'Trạng thái trả về',
+        'payment_method' => 'Phương thức thanh toán',
+        'payment_amount' => 'Số tiền thanh toán',
+        'status' => 'Trạng thái trả về',
     ],
 
     //Varriable

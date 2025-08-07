@@ -545,7 +545,7 @@ class UserController extends Controller
         $roles = $user->getRoleNames()->implode(', ');
         $response = array(
             'status' => 'success',
-            'msg' => __('messages.msg_update_role') . $roles . __('messages.for') . $user->name . '!'
+            'msg' => __('messages.msg_update_role'). ' ' . $roles . __('messages.for') . $user->name . '!'
         );
         cache()->forget('users');
         return response()->json($response, 200);

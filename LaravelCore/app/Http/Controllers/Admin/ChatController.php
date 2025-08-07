@@ -67,6 +67,7 @@ class ChatController extends Controller
                                 $q->where('name', 'like', '%' . $search . '%');
                             });
                         })
+                        ->orderBy('created_at', 'desc')
                         ->get();
                     return view('admin.chat.conversations', ['conversations' => $conversations ?? [], 'active_id' => $active_id]);
                 default:
@@ -86,9 +87,9 @@ class ChatController extends Controller
         // Validate message + files
         $request->validate([
             'conversation_id' => 'required|numeric',
-            'message' => 'string|max:192',
+            'message' => 'nullable|string|max:192',
             'attachments' => 'nullable|array|max:5', // Tối đa 5 files
-            'attachments.*' => 'file|max:10240',     // Mỗi file ≤ 10MB
+            'attachments.*' => 'nullable|file|max:102400',     // Mỗi file ≤ 100MB
         ], [
             'conversation_id.required' => __('messages.chat.conversation_id.required'),
             'message.string' => __('messages.chat.message.string'),
@@ -108,14 +109,10 @@ class ChatController extends Controller
 
             DB::beginTransaction();
 
-            // Tìm hoặc tạo cuộc trò chuyện
-            $conversation = Conversation::firstOrCreate([
-                'id' => $conversationId,
-                'created_by' => Auth::id(),
-            ]);
-
+            // Tìm cuộc trò chuyện
+            $conversation = Conversation::find($conversationId);
             //Authorization
-            if (!$conversation->users->contains(Auth::id())) {
+            if ($conversation == null || !$conversation->users->contains(Auth::id())) {
                 abort(403);
             }
 
@@ -151,12 +148,12 @@ class ChatController extends Controller
                 $uuidName = Str::uuid() . '.' . $extension;
 
                 $path = $file->storeAs('', $uuidName, 'chat_attachments');
-
+                $is_image = in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'svg']);
                 $message->attachments()->create([
                     'file_name' => $file->getClientOriginalName(),
                     'file_url' => asset('storage/chat/' . $uuidName),
                     'mime_type' => $file->getMimeType(),
-                    'size' => $file->getSize(),
+                    'is_image' => $is_image
                 ]);
             }
         } catch (\Exception $e) {

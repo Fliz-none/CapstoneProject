@@ -7,10 +7,10 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6">
-                    <h5 class="text-uppercase">{{ __('messages.roles.role') }}</h5>
+                    <h5 class="text-uppercase">{{ __('messages.roles.role_management') }}</h5>
                     <nav class="breadcrumb-header float-start" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.roles.role') }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('messages.roles.role_management') }}</li>
                         </ol>
                     </nav>
                 </div>

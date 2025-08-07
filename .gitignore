@@ -30,9 +30,9 @@ Homestead.json
 .phpactor.json
 auth.json
 
-# Chatbot AI
-/venv/
-vocab.pkl
-vector_store.pkl
-answer_vectors.pkl
-/__pycache__/
+# RasaBot AI
+RasaBot/.rasa/cache/
+RasaBot/actions/__pycache__
+RasaBot/.venv
+RasaBot/venv
+RasaBot/__pycache__

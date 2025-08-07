@@ -1,0 +1,375 @@
+version: "3.1"
+
+nlu:
+  - intent: ask_company
+    examples: |
+      - Cửa hàng ở đâu vậy?
+      - Shop nằm chỗ nào?
+      - Tôi muốn biết địa chỉ cửa hàng.
+      - Cho tôi xin địa chỉ.
+      - Địa chỉ cụ thể là gì?
+      - Làm sao tới shop?
+      - Shop có địa chỉ ở đâu?
+      - Gửi địa chỉ cửa hàng đi.
+      - Tôi cần đến cửa hàng, địa chỉ ở đâu?
+      - Shop nằm gần khu nào?
+      - Có thể chỉ tôi đường đến shop không?
+      - Tôi đang tìm cửa hàng, chỉ giúp tôi địa chỉ.
+      - Địa chỉ chính xác của cửa hàng là gì?
+      - Ở đâu tôi có thể ghé shop?
+      - Shop có nằm trong trung tâm không?
+      - Shop ở gần đây không?
+      - Tôi đang ở quận 5, cửa hàng gần không?
+      - Cửa hàng có nằm ở mặt đường không?
+      - Tôi cần định vị cửa hàng.
+      - Gửi link bản đồ Google Maps shop đi.
+      - Có bản đồ không?
+      - Có thể chỉ vị trí trên bản đồ không?
+      - Shop nằm ở tuyến đường nào?
+      - Gần chợ có cửa hàng không?
+      - Tôi định ghé cửa hàng, địa chỉ ở đâu?
+      - Cho tôi thông tin vị trí của cửa hàng.
+      - Tôi cần địa chỉ để ship đến.
+      - Cửa hàng có địa điểm cụ thể không?
+      - Tôi có thể ghé mua hàng tại đâu?
+      - Địa chỉ lấy hàng là gì?
+      - Shop có kho ở đâu?
+      - Địa chỉ kho lấy hàng là gì?
+      - Shop có ở trong khu thương mại không?
+      - Tôi muốn lấy trực tiếp tại shop, địa chỉ sao?
+      - Địa chỉ shop ở tỉnh nào?
+      - Cửa hàng có ở miền Nam không?
+      - Địa chỉ cụ thể ở Hà Nội là gì?
+      - Tôi đang ở Biên Hòa, có cửa hàng không?
+      - Shop có trên đường Lê Văn Sỹ không?
+      - Shop gần ngã tư nào?
+      - Tôi muốn ghé, địa chỉ như thế nào?
+      - Cửa hàng nằm trong hẻm hay mặt tiền?
+      - Có thể mô tả đường đến cửa hàng không?
+      - Tôi đi từ quận 7 thì tới cửa hàng bằng cách nào?
+      - Có chỗ đậu xe không?
+      - Địa chỉ giao hàng là gì?
+      - Shop có showroom không?
+      - Cho tôi bản đồ vị trí cửa hàng.
+      - Tôi cần GPS của shop.
+      - Địa chỉ shop có dễ tìm không?
+      - Shop có email không?
+      - Email của shop là gì?
+      - Cho mình email cửa hàng nhé.
+      - Tôi muốn gửi mail cho shop.
+      - Gửi mình địa chỉ email liên hệ.
+      - Email hỗ trợ của cửa hàng là gì?
+      - Tôi cần gửi thư cho shop.
+      - Tôi muốn liên hệ qua email.
+      - Email chăm sóc khách hàng là gì?
+      - Shop có email tư vấn không?
+      - Có email để gửi thông tin không?
+      - Email phản hồi là gì?
+      - Tôi muốn khiếu nại qua email thì gửi vào đâu?
+      - Shop nhận email từ khách không?
+      - Tôi muốn góp ý qua email.
+      - Cho tôi email để trao đổi thông tin.
+      - Gửi tôi địa chỉ email chính thức.
+      - Tôi cần email công ty.
+      - Email dịch vụ là gì vậy shop?
+      - Gửi hóa đơn qua email được không?
+      - Shop gửi xác nhận đơn hàng qua email chứ?
+      - Tôi muốn nhận thông tin khuyến mãi qua email.
+      - Email đăng ký thành viên là gì?
+      - Email liên hệ công việc là gì?
+      - Tôi muốn gửi CV cho shop, dùng email nào?
+      - Shop có nhiều email không?
+      - Tôi muốn biết email phòng chăm sóc khách hàng.
+      - Cần liên hệ bộ phận kỹ thuật qua email nào?
+      - Cửa hàng có nhận email 24/7 không?
+      - Tôi vừa gửi email, shop có nhận được không?
+      - Email shop có đuôi .com hay .vn?
+      - Tôi muốn xác nhận đơn qua email.
+      - Email nào để hỏi về sản phẩm?
+      - Email hỗ trợ thanh toán là gì?
+      - Có thể gửi hình ảnh sản phẩm qua email không?
+      - Email bên bán hàng là gì?
+      - Shop có dùng Gmail không?
+      - Email nào liên kết với hệ thống?
+      - Email tổng đài chăm sóc là gì?
+      - Shop có gửi email tự động không?
+      - Tôi cần địa chỉ email để báo lỗi.
+      - Cửa hàng trả lời email trong bao lâu?
+      - Tôi nhận được email từ shop, có đúng không?
+      - Làm sao để đăng ký nhận email ưu đãi?
+      - Shop có email trả lời khách không?
+      - Tôi muốn đổi email đã đăng ký.
+      - Gửi báo giá qua email được không?
+      - Email liên hệ kỹ thuật bên mình là gì?
+      - Gửi hình mẫu sản phẩm qua email được chứ?
+      - Cho tôi xin số điện thoại shop.
+      - Hotline là gì vậy?
+      - Tôi muốn gọi cho cửa hàng.
+      - Có thể gọi điện cho shop không?
+      - Shop có số Zalo không?
+      - Shop có dùng Viber không?
+      - Shop có hỗ trợ gọi điện không?
+      - Cửa hàng có số điện thoại nào?
+      - Số điện thoại bên tư vấn là gì?
+      - Shop có hotline 24/7 không?
+      - Tôi muốn đặt hàng qua điện thoại.
+      - Tôi cần gọi điện hỏi sản phẩm.
+      - Tôi vừa gọi nhưng không ai bắt máy.
+      - Shop có số điện thoại cố định không?
+      - Gọi điện có tính phí không?
+      - Shop có nhận gọi từ khách không?
+      - Tôi có thể liên lạc qua Zalo không?
+      - Gửi tôi hotline chăm sóc khách hàng.
+      - Shop có hotline riêng cho kỹ thuật không?
+      - Shop có đầu số 1900 không?
+      - Tôi muốn biết số để gọi hỏi hàng.
+      - Có thể đặt hàng qua Zalo không?
+      - Gọi giờ nào là được shop bắt máy?
+      - Shop gọi lại cho mình được không?
+      - Tôi không gọi được, có số khác không?
+      - Có số tổng đài không?
+      - Gọi qua điện thoại có được tư vấn không?
+      - Tôi cần số để hỏi thông tin đổi trả.
+      - Số điện thoại bộ phận bán hàng là gì?
+      - Shop có nhận cuộc gọi Zalo không?
+      - Cửa hàng có số hotline cho shipper không?
+      - Tôi muốn gọi xác nhận đơn hàng.
+      - Có số điện thoại nào trực không?
+      - Cho mình xin số gọi miễn phí.
+      - Tôi cần gọi ngay cho shop.
+      - Shop có dùng số điện thoại ảo không?
+      - Tôi có thể gọi video không?
+      - Cửa hàng có dùng điện thoại bàn không?
+      - Cửa hàng có gọi lại không?
+      - Tôi muốn gọi hỏi giờ mở cửa.
+      - Có số liên lạc qua Telegram không?
+      - Shop có ứng dụng gọi điện không?
+      - Tôi không gọi được, có số khác chứ?
+      - Cho xin số liên hệ ngoài giờ hành chính.
+      - Shop có hotline hỗ trợ đổi trả không?
+      - Shop có gọi xác nhận đơn không?
+      - Hotline tư vấn sản phẩm là gì?
+      - Tôi cần báo hủy đơn qua điện thoại.
+      - Gọi qua Facebook có được không?
+      - Bạn có dùng Zalo không?
+      - Shop có hỗ trợ Zalo không?
+      - Tôi muốn nhắn Zalo cho shop.
+      - Gửi tôi link Zalo cửa hàng.
+      - Zalo của shop là gì?
+      - Shop có page Zalo không?
+      - Shop có tài khoản Zalo OA không?
+      - Tôi muốn đặt hàng qua Zalo được không?
+      - Có thể tư vấn qua Zalo không?
+      - Gửi mã QR Zalo đi.
+      - Gọi Zalo video được không?
+      - Tôi nhắn Zalo nhưng chưa thấy rep?
+      - Shop thường online Zalo lúc nào?
+      - Zalo cửa hàng hoạt động giờ nào?
+      - Tôi muốn xem sản phẩm qua Zalo.
+      - Zalo có cập nhật khuyến mãi không?
+      - Facebook của shop là gì?
+      - Gửi tôi link Facebook với.
+      - Fanpage tên gì vậy?
+      - Cửa hàng có fanpage không?
+      - Tôi thấy page Facebook, đúng không?
+      - Có phải đây là page thật không? (gửi link)
+      - Tôi thấy có nhiều page giả, cái nào thật?
+      - Tôi muốn nhắn Messenger với shop.
+      - Facebook rep nhanh không?
+      - Shop chạy quảng cáo trên Facebook à?
+      - Có livestream không?
+      - Khi nào shop livestream tiếp?
+      - Shop có video hướng dẫn trên Facebook không?
+      - Gửi tôi post mới nhất trên Facebook.
+      - Có bài đăng về sản phẩm mới không?
+      - Shop có Instagram không?
+      - Gửi tôi link Instagram.
+      - IG của shop là gì?
+      - Tôi follow shop trên IG rồi nè.
+      - IG có up hình sản phẩm không?
+      - IG có reels giới thiệu sản phẩm không?
+      - IG rep inbox không?
+      - Cửa hàng có TikTok không?
+      - Gửi link TikTok đi.
+      - Tôi thấy video shop trên TikTok rồi nè.
+      - Có thể mua qua TikTok Shop không?
+      - TikTok shop có giảm giá không?
+      - Có nhóm Facebook không?
+      - Nhóm kín Facebook tên gì?
+      - Tôi muốn tham gia nhóm khách VIP.
+      - Có Telegram không?
+      - Có kênh thông báo khuyến mãi nào không?
+      - Cửa hàng có mạng xã hội nào khác không?
+      - Bạn có danh sách các nền tảng MXH đang dùng không?
+      - Tôi cần báo hủy đơn qua MXH.
+      - Tên công ty là gì?
+      - Công ty bạn tên gì thế?
+      - Cho mình biết tên cửa hàng với
+      - Tên shop là gì?
+      - Shop mình tên gì nhỉ?
+      - Công ty tên đầy đủ là gì vậy?
+      - Mình muốn biết tên thương hiệu
+      - Cửa hàng tên gì?
+      - Bạn có thể cho biết tên doanh nghiệp không?
+      - Shop có tên là gì?
+      - Slogan của công ty là gì?
+      - Câu khẩu hiệu của cửa hàng là gì?
+      - Phương châm hoạt động của công ty bạn là gì?
+      - Shop có slogan gì không?
+      - Câu nói ấn tượng của công ty bạn là gì?
+      - Slogan hay nhất của shop là gì?
+      - Cho mình xin phương châm của shop
+      - Câu nói thương hiệu của công ty bạn là gì?
+      - Khẩu hiệu của cửa hàng là gì vậy?
+      - Mình muốn biết khẩu hiệu thương hiệu
+      - Giới thiệu về công ty bạn đi
+      - Công ty bạn làm về lĩnh vực gì?
+      - Shop kinh doanh gì vậy?
+      - Giới thiệu sơ về cửa hàng đi
+      - Cho mình biết thông tin về doanh nghiệp bạn
+      - Cửa hàng mình chuyên về gì?
+      - Công ty này bắt đầu từ khi nào?
+      - Cửa hàng thành lập bao lâu rồi?
+      - Công ty bạn cung cấp những gì?
+      - Mình muốn biết thêm về cửa hàng
+      - Cửa hàng có gì đặc biệt?
+      - Mô tả sơ lược về doanh nghiệp giúp mình
+      - Shop bán những mặt hàng gì?
+      - Bạn có thể nói thêm về công ty được không?
+      - Mình muốn hiểu thêm về cửa hàng
+      - Giới thiệu tổng quan về doanh nghiệp bạn
+      - Mình cần thông tin nền về công ty
+      - Hãy cho biết công ty chuyên ngành gì?
+      - Cửa hàng bạn có lịch sử như thế nào?
+      - Doanh nghiệp bạn có đặc điểm gì nổi bật?
+      - Nói cho mình nghe về cửa hàng bạn
+      - Công ty bạn có gì khác biệt?
+      - Mình muốn nghe một chút về shop bạn
+      - Shop này phục vụ những ai?
+      - Giới thiệu công ty trong một câu đi
+      - Công ty này có lâu chưa?
+      - Cửa hàng bạn mới mở hay lâu rồi?
+      - Công ty bạn hoạt động ở đâu?
+      - Shop của bạn có chi nhánh không?
+      - Mô tả về công ty bạn đi
+      - Cho mình biết chi tiết hơn về cửa hàng
+      - Bạn có thể chia sẻ về thương hiệu được không?
+      - Shop của bạn mang phong cách gì?
+      - Công ty hướng đến khách hàng nào?
+      - Giới thiệu ngắn gọn về công ty bạn
+      - Công ty bạn bắt đầu từ đâu?
+      - Shop có gì nổi bật hơn đối thủ?
+      - Cửa hàng mình được đánh giá thế nào?
+      - Cửa hàng có hoạt động từ thiện không?
+      - Bạn có thể chia sẻ hành trình của công ty?
+      - Mình nghe nói shop khá uy tín, kể thêm đi
+      - Cửa hàng có dịch vụ nào nổi bật?
+      - Bạn có thể nói về giá trị cốt lõi của công ty?
+      - Công ty có sứ mệnh gì?
+      - Bạn có thể nói về tầm nhìn của cửa hàng?
+      - Shop của bạn có triết lý kinh doanh gì?
+
+  - intent: ask_branch
+    examples: |
+      - Shop có mấy chi nhánh?
+      - Shop có ở TP.HCM không?
+      - Cửa hàng có ở Hà Nội không?
+      - Tôi muốn biết các chi nhánh hiện có.
+      - Shop có chi nhánh nào ở Đà Nẵng không?
+      - Có chi nhánh nào gần Bình Thạnh không?
+      - Tôi đang ở quận 1, có chi nhánh nào không?
+      - Shop có cửa hàng ở miền Nam không?
+      - Tôi muốn biết danh sách chi nhánh.
+      - Shop có cơ sở tại Cần Thơ không?
+      - Cửa hàng có bao nhiêu chi nhánh ở TP.HCM?
+      - Ở quận Gò Vấp có chi nhánh không?
+      - Shop có cơ sở nào tại miền Bắc không?
+      - Có chi nhánh nào gần tôi không?
+      - Chi nhánh gần nhất của shop là đâu?
+      - Tôi cần tìm cửa hàng gần đây.
+      - Shop có chi nhánh tại Hải Phòng không?
+      - Tôi muốn ghé chi nhánh gần nhà.
+      - Có thể cho tôi địa chỉ chi nhánh gần nhất?
+      - Shop có nhiều chi nhánh không?
+      - Có cửa hàng nào gần Lotte Mart không?
+      - Có chi nhánh ở quận Thủ Đức không?
+      - Shop có showroom ở đâu?
+      - Có cửa hàng ở gần Vincom không?
+      - Cửa hàng có ở Bình Dương không?
+      - Tôi đang ở Đà Lạt, có chi nhánh không?
+      - Cơ sở chính của shop ở đâu?
+      - Tôi muốn đến chi nhánh trung tâm.
+      - Cửa hàng có mấy địa điểm?
+      - Danh sách chi nhánh cửa hàng là gì?
+      - Có thể liệt kê các chi nhánh không?
+      - Tôi muốn biết shop có cửa hàng vật lý không?
+      - Shop có cơ sở tại Vũng Tàu không?
+      - Cửa hàng có chi nhánh ở khu vực nào?
+      - Có chi nhánh nào mở cửa vào chủ nhật không?
+      - Cửa hàng có mặt ở bao nhiêu tỉnh?
+      - Cơ sở tại miền Trung nằm ở đâu?
+      - Có chi nhánh nào gần bến xe không?
+      - Tôi muốn biết chi nhánh ở trung tâm thành phố.
+      - Shop có đại lý phân phối không?
+      - Tôi cần chi nhánh gần quận Tân Phú.
+      - Có chi nhánh nào trong siêu thị không?
+      - Shop có điểm bán hàng lưu động không?
+      - Có thể mua tại chi nhánh không?
+      - Shop có các đại lý chính thức không?
+      - Tôi muốn mua tại cửa hàng gần nhất.
+      - Có chi nhánh ở tỉnh tôi không?
+      - Tôi đang ở gần BigC, shop có chi nhánh không?
+      - Shop có mặt bằng hay chỉ bán online?
+      - Có chi nhánh nào làm việc cả ngày lễ không?
+
+  - intent: ask_post
+    examples: |
+      - Shop có đăng bài trên Facebook không?
+      - Fanpage của shop là gì?
+      - Tôi muốn xem bài đăng mới nhất.
+      - Có link bài viết nào gần đây không?
+      - Gửi tôi bài viết giới thiệu sản phẩm.
+      - Cửa hàng có đăng bài trên Instagram không?
+      - Tôi muốn xem bài viết khuyến mãi.
+      - Có bài nào nói về chính sách đổi trả không?
+      - Shop có viết bài blog không?
+      - Gửi link fanpage giúp tôi.
+      - Có trang Facebook chính thức không?
+      - Shop có hoạt động trên mạng xã hội không?
+      - Tôi muốn đọc bài viết về sản phẩm mới.
+      - Có bài nào nói về combo ưu đãi không?
+      - Cửa hàng có bài viết hướng dẫn sử dụng không?
+      - Shop có tài khoản TikTok không?
+      - Tôi thấy bài quảng cáo, có đúng của shop không?
+      - Có thể gửi tôi link bài viết không?
+      - Cửa hàng có bài nào giới thiệu thương hiệu không?
+      - Có nơi nào tôi có thể đọc đánh giá sản phẩm không?
+      - Shop có đăng tin trên website không?
+      - Có thể gửi tôi các bài post phổ biến không?
+      - Shop có mục tin tức không?
+      - Tôi muốn theo dõi trang fanpage.
+      - Có tài khoản mạng xã hội nào để theo dõi không?
+      - Tôi cần link bài viết về chính sách giao hàng.
+      - Có trang nào cập nhật khuyến mãi không?
+      - Shop có đăng bài trên Zalo không?
+      - Có thể gửi bài viết review sản phẩm không?
+      - Cửa hàng có video đăng trên mạng không?
+      - Shop có nội dung gì mới đăng không?
+      - Tôi muốn xem bài về lịch nghỉ lễ.
+      - Có bài viết nói về chất lượng sản phẩm không?
+      - Shop có fanpage trên Instagram không?
+      - Tôi cần bài viết hướng dẫn mua hàng.
+      - Gửi bài post giảm giá gần đây đi.
+      - Shop có thường xuyên đăng bài không?
+      - Tôi muốn xem tất cả bài viết gần nhất.
+      - Có thể gửi tôi thông tin từ fanpage?
+      - Có link nào đến trang bài viết không?
+      - Shop có tài khoản Facebook chính thức chứ?
+      - Tôi muốn xem bài viết từ Zalo OA.
+      - Shop có đăng thông tin lên web không?
+      - Tôi cần link đến bài đăng về sản phẩm ST25.
+      - Có bài nào nói về chương trình tích điểm không?
+      - Fanpage hoạt động từ khi nào?
+      - Có thể gửi link đến bài viết quảng bá sản phẩm mới?
+      - Tôi muốn chia sẻ bài viết shop, gửi link cho tôi.
+      - Có nơi nào tôi có thể xem phản hồi của khách không?

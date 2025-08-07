@@ -11,6 +11,7 @@ class Attachment extends Model
         'file_name',
         'file_url',
         'mime_type',
+        'is_image',
     ];
 
     // Thuộc về tin nhắn

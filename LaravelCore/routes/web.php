@@ -321,6 +321,8 @@ Route::group(['prefix' => 'quantri'], function () {
 Route::group(['prefix' => 'chat'], function () {
     Route::get('{key?}', [ClientChatController::class, 'index'])->name('chat');
     Route::post('broadcast', [ClientChatController::class, 'broadcast'])->name('chat.broadcast');
+    Route::post('jwt_token', [ClientChatController::class, 'generate_token'])->name('chat.jwt_token');
+    Route::post('ai_broadcast', [ClientChatController::class, 'ai_broadcast'])->name('chat.ai_broadcast');
 });
 Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('login', [LoginController::class, 'index'])->name('login');

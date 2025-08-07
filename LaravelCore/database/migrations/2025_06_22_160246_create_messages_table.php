@@ -18,7 +18,8 @@ class CreateMessagesTable extends Migration
             $table->unsignedBigInteger('conversation_id');
             $table->unsignedBigInteger('sender_id');
             $table->unsignedBigInteger('answer_id')->nullable();
-            $table->text('content');
+            $table->text('content')->nullable();
+            $table->text('json_data')->nullable();
             $table->boolean('is_seen')->default(false);
             $table->foreign('conversation_id')->references('id')->on('conversations')->onDelete('cascade');
             $table->foreign('answer_id')->references('id')->on('messages')->onDelete('cascade');

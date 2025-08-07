@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="vi">
 @php
-    $pageName = $pageName ?? '';
+$pageName = $pageName ?? '';
 @endphp
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     @php
-        if (cache()->get('settings')['favicon']) {
-            $favicon = asset(env('FILE_STORAGE', '/storage') . '/' . cache()->get('settings')['favicon']);
-        } else {
-            $favicon = asset('admin/images/logo/favicon_key.png');
-        }
+if (cache()->get('settings')['favicon']) {
+    $favicon = asset(env('FILE_STORAGE', '/storage') . '/' . cache()->get('settings')['favicon']);
+} else {
+    $favicon = asset('admin/images/logo/favicon_key.png');
+}
     @endphp
     <link type="image/x-icon" href="{{ $favicon }}" rel="shortcut icon">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -135,7 +135,13 @@
                 local: "{{ URL::to('locals') }}",
                 pusher: {
                     broadcast: "{{ route('chat.broadcast') }}",
-                }
+                    ai_broadcast: "{{ route('chat.ai_broadcast') }}",
+                },
+                jwt_token: "{{ route('chat.jwt_token') }}",
+                rasa_webhook_url: "{{ env('RASA_WEBHOOK_URL', 'http://localhost:8001/webhooks/smssolutions/webhook') }}"
+            },
+             user: {
+                id: {{ Auth::check() ? Auth::id() : 'null' }}
             },
             sweetAlert: {
                 confirm: {
@@ -193,12 +199,20 @@
                                             <img src="${attachment.file_url}" alt="attachment" class="rounded thumb img-fluid w-100">
                                         </div>
                                     </li>`;
+                        } //video
+                        else if (attachment.mime_type.startsWith('video/')) {
+                            html += `<li class="chat ${type}">
+                                        <span class="material-symbols-outlined bg-white" style="width: 40px;"></span>
+                                        <div class="w-50 d-inline-block">
+                                            <video src="${attachment.file_url}" controls alt="attachment" class="rounded thumb img-fluid w-100">
+                                        </div>
+                                    </li>`;
                         } else {
                             //Open file with attachment file_url by browser
                             html += `<li class="chat ${type}">
                                         <span class="material-symbols-outlined bg-white" style="width: 40px;"></span>
                                         <a href="${attachment.file_url}" target="_blank"
-                                        class="text-decoration-none text-truncate border p-1 d-inline-block"
+                                        class="text-decoration-none text-truncate fs-6 border p-1 d-inline-block"
                                         style="max-width: 150px;" title="${attachment.file_name}">
                                         <i class="bi bi-file-earmark-fill"></i> ${attachment.file_name}</a>
                                     </li>`;
@@ -209,6 +223,8 @@
                     return '';
                 }
             }
+            if(!message.content && !message.attachments) return '';
+            if(!message.content && message.attachments) return attachments();
             return `${attachments()}
                     <li class="chat ${type}">
                         <span class="material-symbols-outlined bg-white" style="width: 40px;">${avatar()}</span>
@@ -247,6 +263,7 @@
             @if (auth()->check())
                 loadMessages(true);
             @endif
+
 
             $(document).on('click', '.btn-login', function(event) {
                 let form = $('#loginForm');
@@ -305,8 +322,8 @@
             $(document).on('change', '#chatAttachments', function() {
                 console.log(this.files);
                 console.log($(this).val());
-
-
+                
+                
             });
         });
     </script>
