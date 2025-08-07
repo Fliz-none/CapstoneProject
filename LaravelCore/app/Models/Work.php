@@ -100,4 +100,26 @@ class Work extends Model
             return '<br><span class="badge bg-primary">On time</span>';
         }
     }
+    public function getShiftInfoAttribute()
+    {
+        if (!$this->sign_checkin || !$this->sign_checkout) {
+            return "{$this->shift_name}\n(--)";
+        }
+
+        $checkin = Carbon::parse($this->sign_checkin);
+        $checkout = Carbon::parse($this->sign_checkout);
+
+        // Nếu cùng ngày
+        if ($checkin->isSameDay($checkout)) {
+            $date = $checkin->format('Y-m-d');
+            $inTime = $checkin->format('H:i');
+            $outTime = $checkout->format('H:i');
+            return "{$this->shift_name}\n({$date} {$inTime} - {$outTime})";
+        }
+
+        // Nếu khác ngày
+        $in = $checkin->format('Y-m-d H:i');
+        $out = $checkout->format('Y-m-d H:i');
+        return "{$this->shift_name}\n({$in} - {$out})";
+    }
 }

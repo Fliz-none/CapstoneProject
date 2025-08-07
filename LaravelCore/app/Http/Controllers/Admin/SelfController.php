@@ -8,6 +8,7 @@ use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Work;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -34,14 +35,15 @@ class SelfController extends Controller
     public function index(Request $request)
     {
         $pageName = $this->user->name;
-        $logs = Log::where('user_id', $this->user->id)->get();
+        $logs = Log::with(['branch', 'user'])->where('user_id', $this->user->id)->get();
+        $works = Work::with(['branch', 'user'])->where('user_id', $this->user->id)->get();
         switch ($request->key) {
             case 'settings':
                 return view('admin.profile_settings', compact('pageName', 'logs'));
             case 'password':
                 return view('admin.profile_password', compact('pageName', 'logs'));
             case '':
-                return view('admin.profile', compact('pageName', 'logs'));
+                return view('admin.profile', compact('pageName', 'logs', 'works'));
             default:
                 abort(404);
         }
