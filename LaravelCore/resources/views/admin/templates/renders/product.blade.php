@@ -3,7 +3,7 @@
         'name' => __('messages.product.product_name'),
         'price' => __('messages.product.price'),
         'sum_stock' => __('messages.product.total_stock'),
-        'stock_limit' => __('messages.product.limit_stock'),
+        'sku' => 'SKU',
         'quantity_sold' => __('messages.product.quantity_sold'),
     ];
 @endphp
@@ -36,8 +36,8 @@
                                                 {{ number_format($variable->sumStocks()) }}
                                             @break
 
-                                            @case('stock_limit')
-                                                {{ number_format($variable->stock_limit) }}
+                                            @case('sku')
+                                                {{ $product->sku }}
                                             @break
 
                                             @case('quantity_sold')

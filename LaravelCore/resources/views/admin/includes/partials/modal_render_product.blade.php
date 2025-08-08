@@ -61,6 +61,14 @@
                         </div>
                         <div class="col-12 p-1 m-0">
                             <div class="form-check p-0">
+                                <input class="form-check-input render-checkbox" id="col_sku" name="selected_columns" type="checkbox" value="sku">
+                                <label class="form-check-label render-label" for="col_sku">
+                                    SKU
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12 p-1 m-0">
+                            <div class="form-check p-0">
                                 <input class="form-check-input render-checkbox" id="col_price" name="selected_columns" type="checkbox" value="price">
                                 <label class="form-check-label render-label" for="col_price">
                                     {{ __('messages.product.price') }}
@@ -72,14 +80,6 @@
                                 <input class="form-check-input render-checkbox" id="col_sum_stock" name="selected_columns" type="checkbox" value="sum_stock">
                                 <label class="form-check-label render-label" for="col_sum_stock">
                                     {{ __('messages.product.total_stock') }}
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-12 p-1 m-0">
-                            <div class="form-check p-0">
-                                <input class="form-check-input render-checkbox" id="col_stock_limit" name="selected_columns" type="checkbox" value="stock_limit">
-                                <label class="form-check-label render-label" for="col_stock_limit">
-                                    {{ __('messages.product.limit_stock') }}
                                 </label>
                             </div>
                         </div>

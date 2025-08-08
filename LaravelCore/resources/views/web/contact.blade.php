@@ -21,10 +21,10 @@
             <div class="container">
                 <div class="titlebox text-center">
                     <h2 class="fw-semibold">
-                        {{__('lang_web.contact.hear')}}
+                        {{ __('lang_web.contact.hear') }}
                     </h2>
                     <p class="">
-                        {{__('lang_web.contact.support')}}
+                        {{ __('lang_web.contact.support') }}
                     </p>
                 </div>
                 <div class="boxlist-info">
@@ -47,7 +47,7 @@
                         </div>
                         <div class="info">
                             <h3 class="title">
-                                {{__('lang_web.footer.phone')}}
+                                {{ __('lang_web.footer.phone') }}
                             </h3>
                             <p class="desc">
                                 {{ $settings['company_hotline'] }}
@@ -60,7 +60,7 @@
                         </div>
                         <div class="info">
                             <h3 class="title">
-                                {{__('lang_web.contact.address')}}
+                                {{ __('lang_web.contact.address') }}
                             </h3>
                             <p class="desc">
                                 {{ $settings['company_address'] }}
@@ -84,10 +84,10 @@
                 <div class="social-networks">
                     <div class="social-networks-titlebox">
                         <h3 class="title">
-                            {{__('lang_web.contact.link')}}
+                            {{ __('lang_web.contact.link') }}
                         </h3>
                         <span class="desc">
-                            {{__('lang_web.contact.follow')}}:
+                            {{ __('lang_web.contact.follow') }}:
                         </span>
                     </div>
                     <div class="social-list">
@@ -110,9 +110,9 @@
                     <div class="col-lg-5 col-12">
                         <div class="titlebox">
                             <h4 class="fw-semibold ">
-                                {{__('lang_web.contact.address')}} {{ $settings['company_name'] }}
+                                {{ __('lang_web.contact.address') }} {{ $settings['company_name'] }}
                             </h4>
-                            <span class="desc">{{__('lang_web.contact.find_us')}}:</span>
+                            <span class="desc">{{ __('lang_web.contact.find_us') }}:</span>
                         </div>
                         <div class="office-list">
                             @php
@@ -122,12 +122,13 @@
                             @if ($branches)
                                 @foreach ($branches as $index => $branch)
                                     @php
-                                        $url = 'https://www.google.com/maps/search/?api=1&query=' . urlencode($branch->address);
+                                        $address = json_decode($branch->address, true)['address'];
+                                        $url = 'https://www.google.com/maps/search/?api=1&query=' . urlencode($address);
                                     @endphp
                                     <div class="office-item">
                                         <a href="{{ $url }}" target="_blank">
                                             <div class="office-name">
-                                                {{__('lang_web.contact.branch')}} {{ $index + 1 }}: {{ $branch->address }}
+                                                {{ __('lang_web.contact.branch') }} {{ $index + 1 }}: {{ $address }}
                                             </div>
                                         </a>
                                         <a href="tel:{{ $settings['company_hotline'] }}">
@@ -144,7 +145,7 @@
                         @if ($url)
                             <div class="map-embed">
                                 <iframe
-                                    src="https://maps.google.com/maps?q={{ urlencode($branches[0]->address) }}&output=embed" style="border:0; border-radius: 10px;" width="600" height="450" allowfullscreen="" loading="lazy"
+                                    src="https://maps.google.com/maps?q={{ urlencode(json_decode($branches[0]->address, true)['address']) }}&output=embed" style="border:0; border-radius: 10px;" width="600" height="450" allowfullscreen="" loading="lazy"
                                     referrerpolicy="no-referrer-when-downgrade"></iframe>
                             </div>
                         @endif
