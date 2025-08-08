@@ -98,7 +98,7 @@
                                                                 <div class="variable-unit me-2">
                                                                     <div class="variable-unit-select">
                                                                         <a class="btn-select-unit key-btn-white" data-price="{{ $unit->price }}" data-unit_id="{{ $unit->id }}" href="javascript:void(0);">{{ $unit->term }}
-                                                                            <span class="unit-price" data-price="{{ $unit->price }}">{{ number_format($unit->price, 0, ',', '.') . $config['currency'] }}</span>
+                                                                            <span class="unit-price" data-price="{{ $unit->price }}"> {{ number_format($unit->price, 0, ',', '.') . $config['currency'] }}</span>
                                                                         </a>
                                                                     </div>
                                                                     <div class="variable-unit-description ps-2 pt-2 text-muted">

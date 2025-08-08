@@ -44,7 +44,7 @@ class SettingsSeeder extends Seeder
             ['scores_rate_exchange', '1'],
             ['expense_group', '[]'],
             ['currency', 'VND'],
-            ['hourly_salary', '0'],
+            ['hourly_salary', '20000'],
 
             ['company_name', 'Sales Management Solution'],
             ['company_hotline', '0942852755'],
@@ -61,8 +61,6 @@ class SettingsSeeder extends Seeder
             ['banner_store_2', 'bg-contact-1.jpg'],
             ['banner_post_1', 'bg-contact-1.jpg'],
             ['banner_post_2', 'bg-contact-1.jpg'],
-            ['banner_us_1', 'bg-contact-1.jpg'],
-            ['banner_us_2', 'bg-contact-1.jpg'],
             ['banner_contact', 'bg-contact-1.jpg'],
             ['setting_score', '{"check_score":1,"money_to_score":{"money":"100","score":"1"},"score_to_money":{"score":"1","money":"1"}}'],
         ];

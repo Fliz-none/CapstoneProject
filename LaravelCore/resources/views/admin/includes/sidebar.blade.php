@@ -170,11 +170,6 @@
                             <span>{{ __('messages.sidebar.system') }}</span>
                         </a>
                         <ul class="submenu">
-                             @if (!empty(Auth::user()->hasAnyPermission(app\Models\User::READ_LOCALS)))
-                                <li class="submenu-item" data-keyword="Local">
-                                    <a href="{{ route('admin.local') }}">{{ __('messages.sidebar.local') }}</a>
-                                </li>
-                            @endif
                             @if (!empty(Auth::user()->hasAnyPermission(app\Models\User::READ_BRANCHES)))
                                 <li class="submenu-item" data-keyword="Branch">
                                     <a href="{{ route('admin.branch') }}">{{ __('messages.sidebar.branch') }}</a>

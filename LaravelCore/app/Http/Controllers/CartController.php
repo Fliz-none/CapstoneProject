@@ -68,22 +68,22 @@ class CartController extends Controller
             DB::commit();
             return response()->json([
                 'status' => 'success',
-                'msg' => 'Added to cart successfully!',
-                'cart' => $cart->load('items.unit.variable.product'),
+                'msg' => 'Đã thêm vào giỏ hàng!',
+                'cart' => $cart->load('items.unit.variable.product'), // load lại các quan hệ nếu cần
             ], 200);
         } catch (OutOfStockException $e) {
             DB::rollBack();
             return response()->json([
                 'status' => 'error',
-                'msg' => $e->getMessage(),
-                'cart' => optional($cart)->load('items.unit.variable.product'),
+                'msg' => 'Sản phẩm hiện đang hết hàng.',
+                'cart' => $cart->load('items.unit.variable.product'),
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();
             log_exception($e);
             return response()->json([
                 'status' => 'error',
-                'msg' => 'Something went wrong! Please try again later',
+                'msg' => 'Đã xảy ra lỗi! Vui lòng tải lại trang!',
             ], 500);
         }
     }
@@ -104,14 +104,14 @@ class CartController extends Controller
             $cart->items()->where('unit_id', $request->unit_id)->delete();
             return response()->json([
                 'status' => 'success',
-                'msg' => 'Removed from cart successfully!',
+                'msg' => 'Đã xóa khỏi giỏ hàng!',
                 'cart' => $cart->load('items.unit.variable.product'), // load lại các quan hệ nếu cần
             ], 200);
         } catch (\Exception $e) {
             log_exception($e);
             return response()->json([
                 'status' => 'error',
-                'msg' => 'Something went wrong! Please try again later',
+                'msg' => 'Đã xảy ra lỗi! Vui lòng tải lại trang!',
             ], 500);
         }
     }

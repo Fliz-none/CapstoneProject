@@ -17,6 +17,7 @@ class Order extends Model
         'customer_id',
         'dealer_id',
         'method',
+        'address',
         'total',
         'discount',
         'status',

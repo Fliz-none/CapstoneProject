@@ -188,7 +188,7 @@ class User extends Authenticatable implements MustVerifyEmail
     const DELETE_EXPENSES = 'Delete multiple expenses';
     const APPROVE_EXPENSE = 'Approve expense';
 
-    protected $appends = ['code', 'fullName', 'statusStr', 'genderStr', 'avatarUrl'];
+    protected $appends = ['code', 'fullName', 'statusStr', 'genderStr', 'avatarUrl', 'defaultAddress'];
     /**
      * The attributes that are mass assignable.
      *
@@ -420,6 +420,14 @@ class User extends Authenticatable implements MustVerifyEmail
                 break;
         }
         return $result;
+    }
+
+    public function getDefaultAddressAttribute(){
+        if($this->address) {
+            $arr_address = json_decode($this->address, true);
+            return collect($arr_address)->firstWhere('default', 'yes') ?? $arr_address[0] ?? null;
+        }
+        return null;
     }
 
     public function assignWarehouse($warehouse)

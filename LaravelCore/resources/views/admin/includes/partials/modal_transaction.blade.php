@@ -65,7 +65,7 @@
                                     <div class="input-group">
                                         <input class="form-control w-50 transaction-amount money" id="transaction-amount" name="amount" type="text" value="0" placeholder="Payment amount" onclick="this.select()" inputmode="numeric"
                                             autocomplete="off" required>
-                                        <span class="input-group-text">VND</span>
+                                        <span class="input-group-text">{{ cache()->get('settings')['currency'] }}</span>
                                     </div>
                                 </h5>
                             </div>

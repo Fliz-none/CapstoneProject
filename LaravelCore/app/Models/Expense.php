@@ -21,7 +21,7 @@ class Expense extends Model
         'note',
         'status',
         'group',
-        'avatar'
+        'image'
     ];
     public function branch()
     {
@@ -60,9 +60,9 @@ class Expense extends Model
 
     public function getAvatarUrlAttribute()
     {
-        $path = 'public/expense/' . $this->avatar;
-        if ($this->avatar && Storage::exists($path)) {
-            $image = asset(env('FILE_STORAGE') . '/expense/' . $this->avatar);
+        $path = 'public/expense/' . $this->image;
+        if ($this->image && Storage::exists($path)) {
+            $image = asset(env('FILE_STORAGE') . '/expense/' . $this->image);
         } else {
             $image = asset('admin/images/placeholder_key.png');
         }

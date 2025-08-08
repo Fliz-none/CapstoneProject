@@ -52,12 +52,12 @@
 
                     <div class="news-detail-share">
                         <p>
-                            Nếu bạn thấy thông tin này hữu ích
+                                {{__('lang_web.post.useful_info')}}
                         </p>
                         <div class="justify-content-start gap-2">
                             <a class="btn-sharing" href="javascript:void(0);" onclick="sharePostHandle()" title="Share">
                                 <i class="bi bi-share"></i>
-                                Chia sẻ ngay
+                                {{__('lang_web.post.share')}}
                             </a>
                             <a class="btn-sharing" href="javascript:void(0)" onclick="copyLink()" title="Copy link">
                                 <i class="bi bi-link-45deg"></i>
@@ -70,7 +70,7 @@
                     <div class="container px-3">
                         <div class="news-relative-head">
                             <p class="news-relative-title">
-                                Bạn có thể quan tâm
+                                {{__('lang_web.post.recommend')}}
                             </p>
                             <div class="custom-slide-nav">
                                 <div class="swiper-button-prev">
@@ -113,7 +113,7 @@
                                         </div>
                                     </div>
                                 @empty
-                                    <p class="text-center">Không có bài viết liên quan</p>
+                                    <p class="text-center"> {{__('lang_web.post.no_relationship')}}</p>
                                 @endforelse
                             </div>
                         </div>
@@ -130,10 +130,10 @@
             const title = encodeURIComponent(document.title);
 
             Swal.fire({
-                title: 'Chia sẻ bài viết',
+                title: `{{__('lang_web.post.share_post')}}`,
                 html: `
                     <div class="text-center">
-                        <p class="fw-semibold">Chia sẻ bài viết qua
+                        <p class="fw-semibold">{{__('lang_web.post.share_with')}}</p>
                         <div style="display: flex; justify-content: center; gap: 20px;">
                             <a href="https://www.facebook.com/sharer/sharer.php?u=${url}" target="_blank" title="Facebook">
                                 <img src="{{ asset('images/img/fb-ic.png') }}" alt="Facebook" style="width:50px;height:50px;margin-top:2px;">
@@ -155,7 +155,7 @@
             });
         }
 
-        function copyLink(backgroundColor = `#28a745`, text = "Đã sao chép liên kết bài viết!") {
+        function copyLink(backgroundColor = `#28a745`, text = `{{__('lang_web.post.share_success')}}`) {
             const link = window.location.href;
             navigator.clipboard.writeText(link).then(() => {
                 Toastify({
@@ -167,7 +167,7 @@
                 }).showToast();
             }).catch(() => {
                 Toastify({
-                    text: "Không thể sao chép liên kết.",
+                    text: `{{__('lang_web.post.share_error')}}`,
                     duration: 3000,
                     gravity: "top",
                     position: "center",

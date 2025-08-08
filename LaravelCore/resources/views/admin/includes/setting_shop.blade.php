@@ -129,52 +129,6 @@ $scoreSettings = json_decode($settings['setting_score'] ?? '{}', true);
 </div>
 
 <div class="card mb-3">
-    <form id="print-form" action="{{ route('admin.setting.print') }}" method="post">
-        @csrf
-        <div class="card-header d-flex justify-content-between">
-            <h3>{{ __('messages.shop_setting.invoice') }}</h3>
-            <button class="btn btn-primary btn-save" type="submit">{{ __('messages.save') }}</button>
-        </div>
-        <div class="card-body">
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label" for="print_order_bank_a5">
-                    {{ __('messages.shop_setting.a5') }}<br />
-                    <small class="form-text text-muted">{{ __('messages.shop_setting.a5_placeholder') }}</small>
-                </label>
-                <div class="col-sm-8">
-                    <input name="print_order_bank_a5" type="hidden" value="0">
-                    <input class="form-check-input @error('print_order_bank_a5') is-invalid @enderror" id="print_order_bank_a5" name="print_order_bank_a5" type="checkbox" value="1"
-                        {{ isset($settings['print_order_bank_a5']) && $settings['print_order_bank_a5'] == 1 ? 'checked' : '' }}>
-                    @error('print_order_bank_a5')
-                        <span class="invalid-feedback d-block" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-            </div>
-            <div class="mb-3 row">
-                <label class="col-sm-4 col-form-label" for="print_order_bank_c80">
-                    {{ __('messages.shop_setting.c80') }}<br />
-                    <small class="form-text text-muted">{{ __('messages.shop_setting.c80_placeholder') }}</small>
-                </label>
-                <div class="col-sm-8">
-                    <input name="print_order_bank_c80" type="hidden" value="0">
-                    <input class="form-check-input @error('print_order_bank_c80') is-invalid @enderror" id="print_order_bank_c80" name="print_order_bank_c80" type="checkbox" value="1"
-                        {{ isset($settings['print_order_bank_c80']) && $settings['print_order_bank_c80'] == 1 ? 'checked' : '' }}>
-                    @error('print_order_bank_c80')
-                        <span class="invalid-feedback d-block" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
-
-
-
-<div class="card mb-3">
     <form id="expense-group-form" action="{{ route('admin.setting.expense') }}" method="post">
         @csrf
         <div class="card-header d-flex justify-content-between">

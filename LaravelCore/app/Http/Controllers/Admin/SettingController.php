@@ -158,8 +158,6 @@ class SettingController extends Controller
             $this->updateSetting('banner_store_2', $request->banner_store_2);
             $this->updateSetting('banner_post_1', $request->banner_post_1);
             $this->updateSetting('banner_post_2', $request->banner_post_2);
-            $this->updateSetting('banner_us_1', $request->banner_us_1);
-            $this->updateSetting('banner_us_2', $request->banner_us_2);
             $this->updateSetting('banner_contact', $request->banner_contact);
             cache()->forget('settings');
 

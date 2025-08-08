@@ -34,12 +34,11 @@ class ExpenseController extends Controller
         Controller::init(); // Gán các biến tĩnh ở đây
 
        self::$MESSAGES = [
-            'avatar.image' => Controller::$DATA_INVALID,
-            'avatar.max' => __('messages.expense.avatar_max_size'),
+            'image.image' => Controller::$DATA_INVALID,
+            'image.max' => __('messages.expense.avatar_max_size'),
 
-            'receiver_id.required' => __('messages.expense.receiver_required'),
-            'receiver_id.numeric' => Controller::$DATA_INVALID,
-            'receiver_id.exists' => __('messages.expense.receiver_not_found'),
+            'user_id.required' => __('messages.expense.receiver_required'),
+            'user_id.numeric' => Controller::$DATA_INVALID,
 
             'payment.required' => __('messages.expense.payment_required'),
             'payment.numeric' => Controller::$DATA_INVALID,
@@ -123,10 +122,10 @@ class ExpenseController extends Controller
                     ->orderColumn('code', function ($query, $order) {
                         $query->orderBy('id', $order);
                     })
-                    ->addColumn('avatar', function ($obj) {
+                    ->addColumn('image', function ($obj) {
                         return '<img src="' . $obj->avatarUrl . '" class="thumb cursor-pointer object-fit-cover" alt="Ảnh ' . $obj->name . '" width="60px" height="60px">';
                     })
-                    ->addColumn('user', function ($obj) use ($can_update_user, $can_update_branch) {
+                    ->addColumn('user_id', function ($obj) use ($can_update_user, $can_update_branch) {
                         if ($obj->user_id) {
                             if ($can_update_user) {
                                 $str = '<a class="btn btn-link text-decoration-none text-start btn-update-user p-0" data-id="' . $obj->user_id . '">' . $obj->user->fullName . '</a>';
@@ -145,7 +144,7 @@ class ExpenseController extends Controller
                         }
                         return $str;
                     })
-                    ->filterColumn('user', function ($query, $keyword) {
+                    ->filterColumn('user_id', function ($query, $keyword) {
                         $query->whereHas('user', function ($query) use ($keyword) {
                             $query->where('name', 'like', "%" . $keyword . "%");
                         });
@@ -164,28 +163,8 @@ class ExpenseController extends Controller
                     ->orderColumn('note', function ($query, $order) {
                         $query->orderBy('group', $order);
                     })
-                    ->addColumn('receiver', function ($obj) use ($can_update_user) {
-                        if ($obj->receiver_id) {
-                            if ($can_update_user) {
-                                return '<a class="btn btn-link text-decoration-none text-start btn-update-user" data-id="' . $obj->receiver_id . '">' . $obj->receiver->fullName . '</a>';
-                            } else {
-                                return $obj->receiver->fullName;
-                            }
-                        } else {
-                            return 'N/A';
-                        }
-                    })
-                    ->filterColumn('receiver', function ($query, $keyword) {
-                        $query->whereHas('receiver', function ($query) use ($keyword) {
-                            $query->where('name', 'like', "%" . $keyword . "%");
-                        });
-                    })
-                    ->orderColumn('receiver', function ($query, $order) {
-                        $query->join('users', 'expenses.receiver_id', '=', 'users.id')
-                            ->orderBy('users.name', $order);
-                    })
                     ->addColumn('amount', function ($obj) {
-                        return number_format($obj->amount, 0, ',', '.') . ' đ<br>
+                        return number_format($obj->amount, 0) . ' ' . cache()->get('settings')['currency'] . '<br>
                         <input type="hidden" data-date="' . $obj->created_at->format('d/m/Y') . '" value="' . $obj->amount . '">
                         <small>' . $obj->paymentStr . '</small>';
                     })
@@ -211,7 +190,7 @@ class ExpenseController extends Controller
                             </form>';
                         }
                     })
-                    ->rawColumns(['checkboxes', 'code', 'note', 'amount', 'avatar','status', 'user', 'receiver', 'action'])
+                    ->rawColumns(['checkboxes', 'code', 'note', 'amount', 'image','status', 'user_id', 'action'])
                     ->make(true);
             } else {
                 $pageName = self::NAME . ' management';
@@ -223,22 +202,21 @@ class ExpenseController extends Controller
     public function create(Request $request)
     {
         $rules = [
-            'avatar' => ['image', 'max:3072'],
-            'receiver_id' => ['required', 'numeric', 'exists:users,id'],
+            'image' => ['image', 'max:3072'],
+            'user_id' => ['required', 'numeric'],
             'payment' => ['required', 'numeric', 'between:0,2'],
             'amount' => ['required', 'numeric', 'min:0', 'max:100000000'],
             'note' => ['required', 'string', 'min:0', 'max:255'],
         ];
         $request->validate($rules, self::$MESSAGES);
         $settings = cache()->get('settings');
-        if (isset($settings['expense_image_required']) && $settings['expense_image_required'] == 1 && !$request->hasFile('avatar')) {
-            return response()->json(['errors' => ['avatar' => ['Hãy bổ sung thêm hình ảnh hóa đơn']]], 422);
+        if (isset($settings['expense_image_required']) && $settings['expense_image_required'] == 1 && !$request->hasFile('image')) {
+            return response()->json(['errors' => ['image' => ['Hãy bổ sung thêm hình ảnh hóa đơn']]], 422);
         }
         if (!empty($this->user->can(User::CREATE_EXPENSE))) {
             try {
                 $expense = Expense::create([
-                    'user_id' => Auth::id(),
-                    'receiver_id' => $request->receiver_id,
+                    'user_id' => $request->user_id,
                     'payment' => $request->payment,
                     'amount' => $request->amount,
                     'note' => $request->note,
@@ -247,11 +225,11 @@ class ExpenseController extends Controller
                     'branch_id' => $this->user->main_branch,
                 ]);
 
-                if ($request->avatar) {
-                    $imageInfo = pathinfo($request->avatar->getClientOriginalName());
+                if ($request->image) {
+                    $imageInfo = pathinfo($request->image->getClientOriginalName());
                     $filename = $expense->code . '.' . $imageInfo['extension'];
-                    $request->avatar->storeAs('public/expense/', $filename);
-                    Expense::find($expense->id)->update(['avatar' => $filename]);
+                    $request->image->storeAs('public/expense/', $filename);
+                    Expense::find($expense->id)->update(['image' => $filename]);
                 }
 
                 $response = [
@@ -271,8 +249,8 @@ class ExpenseController extends Controller
     public function update(Request $request)
     {
         $rules = [
-            'avatar' => ['image', 'max:3072'],
-            'receiver_id' => ['required', 'numeric', 'exists:users,id'],
+            'image' => ['image', 'max:3072'],
+            'user_id' => ['required', 'numeric'],
             'payment' => ['required', 'numeric', 'between:0,2'],
             'amount' => ['required', 'numeric', 'min:0', 'max:100000000'],
             'note' => ['required', 'string', 'min:0', 'max:255'],
@@ -288,7 +266,7 @@ class ExpenseController extends Controller
                     $expense = Expense::find($request->id);
                     if ($expense) {
                         $expense->update([
-                            'receiver_id' => $request->receiver_id,
+                            'user_id' => $request->user_id,
                             'payment' => $request->payment,
                             'amount' => $request->amount,
                             'note' => $request->note,
@@ -296,11 +274,11 @@ class ExpenseController extends Controller
                             'group' => $request->group,
                         ]);
 
-                        if ($request->avatar) {
-                            $imageInfo = pathinfo($request->avatar->getClientOriginalName());
+                        if ($request->image) {
+                            $imageInfo = pathinfo($request->image->getClientOriginalName());
                             $filename = $expense->code . '.' . $imageInfo['extension'];
-                            $request->avatar->storeAs('public/expense/', $filename);
-                            $expense->update(['avatar' => $filename]);
+                            $request->image->storeAs('public/expense/', $filename);
+                            $expense->update(['image' => $filename]);
                         }
 
                         $response = [

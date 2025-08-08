@@ -114,24 +114,6 @@
             </div>
             <hr class="mx-4 mb-5">
             <div class="row justify-content-between align-items-stretch">
-                <h5>About Us</h5>
-                <div class="col-12 col-md-6 mb-3">
-                    <h6 class="text-secondary">Banner 1</h6>
-                    <label class="form-label select-image" for="banner_us_1" style="height: 19rem !important"> <img
-                            class="img-fluid rounded-4 object-fit-contain h-100 w-100" alt="Banner" onerror="this.src='{{ asset('/images/bg-contact-1.jpg') }}';">
-                    </label>
-                    <input class="hidden-image" id="banner_us_1" name="banner_us_1" type="hidden" value="{{ $settings['banner_us_1'] ?? old('banner_us_1') }}">
-                </div>
-                <div class="col-12 col-md-6 mb-3">
-                    <h6 class="text-secondary">Banner 2</h6>
-                    <label class="form-label select-image" for="banner_us_2" style="height: 19rem !important"> <img
-                            class="img-fluid rounded-4  object-fit-contain h-100 w-100" alt="Banner" onerror="this.src='{{ asset('/images/bg-contact-1.jpg') }}';">
-                    </label>
-                    <input class="hidden-image" id="banner_us_2" name="banner_us_2" type="hidden" value="{{ $settings['banner_us_2'] ?? old('banner_us_2') }}">
-                </div>
-            </div>
-            <hr class="mx-4 mb-5">
-            <div class="row justify-content-between align-items-stretch">
                 <h5>Contact</h5>
                 <div class="col-12 col-md-6 mb-3">
                     <h6 class="text-secondary">Banner</h6>

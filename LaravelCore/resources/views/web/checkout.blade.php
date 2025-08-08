@@ -6,6 +6,7 @@
     @php
         $user = Auth::user();
         $cart = $user->cart;
+        $default_address = $user->defaultAddress;
     @endphp
     <div class="master-wrapper">
         <div class="banner-page-cpn">
@@ -41,8 +42,9 @@
                     @endforeach
                 @endif
                 <div class="card mb-5 checkout-address-card">
-                    <div class="card-header">
+                    <div class="card-header d-flex justify-content-between">
                         <h4 class="fw-semibold text-dark"><i class="text-danger bi bi-geo-alt"></i> Địa chỉ nhận hàng</h4>
+                        <button class="btn text-primary btn-view-address btn-accept">Chọn địa chỉ</button>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -50,39 +52,8 @@
                                 <div class="checkout-address">
                                     <div class="checkout-address-item d-flex align-items-center justify-content-between">
                                         <div class="checkout-address-info">
-                                            <h5 class="mb-1">{{ $user->name }}{{ $user->phone ? ' - ' . $user->phone : '' }}</h5>
-                                            <p>113 Nguyễn Văn Linh, Phường 3, Quận 5, Thành Phố Hồ Chí Minh</p>
-                                        </div>
-                                        <button class="btn text-primary" data-bs-toggle="modal" data-bs-target="#checkoutAddressModal">Thay đổi</button>
-                                    </div>
-                                    <div class="checkout-address-modal">
-                                        <div class="modal fade" id="checkoutAddressModal" aria-labelledby="checkoutAddressModalLabel" tabindex="-1">
-                                            <div class="modal-dialog modal-dialog-centered">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="checkoutAddressModalLabel">
-                                                            Phương thức thanh toán</h5>
-                                                        <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <ul class="list-group">
-                                                            <li class="list-group-item">
-                                                                <input class="form-check-input me-1" id="firstCheckboxStretched" name="radio" type="radio" value="">
-                                                                <label class="form-check-label stretched-link" for="firstCheckboxStretched">First radio</label>
-                                                            </li>
-                                                            <li class="list-group-item">
-                                                                <input class="form-check-input me-1" id="secondCheckboxStretched" name="radio" type="radio" value="">
-                                                                <label class="form-check-label stretched-link" for="secondCheckboxStretched">Second radio</label>
-                                                            </li>
-                                                            <li class="list-group-item">
-                                                                <input class="form-check-input me-1" id="thirdCheckboxStretched" name="radio" type="radio" value="">
-                                                                <label class="form-check-label stretched-link" for="thirdCheckboxStretched">Third radio</label>
-                                                            </li>
-                                                        </ul>
-                                                        <button class="key-btn-dark px-4 btn-select-address" type="button">Chọn</button>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <h5 class="checkout-recipient mb-1">{{ $default_address ? $default_address['recipient_name'] . ' - ' . $default_address['recipient_phone'] : '' }}</h5>
+                                            <p class="checkout-address">{{ $default_address ? $default_address['address'] : '' }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -227,7 +198,7 @@
                                         <div class="text-end">
                                             <form id="checkoutForm" action="{{ route('checkout.cod') }}" method="POST">
                                                 @csrf
-                                                <input type="hidden" name="payment_method">
+                                                <input name="address" type="hidden" value="{{ $default_address ? json_encode($default_address) : '' }}">
                                                 <button class="key-btn-danger px-5 mt-3" type="submit">Đặt hàng</button>
                                             </form>
                                         </div>
@@ -261,7 +232,8 @@
                                                             </div>
                                                             <div class="accordion-item">
                                                                 <h2 class="accordion-header">
-                                                                    <button class="accordion-button collapsed" data-key="vnpay" data-bs-toggle="collapse" data-bs-target="#collapseTwo" type="button" aria-expanded="false" aria-controls="collapseTwo">
+                                                                    <button class="accordion-button collapsed" data-key="vnpay" data-bs-toggle="collapse" data-bs-target="#collapseTwo" type="button" aria-expanded="false"
+                                                                        aria-controls="collapseTwo">
                                                                         Thanh toán qua VNPay
                                                                     </button>
                                                                 </h2>
@@ -335,6 +307,16 @@
                     }
                 }
             });
+
+            $(document).on('click', '.btn-select-address', function(e) {
+                const input = $('input[name="user_address"]:checked'),
+                    label = $(`label[for="${input.attr('id')}"]`)
+
+                $('.checkout-address-info .checkout-recipient').text(label.attr('data-recipient'))
+                $('.checkout-address-info .checkout-address').text(label.attr('data-address'))
+                $('form#checkoutForm input[name=address]').val(input.val())
+                $(this).closest('.modal').modal('hide')
+            })
 
             $(document).on('submit', '#checkoutForm', function(e) {
                 e.preventDefault();
