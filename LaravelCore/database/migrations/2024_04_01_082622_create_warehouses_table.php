@@ -17,7 +17,7 @@ class CreateWarehousesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('branch_id')->nullable();
             $table->string('name');
-            $table->string('address')->nullable();
+            $table->text('address')->nullable();
             $table->text('note')->nullable();
             $table->unsignedTinyInteger('status')->comment('0:block; 1:active')->default(1);
             $table->softDeletes();

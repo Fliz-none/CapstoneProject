@@ -103,7 +103,6 @@ class AppServiceProvider extends ServiceProvider
         Branch::observe(BranchObserver::class);
         Catalogue::observe(CatalogueObserver::class);
         Category::observe(CategoryObserver::class);
-        CartItem::observe(CartItemObserver::class);
         Conversation::observe(ConversationObserver::class);
         ConversationUser::observe(ConversationUserObserver::class);
         Discount::observe(DiscountObserver::class);

@@ -69,7 +69,7 @@
     </div>
     <div class="header-right">
         <div class="header-login circle-btn home-btn me-4">
-            <a class="btn btn-change-language">
+            <a class="btn btn-change-language d-flex align-items-center">
                 <i class="bi bi-translate fs-5" data-locale="{{ app()->getLocale() }}" data-bs-toggle="tooltip" data-bs-title="{{ __('messages.profile.language') }}"></i>
             </a>
         </div>

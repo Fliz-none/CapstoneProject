@@ -167,7 +167,7 @@ class SupplierController extends Controller
             'name' => ['required', 'string', 'max:125'],
             'phone' => ['nullable', 'numeric', 'digits:10', 'regex:/^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/'],
             'email' => ['nullable', 'string', 'min:5', 'email', 'max:125', 'unique:suppliers'],
-            'address' => ['nullable', 'string', 'min:2', 'max:125'],
+            'address' => ['nullable', 'string', 'min:2', 'max:255'],
             'organ' => ['nullable', 'string', 'min:2', 'max:125'],
         ];
         $request->validate($rules, self::$MESSAGES);
@@ -203,7 +203,7 @@ class SupplierController extends Controller
             'name' => ['required', 'string', 'max:125'],
             'phone' => ['required', 'numeric', 'digits:10', 'regex:/^(0|\+84)(\s|\.)?((3[2-9])|(5[689])|(7[06-9])|(8[1-689])|(9[0-46-9]))(\d)(\s|\.)?(\d{3})(\s|\.)?(\d{3})$/', Rule::unique('suppliers')->ignore($request->id)],
             'email' => ['required', 'string', 'min:5', 'email', 'max:125', Rule::unique('suppliers')->ignore($request->id)],
-            'address' => ['required', 'string', 'min:2', 'max:125'],
+            'address' => ['required', 'string', 'min:2', 'max:255'],
             'organ' => ['nullable', 'string', 'min:2', 'max:125'],
         ];
         $request->validate($rules, self::$MESSAGES);

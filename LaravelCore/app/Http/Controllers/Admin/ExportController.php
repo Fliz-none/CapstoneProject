@@ -287,7 +287,6 @@ class ExportController extends Controller
                     'status' => $request->status,
                 ]);
                 if ($export) {
-                    
                     if ($request->has('to_warehouse_id')) {
                         $import = Import::create([
                             'user_id' => $request->receiver_id,

@@ -17,10 +17,12 @@ class CreateCartItemsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('cart_id');
             $table->unsignedBigInteger('unit_id');
+            $table->unsignedBigInteger('allocated_to_warehouse_id')->nullable();
             $table->unsignedBigInteger('stock_id')->nullable();
             $table->integer('quantity');
             $table->decimal('price', 10, 0);
 
+            $table->foreign('allocated_to_warehouse_id')->references('id')->on('warehouses')->onDelete('cascade');
             $table->foreign('cart_id')->references('id')->on('carts')->onDelete('cascade');
             $table->foreign('unit_id')->references('id')->on('units')->onDelete('cascade');
             $table->foreign('stock_id')->references('id')->on('stocks')->onDelete('cascade');

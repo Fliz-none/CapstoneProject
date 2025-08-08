@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 class Unit extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $appends = ['bestDiscount', 'sum_stock'];
+    protected $appends = ['bestDiscount'];
     protected $fillable = [
         'term',
         'variable_id',
@@ -45,12 +45,24 @@ class Unit extends Model
         return $this->hasMany(ExportDetail::class);
     }
 
-    public function getSumStockAttribute()
+    public function getSumStock($branch_id = null)
     {
-        return $this->import_details->sum(function ($import_detail) {
+        $query = $this->import_details()
+            ->whereHas('stock') // chỉ lấy những cái có stock
+            ->with(['stock', 'import.warehouse.branch']);
+
+        if ($branch_id) {
+            $query->whereHas('import.warehouse.branch', function ($q) use ($branch_id) {
+                $q->where('id', $branch_id);
+            });
+        }
+        $importDetails = $query->get();
+        return $importDetails->sum(function ($import_detail) {
             return (optional($import_detail->stock)->quantity ?? 0) / $this->rate;
         });
     }
+
+
 
     public function discounts()
     {

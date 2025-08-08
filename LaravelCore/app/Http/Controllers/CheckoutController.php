@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Admin\StockController;
 use App\Models\Branch;
 use App\Models\Detail;
+use App\Models\Export;
+use App\Models\ExportDetail;
+use App\Models\Import;
+use App\Models\ImportDetail;
 use App\Models\Order;
 use App\Models\Stock;
 use App\Models\Transaction;
@@ -11,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use StockChecker;
 
@@ -29,7 +35,7 @@ class CheckoutController extends Controller
         $user = Auth::user();
         $cart = $user->cart;
 
-        return $this->processOrder($user, $cart,  1,  'Paid via Cash on Delivery');
+        return $this->processOrder(1,  'Paid via Cash on Delivery');
     }
 
     public function vnpay(Request $request)
@@ -117,11 +123,13 @@ class CheckoutController extends Controller
         $user = Auth::user();
         $cart = $user->cart;
 
-        return $this->processOrder($user, $cart,  2, 'Paid via VNPay');
+        return $this->processOrder(2, 'Paid via VNPay');
     }
 
-    private function processOrder($user, $cart, $method = 2, $note = null)
+    private function processOrder($method = 2, $note = 'Online order!')
     {
+        $user = Auth::user();
+        $cart = $user->cart;
         if (!$cart || $cart->items->isEmpty()) {
             return redirect()->route('checkout')->with('response', [
                 'status' => 'error',
@@ -131,21 +139,13 @@ class CheckoutController extends Controller
 
         DB::beginTransaction();
         try {
-            $stocks = [];
-            foreach ($cart->items as $item) {
-                $stock = StockChecker::checkUnitStock($item);
-                if (!$stock) {
-                    DB::rollBack();
-                    return redirect()->route('checkout')->with('response', [
-                        'status' => 'error',
-                        'msg' => 'Product "' . $item->unit->variable->fullName . '" is out of stock!',
-                    ]);
-                }
-                $stocks[$item->id] = $stock;
-            }
+            // Chi nhánh quản lý đơn
+            $branch_id = optional(
+                $cart->items->firstWhere('allocated_to_warehouse_id', '!=', null)
+            )->allocated_to_warehouse->branch_id ?? Branch::where('status', 1)->latest()->first()->id;
 
             $order = Order::create([
-                'branch_id' => session()->get('sale_branch') ?? Branch::first()->id,
+                'branch_id' => $branch_id,
                 'customer_id' => $user->id,
                 'method' => $method,
                 'total' => $cart->total,
@@ -153,44 +153,131 @@ class CheckoutController extends Controller
                 'status' => 2,
                 'note' => $cart->note,
             ]);
+            // Trung chuyển kho nếu có
+            $this->exportForOrder($order, $branch_id);
+            // Export cho đơn
+            $export = Export::create([
+                'user_id' => Auth::id(),
+                'order_id' => $order->id,
+                'status' => 1,
+                'note' => 'Export for ' . $order->code,
+                'date' => date('Y-m-d'),
+            ]);
 
             foreach ($cart->items as $item) {
-                $stock = $stocks[$item->id];
-
-                Detail::create([
+                $stock = $item->stock;
+                $detail = Detail::create([
                     'order_id' => $order->id,
                     'stock_id' => $stock->id,
                     'unit_id' => $item->unit_id,
                     'quantity' => $item->quantity,
                     'price' => $item->price,
                 ]);
+                $export_detail = ExportDetail::create([
+                    'stock_id' => $stock->id,
+                    'export_id' => $export->id,
+                    'detail_id' => $detail->id,
+                    'unit_id' => $item->unit_id,
+                    'quantity' => $item->quantity,
+                    'note' => 'Export for ' . $order->code
+                ]);
 
+                $variable = $stock->import_detail->_variable;
+                if ($variable->isExhausted()) {
+                    StockController::pushExhaustedNoti($stock, $variable);
+                }
                 $stock->decrement('quantity', $item->quantity);
+                Log::info('$item :' . $item->unit->term . ' - ' . $item->quantity . ' Stock_id ' . $stock->id);
             }
-
-            Transaction::create([
-                'order_id' => $order->id,
-                'customer_id' => $user->id,
-                'payment' => $method,
-                'amount' => $cart->total,
-                'note' => $note,
-                'date' => Carbon::now(),
-            ]);
+            if ($method == 2)
+                Transaction::create([
+                    'order_id' => $order->id,
+                    'customer_id' => $user->id,
+                    'payment' => $method,
+                    'amount' => $cart->total,
+                    'note' => $note,
+                    'date' => Carbon::now(),
+                ]);
 
             $cart->items()->delete();
-
             DB::commit();
 
-            $order_code = $order->code;
             $pageName = 'Thank You';
-            return view('web.thankyou', compact('order_code', 'pageName'));
+            return view('web.thankyou', compact('order', 'pageName'));
         } catch (\Exception $e) {
             DB::rollBack();
             log_exception($e);
             return redirect()->route('checkout')->with('response', [
                 'status' => 'error',
-                'msg' => 'Payment was successful, but the order is still being processed. Please contact support if you do not receive confirmation within a few minutes.',
+                'msg' => 'An error occurred, Please contact support if you do not receive confirmation within a few minutes.',
             ]);
+        }
+    }
+
+    private function exportForOrder($order, $branch_id = null)
+    {
+        DB::beginTransaction();
+        try {
+            $cart = Auth::user()->cart;
+            foreach ($cart->items as $i => $item) {
+                if ($item->allocated_to_warehouse_id) {
+                    $export = Export::create([
+                        'date' => date('Y-m-d'),
+                        'to_warehouse_id' => $item->allocated_to_warehouse_id,
+                        'order_id' => $order->id,
+                        'note' => 'System: Allocate goods for ' . $order->code,
+                        'status' => 1,
+                    ]);
+
+                    $import = Import::create([
+                        'user_id' => $this->user->id,
+                        'warehouse_id' => $item->allocated_to_warehouse_id,
+                        'export_id' => $export->id,
+                        'note' => 'System: Allocate goods for ' . $export->code,
+                        'created_at' => $export->created_at,
+                        'status' => 1,
+                    ]);
+
+                    $export_detail = ExportDetail::create([
+                        'export_id' => $export->id,
+                        'stock_id' => $item->stock_id,
+                        'unit_id' => $item->unit_id,
+                        'quantity' => $item->quantity,
+                        'note' => 'System: Allocate goods for ' . $export->code
+                    ]);
+
+                    $import_detail = ImportDetail::create([
+                        'import_id' => $import->id,
+                        'export_detail_id' => $export_detail->id,
+                        'variable_id' => $item->unit->variable_id,
+                        'unit_id' => $item->unit_id,
+                        'quantity' => $item->quantity,
+                        'price' => $item->price,
+                    ]);
+
+                    $stock = Stock::create([
+                        'import_detail_id' => $import_detail->id,
+                        'quantity' => $item->quantity,
+                        'lot' => $export_detail->_stock->lot,
+                        'expired' => $export_detail->_stock->expired
+                    ]);
+
+                    $old_stock = $export_detail->_stock;
+                    $old_stock->decrement('quantity', $item->quantity);
+                    $item->update([
+                        'stock_id' => $stock->id
+                    ]);
+                    Log::info('Giam o chuyen kho:  ' . $item->quantity . ' Stock id: ' . $old_stock->id);
+                };
+                // if ($variable->isExhausted()) {
+                //     StockController::pushExhaustedNoti($stock, $variable);
+                // }
+                // Không thông báo hết hàng vì chuyển kho
+            }
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
         }
     }
 }

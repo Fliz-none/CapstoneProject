@@ -10,7 +10,7 @@ class Warehouse extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'warehouses';
-    protected $appends = array('code', 'fullName', 'statusStr');
+    protected $appends = array('code', 'fullName', 'statusStr', 'addressObject');
     protected $fillable = [
         'branch_id',
         'name',
@@ -42,6 +42,11 @@ class Warehouse extends Model
     public function getCodeAttribute()
     {
         return 'WH' . str_pad($this->id, 5, "0", STR_PAD_LEFT);
+    }
+
+    public function getAddressObjectAttribute()
+    {
+        return json_decode($this->address) ?? (object) ['lng' => 0, 'lat' => 0, 'address' => ''];
     }
 
     public function getFullNameAttribute()

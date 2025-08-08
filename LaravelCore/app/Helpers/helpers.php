@@ -1,8 +1,10 @@
 <?php
 
+use App\Exceptions\OutOfStockException;
 use App\Models\CartItem;
 use App\Models\Stock;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
@@ -212,21 +214,101 @@ if (!function_exists('log_exception')) {
 
 class StockChecker
 {
-    public static function checkUnitStock(CartItem $item): ?Stock
-    {
-        $requiredQty = $item->quantity;
 
-        $unit = $item->unit;
-        if (!$unit || $unit->sum_stock < $requiredQty) {
-            return null;
+    public function allocateStockForUnit($unit_id, $quantity, $userLat = null, $userLng = null)
+    {
+        $query = Stock::query()
+            ->whereHas('import_detail', fn($q) => $q->where('unit_id', $unit_id))
+            ->where('stocks.quantity', '>', 0)
+            ->select([
+                'stocks.id as stock_id',
+                'stocks.quantity',
+                'stocks.expired',
+                'warehouses.id as warehouse_id',
+                'warehouses.address as warehouse_address',
+            ])
+            ->join('import_details', 'stocks.import_detail_id', '=', 'import_details.id')
+            ->join('imports', 'import_details.import_id', '=', 'imports.id')
+            ->join('warehouses', 'imports.warehouse_id', '=', 'warehouses.id');
+
+        $allocated_to_warehouse_id = optional(
+            Auth::user()->cart->items->firstWhere('allocated_to_warehouse_id', '!=', null)
+        )->allocated_to_warehouse_id;
+        $hasCoordinates = (!is_null($userLat) && !is_null($userLng)) || !is_null($allocated_to_warehouse_id);
+        $nearestWarehouseId = null;
+
+        if ($hasCoordinates) {
+            $stocksWithDistance = $query->get()->map(function ($stock) use ($userLat, $userLng) {
+                [$lat, $lng] = $this->getCoordinatesFromJson($stock->warehouse_address, $stock->stock_id);
+
+                if ($lat === 0 && $lng === 0) {
+                    // Gắn khoảng cách lớn để đẩy về cuối danh sách
+                    $stock->distance = 999999;
+                } else {
+                    $stock->distance = $this->haversine($userLat, $userLng, $lat, $lng);
+                }
+
+                return $stock;
+            })->sortBy('distance')->values();
+
+            $nearestWarehouseId = optional($stocksWithDistance->first())->warehouse_id;
+            $stocks = $stocksWithDistance;
+        } else {
+            $stocks = $query->orderBy('stocks.expired', 'asc')->get();
         }
 
-        // Tìm stock đủ hàng, ưu tiên theo FIFO (import_details.id tăng dần)
-        return Stock::whereHas('import_detail', function ($query) use ($unit) {
-            $query->where('unit_id', $unit->id);
-        })
-            ->where('quantity', '>=', $requiredQty)
-            ->orderBy('import_detail_id') // FIFO
-            ->first();
+        $allocations = [];
+        $remaining = $quantity;
+
+        foreach ($stocks as $stock) {
+            if ($remaining <= 0) break;
+
+            $take = min($remaining, $stock->quantity);
+
+            $allocations[] = [
+                'warehouse_id'              => $stock->warehouse_id,
+                'stock_id'                  => $stock->stock_id,
+                'quantity'                  => (float) $take,
+                'allocated_to_warehouse_id' => ($hasCoordinates && $stock->warehouse_id !== $nearestWarehouseId) ? $nearestWarehouseId : $allocated_to_warehouse_id,
+            ];
+
+            $remaining -= $take;
+        }
+
+        if ($remaining > 0) {
+            throw new OutOfStockException("Sản phẩm không đủ hàng trong kho");
+        }
+
+        return $allocations;
+    }
+
+    private function getCoordinatesFromJson($json, $stockId = null)
+    {
+        try {
+            $decoded = json_decode($json);
+
+            if (json_last_error() !== JSON_ERROR_NONE || !is_object($decoded)) {
+                return [0, 0];
+            }
+
+            $lat = $decoded->lat ?? 0;
+            $lng = $decoded->lng ?? 0;
+
+            return [(float) $lat, (float) $lng];
+        } catch (\Throwable $e) {
+            return [0, 0];
+        }
+    }
+
+
+    protected function haversine($lat1, $lng1, $lat2, $lng2)
+    {
+        $earthRadius = 6371; // km
+        $latFrom = deg2rad($lat1);
+        $latTo = deg2rad($lat2);
+        $lngDiff = deg2rad($lng2 - $lng1);
+        $a = sin(($latTo - $latFrom) / 2) ** 2 +
+            cos($latFrom) * cos($latTo) * sin($lngDiff / 2) ** 2;
+        return $earthRadius * 2 * asin(sqrt($a));
     }
 }
