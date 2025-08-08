@@ -75,12 +75,12 @@ class UserSeeder extends Seeder
 
         DB::statement("
             INSERT INTO `branch_user` (`user_id`, `branch_id`) VALUES
-            (1, 1), (1, 2), (2, 2), (2, 1), (4, 1), (4, 2);
+            (1, 1), (1, 2), (2, 2), (2, 1), (3, 1), (3, 2), (4, 1), (4, 2);
         ");
 
         DB::statement("
             INSERT INTO `user_warehouse` (`user_id`, `warehouse_id`) VALUES
-            (1, 1), (2, 1), (3, 1);
+            (1, 1), (2, 1), (3, 1), (3, 2), (3, 3), (3, 4), (3, 5);
         ");
     }
 }

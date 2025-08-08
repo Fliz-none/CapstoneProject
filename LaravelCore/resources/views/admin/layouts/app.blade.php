@@ -3055,7 +3055,8 @@
         'password', 'remember_token', 'avatar', 'local', 'avatarUrl','email_verified_at','defaultAddress',
         'fullAddress', 'status', 'fullName', 'id', 'gender',
         'roles', '_local', '_branch', 'galleryUrl', 'gallery', 'sort', 'product_id',
-        'allow_review', 'type', 'value', 'deleted_at', 'updated_at', 'created_at', 'addressObject','method','branch','dealer','transactions','customer','_product'
+        'allow_review', 'type', 'value', 'deleted_at', 'updated_at', 'created_at', 'addressObject','method','branch','dealer','transactions','customer','_product',
+        'quantitySold', 'star', 'comments'
     ];
 
     function formatLogValue(value) {

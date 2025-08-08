@@ -13,14 +13,12 @@
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <div class="home-banner-slide">
-                                <img class="img-fluid" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/'. $settings['banner_store_1']) }}" alt="Trang chủ"
-                                    loading="lazy">
+                                <img class="img-fluid" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/' . $settings['banner_store_1']) }}" alt="Trang chủ" loading="lazy">
                             </div>
                         </div>
                         <div class="swiper-slide">
                             <div class="home-banner-slide">
-                                <img class="img-fluid" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/'. $settings['banner_store_2']) }}" alt="Trang chủ"
-                                    loading="lazy">
+                                <img class="img-fluid" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/' . $settings['banner_store_2']) }}" alt="Trang chủ" loading="lazy">
                             </div>
                         </div>
                     </div>
@@ -29,7 +27,7 @@
                 <div class="swiper-pagination"></div>
             </div>
         </div>
-        <div id="product-list-wrapper" class="product-list-wrapper key-section">
+        <div class="product-list-wrapper key-section" id="product-list-wrapper">
             <div class="container">
                 <div class="row">
                     <div class="col col-md-3 p-3 d-none d-lg-block">
@@ -42,8 +40,7 @@
                                 <div class="widget-body filter-input-field">
                                     <div class="input-box">
                                         <img src="{{ asset('images/ic-input-search.svg') }}" alt="">
-                                        <input name="search" type="text" value="{{ request('search') }}"
-                                            placeholder="Tìm kiếm sản phẩm">
+                                        <input name="search" type="text" value="{{ request('search') }}" placeholder="{{ __('lang_web.shop.search') }}">
                                     </div>
                                 </div>
                             </div>
@@ -69,33 +66,27 @@
                         <div class="cbcl-filterform w-100" style="max-width: 100%">
                             <div class="d-flex justify-content-between align-items-center filter-input-field">
                                 <div class="d-block d-lg-none">
-                                    <button class="btn btn-short-mb" data-bs-toggle="offcanvas"
-                                        data-bs-target="#widget-sidebar" type="button" aria-controls="widget-sidebar"><i
+                                    <button class="btn btn-short-mb" data-bs-toggle="offcanvas" data-bs-target="#widget-sidebar" type="button" aria-controls="widget-sidebar"><i
                                             class="bi bi-sliders fs-5"></i></button>
                                 </div>
                                 <div class="products-count">{{ __('lang_web.shop.from') }} {{ $products->firstItem() }} {{ __('lang_web.shop.to') }}
                                     {{ $products->lastItem() }} {{ __('lang_web.shop.in') }} {{ $products->total() }} {{ __('lang_web.shop.product') }}</div>
                                 <div class="select-box">
-                                    <select name="order" class="form-select">
+                                    <select class="form-select" name="order">
                                         <option value="default" selected disabled hidden>{{ __('lang_web.shop.sort_by') }}</option>
-                                        <option value="default" disabled
-                                            {{ request('order') === 'default' ? 'selected' : '' }}>{{ __('lang_web.shop.default') }}</option>
-                                        <option value="created_at-asc"
-                                            {{ request('order') === 'created_at-asc' ? 'selected' : '' }}>{{ __('lang_web.shop.oldest') }}
+                                        <option value="default" disabled {{ request('order') === 'default' ? 'selected' : '' }}>{{ __('lang_web.shop.default') }}</option>
+                                        <option value="created_at-asc" {{ request('order') === 'created_at-asc' ? 'selected' : '' }}>{{ __('lang_web.shop.oldest') }}
                                         </option>
-                                        <option value="created_at-desc"
-                                            {{ request('order') === 'created_at-desc' ? 'selected' : '' }}>{{ __('lang_web.shop.newest') }}
+                                        <option value="created_at-desc" {{ request('order') === 'created_at-desc' ? 'selected' : '' }}>{{ __('lang_web.shop.newest') }}
                                         </option>
                                         <option value="name-asc" {{ request('order') === 'name-asc' ? 'selected' : '' }}>
-                                            {{ __('lang_web.shop.a_z') }}  </option>
+                                            {{ __('lang_web.shop.a_z') }} </option>
                                         <option value="name-desc" {{ request('order') === 'name-desc' ? 'selected' : '' }}>
                                             {{ __('lang_web.shop.z_a') }}</option>
                                     </select>
                                     <span class="svg-ic">
-                                        <svg width="12" height="8" viewBox="0 0 12 8" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M1 1.5L6 6.5L11 1.5" stroke="#828282" stroke-width="1.66667"
-                                                stroke-linecap="round" stroke-linejoin="round"></path>
+                                        <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M1 1.5L6 6.5L11 1.5" stroke="#828282" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"></path>
                                         </svg>
                                     </span>
                                 </div>
@@ -108,37 +99,49 @@
                                     <div class="col-12 col-md-6 col-lg-4 mb-3">
                                         <div class="product-item product-item-row">
                                             <div class="product-image">
-                                                <a href="{{ route('product', ['catalogue' => $product->catalogues->first()->slug, 'slug' => $product->slug]) }}"
-                                                    title="{{ $product->name }}">
+                                                <a href="{{ route('product', ['catalogue' => $product->catalogues->first()->slug, 'slug' => $product->slug]) }}" title="{{ $product->name }}">
                                                     <img class="img-fluid" src="{{ $product->avatarUrl }}">
                                                 </a>
                                             </div>
                                             <div class="product-content text-start">
-                                                <a class="product-name"
-                                                    href="{{ route('product', ['catalogue' => $product->catalogues->first()->slug, 'slug' => $product->slug]) }}"
-                                                    title="{{ $product->name }}">
+                                                <a class="product-name" href="{{ route('product', ['catalogue' => $product->catalogues->first()->slug, 'slug' => $product->slug]) }}" title="{{ $product->name }}">
                                                     {{ $product->name }}
                                                 </a>
                                                 <p class="short">{{ __('lang_web.shop.variant') }}:
                                                     {{ $product->variables->pluck('name')->take(3)->implode(', ') }}{{ $product->variables->count() > 3 ? '...' : '' }}
                                                 </p>
-                                                <p class="price">{{ __('lang_web.shop.price')}}: <span>{!! $product->displayPrice() !!}</span></p>
+                                                <p class="price">{{ __('lang_web.shop.price') }}: <span>{!! $product->displayPrice() !!}</span></p>
+                                                <p>
+                                                    {{ __('lang_web.shop.quantity_sold') }}: {{ number_format($product->quantitySold) }}
+                                                </p>
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <div class="product-ratting">
-                                                        <ul>
-                                                            <li><a href="#"><i class="bi bi-star-fill"></i></i></a>
-                                                            </li>
-                                                            <li><a href="#"><i class="bi bi-star-fill"></i></i></a>
-                                                            </li>
-                                                            <li><a href="#"><i class="bi bi-star-fill"></i></i></a>
-                                                            </li>
-                                                            <li><a href="#"><i class="bi bi-star-half"></i></a></li>
-                                                            <li><a href="#"><i class="bi bi-star"></i></a></li>
-                                                        </ul>
+                                                        @php
+                                                            $rating = $product->star ?? 0;
+                                                            $fullStars = floor($rating);
+                                                            $halfStar = $rating - $fullStars >= 0.25 && $rating - $fullStars < 0.75;
+                                                            $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+                                                        @endphp
+
+                                                        <div class="product-ratting">
+                                                            <ul class="d-flex" style="gap: 3px; padding-left: 0; margin: 0; list-style: none;">
+                                                                @for ($i = 0; $i < $fullStars; $i++)
+                                                                    <li><i class="bi bi-star-fill text-warning"></i></li>
+                                                                @endfor
+
+                                                                @if ($halfStar)
+                                                                    <li><i class="bi bi-star-half text-warning"></i></li>
+                                                                @endif
+
+                                                                @for ($i = 0; $i < $emptyStars; $i++)
+                                                                    <li><i class="bi bi-star text-warning"></i></li>
+                                                                @endfor
+                                                            </ul>
+                                                        </div>
+
                                                     </div>
                                                     <div>
-                                                        <a class="detail"
-                                                            href="{{ route('product', ['catalogue' => $product->catalogues->first()->slug, 'slug' => $product->slug]) }}"><i
+                                                        <a class="detail" href="{{ route('product', ['catalogue' => $product->catalogues->first()->slug, 'slug' => $product->slug]) }}"><i
                                                                 class="bi bi-bag-check"></i></a>
                                                     </div>
                                                 </div>
@@ -155,8 +158,7 @@
                                     <!-- Trang trước -->
                                     @if ($products->onFirstPage())
                                         <a class="nav-svg disabled" href="#">
-                                            <svg width="10" height="16" viewBox="0 0 10 16" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
+                                            <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd" clip-rule="evenodd"
                                                     d="M8.76758 0.333194C9.21184 0.777454 9.21184 1.49774 8.76758 1.942L2.7464 7.96318L8.76758 13.9844C9.21184 14.4286 9.21184 15.1489 8.76758 15.5932C8.32332 16.0374 7.60303 16.0374 7.15878 15.5932L0.333194 8.76758C-0.111065 8.32332 -0.111065 7.60303 0.333194 7.15878L7.15878 0.333194C7.60303 -0.111065 8.32332 -0.111065 8.76758 0.333194Z"
                                                     fill="#3F3E3F"></path>
@@ -164,8 +166,7 @@
                                         </a>
                                     @else
                                         <a class="nav-svg" href="{{ $products->previousPageUrl() }}">
-                                            <svg width="10" height="16" viewBox="0 0 10 16" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
+                                            <svg width="10" height="16" viewBox="0 0 10 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd" clip-rule="evenodd"
                                                     d="M8.76758 0.333194C9.21184 0.777454 9.21184 1.49774 8.76758 1.942L2.7464 7.96318L8.76758 13.9844C9.21184 14.4286 9.21184 15.1489 8.76758 15.5932C8.32332 16.0374 7.60303 16.0374 7.15878 15.5932L0.333194 8.76758C-0.111065 8.32332 -0.111065 7.60303 0.333194 7.15878L7.15878 0.333194C7.60303 -0.111065 8.32332 -0.111065 8.76758 0.333194Z"
                                                     fill="#3F3E3F"></path>
@@ -208,8 +209,7 @@
                                     <!-- Trang tiếp theo -->
                                     @if ($products->hasMorePages())
                                         <a class="nav-svg" href="{{ $products->nextPageUrl() }}">
-                                            <svg width="10" height="17" viewBox="0 0 10 17" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
+                                            <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd" clip-rule="evenodd"
                                                     d="M0.762882 0.571476C1.20714 0.127216 1.92743 0.127216 2.37169 0.571476L9.19727 7.39706C9.64153 7.84132 9.64153 8.5616 9.19727 9.00586L2.37169 15.8314C1.92743 16.2757 1.20714 16.2757 0.762882 15.8314C0.318623 15.3872 0.318623 14.6669 0.762882 14.2226L6.78406 8.20146L0.762882 2.18028C0.318623 1.73602 0.318623 1.01573 0.762882 0.571476Z"
                                                     fill="#3F3E3F"></path>
@@ -217,8 +217,7 @@
                                         </a>
                                     @else
                                         <a class="nav-svg disabled" href="#">
-                                            <svg width="10" height="17" viewBox="0 0 10 17" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
+                                            <svg width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd" clip-rule="evenodd"
                                                     d="M0.762882 0.571476C1.20714 0.127216 1.92743 0.127216 2.37169 0.571476L9.19727 7.39706C9.64153 7.84132 9.64153 8.5616 9.19727 9.00586L2.37169 15.8314C1.92743 16.2757 1.20714 16.2757 0.762882 15.8314C0.318623 15.3872 0.318623 14.6669 0.762882 14.2226L6.78406 8.20146L0.762882 2.18028C0.318623 1.73602 0.318623 1.01573 0.762882 0.571476Z"
                                                     fill="#3F3E3F"></path>

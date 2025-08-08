@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="vi">
-@php
-$pageName = $pageName ?? '';
-@endphp
+    @php
+        $pageName = $pageName ?? '';
+    @endphp
 
     <head>
         <meta charset="UTF-8">
@@ -30,6 +30,7 @@ $pageName = $pageName ?? '';
         {{-- Include sweetalert2 --}}
         <link href="{{ asset('admin/vendors/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet">
         <link href="{{ asset('admin/vendors/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     </head>
 
@@ -130,48 +131,48 @@ $pageName = $pageName ?? '';
 
             });
             let config = {
-            address: {
+                address: {
                     defaultLat: 10.0451618,
                     defaultLng: 105.765374
                 },
-            routes: {
-                login: "{{ route('login.auth') }}",
-                local: "{{ URL::to('locals') }}",
-                pusher: {
-                    broadcast: "{{ route('chat.broadcast') }}",
-                    ai_broadcast: "{{ route('chat.ai_broadcast') }}",
+                routes: {
+                    login: "{{ route('login.auth') }}",
+                    local: "{{ URL::to('locals') }}",
+                    pusher: {
+                        broadcast: "{{ route('chat.broadcast') }}",
+                        ai_broadcast: "{{ route('chat.ai_broadcast') }}",
+                    },
+                    jwt_token: "{{ route('chat.jwt_token') }}",
+                    rasa_webhook_url: "{{ env('RASA_WEBHOOK_URL', 'http://localhost:8001/webhooks/smssolutions/webhook') }}"
                 },
-                jwt_token: "{{ route('chat.jwt_token') }}",
-                rasa_webhook_url: "{{ env('RASA_WEBHOOK_URL', 'http://localhost:8001/webhooks/smssolutions/webhook') }}"
-            },
-             user: {
-                id: {{ Auth::check() ? Auth::id() : 'null' }}
-            },
-            sweetAlert: {
-                confirm: {
-                    title: "{{ __('messages.sweet_confirm_title') }}",
-                    text: "{{ __('messages.sweet_confirm_text') }}",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "var(--bs-danger)",
-                    cancelButtonColor: "var(--bs-primary)",
-                    confirmButtonText: "{{ __('messages.sweet_confirm_button') }}",
-                    cancelButtonText: "{{ __('messages.sweet_cancel_button') }}",
-                    reverseButtons: false
+                user: {
+                    id: {{ Auth::check() ? Auth::id() : 'null' }}
                 },
-                delay: {
-                    title: "{{ __('messages.sweet_delay_title') }}",
-                    text: "{{ __('messages.sweet_delay_text') }}",
-                    allowOutsideClick: false,
-                    allowEscapeKey: false,
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                    willOpen: () => {
-                        Swal.showLoading();
+                sweetAlert: {
+                    confirm: {
+                        title: "{{ __('messages.sweet_confirm_title') }}",
+                        text: "{{ __('messages.sweet_confirm_text') }}",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "var(--bs-danger)",
+                        cancelButtonColor: "var(--bs-primary)",
+                        confirmButtonText: "{{ __('messages.sweet_confirm_button') }}",
+                        cancelButtonText: "{{ __('messages.sweet_cancel_button') }}",
+                        reverseButtons: false
+                    },
+                    delay: {
+                        title: "{{ __('messages.sweet_delay_title') }}",
+                        text: "{{ __('messages.sweet_delay_text') }}",
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        willOpen: () => {
+                            Swal.showLoading();
+                        },
                     },
                 },
-            },
-        }
+            }
 
             let auth_id = @json(auth()->id());
             let offset = 0;
@@ -203,33 +204,33 @@ $pageName = $pageName ?? '';
                                             <img src="${attachment.file_url}" alt="attachment" class="rounded thumb img-fluid w-100">
                                         </div>
                                     </li>`;
-                        } //video
-                        else if (attachment.mime_type.startsWith('video/')) {
-                            html += `<li class="chat ${type}">
+                            } //video
+                            else if (attachment.mime_type.startsWith('video/')) {
+                                html += `<li class="chat ${type}">
                                         <span class="material-symbols-outlined bg-white" style="width: 40px;"></span>
                                         <div class="w-50 d-inline-block">
                                             <video src="${attachment.file_url}" controls alt="attachment" class="rounded thumb img-fluid w-100">
                                         </div>
                                     </li>`;
-                        } else {
-                            //Open file with attachment file_url by browser
-                            html += `<li class="chat ${type}">
+                            } else {
+                                //Open file with attachment file_url by browser
+                                html += `<li class="chat ${type}">
                                         <span class="material-symbols-outlined bg-white" style="width: 40px;"></span>
                                         <a href="${attachment.file_url}" target="_blank"
                                         class="text-decoration-none text-truncate fs-6 border p-1 d-inline-block"
                                         style="max-width: 150px;" title="${attachment.file_name}">
                                         <i class="bi bi-file-earmark-fill"></i> ${attachment.file_name}</a>
                                     </li>`;
-                        }
-                    })
-                    return html;
-                } else {
-                    return '';
+                            }
+                        })
+                        return html;
+                    } else {
+                        return '';
+                    }
                 }
-            }
-            if(!message.content && !message.attachments) return '';
-            if(!message.content && message.attachments) return attachments();
-            return `${attachments()}
+                if (!message.content && !message.attachments) return '';
+                if (!message.content && message.attachments) return attachments();
+                return `${attachments()}
                     <li class="chat ${type}">
                         <span class="material-symbols-outlined bg-white" style="width: 40px;">${avatar()}</span>
                         <p class="pb-1">${message.content} <br><small class="m-1 fst-italic ${type == 'outgoing' ? 'float-end text-white' : 'text-muted'}">${moment(message.created_at).fromNow()}</small></p>
@@ -652,95 +653,95 @@ $pageName = $pageName ?? '';
                 }
             });
 
-        // Xử lý khi người dùng click vào hình ảnh bất kỳ
-        $(document).on("click", "img.thumb", function() {
-            Swal.fire({
-                imageUrl: $(this).attr("src"),
-                padding: 0,
-                showConfirmButton: false,
-                background: "transparent",
-            });
-        });
-    </script>
-    @stack('scripts')
-    <script type="text/javascript">
-        $(document).ready(function() {
-
-            $(document).on('click', '.btn-add-to-cart', function(e) {
-                e.preventDefault();
-                const form = $(this).closest('form');
-
-                // Kiểm tra điều kiện số lượng và đơn vị
-                if (form.find('[name=quantity]').val() <= 0 || form.find('.btn-select-unit.active').length <= 0) {
-                    Toastify({
-                        text: "{{ __('lang_web.cart.quantity_error') }}",
-                        duration: 3000,
-                        close: true,
-                        gravity: "top",
-                        position: "center",
-                        stopOnFocus: true,
-                    }).showToast();
-                    return false;
-                }
-                const btn = $(this);
-                btn.prop("disabled", true).html('<span class="spinner-border spinner-border-sm"></span>');
-                // Lấy vị trí nếu có, không có thì vẫn submit form
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                        function(position) {
-                            form.find('[name=lat]').val(position.coords.latitude);
-                            form.find('[name=lng]').val(position.coords.longitude);
-                            submitCartForm(form, btn);
-                        },
-                        function(error) {
-                            // Nếu người dùng từ chối hoặc có lỗi, vẫn submit
-                            console.warn("Vị trí không lấy được, vẫn tiếp tục...");
-                            submitCartForm(form, btn);
-                        }, {
-                            timeout: 5000
-                        }
-                    );
-                } else {
-                    submitCartForm(form, btn); // Trình duyệt không hỗ trợ
-                }
-            });
-
-            function submitCartForm(form, btn) {
-                var offcanvasCart = new bootstrap.Offcanvas($('#offcanvasCart'));
-                offcanvasCart.show();
-                submitForm(form).done(function(response) {
-                    form.find('[name=quantity]').val(1);
-                    btn.prop("disabled", false).html(
-                        '<i class="bi bi-basket3"></i> <span>{{ __('lang_web.product.add_to_cart') }}</span>'
-                    );
-                    updateMiniCart(response.cart);
+            // Xử lý khi người dùng click vào hình ảnh bất kỳ
+            $(document).on("click", "img.thumb", function() {
+                Swal.fire({
+                    imageUrl: $(this).attr("src"),
+                    padding: 0,
+                    showConfirmButton: false,
+                    background: "transparent",
                 });
-            }
+            });
+        </script>
+        @stack('scripts')
+        <script type="text/javascript">
+            $(document).ready(function() {
 
-            function updateMiniCart(cart) {
-                // Gom nhóm các cart item theo unit_id
-                const groupedItems = {};
+                $(document).on('click', '.btn-add-to-cart', function(e) {
+                    e.preventDefault();
+                    const form = $(this).closest('form');
 
-                cart.items.forEach(function(item) {
-                    const unitId = item.unit_id;
-                    if (!groupedItems[unitId]) {
-                        groupedItems[unitId] = {
-                            ...item,
-                            quantity: parseFloat(item.quantity),
-                            sub_total: parseFloat(String(item.sub_total).replace(/,/g, ''))
-                        };
+                    // Kiểm tra điều kiện số lượng và đơn vị
+                    if (form.find('[name=quantity]').val() <= 0 || form.find('.btn-select-unit.active').length <= 0) {
+                        Toastify({
+                            text: "{{ __('lang_web.cart.quantity_error') }}",
+                            duration: 3000,
+                            close: true,
+                            gravity: "top",
+                            position: "center",
+                            stopOnFocus: true,
+                        }).showToast();
+                        return false;
+                    }
+                    const btn = $(this);
+                    btn.prop("disabled", true).html('<span class="spinner-border spinner-border-sm"></span>');
+                    // Lấy vị trí nếu có, không có thì vẫn submit form
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(
+                            function(position) {
+                                form.find('[name=lat]').val(position.coords.latitude);
+                                form.find('[name=lng]').val(position.coords.longitude);
+                                submitCartForm(form, btn);
+                            },
+                            function(error) {
+                                // Nếu người dùng từ chối hoặc có lỗi, vẫn submit
+                                console.warn("Vị trí không lấy được, vẫn tiếp tục...");
+                                submitCartForm(form, btn);
+                            }, {
+                                timeout: 5000
+                            }
+                        );
                     } else {
-                        // Cộng dồn quantity và sub_total
-                        groupedItems[unitId].quantity += parseFloat(item.quantity);
-                        groupedItems[unitId].sub_total += parseFloat(String(item.sub_total).replace(/,/g, ''));
+                        submitCartForm(form, btn); // Trình duyệt không hỗ trợ
                     }
                 });
 
-                // Tạo HTML từ các item đã gom nhóm
-                let miniCartHtml = '';
-                Object.values(groupedItems).forEach(function(item) {
-                    const product = item.unit.variable.product;
-                    miniCartHtml += `
+                function submitCartForm(form, btn) {
+                    var offcanvasCart = new bootstrap.Offcanvas($('#offcanvasCart'));
+                    offcanvasCart.show();
+                    submitForm(form).done(function(response) {
+                        form.find('[name=quantity]').val(1);
+                        btn.prop("disabled", false).html(
+                            '<i class="bi bi-basket3"></i> <span>{{ __('lang_web.product.add_to_cart') }}</span>'
+                        );
+                        updateMiniCart(response.cart);
+                    });
+                }
+
+                function updateMiniCart(cart) {
+                    // Gom nhóm các cart item theo unit_id
+                    const groupedItems = {};
+
+                    cart.items.forEach(function(item) {
+                        const unitId = item.unit_id;
+                        if (!groupedItems[unitId]) {
+                            groupedItems[unitId] = {
+                                ...item,
+                                quantity: parseFloat(item.quantity),
+                                sub_total: parseFloat(String(item.sub_total).replace(/,/g, ''))
+                            };
+                        } else {
+                            // Cộng dồn quantity và sub_total
+                            groupedItems[unitId].quantity += parseFloat(item.quantity);
+                            groupedItems[unitId].sub_total += parseFloat(String(item.sub_total).replace(/,/g, ''));
+                        }
+                    });
+
+                    // Tạo HTML từ các item đã gom nhóm
+                    let miniCartHtml = '';
+                    Object.values(groupedItems).forEach(function(item) {
+                        const product = item.unit.variable.product;
+                        miniCartHtml += `
                         <div class="mini-cart-item">
                             <div class="mini-cart-img">
                                 <img src="${product.avatarUrl}" alt="${product.name}">
@@ -762,12 +763,12 @@ $pageName = $pageName ?? '';
                                 ${number_format(item.sub_total)} {{ $config['currency'] }}
                             </div>
                         </div>`;
-                });
+                    });
 
-                $('.mini-cart-items').html(miniCartHtml);
-                $('.mini-cart-count').text(cart.count);
-                $('.mini-cart-total span').text(number_format(cart.total) + ' {{ $config['currency'] }}');
-            }
+                    $('.mini-cart-items').html(miniCartHtml);
+                    $('.mini-cart-count').text(cart.count);
+                    $('.mini-cart-total span').text(number_format(cart.total) + ' {{ $config['currency'] }}');
+                }
 
                 // Handle item removal from mini cart
                 $(document).on('click', '.mini-cart-item-delete', function(e) {

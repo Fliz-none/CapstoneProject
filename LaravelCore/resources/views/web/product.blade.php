@@ -13,14 +13,12 @@
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <div class="home-banner-slide">
-                                <img class="img-fluid" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/'. $settings['banner_store_1']) }}" alt="Trang chủ"
-                                    loading="lazy">
+                                <img class="img-fluid" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/' . $settings['banner_store_1']) }}" alt="Trang chủ" loading="lazy">
                             </div>
                         </div>
                         <div class="swiper-slide">
                             <div class="home-banner-slide">
-                                <img class="img-fluid" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/'. $settings['banner_store_2']) }}" alt="Trang chủ"
-                                    loading="lazy">
+                                <img class="img-fluid" src="{{ asset(env('FILE_STORAGE', '/storage/') . '/' . $settings['banner_store_2']) }}" alt="Trang chủ" loading="lazy">
                             </div>
                         </div>
                     </div>
@@ -61,12 +59,30 @@
                     <div class="col-12 col-md-7">
                         <div class="product-information">
                             <h3 class="product-name">{!! $product->name !!}</h3>
+                            @php
+                                $fullStars = floor($product->star);
+                                $halfStar = $product->star - $fullStars >= 0.5;
+                                $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+                            @endphp
+
+                            <div class="star-display text-warning" style="font-size: 1.25rem;">
+                                @for ($i = 0; $i < $fullStars; $i++)
+                                    <i class="fas fa-star"></i>
+                                @endfor
+                                @if ($halfStar)
+                                    <i class="fas fa-star-half-alt"></i>
+                                @endif
+                                @for ($i = 0; $i < $emptyStars; $i++)
+                                    <i class="far fa-star"></i>
+                                @endfor
+                                <span class="text-muted ms-2" style="font-size: 0.9rem">({{ $product->star }}/5)</span>
+                            </div>
                             <div class="product-catalog">
                                 <p><strong>{{ __('lang_web.product.catelogue') }}: </strong>{!! $product->catalogsName() !!} </p>
                             </div>
                             <div class="product-variable mt-4">
                                 @if ($product->variables->count())
-                                    <h4 class="mb-0">{{ __('lang_web.product.choices')}}</h4>
+                                    <h4 class="mb-0">{{ __('lang_web.product.choices') }}</h4>
                                     <div class="product-variable-tab-menu">
                                         <div class="nav">
                                             @foreach ($product->variables as $index => $variable)
@@ -95,14 +111,18 @@
                                                         <h6 class="text-uppercase my-2">{{ __('lang_web.product.pack') }}</h6>
                                                         <div class="variable-units d-flex align-items-center">
                                                             @forelse ($variable->units as $unit)
+                                                                @php
+                                                                    $unit_quantity = $unit->getSumStock();
+                                                                @endphp
                                                                 <div class="variable-unit me-2">
                                                                     <div class="variable-unit-select">
-                                                                        <a class="btn-select-unit key-btn-white" data-price="{{ $unit->price }}" data-unit_id="{{ $unit->id }}" href="javascript:void(0);">{{ $unit->term }}
+                                                                        <a class="{{ $unit_quantity > 0 ? 'btn-select-unit' : '' }} key-btn-white" data-price="{{ $unit->price }}" data-unit_id="{{ $unit->id }}" href="javascript:void(0);"
+                                                                            @if ($unit_quantity <= 0) style="pointer-events: none; opacity: 0.3; cursor: not-allowed;" aria-disabled="true" @endif>{{ $unit->term }}
                                                                             <span class="unit-price" data-price="{{ $unit->price }}"> {{ number_format($unit->price, 0, ',', '.') . $config['currency'] }}</span>
                                                                         </a>
                                                                     </div>
                                                                     <div class="variable-unit-description ps-2 pt-2 text-muted">
-                                                                        {{ __('lang_web.product.quantity') }}: {{ $unit->getSumStock() }}
+                                                                        {{ __('lang_web.product.quantity') }}: {{ $unit_quantity }}
                                                                     </div>
                                                                 </div>
                                                             @empty
@@ -124,7 +144,8 @@
                                                             <div class="input-group-prepend">
                                                                 <button class="btn btn-quantity decreaseBtn" data-variable-id="{{ $variable->id }}" type="button"><i class="bi bi-dash"></i></button>
                                                             </div>
-                                                            <input class="form-control quantity text-center align-self-center quantityInput" data-variable-id="{{ $variable->id }}" data-price="{{ $variable->price }}" type="text" value="1" style="width: 5rem">
+                                                            <input class="form-control quantity text-center align-self-center quantityInput" data-variable-id="{{ $variable->id }}" data-price="{{ $variable->price }}" type="text" value="1"
+                                                                style="width: 5rem">
                                                             <div class="input-group-append">
                                                                 <button class="btn btn-quantity increaseBtn" data-variable-id="{{ $variable->id }}" type="button"><i class="bi bi-plus"></i></button>
                                                             </div>
@@ -133,8 +154,8 @@
                                                     <div>
                                                         <input name="unit_id" type="hidden">
                                                         <input name="quantity" type="hidden" value="1">
-                                                        <input type="hidden" name="lng">
-                                                        <input type="hidden" name="lat">
+                                                        <input name="lng" type="hidden">
+                                                        <input name="lat" type="hidden">
                                                         <button class="key-btn-dark btn-add-to-cart" type="submit" title="Add to Cart">
                                                             <i class="bi bi-basket3"></i>
                                                             <span>{{ __('lang_web.product.add_to_cart') }}</span>
@@ -156,23 +177,74 @@
                         <div class="description-tab">
                             <ul class="nav nav-underline" id="pills-tab" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="description-tab" data-bs-toggle="pill" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">{{ __('lang_web.product.desc') }}</button>
+                                    <button class="nav-link active" id="description-tab" data-bs-toggle="pill" data-bs-target="#description" type="button" role="tab" aria-controls="description"
+                                        aria-selected="true">{{ __('lang_web.product.desc') }}</button>
                                 </li>
+                                @if ($product->specs)
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="specs-tab" data-bs-toggle="pill" data-bs-target="#specs" type="button" role="tab" aria-controls="specs" aria-selected="false">{{ __('lang_web.product.specs') }}</button>
+                                    </li>
+                                @endif
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="review-tab" data-bs-toggle="pill" data-bs-target="#reviews" type="button" role="tab" aria-controls="review" aria-selected="false">{{ __('lang_web.product.review') }}</button>
                                 </li>
                             </ul>
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active p-3" id="description" role="tabpanel" aria-labelledby="description-tab" tabindex="0">
-                                    <h5>{{ $product->excerpt }}</h5>
                                     <p>
                                         {!! $product->description ?? __('lang_web.product.no_desc') !!}
                                     </p>
                                 </div>
-                                <div class="tab-pane fade p-3" id="reviews" role="tabpanel" aria-labelledby="review-tab" tabindex="0">
+                                <div class="tab-pane fade p-3" id="specs" role="tabpanel" aria-labelledby="specs-tab" tabindex="0">
+                                    <h5>{{ $product->excerpt }}</h5>
                                     <p>
-                                        {!! $product->review ?? __('lang_web.product.no_review') !!}
+                                        {!! $product->specs ?? __('lang_web.product.no_desc') !!}
                                     </p>
+                                </div>
+                                <div class="tab-pane fade p-3" id="reviews" role="tabpanel" aria-labelledby="review-tab" tabindex="0">
+                                    @if (count($product->comments))
+                                        @foreach ($product->comments as $index => $comment)
+                                            @if ($index > 0)
+                                                <hr>
+                                            @endif
+                                            <div class="mb-4" style="display: flex; gap: 15px;">
+                                                <!-- Avatar -->
+                                                <img src="{{ $comment['user']->avatarUrl }}" alt="Avatar" style="width: 3rem; height: 3rem; border-radius: 50%;" referrerpolicy="no-referrer">
+
+                                                <!-- Nội dung -->
+                                                <div class="review-content">
+                                                    <div style="font-weight: bold;">{{ $comment['user']->name }}</div>
+
+                                                    <!-- Số sao -->
+                                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                                        @php
+                                                            $rating = round($comment['rating'], 1);
+                                                            $fullStars = floor($rating);
+                                                            $halfStar = $rating - $fullStars >= 0.5;
+                                                            $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+                                                        @endphp
+
+                                                        @for ($i = 0; $i < $fullStars; $i++)
+                                                            <span style="color: #FFA500; font-size: 16px;">★</span>
+                                                        @endfor
+
+                                                        @if ($halfStar)
+                                                            <span style="color: #FFA500; font-size: 16px;">☆</span> {{-- dùng icon nửa sao nếu có thì tốt hơn --}}
+                                                        @endif
+
+                                                        @for ($i = 0; $i < $emptyStars; $i++)
+                                                            <span style="color: #ccc; font-size: 16px;">☆</span>
+                                                        @endfor
+                                                    </div>
+
+                                                    <!-- Nội dung đánh giá -->
+                                                    <div class="review-text" style="font-size: 14px; line-height: 1.6;">
+                                                        {{ $comment['comment'] }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    @endif
                                 </div>
                             </div>
                         </div>

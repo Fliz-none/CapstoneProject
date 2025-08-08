@@ -45,6 +45,8 @@ return[
         'z_a' => 'Tên Z-A',
         'newest' => 'Mới nhất',
         'oldest' => 'Cũ nhất',
+        'quantity_sold' => 'Đã bán',
+        'search' => 'Tìm kiếm sản phẩm',
     ],
 
     'cart' => [
@@ -119,6 +121,7 @@ return[
         'add_to_cart' => 'Thêm vào giỏ',
         'desc' => 'Mô tả',
         'review' => 'Đánh giá',
+        'specs' => 'Thông số kỹ thuật',
         'no_desc' => 'Không có mô tả',
         'no_review' => 'Chưa có đánh giá',
     ],

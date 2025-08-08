@@ -19,7 +19,7 @@ class BranchSeeder extends Seeder
             [
                 'name' => 'CN Nguyễn Văn Linh',
                 'phone' => '0939510249',
-                'address' => 'Nguyễn Văn Linh, An Bình, Ninh Kiều, Cần Thơ',
+                'address' => '{"address":"Nguyễn Văn Linh, Hưng Lợi, Ninh Kiều, Cần Thơ","lat":10.019989943143047,"lng":105.76784557495547}',
                 'note' => null,
                 'status' => 1,
                 'deleted_at' => null,
@@ -29,7 +29,7 @@ class BranchSeeder extends Seeder
             [
                 'name' => 'CN Trần Hoàng Na',
                 'phone' => '090203001516',
-                'address' => 'TRẦN HOÀNG NA, AN BÌNH, NINH KIỀU, CẦN THƠ',
+                'address' => '{"address":"Trần Hoàng Na, Hưng Lợi, Ninh Kiều, Cần Thơ","lat":10.015247677988205,"lng":105.76139139983431}',
                 'note' => null,
                 'status' => 1,
                 'deleted_at' => null,
@@ -39,7 +39,7 @@ class BranchSeeder extends Seeder
             [
                 'name' => 'CN Ninh Kiều',
                 'phone' => '0123456789',
-                'address' => 'Ninh Kiều, Cần Thơ',
+                'address' => '{"address":"600 Nguyễn Văn Cừ Nối Dài, An Bình, Bình Thủy, Cần Thơ","lat":10.0124518,"lng":105.7324316}',
                 'note' => null,
                 'status' => 1,
                 'deleted_at' => null,

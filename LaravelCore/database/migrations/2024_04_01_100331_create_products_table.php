@@ -20,7 +20,7 @@ class CreateProductsTable extends Migration
             $table->string('slug');
             $table->text('excerpt')->nullable();
             $table->longText('description')->nullable();
-            $table->string('specs')->nullable();
+            $table->longText('specs')->nullable();
             $table->string('keyword')->nullable();
             $table->text('gallery')->nullable();
             $table->unsignedInteger('sort')->nullable();

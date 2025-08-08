@@ -45,6 +45,8 @@ return [
         'z_a' => 'Name Z-A',
         'newest' => 'Newest',
         'oldest' => 'Oldest',
+        'quantity_sold' => 'Quantity Sold',
+        'search' => 'Search',
     ],
 
     'cart' =>[
@@ -119,6 +121,7 @@ return [
         'add_to_cart' => 'Add to Cart',
         'desc' => 'Descriptions',
         'review' => 'Reviews',
+        'specs' => 'Specifications',
         'no_desc' => 'No description',
         'no_review' => 'No reviews',
     ],

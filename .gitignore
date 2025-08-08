@@ -36,3 +36,4 @@ RasaBot/actions/__pycache__
 RasaBot/.venv
 RasaBot/venv
 RasaBot/__pycache__
+RasaBot/.env

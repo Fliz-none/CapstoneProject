@@ -14,7 +14,7 @@ class Product extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'products';
-    protected $appends = ['code', 'galleryUrl', 'avatarUrl'];
+    protected $appends = ['code', 'galleryUrl', 'avatarUrl', 'star', 'comments', 'quantitySold'];
     protected $fillable = [
         'sku',
         'name',
@@ -142,6 +142,71 @@ class Product extends Model
     {
         return 'PRO' . str_pad($this->id, 5, "0", STR_PAD_LEFT);
     }
+
+    public function getQuantitySoldAttribute()
+    {
+        $details = Detail::with('unit')->whereHas('unit.variable', function ($query) {
+            $query->where('product_id', $this->id);
+        })->get();
+
+        $total = 0;
+
+        foreach ($details as $detail) {
+            if ($detail->unit && $detail->unit->rate) {
+                $total += $detail->quantity * $detail->unit->rate;
+            }
+        }
+
+        return $total;
+    }
+
+    public function getStarAttribute()
+    {
+        $details = Detail::with('_order._customer')->whereHas('unit.variable', function ($query) {
+            $query->where('product_id', $this->id);
+        })->get();
+
+        $ratings = [];
+
+        foreach ($details as $detail) {
+            if ($detail->reviews) {
+                $decoded = json_decode($detail->reviews, true);
+
+                if (is_array($decoded) && isset($decoded['rating'])) {
+                    $ratings[] = (float) $decoded['rating'];
+                }
+            }
+        }
+
+        if (count($ratings) === 0) {
+            return 5;
+        }
+
+        return round(array_sum($ratings) / count($ratings), 1);
+    }
+
+    public function getCommentsAttribute()
+    {
+        $details = Detail::with('_order._customer')->whereHas('unit.variable', function ($query) {
+            $query->where('product_id', $this->id);
+        })->get();
+
+        $reviews = [];
+
+        foreach ($details as $detail) {
+            if ($detail->reviews) {
+                $decoded = json_decode($detail->reviews, true);
+                $decoded['user'] = optional($detail->_order)->_customer;
+                if (is_array($decoded)) {
+                    $reviews[] = $decoded;
+                }
+            }
+        }
+
+        return $reviews;
+    }
+
+
 
     public function displayPrice()
     {

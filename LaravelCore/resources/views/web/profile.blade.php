@@ -155,7 +155,7 @@
                                 </form>
                             @endif
                         </div>
-                        <div class="tab-pane fade show active" id="user-order" role="tabpanel" aria-labelledby="user-order-tab">
+                        <div class="tab-pane fade show active" id="user-order" role="tabpanel" aria-labelledby="user-order-tab" style="min-height: 70vh">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs nav-tabs-horizontal fw-bold mb-3" role="tablist">
                                 <li class="nav-item" role="presentation">
@@ -187,12 +187,39 @@
                                                 </div>
                                                 <p class="text-{{ $order->statusStr['color'] }} fw-bold mb-1">{{ $order->statusStr['string'] }}</p>
                                             </div>
-                                            @foreach ($order->details as $detail)
+                                            @php
+                                                $groupedDetails = collect($order->details)
+                                                    ->groupBy(function ($detail) {
+                                                        return $detail->unit->id;
+                                                    })
+                                                    ->map(function ($details) {
+                                                        $first = $details->first();
+                                                        $quantity = $details->sum('quantity');
+                                                        $total = $details->sum(function ($item) {
+                                                            return (float) $item->total;
+                                                        });
+                                                        $originalTotal = $details->sum(function ($item) {
+                                                            return (float) $item->originalTotal;
+                                                        });
+
+                                                        return (object) [
+                                                            'unit' => $first->unit,
+                                                            'variable' => $first->unit->variable,
+                                                            'product' => $first->unit->variable->product,
+                                                            'quantity' => $quantity,
+                                                            'total' => $total,
+                                                            'originalTotal' => $originalTotal,
+                                                        ];
+                                                    });
+                                            @endphp
+
+                                            @foreach ($groupedDetails as $detail)
                                                 @php
                                                     $unit = $detail->unit;
-                                                    $variable = $unit->variable;
-                                                    $product = $variable->product;
+                                                    $variable = $detail->variable;
+                                                    $product = $detail->product;
                                                 @endphp
+
                                                 <hr class="mt-1">
                                                 <div class="row mb-3">
                                                     <div class="col-3 col-md-2 col-lg-1">
@@ -206,7 +233,9 @@
                                                                 @if ($detail->originalTotal != $detail->total)
                                                                     <s class="small text-muted me-4">{{ number_format($detail->originalTotal) }}</s><br>
                                                                 @endif
-                                                                <small class="{{ $detail->originalTotal != $detail->total ? 'text-danger' : '' }}">{{ number_format($detail->total) . ' VND' }}</small>
+                                                                <small class="{{ $detail->originalTotal != $detail->total ? 'text-danger' : '' }}">
+                                                                    {{ number_format($detail->total) }} VND
+                                                                </small>
                                                             </small>
                                                         </div>
                                                     </div>
@@ -240,12 +269,39 @@
                                                 <p class="fw-bold mb-0">Mã đơn: {{ $order->code }}</p>
                                                 <small>{{ $order->created_at->format('d/m/Y H:i') }}</small>
                                             </div>
-                                            @foreach ($order->details as $detail)
+                                            @php
+                                                $groupedDetails = collect($order->details)
+                                                    ->groupBy(function ($detail) {
+                                                        return $detail->unit->id;
+                                                    })
+                                                    ->map(function ($details) {
+                                                        $first = $details->first();
+                                                        $quantity = $details->sum('quantity');
+                                                        $total = $details->sum(function ($item) {
+                                                            return (float) $item->total;
+                                                        });
+                                                        $originalTotal = $details->sum(function ($item) {
+                                                            return (float) $item->originalTotal;
+                                                        });
+
+                                                        return (object) [
+                                                            'unit' => $first->unit,
+                                                            'variable' => $first->unit->variable,
+                                                            'product' => $first->unit->variable->product,
+                                                            'quantity' => $quantity,
+                                                            'total' => $total,
+                                                            'originalTotal' => $originalTotal,
+                                                        ];
+                                                    });
+                                            @endphp
+
+                                            @foreach ($groupedDetails as $detail)
                                                 @php
                                                     $unit = $detail->unit;
-                                                    $variable = $unit->variable;
-                                                    $product = $variable->product;
+                                                    $variable = $detail->variable;
+                                                    $product = $detail->product;
                                                 @endphp
+
                                                 <hr class="mt-1">
                                                 <div class="row mb-3">
                                                     <div class="col-3 col-md-2 col-lg-1">
@@ -259,7 +315,9 @@
                                                                 @if ($detail->originalTotal != $detail->total)
                                                                     <s class="small text-muted me-4">{{ number_format($detail->originalTotal) }}</s><br>
                                                                 @endif
-                                                                <small class="{{ $detail->originalTotal != $detail->total ? 'text-danger' : '' }}">{{ number_format($detail->total) . ' VND' }}</small>
+                                                                <small class="{{ $detail->originalTotal != $detail->total ? 'text-danger' : '' }}">
+                                                                    {{ number_format($detail->total) }} VND
+                                                                </small>
                                                             </small>
                                                         </div>
                                                     </div>
@@ -289,12 +347,39 @@
                                                 <p class="fw-bold mb-0">Mã đơn: {{ $order->code }}</p>
                                                 <small>{{ $order->created_at->format('d/m/Y H:i') }}</small>
                                             </div>
-                                            @foreach ($order->details as $detail)
+                                            @php
+                                                $groupedDetails = collect($order->details)
+                                                    ->groupBy(function ($detail) {
+                                                        return $detail->unit->id;
+                                                    })
+                                                    ->map(function ($details) {
+                                                        $first = $details->first();
+                                                        $quantity = $details->sum('quantity');
+                                                        $total = $details->sum(function ($item) {
+                                                            return (float) $item->total;
+                                                        });
+                                                        $originalTotal = $details->sum(function ($item) {
+                                                            return (float) $item->originalTotal;
+                                                        });
+
+                                                        return (object) [
+                                                            'unit' => $first->unit,
+                                                            'variable' => $first->unit->variable,
+                                                            'product' => $first->unit->variable->product,
+                                                            'quantity' => $quantity,
+                                                            'total' => $total,
+                                                            'originalTotal' => $originalTotal,
+                                                        ];
+                                                    });
+                                            @endphp
+
+                                            @foreach ($groupedDetails as $detail)
                                                 @php
                                                     $unit = $detail->unit;
-                                                    $variable = $unit->variable;
-                                                    $product = $variable->product;
+                                                    $variable = $detail->variable;
+                                                    $product = $detail->product;
                                                 @endphp
+
                                                 <hr class="mt-1">
                                                 <div class="row mb-3">
                                                     <div class="col-3 col-md-2 col-lg-1">
@@ -308,7 +393,9 @@
                                                                 @if ($detail->originalTotal != $detail->total)
                                                                     <s class="small text-muted me-4">{{ number_format($detail->originalTotal) }}</s><br>
                                                                 @endif
-                                                                <small class="{{ $detail->originalTotal != $detail->total ? 'text-danger' : '' }}">{{ number_format($detail->total) . ' VND' }}</small>
+                                                                <small class="{{ $detail->originalTotal != $detail->total ? 'text-danger' : '' }}">
+                                                                    {{ number_format($detail->total) }} VND
+                                                                </small>
                                                             </small>
                                                         </div>
                                                     </div>
@@ -340,12 +427,39 @@
                                                 <p class="fw-bold mb-0">Mã đơn: {{ $order->code }}</p>
                                                 <small>{{ $order->created_at->format('d/m/Y H:i') }}</small>
                                             </div>
-                                            @foreach ($order->details as $detail)
+                                            @php
+                                                $groupedDetails = collect($order->details)
+                                                    ->groupBy(function ($detail) {
+                                                        return $detail->unit->id;
+                                                    })
+                                                    ->map(function ($details) {
+                                                        $first = $details->first();
+                                                        $quantity = $details->sum('quantity');
+                                                        $total = $details->sum(function ($item) {
+                                                            return (float) $item->total;
+                                                        });
+                                                        $originalTotal = $details->sum(function ($item) {
+                                                            return (float) $item->originalTotal;
+                                                        });
+
+                                                        return (object) [
+                                                            'unit' => $first->unit,
+                                                            'variable' => $first->unit->variable,
+                                                            'product' => $first->unit->variable->product,
+                                                            'quantity' => $quantity,
+                                                            'total' => $total,
+                                                            'originalTotal' => $originalTotal,
+                                                        ];
+                                                    });
+                                            @endphp
+
+                                            @foreach ($groupedDetails as $detail)
                                                 @php
                                                     $unit = $detail->unit;
-                                                    $variable = $unit->variable;
-                                                    $product = $variable->product;
+                                                    $variable = $detail->variable;
+                                                    $product = $detail->product;
                                                 @endphp
+
                                                 <hr class="mt-1">
                                                 <div class="row mb-3">
                                                     <div class="col-3 col-md-2 col-lg-1">
@@ -359,7 +473,9 @@
                                                                 @if ($detail->originalTotal != $detail->total)
                                                                     <s class="small text-muted me-4">{{ number_format($detail->originalTotal) }}</s><br>
                                                                 @endif
-                                                                <small class="{{ $detail->originalTotal != $detail->total ? 'text-danger' : '' }}">{{ number_format($detail->total) . ' VND' }}</small>
+                                                                <small class="{{ $detail->originalTotal != $detail->total ? 'text-danger' : '' }}">
+                                                                    {{ number_format($detail->total) }} VND
+                                                                </small>
                                                             </small>
                                                         </div>
                                                     </div>
@@ -409,10 +525,18 @@
                     id = $(this).attr('data-id');
                 resetForm(form)
                 $.get(`{{ route('profile.index') }}/${id}`, function(order) {
-                    let str = ``;
+                    let str = ``,
+                    renderedProductIds = [];
                     $.each(order.details, function(index, detail) {
                         const variable = detail._stock.import_detail._variable,
                             product = variable._product;
+
+                        if (renderedProductIds.includes(product.id)) {
+                            return; // continue vòng lặp
+                        }
+
+                        // Đánh dấu product.id đã được xử lý
+                        renderedProductIds.push(product.id);
 
                         str += `<div class="card shadow mb-3 p-3">
                                     <div class="d-flex">

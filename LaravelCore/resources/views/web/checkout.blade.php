@@ -86,11 +86,33 @@
                                 </thead>
                                 <tbody>
                                     @if ($cart && $cart->count > 0)
-                                        @foreach ($cart->items as $item)
+                                        @php
+                                            $groupedItems = collect($cart->items)
+                                                ->groupBy(function ($item) {
+                                                    return $item->unit->id;
+                                                })
+                                                ->map(function ($items) {
+                                                    $first = $items->first();
+                                                    $quantity = $items->sum('quantity');
+                                                    $sub_total = $items->sum(function ($item) {
+                                                        return (float) $item->sub_total;
+                                                    });
+
+                                                    return (object) [
+                                                        'unit' => $first->unit,
+                                                        'variable' => $first->unit->variable,
+                                                        'product' => $first->unit->variable->product,
+                                                        'quantity' => $quantity,
+                                                        'sub_total' => $sub_total,
+                                                    ];
+                                                });
+                                        @endphp
+
+                                        @foreach ($groupedItems as $item)
                                             @php
                                                 $unit = $item->unit;
-                                                $variable = $unit->variable;
-                                                $product = $variable->product;
+                                                $variable = $item->variable;
+                                                $product = $item->product;
                                                 $display_name = $product->name . ' - ' . $variable->name . ' - ' . $unit->term;
                                                 $shortDesc = \Illuminate\Support\Str::limit($variable->description ?? $product->description, 50);
                                             @endphp
@@ -102,18 +124,19 @@
                                                     <a class="text-dark" href="{{ route('product', ['catalogue' => $product->catalogues->first()->slug, 'slug' => $product->slug]) }}">
                                                         <h5 title="{{ $display_name }}">{{ $display_name }}</h5>
                                                     </a>
-                                                    <p class="text-muted" title="{{ $shortDesc }}">{{ $shortDesc }}
+                                                    <p class="text-muted" title="{{ $shortDesc }}">
+                                                        {{ $shortDesc }}
                                                     </p>
                                                 </td>
                                                 <td>
-                                                    {{ $item->quantity }} ×
-                                                    {{ number_format($unit->price) . ' ' . $config['currency'] }}
+                                                    {{ $item->quantity }} × {{ number_format((float) $unit->price) . ' ' . $config['currency'] }}
                                                 </td>
                                                 <td class="text-end fw-semibold">
-                                                    {{ $item->sub_total . ' ' . $config['currency'] }}
+                                                    {{ number_format((float) $item->sub_total) . ' ' . $config['currency'] }}
                                                 </td>
                                             </tr>
                                         @endforeach
+
                                         <tr>
                                             <td colspan="4">
                                                 <div class="mb-3 text-end">
