@@ -40,7 +40,7 @@ class CheckoutController extends Controller
         ];
         $request->validate($rules, $messages);
         session(['checkout_address' => $request->address]);
-        return $this->processOrder(Auth::user(),  1,  'Paid via Cash on Delivery');
+        return $this->processOrder(1,  'Thanh toán bằng Tiền mặt khi giao hàng');
     }
 
     public function vnpay(Request $request)
@@ -68,7 +68,7 @@ class CheckoutController extends Controller
             $vnp_TmnCode = env('VNPAY_TMNCODE');
             $vnp_HashSecret = env('VNPAY_HASHSECRET');
             $vnp_TxnRef = Carbon::now()->timestamp . $user->code;
-            $vnp_OrderInfo = 'Payment for order ' . $vnp_TxnRef;
+            $vnp_OrderInfo = 'Thanh toán đơn hàng ' . $vnp_TxnRef;
             $vnp_OrderType = 'billpayment';
             $vnp_Amount = $cart->total * 100;
             $vnp_Locale = session()->get('locale') ?? 'vn';
@@ -119,7 +119,7 @@ class CheckoutController extends Controller
             log_exception($e);
             return redirect()->back()->with('response', [
                 'status' => 'error',
-                'msg' => 'An error occurred, please reload the page and try again.',
+                'msg' => 'Đã xảy ra lỗi, vui lòng tải lại trang và thử lại.',
             ]);
         }
     }
@@ -129,11 +129,11 @@ class CheckoutController extends Controller
         if ($request->vnp_TransactionStatus != '00') {
             return redirect()->route('checkout')->with('response', [
                 'status' => 'error',
-                'msg' => 'The transaction was canceled or declined!',
+                'msg' => 'Giao dịch đã bị hủy hoặc từ chối!',
             ]);
         }
 
-        return $this->processOrder(Auth::user(),  2, 'Paid via VNPay');
+        return $this->processOrder( 2, 'Thanh toán qua VNPay');
     }
 
     private function processOrder($method = 2, $note = 'Online order!')
@@ -221,7 +221,7 @@ class CheckoutController extends Controller
             log_exception($e);
             return redirect()->route('checkout')->with('response', [
                 'status' => 'error',
-                'msg' => 'An error occurred, Please contact support if you do not receive confirmation within a few minutes.',
+                'msg' => 'Đã xảy ra lỗi. Vui lòng liên hệ với bộ phận hỗ trợ nếu bạn không nhận được xác nhận trong vòng vài phút.',
             ]);
         }
     }
@@ -237,7 +237,7 @@ class CheckoutController extends Controller
                         'date' => date('Y-m-d'),
                         'to_warehouse_id' => $item->allocated_to_warehouse_id,
                         'order_id' => $order->id,
-                        'note' => 'System: Allocate goods for ' . $order->code,
+                        'note' => 'Hệ thống: Phân bổ hàng hóa cho ' . $order->code,
                         'status' => 1,
                     ]);
 
@@ -245,7 +245,7 @@ class CheckoutController extends Controller
                         'user_id' => $this->user->id,
                         'warehouse_id' => $item->allocated_to_warehouse_id,
                         'export_id' => $export->id,
-                        'note' => 'System: Allocate goods for ' . $export->code,
+                        'note' => 'Hệ thống: Phân bổ hàng hóa cho ' . $export->code,
                         'created_at' => $export->created_at,
                         'status' => 1,
                     ]);
@@ -255,7 +255,7 @@ class CheckoutController extends Controller
                         'stock_id' => $item->stock_id,
                         'unit_id' => $item->unit_id,
                         'quantity' => $item->quantity,
-                        'note' => 'System: Allocate goods for ' . $export->code
+                        'note' => 'Hệ thống: Phân bổ hàng hóa cho ' . $export->code
                     ]);
 
                     $import_detail = ImportDetail::create([
@@ -279,7 +279,6 @@ class CheckoutController extends Controller
                     $item->update([
                         'stock_id' => $stock->id
                     ]);
-                    Log::info('Giam o chuyen kho:  ' . $item->quantity . ' Stock id: ' . $old_stock->id);
                 };
                 // if ($variable->isExhausted()) {
                 //     StockController::pushExhaustedNoti($stock, $variable);
