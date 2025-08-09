@@ -136,7 +136,7 @@
                     <span class="emoji">😛</span>
                 </div>
                 <p class="btn btn-select-attachments fw-bold my-auto" onclick="document.querySelector('#chatAttachments').click()" style="color: rgb(66, 91, 237)"><i class="bi bi-paperclip"></i></p>
-                <textarea name="message" placeholder="Enter a message..." spellcheck="false" required></textarea>
+                <textarea name="message" id="message" placeholder="Enter a message..." spellcheck="false" required></textarea>
                 <span class="material-symbols-rounded" id="send-btn"><i class="bi bi-send"></i></span>
             </div>
         </div>

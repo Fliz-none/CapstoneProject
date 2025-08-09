@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\PusherBroadcast;
+use App\Jobs\ProcessRasaMessage;
 use App\Models\Attachment;
 use App\Models\Conversation;
 use App\Models\Message;
@@ -12,6 +13,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use GenerateMessage;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class ChatController extends Controller
@@ -111,57 +115,13 @@ class ChatController extends Controller
 
             broadcast(new PusherBroadcast($message->load('attachments')));
             DB::commit();
+            dispatch(new ProcessRasaMessage($message));
+
+            return response()->json($message);
         } catch (\Exception $e) {
             log_exception($e);
             DB::rollBack();
             return response()->json('An error occurred while sending the message!', 500);
-        }
-    }
-
-    public function generate_token()
-    {
-        $id = Auth::id(); // Lấy ID user hiện tại
-
-        $payload = [
-            'sub' => (string) $id,                  // subject – ID người dùng
-            'iat' => time(),               // issued at – thời điểm tạo
-            'exp' => time() + 1800,        // expire – 30 phút sau
-        ];
-
-        $jwt = JWT::encode($payload, env('JWT_SECRET'), 'HS256');
-        // dd($jwt);
-        return response()->json([
-            'token' => $jwt,
-        ]);
-    }
-
-    public function ai_broadcast(Request $request)
-    {
-        $request->validate([
-            'message' => 'nullable|string|max:192',
-        ], [
-            'message.string' => 'Kiểu dữ liệu không hợp lệ.',
-            'message.max' => 'Tin nhắn quá dài',
-        ]);
-        //dd($request->message);
-
-        try {
-            // Lấy conversation đầu tiên theo user
-            $conversation = Conversation::where('customer_id', Auth::id())->first();
-
-            // Tạo message
-            $message = Message::create([
-                'conversation_id' => $conversation->id,
-                'sender_id' => 1,
-                'content' => $request->message,
-                'json_data' => $request->json_data
-            ]);
-
-            // Gửi event broadcast
-            broadcast(new PusherBroadcast($message->load('attachments')));
-
-        } catch (\Exception $e) {
-            log_exception($e);
         }
     }
 }

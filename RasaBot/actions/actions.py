@@ -1,7 +1,7 @@
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-from .db_helper import MySQLHelper
-from .helper import Helper
+from db_helper import MySQLHelper
+from helper import Helper
 from datetime import datetime
 from unidecode import unidecode
 import time
@@ -60,11 +60,11 @@ class ActionCheckOrder(Action):
 
                 dispatcher.utter_message(
                     text=f"Đơn hàng `{order_id}` của {customer} hiện: {Helper.render_order_status(status)}.",
-                    json_message={"order": order_data},
+                    json_message={"order": order_data, "action": "check_order"},
                 )
             else:
                 dispatcher.utter_message(
-                    text=f"Không tìm thấy đơn hàng `{order_id}`. Vui lòng thử lại sau."
+                    text=f"Không tìm thấy đơn hàng `{order_id}`. Vui lòng kiểm tra lại."
                 )
         except Exception as e:
             dispatcher.utter_message(
@@ -166,10 +166,8 @@ class ActionCheckStock(Action):
                 )
 
                 # Gửi kèm JSON nếu cần
-                data = [
-                    Helper.dict_with_serialized_datetimes(row) for row in results
-                ]
-                dispatcher.utter_message(json_message={"stock": data})
+                data = [Helper.dict_with_serialized_datetimes(row) for row in results]
+                dispatcher.utter_message(json_message={"stock": data, "action": "check_stock"})
 
             else:
                 dispatcher.utter_message(
@@ -215,22 +213,22 @@ class ActionCheckProduct(Action):
                     OR LOWER(p.name) LIKE LOWER(CONCAT('%%', %s, '%%'))
                 GROUP BY p.id
                 """,
-                (product_name, product_name)
+                (product_name, product_name),
             )
             if result:
                 product_data = Helper.dict_with_serialized_datetimes(result)
                 dispatcher.utter_message(
                     text=f"Sản phẩm `{product_name}` có thông tin chi tiết như sau:",
-                      json_message={
-                        "action": "ask_product",
-                        "product": product_data
-                    }
+                    json_message={"action": "ask_product", "product": product_data},
                 )
             else:
-                dispatcher.utter_message(text=f"Không tìm thấy sản phẩm `{product_name}`.")
+                dispatcher.utter_message(
+                    text=f"Không tìm thấy sản phẩm `{product_name}`."
+                )
         except Exception as e:
             dispatcher.utter_message(text=f"Lỗi hệ thống: {str(e)}. Vui lòng thử lại.")
         return []
+
 
 class ActionAskBranch(Action):
     def name(self) -> str:
@@ -239,20 +237,17 @@ class ActionAskBranch(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
         try:
             results = db.fetch_all("SELECT name, address, phone FROM branches")
-            
+
             if results:
                 dispatcher.utter_message(
                     text="Các chi nhánh của cửa hàng gồm:",
-                    json_message={
-                        "branches": results, 
-                        "action": "ask_branch"
-                    }
+                    json_message={"branches": results, "action": "ask_branch"},
                 )
             else:
                 dispatcher.utter_message(text="Không tìm thấy chi nhánh nào.")
         except Exception as e:
             dispatcher.utter_message(text=f"Lỗi hệ thống: {str(e)}. Vui lòng thử lại.")
-        
+
         return []
 
 
@@ -262,23 +257,24 @@ class ActionAskPost(Action):
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
         try:
-            results = db.fetch_all("""
+            results = db.fetch_all(
+                """
                 SELECT title, excerpt, content, created_at
                 FROM posts
                 ORDER BY created_at DESC
                 LIMIT 3
-            """)
+            """
+            )
             if results:
                 for row in results:
-                    if "created_at" in row and isinstance(row["created_at"], (datetime, )):
+                    if "created_at" in row and isinstance(
+                        row["created_at"], (datetime,)
+                    ):
                         row["created_at"] = row["created_at"].isoformat()
 
                 dispatcher.utter_message(
                     text="Dưới đây là một số bài viết mới nhất:",
-                    json_message={
-                        "posts": results,
-                        "action": "ask_post"
-                    }
+                    json_message={"posts": results, "action": "ask_post"},
                 )
             else:
                 dispatcher.utter_message(text="Hiện tại chưa có bài viết nào.")
@@ -293,10 +289,12 @@ class ActionAskCompany(Action):
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
         try:
-            results = db.fetch_all("""
+            results = db.fetch_all(
+                """
                 SELECT `key`, `value`
                 FROM settings
-            """)
+            """
+            )
             if results:
                 settings = {row["key"]: row["value"] for row in results}
                 shop_info = {
@@ -311,21 +309,19 @@ class ActionAskCompany(Action):
                     "social_zalo": settings.get("social_zalo"),
                     "social_youtube": settings.get("social_youtube"),
                     "social_tiktok": settings.get("social_tiktok"),
-                    "social_telegram": settings.get("social_telegram")
+                    "social_telegram": settings.get("social_telegram"),
                 }
 
                 dispatcher.utter_message(
                     text="Đây là thông tin chi tiết của công ty:",
-                    json_message={
-                        "shop_info": shop_info,
-                        "action": "ask_company"
-                    }
+                    json_message={"shop_info": shop_info, "action": "ask_company"},
                 )
             else:
                 dispatcher.utter_message(text="Chưa có thông tin cấu hình.")
         except Exception as e:
             dispatcher.utter_message(text=f"Lỗi hệ thống: {str(e)}. Vui lòng thử lại.")
         return []
+
 
 class ActionAskPromotions(Action):
     def name(self) -> str:
@@ -351,11 +347,13 @@ class ActionAskPromotions(Action):
                 matched_branch_ids.append(b["id"])
 
         if not matched_branch_ids:
-            dispatcher.utter_message(text=f"Không tìm thấy chi nhánh nào giống '{branch}'")
+            dispatcher.utter_message(
+                text=f"Không tìm thấy chi nhánh nào giống '{branch}'"
+            )
             return []
 
         # Truy vấn khuyến mãi theo danh sách branch_id tìm được
-        format_strings = ','.join(['%s'] * len(matched_branch_ids))
+        format_strings = ",".join(["%s"] * len(matched_branch_ids))
         query = f"""
             SELECT d.*
             FROM discounts d
@@ -374,12 +372,20 @@ class ActionAskPromotions(Action):
 
             dispatcher.utter_message(
                 text=f"Đây là các khuyến mãi tại chi nhánh gần giống '{branch}':",
-                json_message={
-                    "promotions": results,
-                    "action": "ask_promotions"
-                }
+                json_message={"promotions": results, "action": "ask_promotions"},
             )
         else:
-            dispatcher.utter_message(text=f"Không có khuyến mãi nào tại chi nhánh gần giống '{branch}'.")
+            dispatcher.utter_message(
+                text=f"Không có khuyến mãi nào tại chi nhánh gần giống '{branch}'."
+            )
 
+        return []
+
+
+class ActionDefaultFallback(Action):
+    def name(self):
+        return "action_default_fallback"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
+        dispatcher.utter_message(response="utter_default")
         return []

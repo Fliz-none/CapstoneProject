@@ -119,16 +119,17 @@ function handleChat() {
     $("#previewAttachments").empty();
 
     const sendingEl = $(`
-        <li class="chat outgoing temp-sending">
+        <li class="chat outgoing temp-sending" id="temp-sending">
             <p><i>Sending...</i></p>
         </li>
     `);
     $(".chatbox").append(sendingEl);
+    $('.chatbox').scrollTop($('.chatbox')[0].scrollHeight);
     sendChatMessageToServer(
         userMessage,
         attachments,
         function (response) {
-            sendingEl.remove();
+            // sendingEl.remove();
         },
         function (errors) {
             sendingEl.remove();
@@ -146,74 +147,6 @@ function handleChat() {
             }
         }
     );
-    sendMessageToRasa(
-        userMessage,
-        function (response) {
-            sendingEl.remove();
-            if (Array.isArray(response)) {
-                response.forEach(botMessage => {
-                    if (botMessage.text) {
-                        $.ajax({
-                            url: config.routes.pusher.ai_broadcast, 
-                            method: "POST",
-                            headers: {
-                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
-                            },
-                            data: {
-                                message: botMessage.text,
-                                json_data: botMessage.custom
-                            },
-                            success: function (res) {
-                               console.log(res);
-                            },
-                            error: function (err) {
-                                console.error("Lỗi gửi về ai_broadcast:", err);
-                            }
-                        });
-                        $(".chatbox").scrollTop($(".chatbox")[0].scrollHeight); // Scroll to bottom
-                    }
-                });
-            }
-        },
-        function (errors) {
-            sendingEl.remove();
-            if (errors.status == 419 || errors.status == 401) {
-                window.location.href = config.routes.login;
-            }
-        }
-    );
-}
-
-async function sendMessageToRasa(message, onSuccess, onError) {
-    try {
-        // Lấy JWT từ Laravel
-        const doomRes = await fetch(config.routes.jwt_token, {
-            method: "POST",
-            headers: {
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
-                "Content-Type": "application/json"
-            }
-        });
-        const doomm = await doomRes.json();  
-        // Gửi message đến Rasa
-        const rasaRes = await fetch( config.routes.rasa_webhook_url,{
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + doomm.token
-            },
-            
-            body: JSON.stringify({
-                sender: config.user.id,
-                message: message
-            })
-        });
-
-        const data = await rasaRes.json();
-        if (onSuccess) onSuccess(data);
-    } catch (err) {
-        if (onError) onError(err);
-    }
 }
 
 
@@ -246,7 +179,8 @@ $(document).on('click', '#emojiPicker .emoji', function (e) {
     e.preventDefault();
     const emoji = $(this).text();
     $('#message').val($('#message').val() + emoji);
-    $('#emojiPicker').hide();
+    console.log('emoji', emoji);
+    
 });
 
 $("#send-btn").on("click", handleChat);

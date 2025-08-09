@@ -3,6 +3,8 @@ version: "3.1"
 nlu:
   - intent: greet
     examples: |
+      - Ê
+      - Này
       - chào
       - xin chào
       - hi
@@ -44,6 +46,11 @@ nlu:
       - hoàn hảo luôn
       - quá tuyệt vời
       - tôi khỏe mạnh và vui vẻ
+      - Hôm nay vui quá
+      - vui quá
+      - tuyệt
+      - vui quá
+      - hóm nay vui quá
 
   - intent: mood_unhappy
     examples: |
@@ -57,10 +64,22 @@ nlu:
       - không vui
       - tôi thấy không ổn
       - tâm trạng xấu
+      - hôm nay buồn quá
+      - hôm nay tôi buồn
+      - hôm nay t buồn
+      - hôm nay bao buồn
+      - hôm nay tệ thật
+      - hôm nay tệ quá
+      - tôi bực
+      - t bực
+      - tao bực bội quá
+      - tôi bực bội quá
+      - t bực quá
 
   - intent: bot_challenge
     examples: |
       - Mày là ai?
+      - M là ai?
       - Bạn là ai
       - Bạn là gì
       - Tôi đang nói chuyện với AI đúng à
@@ -174,8 +193,6 @@ nlu:
       - Cửa hàng có cho trả góp không?
       - Có được thanh toán qua Internet Banking không?
       - Thanh toán bằng tiền mặt được không?
-      - Cửa hàng có máy quẹt thẻ không?
-      - Có thể thanh toán bằng thẻ tín dụng không?
       - Shop có nhận chuyển khoản qua app ngân hàng không?
       - Có thể quét mã để thanh toán không?
       - Có thể thanh toán không dùng tiền mặt không?
@@ -194,10 +211,6 @@ nlu:
       - Có thể trả bằng ngoại tệ không?
       - Có cần thanh toán ngay không hay được nợ?
       - Có hỗ trợ thanh toán sau không?
-      - Có thể thanh toán bằng thẻ MasterCard không?
-      - Thanh toán qua thẻ quốc tế có mất phí không?
-      - Có thể thanh toán bằng thẻ chip không?
-      - Khi thanh toán bằng thẻ có cần ký tên không?
       - Những phương thức thanh toán nào được chấp nhận ở đây?
       - Ở shop mình thanh toán bằng cách nào vậy?
       - Shop chấp nhận những hình thức thanh toán nào?
@@ -216,11 +229,7 @@ nlu:
       - Shop có chấp nhận thanh toán điện tử không?
       - Những hình thức trả tiền mà shop áp dụng là gì?
       - Khi giao hàng có thể trả tiền luôn không?
-      - Nếu mình dùng thẻ thì có cần báo trước không?
-      - Dùng thẻ tín dụng có được giảm giá không?
       - Shop có ưu đãi gì nếu thanh toán online không?
-      - Nếu mình dùng ZaloPay có được hỗ trợ gì không?
-      - Shop có tính phí khi dùng thẻ không?
       - Có cần phải trả trước đơn hàng không?
       - Nếu không có tiền mặt thì còn cách nào khác không?
       - Khi mua offline thì thanh toán như thế nào?
@@ -228,4 +237,18 @@ nlu:
       - Thanh toán qua ngân hàng có dễ không?
       - Nếu không dùng được Momo thì còn cách nào?
       - Dùng Internet Banking để thanh toán thì thao tác ra sao?
-                
+  - intent: out_of_scope
+    examples: |
+      - Hahaa hihi
+      - hú hú hú
+      - hehe hà hà
+      - gì vậy trời
+      - 🤣🤣🤣
+      - 123 abc xyz
+      - nói gì vậy trời
+      - blah blah
+      - ád ád s sfdfg ẻ
+      - cc sadas
+      - sadjf dá hád
+      - sdjfkasjkdf  fashj dạh
+      - jsdjs na áh sjsd hah
