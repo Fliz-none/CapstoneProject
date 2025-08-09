@@ -151,7 +151,8 @@ nlu:
       - Shop mở mấy giờ sáng?
       - Có thể đến mua hàng sau 9 giờ tối không?
       - Có làm việc ngày lễ không?
-
+      - Có mua hàng lúc tối được không?
+      
   - intent: ask_return_policy
     examples: |
       - Nếu sản phẩm bị hư thì mình đổi như thế nào?
@@ -237,6 +238,7 @@ nlu:
       - Thanh toán qua ngân hàng có dễ không?
       - Nếu không dùng được Momo thì còn cách nào?
       - Dùng Internet Banking để thanh toán thì thao tác ra sao?
+
   - intent: out_of_scope
     examples: |
       - Hahaa hihi
