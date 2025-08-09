@@ -76,7 +76,7 @@
         <div class="header-login circle-btn home-btn me-4">
             @guest
                 @if (Route::has('login'))
-                    <a class="cursor-pointer" data-bs-toggle="modal" data-bs-target="#customerLogin">
+                    <a class="cursor-pointer"  href="{{ route('login') }}">
                         <img class="img-fluid" src="{{ asset('images/person.svg') }}" alt="">
                     </a>
                 @endif
@@ -159,7 +159,7 @@
             <div class="header-login circle-btn home-btn">
                 @guest
                     @if (Route::has('login'))
-                        <a class="d-flex w-100 cursor-pointer" data-bs-toggle="modal" data-bs-target="#customerLogin">
+                        <a class="d-flex w-100 cursor-pointer" href="{{ route('login') }}">
                             <img class="img-fluid" src="{{ asset('images/person.svg') }}" alt="">
                         </a>
                     @endif

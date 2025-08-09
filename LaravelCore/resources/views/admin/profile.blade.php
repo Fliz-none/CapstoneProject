@@ -75,28 +75,6 @@
                             </div>
                             <hr>
                             @endif
-                            @if (Auth::user()->address || Auth::user()->local_id)
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <h6 class="mb-0">{{ __('messages.profile.address') }}</h6>
-                                </div>
-                                <div class="col-sm-9 text-secondary">
-                                    {{ Auth::user()->fullAddress }}
-                                </div>
-                            </div>
-                            <hr>
-                            @endif
-                            @if (Auth::user()->birthday)
-                            <div class="row">
-                                <div class="col-sm-3">
-                                    <h6 class="mb-0">{{ __('messages.profile.birthday') }}</h6>
-                                </div>
-                                <div class="col-sm-9 text-secondary">
-                                    {{ Carbon\Carbon::parse(Auth::user()->birthday)->format('d/m/Y') }}
-                                </div>
-                            </div>
-                            <hr>
-                            @endif
                             @if (Auth::user()->last_login_at)
                             <div class="row">
                                 <div class="col-sm-3">

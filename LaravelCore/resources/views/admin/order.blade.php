@@ -434,7 +434,7 @@
                 html: `
                     <select id="payment-select" class="form-select form-control-lg mb-3">
                         ${optionsHtml}
-                    </select>card-body order-details
+                    </select>
                     <input id="payment-amount" class="form-control form-control-lg mb-3 money" placeholder="Amount" value="${tab.find('input.order-summary').val()}">`,
                 showCancelButton: true,
                 confirmButtonText: 'Save',

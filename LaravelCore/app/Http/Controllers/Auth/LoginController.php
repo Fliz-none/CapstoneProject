@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
@@ -77,15 +78,18 @@ class LoginController extends Controller
         }
         // Thử đăng nhập
         if ($this->attemptLogin($request)) {
-            // Nếu đăng nhập thành công
-            if($request->ajax()) {
-                return response()->json([
-                    'user' => Auth::user(),
-                    'main_branch' => Auth::user()->branch,
-                    'token' => csrf_token(),
-                    'status' => 'success',
-                    'msg' => 'Login successful.'
-                ], 200);
+            if(Auth::check()) {
+                /** @var \App\Models\User|null*/
+                $user = Auth::user();
+                if($user->hasAnyPermission(User::READ_DASHBOARD)) {
+                    return redirect()->route('admin.home');
+                } else if($user->hasAnyPermission(User::CREATE_ORDER)) {
+                    return redirect()->route('admin.order', ['key' => 'new']);
+                } else if($user->hasAnyPermission(User::READ_IMPORTS)){
+                    return redirect()->route('admin.import');
+                } else {
+                    return redirect()->route('home');
+                }
             }
             return redirect()->intended($this->redirectPath());
         }

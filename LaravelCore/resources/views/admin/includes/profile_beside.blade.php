@@ -62,7 +62,7 @@
 </div>
 
 <!-- Modal Activity Log -->
-<div class="modal fade" id="activityLogModal" tabindex="-1" aria-labelledby="activityLogLabel" aria-hidden="true">
+<div class="modal fade" id="activityLogModal" aria-labelledby="activityLogLabel" aria-hidden="true" tabindex="-1">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header bg-info">
@@ -89,7 +89,7 @@
                             @forelse ($logs as $log)
                                 @php
                                     $user = App\Models\User::find($log->user_id);
-                                    $user->name ? $userName = $user->name : $userName = __('messages.unknown');
+                                    $user->name ? ($userName = $user->name) : ($userName = __('messages.unknown'));
 
                                     switch ($log->action) {
                                         case 1:
@@ -109,13 +109,13 @@
                                 <tr>
                                     <td>
                                         @if ($log->action == '2')
-                                           <a class="cursor-pointer btn-detail-log text-primary fw-bold" data-id=" {{ $log->id }}">{{ $log->code }}</a> 
+                                            <a class="cursor-pointer btn-detail-log text-primary fw-bold" data-id=" {{ $log->id }}">{{ $log->code }}</a>
                                         @else
-                                        <a class="cursor-pointer text-primary" data-id=" {{ $log->id }}">{{ $log->code }}</a> 
+                                            <a class="cursor-pointer text-primary" data-id=" {{ $log->id }}">{{ $log->code }}</a>
                                         @endif
                                     </td>
                                     <td>{{ $log->user->name }}</td>
-                                   <td>{{ $log->action_name }}</td>
+                                    <td>{{ $log->action_name }}</td>
                                     <td>{{ $log->type }}</td>
                                     <td>{{ $log->object }}</td>
                                     <td>{{ $log->ip }}</td>
@@ -137,7 +137,7 @@
 </div>
 
 <!-- Modal Attendance History -->
-<div class="modal fade" id="attendanceHistoryModal" tabindex="-1" aria-labelledby="attendanceHistoryLabel" aria-hidden="true">
+<div class="modal fade" id="attendanceHistoryModal" aria-labelledby="attendanceHistoryLabel" aria-hidden="true" tabindex="-1">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header bg-info">
@@ -149,7 +149,7 @@
                     <table class="table table-hover table-borderless" id="work-table">
                         <thead>
                             <tr>
-                               <th>{{ __('messages.datatable.code') }}</th>
+                                <th>{{ __('messages.datatable.code') }}</th>
                                 <th>{{ __('messages.log.user') }}</th>
                                 <th>{{ __('messages.datatable.branch') }}</th>
                                 <th>{{ __('messages.work_schedule.shift') }}</th>
@@ -158,24 +158,26 @@
                                 <th>{{ __('messages.work_schedule.serve_time') }}</th>
                                 <th>{{ __('messages.note') }}</th>
                             </tr>
-                        </thead>    
+                        </thead>
                         <tbody>
-                            @forelse ($works as $work)
-                                <tr>
-                                    <td><a class="cursor-pointer btn-detail-work text-primary fw-bold" data-id=" {{ $work->id }}">{{ $work->code }}</a> </td>
-                                    <td>{{ $work->user->name ?? '—' }}</td>
-                                    <td>{{ $work->branch->name ?? '—' }}</td>
-                                    <td style="white-space: pre-line;"> {{ $work->shift_info }}</td>
-                                    <td>{{ $work->real_checkin ?? '—' }}</td>
-                                    <td>{{ $work->real_checkout ?? '—' }}</td>
-                                    <td>{{ $work->serve_time }}</td>
-                                    <td>{{ $work->note ?? '—' }}</td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td class="text-center text-muted" colspan="10">Không có lịch sử chấm công.</td>
-                                </tr>
-                            @endforelse
+                            @if (isset($work))
+                                @forelse ($works as $work)
+                                    <tr>
+                                        <td><a class="cursor-pointer btn-detail-work text-primary fw-bold" data-id=" {{ $work->id }}">{{ $work->code }}</a> </td>
+                                        <td>{{ $work->user->name ?? '—' }}</td>
+                                        <td>{{ $work->branch->name ?? '—' }}</td>
+                                        <td style="white-space: pre-line;"> {{ $work->shift_info }}</td>
+                                        <td>{{ $work->real_checkin ?? '—' }}</td>
+                                        <td>{{ $work->real_checkout ?? '—' }}</td>
+                                        <td>{{ $work->serve_time }}</td>
+                                        <td>{{ $work->note ?? '—' }}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td class="text-center text-muted" colspan="10">Không có lịch sử chấm công.</td>
+                                    </tr>
+                                @endforelse
+                            @endif
                         </tbody>
                     </table>
                 </div>
