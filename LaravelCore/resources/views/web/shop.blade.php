@@ -51,6 +51,13 @@
                                 </div>
                                 <div class="widget-body filter-input-field">
                                     <ul class="list-group">
+                                        <li class="list-group-item border-0 pb-0" id="catalogue-group-0">
+                                            <input class="catalogue-radio" id="catalogue-0" type="radio" name="catalogue_slug" value="flash_sale" {{ request('catalogue_slug') == 'flash_sale' ? 'checked' : '' }}>
+                                            <label class="catalogue-label d-flex align-items-center" for="catalogue-0">
+                                                <img class="w-25 me-2" src="{{ asset('images/cata_flash_sale.png') }}" alt="Sản phẩm khuyến mãi">
+                                                Khuyến mãi
+                                            </label>
+                                        </li>
                                         @include('web.includes.catalogue_recursion', [
                                             'catalogues' => $catalogues,
                                             'product' => isset($product) ? $product : null,
@@ -66,23 +73,20 @@
                         <div class="cbcl-filterform w-100" style="max-width: 100%">
                             <div class="d-flex justify-content-between align-items-center filter-input-field">
                                 <div class="d-block d-lg-none">
-                                    <button class="btn btn-short-mb" data-bs-toggle="offcanvas" data-bs-target="#widget-sidebar" type="button" aria-controls="widget-sidebar"><i
-                                            class="bi bi-sliders fs-5"></i></button>
+                                    <button class="btn btn-short-mb" data-bs-toggle="offcanvas" data-bs-target="#widget-sidebar" type="button" aria-controls="widget-sidebar"><i class="bi bi-sliders fs-5"></i></button>
                                 </div>
                                 <div class="products-count">{{ __('lang_web.shop.from') }} {{ $products->firstItem() }} {{ __('lang_web.shop.to') }}
                                     {{ $products->lastItem() }} {{ __('lang_web.shop.in') }} {{ $products->total() }} {{ __('lang_web.shop.product') }}</div>
                                 <div class="select-box">
                                     <select class="form-select" name="order">
                                         <option value="default" selected disabled hidden>{{ __('lang_web.shop.sort_by') }}</option>
-                                        <option value="default" disabled {{ request('order') === 'default' ? 'selected' : '' }}>{{ __('lang_web.shop.default') }}</option>
-                                        <option value="created_at-asc" {{ request('order') === 'created_at-asc' ? 'selected' : '' }}>{{ __('lang_web.shop.oldest') }}
-                                        </option>
-                                        <option value="created_at-desc" {{ request('order') === 'created_at-desc' ? 'selected' : '' }}>{{ __('lang_web.shop.newest') }}
-                                        </option>
-                                        <option value="name-asc" {{ request('order') === 'name-asc' ? 'selected' : '' }}>
-                                            {{ __('lang_web.shop.a_z') }} </option>
-                                        <option value="name-desc" {{ request('order') === 'name-desc' ? 'selected' : '' }}>
-                                            {{ __('lang_web.shop.z_a') }}</option>
+                                        <option value="default" {{ request('order') === 'default' ? 'selected' : '' }}>{{ __('lang_web.shop.default') }}</option>
+                                        <option value="created_at-asc" {{ request('order') === 'created_at-asc' ? 'selected' : '' }}>{{ __('lang_web.shop.oldest') }}</option>
+                                        <option value="created_at-desc" {{ request('order') === 'created_at-desc' ? 'selected' : '' }}>{{ __('lang_web.shop.newest') }}</option>
+                                        <option value="name-asc" {{ request('order') === 'name-asc' ? 'selected' : '' }}>{{ __('lang_web.shop.a_z') }} </option>
+                                        <option value="name-desc" {{ request('order') === 'name-desc' ? 'selected' : '' }}>{{ __('lang_web.shop.z_a') }}</option>
+                                        <option value="price-asc" {{ request('order') === 'price-asc' ? 'selected' : '' }}>Giá tăng dần</option>
+                                        <option value="price-desc" {{ request('order') === 'price-desc' ? 'selected' : '' }}>Giá giảm dần</option>
                                     </select>
                                     <span class="svg-ic">
                                         <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -115,34 +119,30 @@
                                                     {{ __('lang_web.shop.quantity_sold') }}: {{ number_format($product->quantitySold) }}
                                                 </p>
                                                 <div class="d-flex justify-content-between align-items-center">
+                                                    @php
+                                                        $rating = $product->star ?? 0;
+                                                        $fullStars = floor($rating);
+                                                        $halfStar = $rating - $fullStars >= 0.25 && $rating - $fullStars < 0.75;
+                                                        $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+                                                    @endphp
+
                                                     <div class="product-ratting">
-                                                        @php
-                                                            $rating = $product->star ?? 0;
-                                                            $fullStars = floor($rating);
-                                                            $halfStar = $rating - $fullStars >= 0.25 && $rating - $fullStars < 0.75;
-                                                            $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
-                                                        @endphp
+                                                        <ul class="d-flex" style="gap: 3px; padding-left: 0; margin: 0; list-style: none;">
+                                                            @for ($i = 0; $i < $fullStars; $i++)
+                                                                <li><i class="bi bi-star-fill text-warning"></i></li>
+                                                            @endfor
 
-                                                        <div class="product-ratting">
-                                                            <ul class="d-flex" style="gap: 3px; padding-left: 0; margin: 0; list-style: none;">
-                                                                @for ($i = 0; $i < $fullStars; $i++)
-                                                                    <li><i class="bi bi-star-fill text-warning"></i></li>
-                                                                @endfor
+                                                            @if ($halfStar)
+                                                                <li><i class="bi bi-star-half text-warning"></i></li>
+                                                            @endif
 
-                                                                @if ($halfStar)
-                                                                    <li><i class="bi bi-star-half text-warning"></i></li>
-                                                                @endif
-
-                                                                @for ($i = 0; $i < $emptyStars; $i++)
-                                                                    <li><i class="bi bi-star text-warning"></i></li>
-                                                                @endfor
-                                                            </ul>
-                                                        </div>
-
+                                                            @for ($i = 0; $i < $emptyStars; $i++)
+                                                                <li><i class="bi bi-star text-warning"></i></li>
+                                                            @endfor
+                                                        </ul>
                                                     </div>
                                                     <div>
-                                                        <a class="detail" href="{{ route('product', ['catalogue' => $product->catalogues->first()->slug, 'slug' => $product->slug]) }}"><i
-                                                                class="bi bi-bag-check"></i></a>
+                                                        <a class="detail" href="{{ route('product', ['catalogue' => $product->catalogues->first()->slug, 'slug' => $product->slug]) }}"><i class="bi bi-bag-check"></i></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -236,14 +236,34 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            $(document).on('change', '.catalogue-radio', function() {
-                let url = new URL(window.location.href);
-                url.searchParams.set('catalogue_slug', $(this).val());
-                url.searchParams.delete('page');
-                url.searchParams.delete('search');
-                url.hash = 'product-list-wrapper';
-                window.location.href = url.toString();
+            $(document).on('click', '.catalogue-radio', function(e) {
+                let $this = $(this);
+                // Nếu radio đang được checked => cho phép bỏ chọn
+                if ($this.prop('checked') && $this.data('waschecked')) {
+                    $this.prop('checked', false);
+                    $this.data('waschecked', false);
+
+                    let url = new URL(window.location.href);
+                    url.searchParams.delete('catalogue_slug');
+                    url.searchParams.delete('page');
+                    url.hash = 'product-list-wrapper';
+                    window.location.href = url.toString();
+
+                    e.stopPropagation(); // Ngăn browser tự reset lại checked
+                } else {
+                    // Lưu trạng thái đã chọn
+                    $('.catalogue-radio').data('waschecked', false);
+                    $this.data('waschecked', true);
+
+                    let url = new URL(window.location.href);
+                    url.searchParams.set('catalogue_slug', $this.val());
+                    url.searchParams.delete('page');
+                    url.searchParams.delete('search');
+                    url.hash = 'product-list-wrapper';
+                    window.location.href = url.toString();
+                }
             });
+
 
             // Search debounce
             let searchTimeout;
@@ -261,6 +281,9 @@
             $(document).on('change', 'select[name="order"]', function() {
                 let url = new URL(window.location.href);
                 url.searchParams.set('order', $(this).val());
+                console.log($(this).val());
+                console.log(url.toString());
+
                 url.hash = 'product-list-wrapper';
                 window.location.href = url.toString();
             });

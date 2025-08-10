@@ -14,7 +14,7 @@ class PostController extends Controller
     {
         if ($request->sub) {
             $products = Product::where('status', '>', 0)->orderBy('sort', 'ASC')->paginate(12);
-            $posts = Post::where('status', '>', 0)->orderBy('created_at', 'DESC')->paginate(4);
+            $posts = Post::where('status', '>', 0)->orderBy('created_at', 'DESC')->paginate(5);
             if ($request->category) {
                 $category = Category::whereStatus(1)->with('posts')->whereSlug($request->category)->first();
                 if ($category) {
@@ -40,15 +40,6 @@ class PostController extends Controller
                 }
             }
             switch ($request->sub) {
-                case 'spa-&-grooming':
-                    $pageName = 'Spa & Grooming';
-                    return view('web.posts.spa-&-grooming', compact('pageName', 'products'));
-                case 'khach-san-thu-cung':
-                    $pageName = 'Khách sạn thú cưng';
-                    return view('web.posts.khach-san-thu-cung', compact('pageName', 'products'));
-                case 'about-us':
-                    $pageName = 'Về TRUONGDUNG PET';
-                    return view('web.posts.ve-truongdung-pet', compact('pageName', 'products'));
                 case 'posts':
                     $pageName = 'Bài viết';
                     return view('web.posts', compact('pageName', 'posts'));

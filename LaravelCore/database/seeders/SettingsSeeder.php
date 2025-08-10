@@ -38,11 +38,11 @@ class SettingsSeeder extends Seeder
             ['inventory_manage', '1'],
             ['allow_negative_stock', '0'],
 
-            ['work_info', '[]'],
+            ['work_info', '[{"shift_name":"Ca S\u00e1ng","sign_checkin":"06:30","sign_checkout":"11:30","staff_number":"2"},{"shift_name":"Ca chi\u1ec1u","sign_checkin":"13:30","sign_checkout":"17:30","staff_number":"3"}]'],
             ['allow_self_register', '1'],
             ['require_attendance_on_company_wifi', '1'],
             ['scores_rate_exchange', '1'],
-            ['expense_group', '[]'],
+            ['expense_group', '["Nh\u1eadp h\u00e0ng","Xu\u1ea5t h\u00e0ng"]'],
             ['currency', 'VND'],
             ['hourly_salary', '20000'],
 

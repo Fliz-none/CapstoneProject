@@ -95,7 +95,7 @@
                     url: `{{ route('admin.category') }}` + window.location.search
                 },
                 columns: [
-                    config.datatable.columns.id,
+                    config.datatable.columns.code,
                     config.datatable.columns.name,
                     config.datatable.columns.note,
                     config.datatable.columns.status,

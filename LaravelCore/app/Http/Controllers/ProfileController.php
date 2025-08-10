@@ -16,8 +16,6 @@ class ProfileController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        // $this->middleware(['verified','auth']);
-
         $this->middleware(function ($request, $next) {
             Controller::init();
             return $next($request);
@@ -63,7 +61,7 @@ class ProfileController extends Controller
 
     public function profile()
     {
-        $pageName = 'Account ' . Auth::user()->name;
+        $pageName = Auth::user()->name;
         $settings = cache()->get('settings');
         return view('web.profile', compact('pageName', 'settings'));
     }
@@ -290,20 +288,84 @@ class ProfileController extends Controller
 
     public function order_cancel(Request $request)
     {
-        $order = Order::where('id', $request->order_id)->where('customer_id', Auth::id())->first();
-        if ($order) {
-            $order->update([
-                'status' => 0
-            ]);
-            return response()->json(array(
-                'status' => 'success',
-                'msg' => 'Đã hủy đơn hàng thành công!'
-            ), 200);
-        } else {
-            return response()->json(array(
-                'status' => 'error',
-                'msg' => 'Đơn hàng được chọn không hợp lệ!'
-            ), 200);
+        $order = Order::where('id', $request->order_id)
+            ->where('status','<>', 0)
+            ->where('customer_id', Auth::id())
+            ->first();
+        if (!$order) {
+            return response()->json([
+                'status' => 'danger',
+                'msg'    => 'Không tìm thấy đơn hàng!'
+            ], 200);
         }
+
+        // Hủy đơn
+        $order->update(['status' => 0]);
+
+        // Lấy exports kèm exportDetails và stock
+        $exports = $order->exports()
+            ->with('export_details.stock')
+            ->get();
+
+        // Trả hàng về kho
+        foreach ($exports as $export) {
+            foreach ($export->export_details as $exportDetail) {
+                if ($exportDetail->stock) {
+                    $exportDetail->stock->increment('quantity', $exportDetail->quantity);
+                }
+            }
+
+            // Cập nhật note
+            $export->update([
+                'note' => 'Hủy đơn ' . $order->code
+            ]);
+
+            // Xóa export details trước khi xóa export (nếu FK không cascade delete)
+            $export->export_details()->delete();
+
+            // Xóa export
+            $export->delete();
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'msg'    => 'Đã hủy đơn hàng thành công!'
+        ], 200);
+    }
+
+
+    public function update_password(Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required|min:8|max:32',
+            'old_password' => [
+                function ($attribute, $value, $fail) {
+                    if (!Hash::check($value, Auth::user()->password)) {
+                        return $fail(__('messages.profile.error_current_password'));
+                    }
+                }
+            ],
+            'new_password' => 'required|different:old_password|min:8|max:32',
+            'password_confirmation' => 'required|same:new_password',
+        ], [
+            'old_password.min' => 'Mật khẩu phải ít nhất 8 ký tự.',
+            'old_password.max' => 'Mật khẩu quá dài.',
+            'new_password.min' => 'Mật khẩu mới phải ít nhất 8 ký tự.',
+            'new_password.max' => 'Mật khẩu mới quá dài.',
+            'old_password.required' => 'Vui lòng nhập mật khẩu hiện tại',
+            'new_password.required' => 'Vui lòng nhập mật khẩu mới',
+            'password_confirmation.required' => 'Vui lòng nhập xâc nhận lại mật khẩu',
+            'new_password.different' => 'Mật mới không được trùng mật khẩu cũ.',
+            'password_confirmation.same' => 'Mật khẩu xác nhận không trùng khớp.'
+        ]);
+        /** @var User */
+        $user = Auth::user();
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return response()->json(array(
+            'status' => 'success',
+            'msg' => 'Đã đổi mật khẩu thành công!',
+        ));
     }
 }

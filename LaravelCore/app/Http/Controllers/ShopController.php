@@ -21,7 +21,7 @@ class ShopController extends Controller
             'order' => [
                 'nullable',
                 'string',
-                Rule::in(['created_at-asc', 'created_at-desc', 'name-asc', 'name-desc']),
+                Rule::in(['default', 'created_at-asc', 'created_at-desc', 'name-asc', 'name-desc', 'price-asc', 'price-desc']),
             ],
         ]);
         $pageName = 'Cửa hàng';
@@ -34,7 +34,7 @@ class ShopController extends Controller
         /**
          * @var \Illuminate\Pagination\LengthAwarePaginator|null
          */
-        $query = Product::whereIn('status', [2, 3]);
+        $query = Product::with(['catalogues', 'variables.units'])->whereIn('status', [2, 3]);
         // Lọc theo từ khóa tìm kiếm
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
@@ -42,12 +42,19 @@ class ShopController extends Controller
             // Lọc theo danh mục (nhiều checkbox)
             if ($request->filled('catalogue_slug')) {
                 $slug = $request->input('catalogue_slug');
-
-                $query->whereHas('catalogues', function ($q) use ($slug) {
-                    $q->where('slug', $slug)
-                        ->where('status', 1)
-                        ->where('is_featured', 1);
-                });
+                if ($slug == 'flash_sale') {
+                    $query->whereHas('variables', function ($q) {
+                        $q->whereHas('units', function ($q2) {
+                            $q2->whereHas('discounts');
+                        });
+                    });
+                } else {
+                    $query->whereHas('catalogues', function ($q) use ($slug) {
+                        $q->where('slug', $slug)
+                            ->where('status', 1)
+                            ->where('is_featured', 1);
+                    });
+                }
             } else {
                 // Nếu không chọn danh mục nào vẫn lọc theo danh mục nổi bật
                 $query->whereHas('catalogues', function ($q) {
@@ -65,10 +72,23 @@ class ShopController extends Controller
         }
         if ($request->filled('order') && $request->order !== 'default') {
             [$field, $direction] = explode('-', $request->order);
-            $query->orderBy($field, $direction);
+
+            if ($field === 'price') {
+                // Thêm cột min_price vào query để sort
+                $query->addSelect([
+                    'min_price' => DB::table('units')
+                        ->selectRaw('MIN(price)')
+                        ->join('variables', 'variables.id', '=', 'units.variable_id')
+                        ->whereColumn('variables.product_id', 'products.id')
+                ])
+                    ->orderBy('min_price', $direction);
+            } else {
+                $query->orderBy($field, $direction);
+            }
         } else {
             $query->orderBy('sort'); // Mặc định
         }
+
 
         $products = $query->paginate(12)->withQueryString();
         return view('web.shop', compact('catalogues', 'pageName', 'products'));

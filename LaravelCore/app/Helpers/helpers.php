@@ -214,6 +214,17 @@ if (!function_exists('log_exception')) {
 
 class StockChecker
 {
+    public function checkUnitStock(CartItem $item): bool
+    {
+        $requiredQty = $item->quantity;
+        $unit = $item->unit;
+        if (!$unit || $unit->getSumStock() < $requiredQty) {
+            return false;
+        }
+
+        // Kiểm tra xem có stock đủ hàng không (FIFO)
+        return true;  
+    }
 
     public function allocateStockForUnit($unit_id, $quantity, $userLat = null, $userLng = null)
     {

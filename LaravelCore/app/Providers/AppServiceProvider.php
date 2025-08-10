@@ -117,7 +117,7 @@ class AppServiceProvider extends ServiceProvider
         Message::observe(MessageObserver::class);
         Notification::observe(NotificationObserver::class);
         Order::observe(OrderObserver::class);
-        Post::observe(PostObserver::class);
+        // Post::observe(PostObserver::class);
         Role::observe(RoleObserver::class);
         Setting::observe(SettingObserver::class);
         Stock::observe(StockObserver::class);

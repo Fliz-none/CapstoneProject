@@ -75,7 +75,7 @@ class CartController extends Controller
             DB::rollBack();
             return response()->json([
                 'status' => 'error',
-                'msg' => 'Sản phẩm hiện đang hết hàng.',
+                'msg' => 'Sản phẩm hiện đang hết hàng hoặc đã thêm tối đa vào giỏ',
                 'cart' => $cart->load('items.unit.variable.product'),
             ], 200);
         } catch (\Exception $e) {

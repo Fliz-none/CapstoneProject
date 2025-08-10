@@ -77,7 +77,7 @@ class CategoryController extends Controller
                     })
                     ->addColumn('code', function ($obj) {
                         if ($this->user->can(User::UPDATE_CATEGORY)) {
-                            $code = '<a class="btn btn-link text-decoration-none btn-update-catalogue fw-bold p-0" data-id="' . $obj->id . '">' . $obj->code . '</a>';
+                            $code = '<a class="btn btn-link text-decoration-none btn-update-category fw-bold p-0" data-id="' . $obj->id . '">' . $obj->code . '</a>';
                         } else {
                             $code = '<span class="fw-bold">' . $obj->code . '</span>';
                         }
@@ -121,7 +121,7 @@ class CategoryController extends Controller
                             </form>';
                         }
                     })
-                    ->rawColumns(['checkboxes', 'name', 'status', 'action'])
+                    ->rawColumns(['checkboxes','code', 'name', 'status', 'action'])
                     ->setTotalRecords($objs->count())
                     ->make(true);
             } else {

@@ -321,14 +321,10 @@
                         loadMessages(false);
                     }
                 });
-
-                // Chọn file
-                $(document).on('change', '#chatAttachments', function() {
-                    console.log(this.files);
-                    console.log($(this).val());
-
-
-                });
+                $(document).on('click', '.btn-select-attachments', function(e){
+                    e.preventDefault();
+                    $('#chatAttachments').click();
+                })
             });
         </script>
 

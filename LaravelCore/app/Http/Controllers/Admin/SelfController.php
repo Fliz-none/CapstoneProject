@@ -140,7 +140,7 @@ class SelfController extends Controller
             'current_password' => ['required', 'min:8', 'max:32'],
             'current_password' => [
                 function ($attribute, $value, $fail) {
-                    if (!Hash::check($value, $this->user->password)) {
+                    if (!Hash::check($value, Auth::user()->password)) {
                         return $fail(__('messages.profile.error_current_password'));
                     }
                 }

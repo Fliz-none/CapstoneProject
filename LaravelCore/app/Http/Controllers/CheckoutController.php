@@ -12,6 +12,7 @@ use App\Models\ImportDetail;
 use App\Models\Order;
 use App\Models\Stock;
 use App\Models\Transaction;
+use App\Exceptions\OutOfStockException;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -148,6 +149,7 @@ class CheckoutController extends Controller
         }
 
         DB::beginTransaction();
+        
         try {
             // Chi nhánh quản lý đơn
             $branch_id = optional(
@@ -177,7 +179,15 @@ class CheckoutController extends Controller
 
             session()->forget('checkout_address');
 
+            $checker = new StockChecker();
             foreach ($cart->items as $item) {
+                if(!$checker->checkUnitStock($item)){
+                    DB::rollBack();
+                    return redirect()->route('checkout')->with('response', [
+                        'status' => 'error',
+                        'msg' => 'Sản phẩm ' . $item->unit->variable->fullName . ' đã hết hàng. Sản phẩm đã bị xóa khỏi giỏ hàng!',
+                    ]);
+                }
                 $stock = $item->stock;
                 $detail = Detail::create([
                     'order_id' => $order->id,
@@ -215,7 +225,15 @@ class CheckoutController extends Controller
             $cart->items()->delete();
 
             DB::commit();;
-            return redirect()->route('profile');
+            return redirect()->route('profile')->withFragment('user-order');
+        } catch (OutOfStockException $e){
+            DB::rollBack();
+            $cart->items()->delete();
+            return redirect()->route('checkout')->with('response', [
+                'status' => 'error',
+                'msg' => $e->getMessage(),
+            ]);
+
         } catch (\Exception $e) {
             DB::rollBack();
             log_exception($e);

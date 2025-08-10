@@ -303,7 +303,7 @@ class OrderController extends Controller
 
             'prices.*' => ['required', 'numeric'],
             'discounts.*' => ['nullable', 'numeric'],
-            'quantities.*' => ['required', 'numeric', 'min:0'],
+            'quantities.*' => ['required', 'numeric', 'min:1'],
             'notes.*' => ['nullable', 'string', 'max:125'],
             'ids.*' => ['nullable', 'numeric'],
 
@@ -531,7 +531,7 @@ class OrderController extends Controller
             'stock_ids.*' => ['required', 'numeric'],
             'prices.*' => ['required', 'numeric'],
             'discounts.*' => ['nullable', 'numeric'],
-            'quantities.*' => ['required', 'numeric', 'min:0'],
+            'quantities.*' => ['required', 'numeric', 'min:1'],
             'notes.*' => ['nullable', 'string', 'max:125'],
             'ids.*' => ['nullable', 'numeric'],
 
@@ -690,7 +690,7 @@ class OrderController extends Controller
                                 $order->sync_scores($transaction->amount);
                             }
                         }
-                        $order->update(['total' => $order->total()]);
+                        $order->update(['total' => $order->total() >= 0 ? $order->total() : 0]);
                         $response = array(
                             'id' => $order->id,
                             'status' => 'success',

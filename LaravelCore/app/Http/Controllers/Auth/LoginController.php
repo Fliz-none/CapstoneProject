@@ -57,55 +57,55 @@ class LoginController extends Controller
     public function auth(Request $request)
     {
         // Validate dữ liệu đầu vào
-        $validator = Validator::make($request->all(), [
+        $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
-        // Nếu validation thất bại, trả về lỗi
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'msg' => 'Data validation failed.',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-        if(Auth::check()) {
-            return response()->json([
-                'token' => csrf_token(),
-                'status' => 'success',
-                'msg' => 'Login successful.'
-            ], 200);
-        }
-        // Thử đăng nhập
-        if ($this->attemptLogin($request)) {
-            if(Auth::check()) {
-                /** @var \App\Models\User|null*/
-                $user = Auth::user();
-                if($user->hasAnyPermission(User::READ_DASHBOARD)) {
-                    return redirect()->route('admin.home');
-                } else if($user->hasAnyPermission(User::CREATE_ORDER)) {
-                    return redirect()->route('admin.order', ['key' => 'new']);
-                } else if($user->hasAnyPermission(User::READ_IMPORTS)){
-                    return redirect()->route('admin.import');
-                } else {
-                    return redirect()->route('home');
-                }
-            }
-            return redirect()->intended($this->redirectPath());
+
+        // Nếu đã đăng nhập rồi
+        if (Auth::check()) {
+            return $this->redirectAfterLogin(Auth::user());
         }
 
-        if($request->ajax()) {
-            // Nếu đăng nhập thất bại
-            return response()->json([
-                'status' => 'error',
-                'msg' => 'Login failed.'
-            ], 401);
-        }else{
-            return back()->withInput()->withErrors([
-                'password' => 'Invalid login information.',
-            ]);
+        // Thử đăng nhập
+        if ($this->attemptLogin($request) && Auth::check()) {
+            return $this->redirectAfterLogin(Auth::user());
         }
+
+        // Đăng nhập thất bại
+        return back()
+            ->withInput()
+            ->withErrors(['password' => 'Invalid login information.']);
     }
+
+    /**
+     * Xác định route redirect sau khi login
+     */
+    protected function redirectAfterLogin(User $user)
+    {
+        // Map quyền -> route
+        $redirectMap = [
+            User::READ_DASHBOARD => route('admin.home'),
+            User::CREATE_ORDER   => route('admin.order', ['key' => 'new']),
+            User::READ_IMPORTS   => route('admin.import'),
+        ];
+
+        // Ưu tiên URL cũ nếu có
+        if (session()->has('url.intended')) {
+            return redirect()->intended();
+        }
+
+        // Tìm route theo quyền
+        foreach ($redirectMap as $permission => $route) {
+            if ($user->hasAnyPermission($permission)) {
+                return redirect()->to($route);
+            }
+        }
+
+        // Mặc định
+        return redirect()->route('home');
+    }
+
 
     public function logout(Request $request)
     {

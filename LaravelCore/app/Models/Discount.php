@@ -75,9 +75,9 @@ class Discount extends Model
     {
         switch ($this->type) {
             case '0':
-                return "Discount $this->value%";
+                return __('messages.discount_.discount') . " $this->value%";
             case '1':
-                return 'Discount ' . number_format($this->value) . ' ' . cache()->get('settings')['currency'];
+                return __('messages.discount_.discount') . ' ' . number_format($this->value) . ' ' . cache()->get('settings')['currency'];
             case '2':
                 return "Buy $this->buy_quantity get $this->get_quantity";
             default:

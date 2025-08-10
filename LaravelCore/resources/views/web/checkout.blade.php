@@ -95,9 +95,8 @@
                                                     $first = $items->first();
                                                     $quantity = $items->sum('quantity');
                                                     $sub_total = $items->sum(function ($item) {
-                                                        return (float) $item->sub_total;
+                                                        return (float) str_replace(',', '', $item->sub_total);
                                                     });
-
                                                     return (object) [
                                                         'unit' => $first->unit,
                                                         'variable' => $first->unit->variable,
@@ -131,8 +130,8 @@
                                                 <td>
                                                     {{ $item->quantity }} × {{ number_format((float) $unit->price) . ' ' . $config['currency'] }}
                                                 </td>
-                                                <td class="text-end fw-semibold">
-                                                    {{ number_format((float) $item->sub_total) . ' ' . $config['currency'] }}
+                                                <td class="text-end">
+                                                    {{ number_format($item->sub_total) . ' ' . $config['currency'] }}
                                                 </td>
                                             </tr>
                                         @endforeach

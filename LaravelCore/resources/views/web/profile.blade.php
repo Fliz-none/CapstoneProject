@@ -51,12 +51,12 @@
                     <div class="profile-wrapper">
                         <div class="profile-content">
                             <div class="row align-items-center justify-content-start">
-                                <div class="col-12 col-md-4">
+                                <div class="col-2 col-md-4">
                                     <div class="profile-avatar py-2">
                                         <img class="img-fluid rounded-circle border border-1 w-100" src="{{ $user->avatarUrl }}" alt="Avatar" referrerpolicy="no-referrer">
                                     </div>
                                 </div>
-                                <div class="col-12 col-md-8 px-0 cursor-pointer text-dark">
+                                <div class="col-10 col-md-8 px-0 cursor-pointer text-dark">
                                     <p class="fw-semibold mb-0">{{ $user->name }}</p>
                                     <small class="mb-0">{{ $user->phone ?? '' }}</small>
                                     </a>
@@ -64,25 +64,24 @@
                                 <hr>
                                 <ul class="nav flex-column text-dark ps-4" role="tablist">
                                     <li class="nav-item cursor-pointer">
-                                        <a class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" role="tab">
+                                        <a class="nav-link text-nowrap active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" role="tab">
                                             <i class="bi bi-person me-2"></i> Thông tin cá nhân
                                         </a>
                                     </li>
-
                                     <li class="nav-item cursor-pointer">
-                                        <a class="nav-link active" id="user-order-tab" data-bs-toggle="tab" data-bs-target="#user-order" role="tab">
+                                        <a class="nav-link text-nowrap" id="user-order-tab" data-bs-toggle="tab" data-bs-target="#user-order" role="tab">
                                             <i class="bi bi-receipt-cutoff me-2"></i> Đơn hàng
                                         </a>
                                     </li>
                                     @if ($user->hasAnyPermission(\App\Models\User::ACCESS_ADMIN))
                                         <li class="nav-item cursor-pointer">
-                                            <a class="nav-link" href="{{ route('admin.home') }}">
+                                            <a class="nav-link text-nowrap" href="{{ route('admin.home') }}">
                                                 <i class="bi bi-house-check me-2"></i> {{ __('lang_web.profile.access_admin') }}
                                             </a>
                                         </li>
                                     @endif
                                     <li class="nav-item cursor-pointer">
-                                        <a class="nav-link text-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        <a class="nav-link text-nowrap text-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                             <i class="bi bi-box-arrow-right me-2"></i> {{ __('messages.profile.logout') }}
                                         </a>
                                         <form class="d-none" id="logout-form" action="{{ route('logout') }}" method="POST">
@@ -98,24 +97,18 @@
 
                 <div class="col-12 col-md-8 col-lg-9 col-xl-10 px-5">
                     <div class="tab-content mt-3">
-                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                             @if (Auth::check())
                                 <form class="save-form" id="profile-web-form" method="post" enctype="multipart/form-data" action="{{ route('profile.change_infor') }}">
                                     @csrf
-                                    <div class="row g-3">
-                                        <div class="col-12 col-md-4 col-lg-3">
-                                            <div class="row">
-                                                <!-- Avatar -->
-                                                <div class="col-md-12 text-center">
-                                                    <label class="avt cursor-pointer" for="profile-avatar">
-                                                        <img class="rounded-circle border border-1" id="avatar-preview" src="{{ Auth::user()->avatarUrl ?? asset('admin/images/placeholder.webp') }}" alt="Admin"
-                                                            style="object-fit: cover; width: 160px; height: 160px;">
-                                                    </label>
-                                                    <input class="d-none" id="profile-avatar" name="avatar" type="file" accept="image/*">
-                                                </div>
-                                            </div>
+                                    <div class="row justify-content-between align-items-center mt-3">
+                                        <div class="col-12 col-sm-8 col-lg-9 d-flex">
+                                            <h5 class="mb-3" for="name">Cập nhật thông tin cá nhân</h5>
+                                            <button class="btn-success-custom ms-auto" type="submit">Lưu</button>
                                         </div>
-                                        <div class="col-12 col-md-8 col-lg-9">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-8 col-lg-9">
                                             <div class="row g-3">
                                                 <!-- Name -->
                                                 <div class="col-md-6">
@@ -147,15 +140,50 @@
                                             </div>
                                             <div class="d-flex justify-content-between align-items-center mt-3">
                                                 <a class="btn btn-view-address border border-1"><i class="bi bi-geo-alt"></i> {{ __('lang_web.profile.user_address') }}</a>
-
-                                                <button class="btn-success-custom" data-text="{{ __('lang_web.profile.save') }}" type="submit">{{ __('lang_web.profile.save') }}</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-4 col-lg-3">
+                                            <div class="row">
+                                                <!-- Avatar -->
+                                                <div class="col-md-12 text-center">
+                                                    <label class="avt cursor-pointer ratio-1x1" for="profile-avatar">
+                                                        <img class="rounded-circle img-fluid border border-1" id="avatar-preview" src="{{ Auth::user()->avatarUrl ?? asset('admin/images/placeholder.webp') }}" alt="Admin" style="object-fit: cover;">
+                                                    </label>
+                                                    <input class="d-none" id="profile-avatar" name="avatar" type="file" accept="image/*">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <hr class="mx-3 my-4">
+                                <form class="change-password-form" action="{{ route('profile.update_password') }}" method="post">
+                                    <div class="row justify-content-between align-items-center mt-3">
+                                        <div class="col-12 col-sm-8 col-lg-9 d-flex">
+                                            <h5 class="mb-3" for="old-password">Đổi mật khẩu</h5>
+                                            <button class="btn-success-custom ms-auto" type="submit">Lưu</button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-8 col-lg-9">
+                                            @csrf
+                                            <div class="mb-3">
+                                                <label for="old-password">Mật khẩu</label>
+                                                <input class="form-control" id="old-password" name="old_password" type="password" placeholder="Nhập mật khẩu hiện tại" required autocomplete="off">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="new-password">Mật khẩu mới</label>
+                                                <input class="form-control" id="new-password" name="new_password" type="password" placeholder="Nhập mật khẩu mới" required autocomplete="off">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="password-confirm">Xác nhận</label>
+                                                <input class="form-control" id="password-confirm" name="password_confirmation" type="password" placeholder="Xác nhận" required autocomplete="off">
                                             </div>
                                         </div>
                                     </div>
                                 </form>
                             @endif
                         </div>
-                        <div class="tab-pane fade show active" id="user-order" role="tabpanel" aria-labelledby="user-order-tab" style="min-height: 70vh">
+                        <div class="tab-pane fade" id="user-order" role="tabpanel" aria-labelledby="user-order-tab" style="min-height: 70vh">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs nav-tabs-horizontal fw-bold mb-3" role="tablist">
                                 <li class="nav-item" role="presentation">
@@ -492,7 +520,6 @@
                                     @endforeach
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -526,7 +553,7 @@
                 resetForm(form)
                 $.get(`{{ route('profile.index') }}/${id}`, function(order) {
                     let str = ``,
-                    renderedProductIds = [];
+                        renderedProductIds = [];
                     $.each(order.details, function(index, detail) {
                         const variable = detail._stock.import_detail._variable,
                             product = variable._product;
@@ -644,5 +671,13 @@
                 alert("Vui lòng chọn một tệp hình ảnh hợp lệ.");
             }
         });
+
+        $(document).on('submit', '.change-password-form', function(e) {
+            e.preventDefault();
+            const form = $(this);
+            submitForm(form).done(function(response) {
+                resetForm(form);
+            });
+        })
     </script>
 @endpush

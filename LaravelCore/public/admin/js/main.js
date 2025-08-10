@@ -759,6 +759,11 @@ var selectImage = function () {
     return button.render();
 };
 
+//Ẩn nút xóa khi đóng modal
+$(document).on("hide.bs.modal", "#quick_images-modal", function () {
+    $('.btn-delete-images').addClass('d-none');
+})
+
 //Chèn hình ảnh đã chọn vào summernote
 $(document).on("click", ".btn-insert-images", function () {
     $(".quick_images-choice:checked").each(function () {

@@ -143,6 +143,25 @@ class Product extends Model
         return 'PRO' . str_pad($this->id, 5, "0", STR_PAD_LEFT);
     }
 
+    public function discountNames()
+    {
+        $today = now()->toDateString();
+
+        return $this->variables
+            ->flatMap(fn($v) => 
+                $v->units->flatMap(fn($u) => 
+                    $u->discounts
+                        ->where('status', 1)
+                        ->where('start_date', '<=', $today)
+                        ->where('end_date', '>=', $today)
+                        ->map->typeStr // <--- map ra property typeStr của từng Discount
+                )
+            )
+            ->unique()
+            ->values()
+            ->toArray();
+    }
+
     public function getQuantitySoldAttribute()
     {
         $details = Detail::with('unit')->whereHas('unit.variable', function ($query) {
