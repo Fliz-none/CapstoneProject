@@ -18,7 +18,7 @@ class CreateExportDetailsTable extends Migration
             $table->unsignedBigInteger('stock_id');
             $table->unsignedBigInteger('export_id');
             $table->unsignedBigInteger('detail_id')->nullable();
-            $table->decimal('quantity',8,2)->default(0);
+            $table->decimal('quantity',10,0)->default(0);
             $table->unsignedBigInteger('unit_id');
             $table->text('note')->nullable();
             $table->softDeletes();

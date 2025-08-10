@@ -50,6 +50,7 @@ return [
     ],
 
     'cart' =>[
+        'order' => 'Order',
         'cart' => 'Cart',
         'your_cart' => 'Your Cart',
         'no_cart' => 'Your Cart is Empty',
@@ -128,6 +129,14 @@ return [
 
     'checkout' => [
         'address_required' => 'Please select delivery address',
-    ]
+    ],
+
+    'change_password' => [
+        'old_password' => 'Old password',
+        'new_password' => 'New password',
+        'confirm_password' => 'Confirm password',
+        'change_password' => 'Change password',
+    ],
+    'save' => 'Save',
 
 ];

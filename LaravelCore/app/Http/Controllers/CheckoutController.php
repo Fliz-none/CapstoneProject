@@ -144,7 +144,7 @@ class CheckoutController extends Controller
         if (!$cart || $cart->items->isEmpty()) {
             return redirect()->route('checkout')->with('response', [
                 'status' => 'error',
-                'msg' => 'Cart is empty!',
+                'msg' => 'Giỏ hàng trống!',
             ]);
         }
 

@@ -16,7 +16,7 @@ class CreateStocksTable extends Migration
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('import_detail_id');
-            $table->decimal('quantity',8,2)->default(0);
+            $table->decimal('quantity',10,0)->default(0);
             $table->string('lot')->nullable();
             $table->date('expired')->nullable();
             $table->softDeletes();

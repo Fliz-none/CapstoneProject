@@ -32,7 +32,7 @@ class ExportController extends Controller
             'rates' => ['array', 'min:1'],
             'rates.*' => ['required', 'numeric'],
             'quantities' => ['array'],
-            'quantities.*' => ['required', 'numeric', 'min:0'],
+            'quantities.*' => ['required', 'numeric', 'min:0.0001'],
             'notes' => ['array'],
             'notes.*' => ['nullable', 'string'],
         ];

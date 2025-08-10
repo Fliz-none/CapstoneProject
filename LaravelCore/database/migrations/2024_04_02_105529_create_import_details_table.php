@@ -18,7 +18,7 @@ class CreateImportDetailsTable extends Migration
             $table->unsignedBigInteger('import_id');
             $table->unsignedBigInteger('variable_id');
             $table->unsignedBigInteger('unit_id');
-            $table->bigInteger('quantity');
+            $table->unsignedBigInteger('quantity');
             $table->decimal('price', 10, 0)->default(0);
             $table->softDeletes();
             $table->timestamps();

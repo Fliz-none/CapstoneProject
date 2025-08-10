@@ -292,7 +292,6 @@ class TransactionController extends Controller
                         'payment' => $request->payment,
                         'amount' => $request->amount * $status,
                         'note' => $request->note,
-                        'date' => Carbon::now(),
                     ]);
                     // $transaction->order->sync_scores($transaction->amount);
 
@@ -323,7 +322,6 @@ class TransactionController extends Controller
                                     'cashier_id' => $request->cashier_id,
                                     'payment' => $request->payment,
                                     'amount' => $amount,
-                                    'date' => Carbon::now(),
                                     'note' => $request->note,
                                 ]);
                                 // $order->sync_scores($transaction->amount);

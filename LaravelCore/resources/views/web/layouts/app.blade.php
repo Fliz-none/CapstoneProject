@@ -792,7 +792,7 @@
                     const form = $(this)
                     submitForm(form).done(function(response) {
                         if (form.attr('data-action') === "create") {
-                            let count = parseInt($('#user-address-list input[type="radio"]').last().attr('data-index')),
+                            let count = parseInt($('#user-address-list input[type="radio"]').last().attr('data-index') ?? 0),
                                 str = `<div class="user-address">
                                             <input type="radio" data-index="${count + 1}" hidden id="user-address-${count + 1}" name="user_address" class="btn-check" checked value='${JSON.stringify(response.address)}'>
                                             <label for="user-address-${count + 1}" class="btn btn-outline-primary mt-1 w-100 text-start"

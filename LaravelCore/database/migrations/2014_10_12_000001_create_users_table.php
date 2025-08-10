@@ -18,12 +18,12 @@ class CreateUsersTable extends Migration
             $table->string('name', 50);
             $table->string('phone', 20)->nullable();
             $table->string('email')->nullable()->unique();
-            $table->string('avatar')->nullable();
+            $table->text('avatar')->nullable();
             $table->unsignedTinyInteger('gender')->comment('0:male; 1:female; 2:other')->default(0);
             $table->string('password')->nullable();
             $table->text('address')->nullable();
             $table->unsignedBigInteger('main_branch')->nullable();
-            $table->UnsignedInteger('scores')->nullable();
+            $table->unsignedInteger('scores')->nullable();
             $table->unsignedTinyInteger('status')->comment('0:block; 1:active')->default(1);
             //$table->dateTime('last_login_at')->nullable();
             $table->text('note')->nullable();

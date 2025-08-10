@@ -65,12 +65,12 @@
                                 <ul class="nav flex-column text-dark ps-4" role="tablist">
                                     <li class="nav-item cursor-pointer">
                                         <a class="nav-link text-nowrap active" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" role="tab">
-                                            <i class="bi bi-person me-2"></i> Thông tin cá nhân
+                                            <i class="bi bi-person me-2"></i> {{ __('lang_web.profile.profile') }}
                                         </a>
                                     </li>
                                     <li class="nav-item cursor-pointer">
                                         <a class="nav-link text-nowrap" id="user-order-tab" data-bs-toggle="tab" data-bs-target="#user-order" role="tab">
-                                            <i class="bi bi-receipt-cutoff me-2"></i> Đơn hàng
+                                            <i class="bi bi-receipt-cutoff me-2"></i> {{ __('lang_web.cart.order') }}
                                         </a>
                                     </li>
                                     @if ($user->hasAnyPermission(\App\Models\User::ACCESS_ADMIN))
@@ -103,8 +103,8 @@
                                     @csrf
                                     <div class="row justify-content-between align-items-center mt-3">
                                         <div class="col-12 col-sm-8 col-lg-9 d-flex">
-                                            <h5 class="mb-3" for="name">Cập nhật thông tin cá nhân</h5>
-                                            <button class="btn-success-custom ms-auto" type="submit">Lưu</button>
+                                            <h5 class="mb-3" for="name">{{ __('lang_web.profile.profile') }}</h5>
+                                            <button class="btn-success-custom ms-auto" type="submit">{{ __('lang_web.save')}}</button>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -160,23 +160,23 @@
                                 <form class="change-password-form" action="{{ route('profile.update_password') }}" method="post">
                                     <div class="row justify-content-between align-items-center mt-3">
                                         <div class="col-12 col-sm-8 col-lg-9 d-flex">
-                                            <h5 class="mb-3" for="old-password">Đổi mật khẩu</h5>
-                                            <button class="btn-success-custom ms-auto" type="submit">Lưu</button>
+                                            <h5 class="mb-3" for="old-password">{{ __('lang_web.change_password.change_password') }}</h5>
+                                            <button class="btn-success-custom ms-auto" type="submit">{{ __('lang_web.save') }}</button>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12 col-sm-8 col-lg-9">
                                             @csrf
                                             <div class="mb-3">
-                                                <label for="old-password">Mật khẩu</label>
+                                                <label for="old-password">{{ __('lang_web.change_password.old_password') }}</label>
                                                 <input class="form-control" id="old-password" name="old_password" type="password" placeholder="Nhập mật khẩu hiện tại" required autocomplete="off">
                                             </div>
                                             <div class="mb-3">
-                                                <label for="new-password">Mật khẩu mới</label>
+                                                <label for="new-password">{{__('lang_web.change_password.new_password')}}</label>
                                                 <input class="form-control" id="new-password" name="new_password" type="password" placeholder="Nhập mật khẩu mới" required autocomplete="off">
                                             </div>
                                             <div class="mb-3">
-                                                <label for="password-confirm">Xác nhận</label>
+                                                <label for="password-confirm">{{ __('lang_web.change_password.confirm_password') }}</label>
                                                 <input class="form-control" id="password-confirm" name="password_confirmation" type="password" placeholder="Xác nhận" required autocomplete="off">
                                             </div>
                                         </div>

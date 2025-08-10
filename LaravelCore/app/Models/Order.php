@@ -11,12 +11,12 @@ class Order extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'orders';
-    protected $appends = ['code', 'statusStr', 'methodStr', 'paid', 'receive', 'refund','customer_name', 'dealer_name', 'branch_name'];
+    protected $appends = ['code', 'statusStr', 'paid', 'receive', 'refund','customer_name', 'dealer_name', 'branch_name'];
     protected $fillable = [
         'branch_id',
         'customer_id',
         'dealer_id',
-        'method',
+        // 'method',
         'address',
         'total',
         'discount',
@@ -133,20 +133,20 @@ class Order extends Model
         return 'DH' . str_pad($this->id, 5, "0", STR_PAD_LEFT);
     }
 
-    public function getMethodStrAttribute(){
-        switch ($this->method) {
-            case '2':
-                $result =  __('messages.expense.card');
-                break;
-            case '1':
-                $result = __('messages.expense.cash');
-                break;
-            default:
-                $result = __('messages.unknown');
-                break;
-        }
-        return $result;
-    }
+    // public function getMethodStrAttribute(){
+    //     switch ($this->method) {
+    //         case '2':
+    //             $result =  __('messages.expense.card');
+    //             break;
+    //         case '1':
+    //             $result = __('messages.expense.cash');
+    //             break;
+    //         default:
+    //             $result = __('messages.unknown');
+    //             break;
+    //     }
+    //     return $result;
+    // }
 
     public function getStatusStrAttribute()
     {

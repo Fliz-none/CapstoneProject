@@ -307,7 +307,7 @@ class OrderController extends Controller
 
             'prices.*' => ['required', 'numeric'],
             'discounts.*' => ['nullable', 'numeric'],
-            'quantities.*' => ['required', 'numeric', 'min:1'],
+            'quantities.*' => ['required', 'numeric', 'min::0.0001'],
             'notes.*' => ['nullable', 'string', 'max:125'],
             'ids.*' => ['nullable', 'numeric'],
 
@@ -397,7 +397,6 @@ class OrderController extends Controller
                         'branch_id' => $this->user->main_branch,
                         'customer_id' => $request->customer_id,
                         'dealer_id' => Auth::id(),
-                        'method' => 1,
                         'discount' => $request->discount ?? 0,
                         'status' => $request->has('status') ? $request->status : 0,
                         'note' => $request->note,
@@ -463,7 +462,6 @@ class OrderController extends Controller
                                     'cashier_id' => Auth::id(),
                                     'payment' => $request->transaction_payments[$i],
                                     'amount' => $request->transaction_amounts[$i] * $refund,
-                                    'date' => Carbon::now(),
                                     'note' => $request->transaction_notes[$i] . ' - ' . $order->code,
                                 ]);
                             }
@@ -475,7 +473,6 @@ class OrderController extends Controller
                                 'cashier_id' => Auth::id(),
                                 'payment' => 1,
                                 'amount' => $request->change * -1,
-                                'date' => Carbon::now(),
                                 'note' => 'Remaining money for order ' . $order->code,
                             ]);
                         }
@@ -535,7 +532,7 @@ class OrderController extends Controller
             'stock_ids.*' => ['required', 'numeric'],
             'prices.*' => ['required', 'numeric'],
             'discounts.*' => ['nullable', 'numeric'],
-            'quantities.*' => ['required', 'numeric', 'min:1'],
+            'quantities.*' => ['required', 'numeric', 'min::0.0001'],
             'notes.*' => ['nullable', 'string', 'max:125'],
             'ids.*' => ['nullable', 'numeric'],
 
@@ -610,7 +607,6 @@ class OrderController extends Controller
                         $order->update([
                             'customer_id' => $request->customer_id,
                             'dealer_id' => Auth::id(),
-                            'method' => 1,
                             'discount' => $request->discount ?? 0,
                             'status' => $request->status ? $request->status : 0,
                             'note' => $request->note,
@@ -688,7 +684,6 @@ class OrderController extends Controller
                                     'cashier_id' => Auth::id(),
                                     'payment' => $request->transaction_payments[$i],
                                     'amount' => $request->transaction_amounts[$i] * $refund,
-                                    'date' => Carbon::now(),
                                     'note' => $request->transaction_notes[$i] . ' - ' . $order->code,
                                 ]);
                                 $order->sync_scores($transaction->amount);

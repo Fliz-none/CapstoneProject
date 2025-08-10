@@ -17,7 +17,6 @@ class Transaction extends Model
         'cashier_id',
         'payment',
         'amount',
-        'date',
         'note',
     ];
     protected $casts = [

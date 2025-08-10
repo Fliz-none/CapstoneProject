@@ -50,6 +50,7 @@ return[
     ],
 
     'cart' => [
+        'order' => 'Đơn hàng',
         'cart' => 'Giỏ hàng',
         'your_cart' => 'Giỏ hàng của bạn',
         'no_cart' => 'Giỏ hàng của bạn đang trống',
@@ -128,6 +129,14 @@ return[
 
     'checkout' => [
         'address_required' => 'Vui lòng chọn địa chỉ nhận hàng',
-    ]
+    ],
+    'change_password' => [
+        'old_password' => 'Mật khẩu cũ',
+        'new_password' => 'Mật khẩu mới',
+        'confirm_password' => 'Xác nhận mật khẩu',
+        'change_password' => 'Thay đổi mật khẻu',
+    ],
+
+    'save' => 'Lưu',
 
 ];

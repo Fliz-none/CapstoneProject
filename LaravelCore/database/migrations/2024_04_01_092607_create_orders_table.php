@@ -18,7 +18,7 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('branch_id');
             $table->unsignedBigInteger('customer_id')->nullable();
             $table->unsignedBigInteger('dealer_id')->nullable();
-            $table->unsignedTinyInteger('method')->nullable();
+            // $table->unsignedTinyInteger('method')->nullable();
             $table->text('address')->nullable();
             $table->unsignedDecimal('total', 10, 0)->default(0);
             $table->unsignedDecimal('discount', 10, 0)->default(0);
