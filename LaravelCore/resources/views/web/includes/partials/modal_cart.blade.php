@@ -62,7 +62,7 @@
                     <trong>{{ __('lang_web.cart.temp_total') }}: <span>{{ number_format($is_login && $user->cart ? $user->cart->total : 0) . ' ' . $config['currency'] }}</span></trong>
                 </p>
                 <div class="d-flex gap-2 w-100 justify-content-center">
-                    {!! $is_login ? '<a href="' . route('checkout') . '" class="key-btn-success d-flex justify-content-center" style="width: 50%;">' . __('lang_web.cart.pay') . '</a>' : '' !!}
+                    {!! $is_login && $user->cart ? '<a href="' . route('checkout') . '" class="key-btn-success d-flex justify-content-center" style="width: 50%;">' . __('lang_web.cart.pay') . '</a>' : '' !!}
                     <a class="key-btn-info d-flex justify-content-center" href="{{ route('shop') }}" style="width: 50%;">{{ __('lang_web.cart.go_to_store') }}</a>
                 </div>
             </div>
