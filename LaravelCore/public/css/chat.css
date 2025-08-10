@@ -61,7 +61,7 @@
     position: fixed;
     right: 70px;
     bottom: 70px;
-    width: 340px;
+    width: 380px;
     background: var(--bs-white);
     border-radius: 10px;
     overflow: hidden;
@@ -201,7 +201,6 @@ header h2 {
         bottom: 0;
         height: 90%;
         border-radius: 0;
-        width: 320px;
     }
     .chatbot .chatbox {
         height: 80%;
@@ -230,7 +229,7 @@ header h2 {
         bottom: 0;
         height: 90%;
         border-radius: 0;
-        width: 320px;
+        width: 350px;
     }
     .chatbot .chatbox {
         height: 80%;

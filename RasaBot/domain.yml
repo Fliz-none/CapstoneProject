@@ -19,13 +19,17 @@ intents:
   - ask_payment_methods
   - ask_return_policy
   - ask_opening_hours
+  - nlu_fallback
+  - out_of_scope
 
 responses:
   utter_greet:
     - text: "Chào, bạn cần giúp đỡ gì không?"
     - text: "Chào bạn, hôm nay bạn cảm thấy thế nào?"
+    - text: "Tôi là một trợ lý ảo, được phát triển bởi nhóm SMS. \n Bạn cần tôi giúp gì không?"
 
   utter_cheer_up:
+    - text: "Đừng buồn nữa nhé, hãy ra ngoài và hít thở không khí mới nào!"
     - text: "Dưới đây là một vài hình ảnh đẹp giúp bạn vui lên:"
       image: "https://t3.ftcdn.net/jpg/07/69/68/76/360_F_769687673_7TgHc6Ng88ra2FQb8JJsQRQJGcFFwBtO.jpg"
 
@@ -34,8 +38,9 @@ responses:
     - text: "Bạn cần cung cấp thêm thông tin không?"
 
   utter_happy:
+    - text: "Có gì vui thế"
     - text: "Thật thú vị!"
-    - text: "Tuyệt vời, hãy tiếp tục nhé!"
+    - text: "Bạn có gì vui hãy chia sẽ với tớ đi!"
 
   utter_goodbye:
     - text: "Tạm biệt bạn nhé!"
@@ -55,13 +60,19 @@ responses:
 
   utter_opening_hours:
     - text: "Cửa hàng mở cửa từ 8:00 sáng đến 9:00 tối mỗi ngày, kể cả cuối tuần."
+    - text: "Shop mở của cả tuần từ 8h sáng đến 9h tối mỗi ngày ạ."
 
   utter_return_policy:
     - text: "Shop hỗ trợ đổi trả trong vòng 7 ngày với sản phẩm còn nguyên tem mác và chưa qua sử dụng."
 
   utter_payment_methods:
-    - text: "Shop hỗ trợ thanh toán bằng tiền mặt, chuyển khoản, ví điện tử (Momo, ZaloPay, VNPay), và thẻ ngân hàng."
+    - text: "Shop hỗ trợ thanh toán bằng tiền mặt, chuyển khoản, ví điện tử (VNPay), và thẻ ngân hàng."
 
+  utter_default:
+    - text: "Tôi chưa hiểu ý bạn lắm!"
+    - text: "Bạn có thể hỏi rõ hơn không?"
+    - text: "Xin lỗi, tôi không hiểu bạn đang nói gì."
+    - text: Xin lỗi, tôi không hiểu bạn đang nói gì. Bạn có thể hỏi lại không?
 
 entities:
   - order_id
@@ -91,6 +102,7 @@ actions:
   - action_ask_branch
   - action_ask_post
   - action_ask_promotions
+  - action_default_fallback
   
 session_config:
   session_expiration_time: 60

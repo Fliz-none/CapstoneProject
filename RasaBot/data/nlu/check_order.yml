@@ -52,6 +52,11 @@ nlu:
       - có thông tin gì về đơn [DH022123](order_id) không?
       - đơn hàng [DH05523](order_id) bị lỗi gì à?
       - Đơn [DH25523](order_id) sao giao hàng lâu vậy?
+      - Cho tôi thông tin vê đơn hàng [DH00001](order_id)
+      - Tôi muốn biết thông tin về đơn hàng của tôi
+      - làm sao xem thông tin chi tiết của đơn hàng?
+      - đơn hàng của tôi ở đâu?
+      - đơn hàng
 
   - intent: cancel_order
     examples: |
@@ -106,6 +111,8 @@ nlu:
       - làm sao để hủy đơn hàng [DH03535](order_id)?
       - shop hỗ trợ hủy đơn [DH03636](order_id) giúp em
       - bạn có thể hỗ trợ hủy đơn không?
+      - hủy đơn
+      - hủy đơn hàng
       
   - regex: order_id
     examples: |

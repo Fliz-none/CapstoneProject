@@ -135,44 +135,42 @@
                     defaultLat: 10.0451618,
                     defaultLng: 105.765374
                 },
-                routes: {
-                    login: "{{ route('login.auth') }}",
-                    local: "{{ URL::to('locals') }}",
-                    pusher: {
-                        broadcast: "{{ route('chat.broadcast') }}",
-                        ai_broadcast: "{{ route('chat.ai_broadcast') }}",
-                    },
-                    jwt_token: "{{ route('chat.jwt_token') }}",
-                    rasa_webhook_url: "{{ env('RASA_WEBHOOK_URL', 'http://localhost:8001/webhooks/smssolutions/webhook') }}"
+            routes: {
+                login: "{{ route('login.auth') }}",
+                local: "{{ URL::to('locals') }}",
+                pusher: {
+                    broadcast: "{{ route('chat.broadcast') }}",
                 },
-                user: {
-                    id: {{ Auth::check() ? Auth::id() : 'null' }}
+                rasa_webhook_url: "{{ env('RASA_WEBHOOK_URL', 'http://localhost:8001/webhooks/smssolutions/webhook') }}"
+            },
+             user: {
+                id: {{ Auth::check() ? Auth::id() : 'null' }}
+            },
+            sweetAlert: {
+                confirm: {
+                    title: "{{ __('messages.sweet_confirm_title') }}",
+                    text: "{{ __('messages.sweet_confirm_text') }}",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "var(--bs-danger)",
+                    cancelButtonColor: "var(--bs-primary)",
+                    confirmButtonText: "{{ __('messages.sweet_confirm_button') }}",
+                    cancelButtonText: "{{ __('messages.sweet_cancel_button') }}",
+                    reverseButtons: false
                 },
-                sweetAlert: {
-                    confirm: {
-                        title: "{{ __('messages.sweet_confirm_title') }}",
-                        text: "{{ __('messages.sweet_confirm_text') }}",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "var(--bs-danger)",
-                        cancelButtonColor: "var(--bs-primary)",
-                        confirmButtonText: "{{ __('messages.sweet_confirm_button') }}",
-                        cancelButtonText: "{{ __('messages.sweet_cancel_button') }}",
-                        reverseButtons: false
-                    },
-                    delay: {
-                        title: "{{ __('messages.sweet_delay_title') }}",
-                        text: "{{ __('messages.sweet_delay_text') }}",
-                        allowOutsideClick: false,
-                        allowEscapeKey: false,
-                        showConfirmButton: false,
-                        allowOutsideClick: false,
-                        willOpen: () => {
-                            Swal.showLoading();
-                        },
+                delay: {
+                    title: "{{ __('messages.sweet_delay_title') }}",
+                    text: "{{ __('messages.sweet_delay_text') }}",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    willOpen: () => {
+                        Swal.showLoading();
                     },
                 },
-            }
+            },
+        }
 
             let auth_id = @json(auth()->id());
             let offset = 0;
@@ -187,7 +185,7 @@
                         if (message.sender)
                             return `<img src="${message.sender.avatarUrl}" alt="avatar" class="rounded-circle ratio-1-1 img-fluid w-100">`;
                         else
-                            return '<i class="bi bi-robot"></i>';
+                            return '<img src="{{ asset('images/sms_bot.png') }}" alt="Chat bot" class="rounded-circle ratio-1-1 img-fluid w-100"/>';
                     } else {
                         return '';
                     }
@@ -311,6 +309,8 @@
                 window.Echo.channel('public')
                     .listen('.chat', (data) => {
                         const liHtml = createChatLi(data.message, auth_id);
+                        $temp = $('.chatbox').find('.temp-sending');
+                        if($temp.length > 0) $temp.remove();
                         $('.chatbox').append(liHtml);
                         $('.chatbox').scrollTop($('.chatbox')[0].scrollHeight);
                     });
