@@ -146,8 +146,9 @@
                                             <div class="row">
                                                 <!-- Avatar -->
                                                 <div class="col-md-12 text-center">
-                                                    <label class="avt cursor-pointer ratio-1x1" for="profile-avatar">
-                                                        <img class="rounded-circle img-fluid border border-1" id="avatar-preview" src="{{ Auth::user()->avatarUrl ?? asset('admin/images/placeholder.webp') }}" alt="Admin" style="object-fit: cover;">
+                                                    <label class="avt cursor-pointer" for="profile-avatar">
+                                                        <img class="rounded-circle border border-1" id="avatar-preview" referrerpolicy="no-referrer" src="{{ Auth::user()->avatarUrl ?? asset('admin/images/placeholder.webp') }}"
+                                                            style="object-fit: contain; width: 12rem; height: 12rem;">
                                                     </label>
                                                     <input class="d-none" id="profile-avatar" name="avatar" type="file" accept="image/*">
                                                 </div>

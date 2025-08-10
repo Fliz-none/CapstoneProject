@@ -280,6 +280,10 @@ return [
     'order' => [
         'order' => 'Quản lý đơn hàng',
         'new_order' => 'Đơn hàng mới',
+        'type' => 'Phân loại',
+        'all' => 'Tất cả',
+        'offline' => 'Tại cửa hàng',
+        'online' => 'Đặt hàng trực tuyến',
         'select_a_product' => 'Chọn một sản phẩm',
         'customer_required' => 'Hãy chọn 1 khách hàng để lưu đơn hàng',
     ],

@@ -42,7 +42,7 @@ class SettingsSeeder extends Seeder
             ['allow_self_register', '1'],
             ['require_attendance_on_company_wifi', '1'],
             ['scores_rate_exchange', '1'],
-            ['expense_group', '["Nh\u1eadp h\u00e0ng","Xu\u1ea5t h\u00e0ng"]'],
+            ['expense_group', '["Export","Import"]'],
             ['currency', 'VND'],
             ['hourly_salary', '20000'],
 

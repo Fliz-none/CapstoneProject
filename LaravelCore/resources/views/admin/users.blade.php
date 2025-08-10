@@ -50,7 +50,6 @@
                                             <th>{{ __('messages.profile.name') }}</th>
                                             <th>{{ __('messages.profile.phone') }}</th>
                                             <th>{{ __('messages.user.role') }}</th>
-                                            <th>{{ __('messages.profile.address') }}</th>
                                             <th>{{ __('messages.user.status') }}</th>
                                             <th></th>
                                             <th>
@@ -92,10 +91,6 @@
                     }, {
                         data: 'role',
                         name: 'role'
-                    }, {
-                        data: 'address',
-                        name: 'address',
-                        sortable: false
                     },
                     config.datatable.columns.status,
                     config.datatable.columns.action,

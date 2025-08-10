@@ -98,7 +98,7 @@
                                             <th>{{ __('messages.datatable.code') }}</th>
                                             <th>{{ __('messages.product.product_gallery') }}</th>
                                             <th>{{ __('messages.product.product_name') }}</th>
-                                            <th>{{ __('messages.category.category') }}</th>
+                                            <th>{{ __('messages.product.catalogue') }}</th>
                                             <th>{{ __('messages.variable.variable') }}</th>
                                             <th>{{ __('messages.datatable.status') }}</th>
                                             <th>{{ __('messages.datatable.order') }}</th>

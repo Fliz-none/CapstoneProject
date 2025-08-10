@@ -431,9 +431,10 @@ class ImportController extends Controller
 
                             foreach (array_filter($request->import_detail_ids) as $i => $id) {
                                 $import_detail = ImportDetail::find($id);
-                                $import_detail->price = $request->prices[$i];
-                                $import_detail->save();
                                 if ($import_detail) {
+                                    $import_detail->price = $request->prices[$i];
+                                    $import_detail->save();
+
                                     $stock = $import_detail->stock;
                                     $stock->lot = $request->lots[$i];
                                     $stock->expired = $request->expireds[$i];
@@ -566,7 +567,7 @@ class ImportController extends Controller
                         $obj->expense->delete();
                     }
                     $obj->delete();
-                    
+
                 }
                 DB::commit();
             } catch (\Exception $e) {

@@ -279,6 +279,10 @@ return [
     'order' => [
         'order' => 'Order Management',
         'new_order' => 'New Order',
+        'type' => 'Type',
+        'all' => 'All',
+        'offline' => 'Order online',
+        'online' => 'At the store',
         'select_a_product' => 'Select a product',
         'min_product' => 'Product quantity: Cannot be negative!',
         'customer_required' => 'Customer: Please select a customer to save order!',

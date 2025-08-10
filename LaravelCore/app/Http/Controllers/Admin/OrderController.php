@@ -94,10 +94,14 @@ class OrderController extends Controller
                     ->when($request->has('customer_id'), function ($query) use ($request) {
                         $query->where('customer_id', $request->customer_id);
                     })
-                    ->when($request->has('branch_id'), function ($query) use ($request) {
+                    ->when($request->filled('branch_id'), function ($query) use ($request) {
                         $query->where('branch_id', $request->branch_id);
                     }, function ($query) {
                         $query->whereIn('branch_id', $this->user->branches->pluck('id'));
+                    })->when($request->has('type') && $request->type != "all", function ($query) use ($request) {
+                        $request->type === "online"
+                            ? $query->whereNotNull('address')
+                            : $query->whereNull('address');
                     });
                 $can_read_order = $this->user->can(User::READ_ORDER);
                 $can_update_order = $this->user->can(User::UPDATE_ORDER);

@@ -163,7 +163,7 @@
                 });
                 form.attr('action', `{{ route('admin.stock.sync') }}`)
                 form.find('.btn-sync-stock').attr('disabled', false)
-                form.find('.table-render-stock tbody').html('<tr><td class="text-center" colspan="88">Select the category and warehouse to list stock</td></tr>')
+                form.find('.table-render-stock tbody').html(`<tr><td class="text-center" colspan="88">{{ __('messages.stock.select_warehouse_and_category') }}</td></tr>`)
                 form.find('.modal').modal('show')
             })
 

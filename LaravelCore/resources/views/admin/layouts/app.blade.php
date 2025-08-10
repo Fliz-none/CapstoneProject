@@ -1970,7 +1970,7 @@
                     if (quantity >= groupSize) {
                         const freeItem = Math.floor(quantity / groupSize) * getQ;
                         discountPrice = freeItem * price
-                        note = `Tặng miễn phí ${freeItem} sản phẩm (${discount.typeStr})`
+                        note = `Get ${freeItem} free when buy (${discount.typeStr})`
                         card.find('.order_detail-note').val(note).prev().text('Note: ' + note)
                     }
                     break;
@@ -1984,7 +1984,7 @@
                             let perPrice = (value / 100) * price
                             discountPrice = apply_type === 'once' ? perPrice : (perPrice * freeItem)
                         }
-                        note = `${discount.name} giảm ${discountPrice}`
+                        note = `${discount.name} discount ${discountPrice}`
                         card.find('.order_detail-note').val(note).prev().text('Note: ' + note)
                     }
                     break;

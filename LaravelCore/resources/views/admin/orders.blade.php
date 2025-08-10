@@ -18,7 +18,7 @@
         </div>
         <section class="section">
             <div class="row">
-                <div class="col-12 col-lg-10">
+                <div class="col-12 col-lg-8">
                     @if (!empty(Auth::user()->can(App\Models\User::CREATE_ORDER)))
                         <a class="btn btn-info mb-3" href="{{ route('admin.order', ['key' => 'new']) }}">
                             <i class="bi bi-plus-circle"></i>
@@ -34,11 +34,19 @@
                         @endif
                     </div>
                 </div>
+                <div class="col-12 col-lg-2 d-flex align-items-center">
+                    <label for="order-type" class="me-3 fw-bold" style="white-space: nowrap;">{{ __('messages.order.type') }}</label>
+                    <select id="order-type" class="form-control form-control-lg form-control-plaintext bg-transparent order-type cursor-pointer">
+                        <option value="all" {{ isset($_GET['type']) && $_GET['type'] == 'all' ? 'selected' : ''}}>{{ __('messages.order.all') }}</option>
+                        <option value="online" {{ isset($_GET['type']) && $_GET['type'] == 'online' ? 'selected' : ''}}>{{ __('messages.order.online') }}</option>
+                        <option value="offline" {{ isset($_GET['type']) && $_GET['type'] == 'offline' ? 'selected' : ''}}>{{ __('messages.order.offline') }}</option>
+                    </select>
+                </div>
                 <div class="col-12 col-lg-2">
                     @if (Auth::user()->branches->count())
                         <select
-                            class="form-control form-control-lg form-control-plaintext bg-transparent text-end list-branches" required autocomplete="off">
-                            <option selected hidden disabled>{{ __('messages.datatable.your_branch') }}</option>
+                            class="form-control form-control-lg form-control-plaintext bg-transparent text-end list-branches ms-5" required autocomplete="off">
+                            <option value="" {{ !isset($_GET['branch_id']) || $_GET['branch_id'] == null ? 'selected' : '' }}>{{ __('messages.datatable.your_branch') }}</option>
                             @foreach (Auth::user()->branches as $branch)
                                 <option value="{{ $branch->id }}" {{ isset($_GET['branch_id']) && $_GET['branch_id'] == $branch->id ? 'selected' : '' }}>
                                     {{ $branch->name }}</option>
@@ -127,8 +135,11 @@
             initDataTable('order-table', '7, 8');
         })
 
-        $('.list-branches').change(function() {
-            window.location.href = `{{ route('admin.order') }}?branch_id=${$(this).val()}`
-        })
+        $('.list-branches, .order-type').change(function() {
+            let branch_id = $('.list-branches').val();
+            let type = $('.order-type').val();
+
+            window.location.href = `{{ route('admin.order') }}?branch_id=${branch_id}&type=${type}`;
+        });
     </script>
 @endpush
