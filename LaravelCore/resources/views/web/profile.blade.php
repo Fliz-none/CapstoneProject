@@ -73,13 +73,13 @@
                                             <i class="bi bi-receipt-cutoff me-2"></i> {{ __('lang_web.cart.order') }}
                                         </a>
                                     </li>
-                                    {{-- @if ($user->hasAnyPermission(\App\Models\User::ACCESS_ADMIN))
+                                    @if ($user->hasAnyPermission(\App\Models\User::ACCESS_ADMIN))
                                         <li class="nav-item cursor-pointer">
                                             <a class="nav-link text-nowrap" href="{{ route('admin.home') }}">
                                                 <i class="bi bi-house-check me-2"></i> {{ __('lang_web.profile.access_admin') }}
                                             </a>
                                         </li>
-                                    @endif --}}
+                                    @endif
                                     <li class="nav-item cursor-pointer">
                                         <a class="nav-link text-nowrap text-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                             <i class="bi bi-box-arrow-right me-2"></i> {{ __('messages.profile.logout') }}
