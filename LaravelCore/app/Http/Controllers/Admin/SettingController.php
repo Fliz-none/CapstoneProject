@@ -101,6 +101,29 @@ class SettingController extends Controller
         return redirect()->back()->with('response', $response);
     }
 
+    public function updateShippingFee(Request $request)
+    {
+        try {
+            $this->updateSetting('transport_inter', $request->transport_inter);
+            $this->updateSetting('transport_intra', $request->transport_intra);
+            cache()->forget('settings');
+
+            $response = [
+                'status' => 'success',
+                'msg' => __('messages.shop_setting.fee_success')
+            ];
+        } catch (\Exception $e) {
+            log_exception($e);
+
+            $response = [
+                'status' => 'error',
+                'msg' => __('messages.msg')
+            ];
+        }
+
+        return redirect()->back()->with('response', $response);
+    }
+
 
     public function updatePrint(Request $request)
     {
@@ -536,5 +559,5 @@ class SettingController extends Controller
         }
     }
 
-    
+
 }

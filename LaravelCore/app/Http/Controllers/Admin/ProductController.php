@@ -186,7 +186,7 @@ class ProductController extends Controller
                     })
                     ->addColumn('code', function ($obj) use ($can_update_product) {
                         if ($can_update_product) {
-                            $code = '<a class="btn btn-link text-decoration-none btn-update-product fw-bold p-0" data-id="' . $obj->id . '">' . $obj->code . '</a>';
+                            $code = '<a class="btn btn-link text-decoration-none fw-bold p-0" href="' . route('admin.product') .'/' .  $obj->id .'" data-id="' . $obj->id . '">' . $obj->code . '</a>';
                         } else {
                             $code = '<span class="fw-bold">' . $obj->code . '</span>';
                         }
@@ -466,11 +466,7 @@ class ProductController extends Controller
                             'sku' => $request->sku,
                             'name' => $request->name,
                             'slug' => Str::slug($request->name),
-                            'excerpt' => $request->excerpt,
-                            'description' => $request->description,
-                            'specs' => $request->specs,
-                            'keyword' => $request->keyword,
-                            'gallery' => $request->gallery,
+                            'gallery' => $request->gallery ?? $product->gallery,
                             'allow_review' => $request->has('allow_review'),
                             'status' => $request->status,
                         ]);

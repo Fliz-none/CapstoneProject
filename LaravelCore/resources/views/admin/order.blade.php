@@ -55,7 +55,7 @@
                     <div class="position-relative search-form">
                         <input class="form-control form-control-lg search-input" id="order-search-input"
                             data-url="{{ route('admin.stock') }}?key=search" type="text" autocomplete="off"
-                            placeholder="{{ __('messages.order_new.search') }}">
+                            placeholder="{{ __('messages.order_new.search') }}" autofocus>
                         <div class="form-control-icon">
                             <i class="bi bi-search"></i>
                         </div>
@@ -253,7 +253,7 @@
 
         $(document).on('change', '.order-scores_used', function(){
             const input = $(this),
-                point = input.val(),
+                point = parseInt(input.val()),
                 cur_point = input.closest('.order-user-scores').find('.order-current-scores_used');
             if(point < 0) {
                 input.val(cur_point.val())

@@ -2,11 +2,13 @@
 @section('title')
     {{ $pageName }}
 @endsection
+
 @section('content')
     @php
         $user = Auth::user();
         $cart = $user->cart;
         $default_address = $user->defaultAddress;
+        // dd($cart);
     @endphp
     <div class="master-wrapper">
         <div class="banner-page-cpn">
@@ -49,12 +51,10 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <div class="checkout-address">
-                                    <div class="checkout-address-item d-flex align-items-center justify-content-between">
-                                        <div class="checkout-address-info">
-                                            <h5 class="checkout-recipient mb-1">{{ $default_address ? $default_address['recipient_name'] . ' - ' . $default_address['recipient_phone'] : '' }}</h5>
-                                            <p class="checkout-address">{{ $default_address ? $default_address['address'] : '' }}</p>
-                                        </div>
+                                <div class="checkout-address-item d-flex align-items-center justify-content-between">
+                                    <div class="checkout-address-info">
+                                        <h5 class="checkout-recipient mb-1">{{ $default_address ? $default_address['recipient_name'] . ' - ' . $default_address['recipient_phone'] : '' }}</h5>
+                                        <p class="checkout-address">{{ $default_address ? $default_address['address'] : '' }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -87,6 +87,16 @@
                                 <tbody>
                                     @if ($cart && $cart->count > 0)
                                         @php
+                                            $addresses = [];
+
+                                            foreach ($cart->items as $item) {
+                                                $address = optional($item->stock->_import_detail->_import->_warehouse->_branch)->address ?? null;
+
+                                                if ($address) {
+                                                    $addresses[] = json_decode($address, true)['address'];
+                                                }
+                                            }
+
                                             $groupedItems = collect($cart->items)
                                                 ->groupBy(function ($item) {
                                                     return $item->unit->id;
@@ -114,6 +124,8 @@
                                                 $product = $item->product;
                                                 $display_name = $product->name . ' - ' . $variable->name . ' - ' . $unit->term;
                                                 $shortDesc = \Illuminate\Support\Str::limit($variable->description ?? $product->description, 50);
+                                                // $branch_address = optional($item->stock->_import_detail->import->_import->_warehouse->_branch)->address;
+                                                // dd($branch_address);
                                             @endphp
                                             <tr>
                                                 <td style="vertical-align: middle; width: 7rem;">
@@ -186,6 +198,7 @@
                                                         <h5>Tổng tiền hàng:</h5>
                                                     </td>
                                                     <td class="text-end fw-semibold">
+                                                        <input name="order_total" type="hidden" value="{{ $cart->total }}">
                                                         {{ number_format($cart->total) . ' ' . $config['currency'] }}
                                                     </td>
                                                 </tr>
@@ -193,24 +206,24 @@
                                                     <td>
                                                         <h5>Phí vận chuyển:</h5>
                                                     </td>
-                                                    <td class="text-end fw-semibold">
+                                                    <td class="text-end fw-semibold shipping-fee-text">
                                                         {{ number_format(0) . ' ' . $config['currency'] }}
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                {{-- <tr>
                                                     <td>
                                                         <h5>Giảm giá:</h5>
                                                     </td>
                                                     <td class="text-end fw-semibold">
                                                         {{ number_format(0) . ' ' . $config['currency'] }}
                                                     </td>
-                                                </tr>
+                                                </tr> --}}
                                                 <tr>
                                                     <td>
-                                                        <h5>Phải thanh toán:</h5>
+                                                        <h5 class="mb-0">Phải thanh toán:</h5>
                                                     </td>
                                                     <td class="text-end fw-semibold">
-                                                        <span class="text-danger fs-5">
+                                                        <span class="text-danger fs-5 order-paid-text">
                                                             {{ number_format($cart->total) . ' ' . $config['currency'] }}
                                                         </span>
                                                     </td>
@@ -220,6 +233,8 @@
                                         <div class="text-end">
                                             <form id="checkoutForm" action="{{ route('checkout.cod') }}" method="POST">
                                                 @csrf
+                                                <input name="order_paid" type="hidden" value="{{ $cart->total }}">
+                                                <input name="shipping_fee" type="hidden">
                                                 <input name="address" type="hidden" value="{{ $default_address ? json_encode($default_address) : '' }}">
                                                 <button class="key-btn-danger px-5 mt-3" type="submit">Đặt hàng</button>
                                             </form>
@@ -303,7 +318,47 @@
 @endsection
 @push('scripts')
     <script>
+        function normalizeProvince(address) {
+            // Lấy phần tỉnh/thành từ sau dấu phẩy cuối
+            let province = address.substring(address.lastIndexOf(',') + 1).trim();
+
+            // Đưa về chữ thường
+            province = province.toLowerCase();
+
+            // Bỏ từ "thành phố" hoặc "tp." hoặc "tp"
+            province = province.replace(/^(thành phố|tp\.?|tp)/i, '').trim();
+
+            return province;
+        }
+
+
+        function checkDeliveryAddress() {
+            @if (isset($addresses))
+                let isSame = true;
+
+                $.each(@json($addresses), function(index, province) {
+                    delivery_address = $('.checkout-address').text()
+                    if (normalizeProvince(province) !== normalizeProvince(delivery_address)) {
+                        isSame = false
+                    }
+                });
+
+
+                const shipping_fee = parseInt(isSame ? {{ $settings['transport_intra'] }} : {{ $settings['transport_inter'] }}),
+                    order_paid = parseInt($('[name=order_total]').val()) + shipping_fee;
+
+                $('[name=shipping_fee]').val(shipping_fee)
+                $('.shipping-fee-text').text(`${number_format(shipping_fee)} {{ $config['currency'] }}`)
+
+                $('[name=order_paid]').val(order_paid)
+                $('.order-paid-text').text(`${number_format(order_paid)} {{ $config['currency'] }}`)
+            @endif
+        }
+
         $(document).ready(function() {
+
+            checkDeliveryAddress();
+
             $(document).on('click', '.btn-select-payment', function() {
                 const $modal = $('#checkoutPaymentModal');
                 const $form = $('#checkoutForm');
@@ -338,6 +393,7 @@
                 $('.checkout-address-info .checkout-address').text(label.attr('data-address'))
                 $('form#checkoutForm input[name=address]').val(input.val())
                 $(this).closest('.modal').modal('hide')
+                checkDeliveryAddress();
             })
 
             $(document).on('submit', '#checkoutForm', function(e) {

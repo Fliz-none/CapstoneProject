@@ -155,12 +155,11 @@
                                 <th>{{ __('messages.work_schedule.shift') }}</th>
                                 <th>{{ __('messages.work_schedule.check_in') }}</th>
                                 <th>{{ __('messages.work_schedule.check_out') }}</th>
-                                <th>{{ __('messages.work_schedule.serve_time') }}</th>
                                 <th>{{ __('messages.note') }}</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if (isset($work))
+                            @if (isset($works))
                                 @forelse ($works as $work)
                                     <tr>
                                         <td><a class="cursor-pointer btn-detail-work text-primary fw-bold" data-id=" {{ $work->id }}">{{ $work->code }}</a> </td>
@@ -169,7 +168,6 @@
                                         <td style="white-space: pre-line;"> {{ $work->shift_info }}</td>
                                         <td>{{ $work->real_checkin ?? '—' }}</td>
                                         <td>{{ $work->real_checkout ?? '—' }}</td>
-                                        <td>{{ $work->serve_time }}</td>
                                         <td>{{ $work->note ?? '—' }}</td>
                                     </tr>
                                 @empty

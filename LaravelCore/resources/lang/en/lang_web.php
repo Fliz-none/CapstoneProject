@@ -56,7 +56,7 @@ return [
         'no_cart' => 'Your Cart is Empty',
         'temp_total' => 'Temporary Total',
         'go_to_store' => 'Go to Store',
-        'pay' => 'Payment',
+        'pay' => 'Checkout',
         'quantity_error' => 'Please select a valid unit and quantity for this product!',
     ],
 

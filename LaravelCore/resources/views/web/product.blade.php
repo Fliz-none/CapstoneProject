@@ -64,19 +64,20 @@
                                 $halfStar = $product->star - $fullStars >= 0.5;
                                 $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
                             @endphp
-
-                            <div class="star-display text-warning" style="font-size: 1.25rem;">
-                                @for ($i = 0; $i < $fullStars; $i++)
-                                    <i class="fas fa-star"></i>
-                                @endfor
-                                @if ($halfStar)
-                                    <i class="fas fa-star-half-alt"></i>
-                                @endif
-                                @for ($i = 0; $i < $emptyStars; $i++)
-                                    <i class="far fa-star"></i>
-                                @endfor
-                                <span class="text-muted ms-2" style="font-size: 0.9rem">({{ $product->star }}/5)</span>
-                            </div>
+                            @if ($fullStars)
+                                <div class="star-display text-warning" style="font-size: 1.25rem;">
+                                    @for ($i = 0; $i < $fullStars; $i++)
+                                        <i class="fas fa-star"></i>
+                                    @endfor
+                                    @if ($halfStar)
+                                        <i class="fas fa-star-half-alt"></i>
+                                    @endif
+                                    @for ($i = 0; $i < $emptyStars; $i++)
+                                        <i class="far fa-star"></i>
+                                    @endfor
+                                    <span class="text-muted ms-2" style="font-size: 0.9rem">({{ $product->star }}/5)</span>
+                                </div>
+                            @endif
                             <div class="product-catalog">
                                 <p><strong>{{ __('lang_web.product.catelogue') }}: </strong>{!! $product->catalogsName() !!} </p>
                             </div>
@@ -191,12 +192,12 @@
                             </ul>
                             <div class="tab-content" id="pills-tabContent">
                                 <div class="tab-pane fade show active p-3" id="description" role="tabpanel" aria-labelledby="description-tab" tabindex="0">
+                                    <h5>{{ $product->excerpt }}</h5>
                                     <p>
                                         {!! $product->description ?? __('lang_web.product.no_desc') !!}
                                     </p>
                                 </div>
                                 <div class="tab-pane fade p-3" id="specs" role="tabpanel" aria-labelledby="specs-tab" tabindex="0">
-                                    <h5>{{ $product->excerpt }}</h5>
                                     <p>
                                         {!! $product->specs ?? __('lang_web.product.no_desc') !!}
                                     </p>
@@ -301,24 +302,35 @@
                                                                 </p>
                                                                 <p class="price">Giá: <span>{!! $product->displayPrice() !!}</span>
                                                                 </p>
-                                                                <div class="d-flex justify-content-between align-items-center">
-                                                                    <div class="product-ratting">
-                                                                        <ul>
-                                                                            <li><a href="#"><i class="bi bi-star-fill"></i></i></a>
-                                                                            </li>
-                                                                            <li><a href="#"><i class="bi bi-star-fill"></i></i></a>
-                                                                            </li>
-                                                                            <li><a href="#"><i class="bi bi-star-fill"></i></i></a>
-                                                                            </li>
-                                                                            <li><a href="#"><i class="bi bi-star-half"></i></a>
-                                                                            </li>
-                                                                            <li><a href="#"><i class="bi bi-star"></i></a></li>
-                                                                        </ul>
+                                                                @if ($product->star)
+                                                                    <div class="d-flex justify-content-between align-items-center">
+                                                                        <div style="display: flex; align-items: center; gap: 4px;">
+                                                                            @php
+                                                                                $rating = $product->star;
+                                                                                $fullStars = floor($rating);
+                                                                                $halfStar = $rating - $fullStars >= 0.5;
+                                                                                $emptyStars = 5 - $fullStars - ($halfStar ? 1 : 0);
+                                                                            @endphp
+
+                                                                            @for ($i = 0; $i < $fullStars; $i++)
+                                                                                <span style="color: #FFA500; font-size: 16px;">★</span>
+                                                                            @endfor
+
+                                                                            @if ($halfStar)
+                                                                                <span style="color: #FFA500; font-size: 16px;">☆</span> {{-- dùng icon nửa sao nếu có thì tốt hơn --}}
+                                                                            @endif
+
+                                                                            @for ($i = 0; $i < $emptyStars; $i++)
+                                                                                <span style="color: #ccc; font-size: 16px;">☆</span>
+                                                                            @endfor
+                                                                        </div>
+                                                                        <div>
+                                                                            <a class="detail" href="{{ route('product', ['catalogue' => $product->catalogues->first()->slug, 'slug' => $product->slug]) }}"><i class="bi bi-bag-check"></i></a>
+                                                                        </div>
                                                                     </div>
-                                                                    <div>
-                                                                        <a class="detail" href="{{ route('product', ['catalogue' => $product->catalogues->first()->slug, 'slug' => $product->slug]) }}"><i class="bi bi-bag-check"></i></a>
-                                                                    </div>
-                                                                </div>
+                                                                @else
+                                                                    <small>Chưa có đánh giá nào</small>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                         <!-- end product -->

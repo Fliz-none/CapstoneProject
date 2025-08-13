@@ -34,7 +34,7 @@ class ShopController extends Controller
         /**
          * @var \Illuminate\Pagination\LengthAwarePaginator|null
          */
-        $query = Product::with(['catalogues', 'variables.units'])->whereIn('status', [2, 3]);
+        $query = Product::with(['catalogues', 'variables.units'])->whereIn('status', [2, 3, 4]);
         // Lọc theo từ khóa tìm kiếm
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');

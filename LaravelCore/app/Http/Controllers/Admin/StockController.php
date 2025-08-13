@@ -516,7 +516,7 @@ class StockController extends Controller
                         'warehouse_id' => $request->warehouse_id,
                         'note' => 'Sync stock ' . Carbon::now()->format('d/m/Y'),
                         'created_at' => $range[1],
-                        'status' => 0,
+                        'status' => 1,
                     ]);
                     if ($import) {
                         $import_detail = ImportDetail::create([
@@ -551,8 +551,8 @@ class StockController extends Controller
                         'date' => $range[1],
                         'user_id' => $this->user->id,
                         'receiver_id' => $this->user->id,
-                        'note' => __('messages.sync') . Carbon::now()->format('d/m/Y'),
-                        'status' => 0,
+                        'note' => __('messages.stock.sync') . ' '. Carbon::now()->format('d/m/Y'),
+                        'status' => 1,
                         'created_at' => $range[1],
                     ]);
                     if ($export) {

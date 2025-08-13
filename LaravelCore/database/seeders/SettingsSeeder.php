@@ -63,6 +63,8 @@ class SettingsSeeder extends Seeder
             ['banner_post_2', 'bg-contact-1.jpg'],
             ['banner_contact', 'bg-contact-1.jpg'],
             ['setting_score', '{"check_score":1,"money_to_score":{"money":"100","score":"1"},"score_to_money":{"score":"1","money":"1"}}'],
+            ['transport_inter', '60000'],
+            ['transport_intra', '30000'],
         ];
 
         foreach ($settings as $key => $setting) {

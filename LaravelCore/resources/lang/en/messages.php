@@ -281,8 +281,8 @@ return [
         'new_order' => 'New Order',
         'type' => 'Type',
         'all' => 'All',
-        'offline' => 'Order online',
-        'online' => 'At the store',
+        'offline' => 'At the store',
+        'online' => 'Order online',
         'select_a_product' => 'Select a product',
         'min_product' => 'Product quantity: Cannot be negative!',
         'customer_required' => 'Customer: Please select a customer to save order!',
@@ -319,6 +319,7 @@ return [
         'warehouse' => 'Warehouse',
     ],
 
+    'no_account' => 'Do not have an account',
     'set_role' => 'Set role for ',
     'search' => 'Enter keyword to search',
     'available_stock' => 'Available stock',
@@ -493,7 +494,7 @@ return [
         'discount_name' => 'Discount Name',
         'vality' => 'Validity',
         'type' => 'Discount Type',
-        'apply_type' => 'Áp dụng cho',
+        'apply_type' => 'Apply for',
         'once' => 'One time / Order',
         'multiple' => 'Multiple times / Order',
         'select_type' => 'Select Discount Type',
@@ -853,6 +854,7 @@ return [
     'shop_setting' => [
         'shop_setting' => 'Shop Settings',
         'shop_score' => 'Set shop score',
+        'shipping_costs' => 'Set shipping costs',
         'inventory_management' => 'Inventory Management',
         'inventory_placeholder' => 'Control quantity of import, export, and remaining inventory',
         'reward' => 'Reward Point Conversion Rate',
@@ -869,6 +871,7 @@ return [
         'open' => 'Open',
         'close' => 'Close',
         'score_success' => 'Successfully updated scores',
+        'fee_success' => 'Shipping cost updated successfully',
 
         'invoice' => 'Invoice Printing Settings',
         'a5' => 'Add QR code to A5 paper',
@@ -876,6 +879,11 @@ return [
         'c80' => 'Add QR code to C80 paper',
         'c80_placeholder' => 'Add payment QR code to C80 invoices',
         'print_success' => 'Invoice printed successfully',
+
+        'transport_intra' => 'Intraprovincial transport',
+        'transport_intra_desc' => 'Shipping costs within the province',
+        'transport_inter' => 'Interprovincial transport',
+        'transport_inter_desc' => 'Interprovincial shipping costs',
 
         'setup_expense_voucher' => 'Configure Expense Voucher',
     ],

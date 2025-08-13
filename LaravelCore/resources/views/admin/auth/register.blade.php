@@ -40,19 +40,7 @@
                         </span>
                     @enderror
                 </div>
-                <div class="form-group position-relative has-icon-left mb-4">
-                    <input id="address" type="text"
-                        class="form-control form-control-xl @error('address') is-invalid @enderror" name="address"
-                        placeholder="Address" value="{{ old('address') }}" required autocomplete="address" autofocus>
-                    <div class="form-control-icon">
-                        <i class="bi bi-geo-alt"></i>
-                    </div>
-                    @error('address')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
+
                 <div class="form-group position-relative has-icon-left mb-4">
                     <input id="email" type="email"
                         class="form-control form-control-xl @error('email') is-invalid @enderror" name="email"

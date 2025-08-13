@@ -204,6 +204,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'address',
         'scores',
         'status',
+        'email_verified_at',
         'note',
     ];
 
@@ -310,15 +311,22 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function debtOrders()
     {
-        return $this->hasMany(Order::class, 'customer_id')->get()->filter(function ($order) {
-            return $order->total > $order->paid;
-        });
+        return $this->hasMany(Order::class, 'customer_id')
+            ->where('status', '<>', 0) // loại status = 0 ngay từ DB
+            ->get()
+            ->filter(function ($order) {
+                return $order->total > $order->paid; // lọc bằng accessor
+            });
     }
 
     public function getDebt()
     {
-        return $this->orders->sum('total') - $this->orders->sum('paid');
+        return $this->debtOrders()->sum(function ($order) {
+            return $order->total - $order->paid;
+        });
     }
+
+
 
     /**
      * Các cuộc trò chuyện mà user là customer (one-to-many)
@@ -334,41 +342,42 @@ class User extends Authenticatable implements MustVerifyEmail
     public function conversations()
     {
         return $this->belongsToMany(Conversation::class, 'conversation_user')
-                ->withPivot('role')
-                ->withTimestamps();
+            ->withPivot('role')
+            ->withTimestamps();
     }
 
     public function getAveragePaymentDelay()
     {
-        $now = Carbon::now();
+        // $now = Carbon::now();
 
-        // Lấy danh sách các đơn hàng của khách hàng
-        $orders = $this->orders()->with(['transactions' => function ($query) {
-            $query->whereNull('deleted_at');
-        }])->whereNull('deleted_at')->get();
+        // // Lấy danh sách các đơn hàng của khách hàng
+        // $orders = $this->orders()->with(['transactions' => function ($query) {
+        //     $query->whereNull('deleted_at');
+        // }])->whereNull('deleted_at')->get();
 
-        $delays = [];
+        // $delays = [];
 
-        foreach ($orders as $order) {
-            if ($order->transactions->isNotEmpty()) {
-                // Lấy ngày thanh toán cuối cùng
-                $lastTransactionDate = $order->transactions->max('created_at');
-                $delay = Carbon::parse($order->created_at)->diffInDays(Carbon::parse($lastTransactionDate));
-            } else {
-                // Tính từ ngày tạo đơn hàng đến hiện tại
-                $delay = Carbon::parse($order->created_at)->diffInDays($now);
-            }
-            $delays[] = $delay;
-        }
+        // foreach ($orders as $order) {
+        //     if ($order->transactions->isNotEmpty()) {
+        //         // Lấy ngày thanh toán cuối cùng
+        //         $lastTransactionDate = $order->transactions->max('created_at');
+        //         $delay = Carbon::parse($order->created_at)->diffInDays(Carbon::parse($lastTransactionDate));
+        //     } else {
+        //         // Tính từ ngày tạo đơn hàng đến hiện tại
+        //         $delay = Carbon::parse($order->created_at)->diffInDays($now);
+        //     }
+        //     $delays[] = $delay;
+        // }
 
-        // Tính độ trễ trung bình
-        if (count($delays) > 0) {
-            $averageDelay = array_sum($delays) / count($delays);
-        } else {
-            $averageDelay = 0;
-        }
+        // // Tính độ trễ trung bình
+        // if (count($delays) > 0) {
+        //     $averageDelay = array_sum($delays) / count($delays);
+        // } else {
+        //     $averageDelay = 0;
+        // }
 
-        return $averageDelay;
+        // return $averageDelay;
+        return ;
     }
 
     public function getCodeAttribute()
@@ -392,7 +401,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $path = 'public/user/' . $this->avatar;
         if ($this->avatar) {
-            if(Storage::exists($path)) {
+            if (Storage::exists($path)) {
                 $image = asset(env('FILE_STORAGE') . '/user/' . $this->avatar);
             } else {
                 return $this->avatar;
@@ -422,8 +431,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return $result;
     }
 
-    public function getDefaultAddressAttribute(){
-        if($this->address) {
+    public function getDefaultAddressAttribute()
+    {
+        if ($this->address) {
             $arr_address = json_decode($this->address, true);
             return collect($arr_address)->firstWhere('default', 'yes') ?? $arr_address[0] ?? null;
         }

@@ -46,7 +46,7 @@
                     </div>
                 </div>
             </div>
-        </div><div class="product-showcase-wrapper home-product key-bg-section" style="background-image: url({{ asset(env('FILE_STORAGE', '/storage/') . '/bg-contact-1.jpg') }})">
+        </div><div class="product-showcase-wrapper home-product key-bg-section" style="background-image: url({{ asset('images/bg-contact-1.jpg') }})">
             <div class="container">
                 <div class="p-4 text-center">
                     <h2 class="text-dark fw-semibold fs-1 mb-3">{{ __('lang_web.home.products_of') }} {{ $settings['company_name'] }}</h2>

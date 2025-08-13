@@ -35,8 +35,8 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-12 form-group">
-                                                    <label class="form-label mb-0" data-bs-toggle="tooltip" data-bs-title="Keywords to suggest products" for="product-sku">{{ __('messages.product.keyword') }}</label>
-                                                    <input class="form-control" id="product-sku" name="sku" type="text" placeholder="{{ __('messages.product.keyword_placeholder') }}" autocomplete="off" required>
+                                                    <label class="form-label mb-0" data-bs-toggle="tooltip" data-bs-title="Keywords to suggest products" for="product-sku">SKU</label>
+                                                    <input class="form-control" id="product-sku" name="sku" type="text" placeholder="SKU" autocomplete="off" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -84,7 +84,8 @@
                                                 <option value="0">{{ __('messages.product.locked') }}</option>
                                                 <option value="1">{{ __('messages.product.offline') }}</option>
                                                 <option value="2">{{ __('messages.product.online') }}</option>
-                                                <option value="3">{{ __('messages.product.feature') }}</option>
+                                                <option value="3">{{ __('messages.product.online_and_offline') }}</option>
+                                                <option value="4">{{ __('messages.product.feature') }}</option>
                                             </select>
                                         </div>
                                     </div>

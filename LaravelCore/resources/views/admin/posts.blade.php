@@ -47,7 +47,6 @@
                                     <tr>
                                         <th>{{ __('messages.datatable.code') }}</th>
                                         <th>{{ __('messages.post.title') }}</th>
-                                        <th>{{ __('messages.post.content') }}</th>
                                         <th>{{ __('messages.post.image') }}</th>
                                         <th>{{ __('messages.post.author') }}</th>
                                         <th>{{ __('messages.post.category') }}</th>
@@ -89,9 +88,6 @@
                     config.datatable.columns.code, {
                         data: 'title',
                         name: 'title'
-                    }, {
-                        data: 'content',
-                        name: 'content'
                     }, {
                         data: 'image',
                         name: 'image'

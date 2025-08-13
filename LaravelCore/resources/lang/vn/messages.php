@@ -321,6 +321,7 @@ return [
         'warehouse' => 'Kho',
     ],
 
+    'no_account' => 'Bạn chưa có tài khoản',
     'set_role' => 'Cài đặt quyền cho ',
     'search' => 'Tìm kiếm',
     'available_stock' => 'Hàng tồn',
@@ -865,6 +866,7 @@ return [
     'shop_setting' => [
         'shop_setting' => 'Cài đặt cửa hàng',
         'shop_score' => 'Cài đặt điểm cửa hàng',
+        'shipping_costs' => 'Thiết lập chi phí vận chuyển',
         'inventory_management' => 'Quản lý hàng tồn kho',
         'inventory_placeholder' => 'Kiểm soát lượng hàng nhập, xuất và hàng tồn kho còn lại',
         'reward' => 'Tỷ giá quy đổi điểm thưởng',
@@ -882,6 +884,7 @@ return [
         'close' => 'Tắt',
 
         'score_success' => 'Cập nhật điểm thưởng thành công',
+        'fee_success' => 'Đã cập nhật chi phí vận chuyển thành công',
 
         'invoice' => 'Cài đặt in hoá đơn',
         'a5' => 'Thêm mã QR vào giấy A5',
@@ -889,6 +892,11 @@ return [
         'c80' => 'Thêm mã QR vào giấy C80',
         'c80_placeholder' => 'Thêm mã QR thanh toán vào hóa đơn trên giấy C80',
         'print_success' => 'In hóa đơn thành công',
+
+        'transport_intra' => 'Vận chuyển trong tỉnh',
+        'transport_intra_desc' => 'Chi phí vận chuyển hàng trong tỉnh',
+        'transport_inter' => 'Vận chuyển ngoài tỉnh',
+        'transport_inter_desc' => 'Chi phí vận chuyển hàng liên tỉnh',
 
         'setup_expense_voucher' => 'Thiết lập chứng từ chi phí',
     ],

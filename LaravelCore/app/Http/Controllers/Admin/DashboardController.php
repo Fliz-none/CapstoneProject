@@ -54,7 +54,6 @@ class DashboardController extends Controller
 
     public function analytics(Request $request)
     {
-
         if (!$this->user->can(User::READ_DASHBOARD)) {
             abort(403);
         }
@@ -67,7 +66,7 @@ class DashboardController extends Controller
         // $details = Detail::
         // whereBetween('created_at', $range);
 
-        // Trả lại dữ liệu của Order theo khoảng ngày 
+        // Trả lại dữ liệu của Order theo khoảng ngày
         if ($request->has('key')) {
             $range = json_decode($request->range); // Thêm dòng này
 
@@ -97,7 +96,7 @@ class DashboardController extends Controller
             ]);
         }
 
-        
+
 
         //Doanh thu
         $transactions = Transaction::whereBetween('created_at', $range)
@@ -124,7 +123,7 @@ class DashboardController extends Controller
         })
             ->whereNotNull('stock_id')
             ->sum(DB::raw(
-                'quantity * 
+                'quantity *
             CASE
                 WHEN discount > 0 AND discount <= 100
                     THEN price * (1 - discount / 100)
@@ -275,7 +274,7 @@ class DashboardController extends Controller
             'previous' => [],
         ];
 
-        //dd($result);
+        // dd($result);
         return response()->json($result, 200);
     }
 
@@ -483,7 +482,7 @@ class DashboardController extends Controller
         return $result;
     }
 
-    // Hàm trả dữ liệu về 
+    // Hàm trả dữ liệu về
     private function groupAndSummarizeOrders($orders)
     {
         return $orders->groupBy(function ($order) {

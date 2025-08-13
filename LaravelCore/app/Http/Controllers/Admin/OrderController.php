@@ -73,7 +73,7 @@ class OrderController extends Controller
                     if ($obj) {
                         switch ($request->action) {
                             case 'print':
-                                return view('admin.templates.prints.order_' . ($request->template ?? 'c80'), ['order' => $obj]);
+                                return view('admin.templates.prints.order_c80', ['order' => $obj]);
                                 break;
                             case 'preview':
                                 return view('admin.templates.previews.order', ['order' => $obj]);
@@ -307,7 +307,7 @@ class OrderController extends Controller
 
             'prices.*' => ['required', 'numeric'],
             'discounts.*' => ['nullable', 'numeric'],
-            'quantities.*' => ['required', 'numeric', 'min::0.0001'],
+            'quantities.*' => ['required', 'numeric', 'min:0.00001'],
             'notes.*' => ['nullable', 'string', 'max:125'],
             'ids.*' => ['nullable', 'numeric'],
 
@@ -532,7 +532,7 @@ class OrderController extends Controller
             'stock_ids.*' => ['required', 'numeric'],
             'prices.*' => ['required', 'numeric'],
             'discounts.*' => ['nullable', 'numeric'],
-            'quantities.*' => ['required', 'numeric', 'min::0.0001'],
+            'quantities.*' => ['required', 'numeric', 'min:0.0001'],
             'notes.*' => ['nullable', 'string', 'max:125'],
             'ids.*' => ['nullable', 'numeric'],
 

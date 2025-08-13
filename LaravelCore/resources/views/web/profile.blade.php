@@ -73,13 +73,13 @@
                                             <i class="bi bi-receipt-cutoff me-2"></i> {{ __('lang_web.cart.order') }}
                                         </a>
                                     </li>
-                                    @if ($user->hasAnyPermission(\App\Models\User::ACCESS_ADMIN))
+                                    {{-- @if ($user->hasAnyPermission(\App\Models\User::ACCESS_ADMIN))
                                         <li class="nav-item cursor-pointer">
                                             <a class="nav-link text-nowrap" href="{{ route('admin.home') }}">
                                                 <i class="bi bi-house-check me-2"></i> {{ __('lang_web.profile.access_admin') }}
                                             </a>
                                         </li>
-                                    @endif
+                                    @endif --}}
                                     <li class="nav-item cursor-pointer">
                                         <a class="nav-link text-nowrap text-danger" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                             <i class="bi bi-box-arrow-right me-2"></i> {{ __('messages.profile.logout') }}
@@ -97,7 +97,7 @@
 
                 <div class="col-12 col-md-8 col-lg-9 col-xl-10 px-5">
                     <div class="tab-content mt-3">
-                        <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab" style="min-height: 75vh">
                             @if (Auth::check())
                                 <form class="save-form" id="profile-web-form" method="post" enctype="multipart/form-data" action="{{ route('profile.change_infor') }}">
                                     @csrf
@@ -184,7 +184,7 @@
                                 </form>
                             @endif
                         </div>
-                        <div class="tab-pane fade" id="user-order" role="tabpanel" aria-labelledby="user-order-tab" style="min-height: 70vh">
+                        <div class="tab-pane fade" id="user-order" role="tabpanel" aria-labelledby="user-order-tab" style="min-height: 75vh">
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs nav-tabs-horizontal fw-bold mb-3" role="tablist">
                                 <li class="nav-item" role="presentation">
@@ -217,6 +217,7 @@
                                                 <p class="text-{{ $order->statusStr['color'] }} fw-bold mb-1">{{ $order->statusStr['string'] }}</p>
                                             </div>
                                             @php
+                                                $fee = $order->address ? json_decode($order->address, true)['fee'] ?? 0 : 0;
                                                 $groupedDetails = collect($order->details)
                                                     ->groupBy(function ($detail) {
                                                         return $detail->unit->id;
@@ -272,7 +273,7 @@
                                             @endforeach
                                             <hr class="mt-0">
                                             <div class="row">
-                                                <div class="col-4 d-flex align-items-center">
+                                                <div class="col-4 d-flex align-items-end">
                                                     @if ($order->status == 3 && !$order->details[0]->reviews)
                                                         <button class="btn-success-custom btn-rate-order me-5" data-id="{{ $order->id }}">Đánh giá</button>
                                                     @elseif (in_array($order->status, [1, 2]))
@@ -283,7 +284,10 @@
                                                     @if ($order->discount)
                                                         <p class="text-end mb-0">Giảm giá: {{ number_format($order->discount) }} VND</p>
                                                     @endif
-                                                    <p class="text-end mb-0">Thành tiền: <strong class="text-danger fs-5">{{ number_format($order->total) }}</strong> VND</p>
+                                                    @if ($fee && $order->status)
+                                                        <p class="text-end mb-0">Phí vận chuyển: {{ number_format($fee) }} VND</p>
+                                                    @endif
+                                                    <p class="text-end mb-0">Thành tiền: <strong class="text-danger fs-5">{{ number_format($order->total + $fee) }}</strong> VND</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -299,6 +303,7 @@
                                                 <small>{{ $order->created_at->format('d/m/Y H:i') }}</small>
                                             </div>
                                             @php
+                                                $fee = $order->address ? json_decode($order->address, true)['fee'] ?? 0 : 0;
                                                 $groupedDetails = collect($order->details)
                                                     ->groupBy(function ($detail) {
                                                         return $detail->unit->id;
@@ -361,6 +366,9 @@
                                                     @if ($order->discount)
                                                         <p class="text-end mb-0">Giảm giá: {{ number_format($order->discount) }} VND</p>
                                                     @endif
+                                                    @if ($fee)
+                                                        <p class="text-end mb-0">Phí vận chuyển: {{ number_format($fee) }} VND</p>
+                                                    @endif
                                                     <p class="text-end mb-0">Thành tiền: <strong class="text-danger fs-5">{{ number_format($order->total) }}</strong> VND</p>
                                                 </div>
                                             </div>
@@ -377,6 +385,7 @@
                                                 <small>{{ $order->created_at->format('d/m/Y H:i') }}</small>
                                             </div>
                                             @php
+                                                $fee = $order->address ? json_decode($order->address, true)['fee'] ?? 0 : 0;
                                                 $groupedDetails = collect($order->details)
                                                     ->groupBy(function ($detail) {
                                                         return $detail->unit->id;
@@ -440,6 +449,9 @@
                                                 <div class="col-8 order-total">
                                                     @if ($order->discount)
                                                         <p class="text-end mb-0">Giảm giá: {{ number_format($order->discount) }} VND</p>
+                                                    @endif
+                                                    @if ($fee)
+                                                        <p class="text-end mb-0">Phí vận chuyển: {{ number_format($fee) }} VND</p>
                                                     @endif
                                                     <p class="text-end mb-0">Thành tiền: <strong class="text-danger fs-5">{{ number_format($order->total) }}</strong> VND</p>
                                                 </div>

@@ -34,7 +34,7 @@
                                         <th>{{ __('messages.log.user') }}</th>
                                         <th>{{ __('messages.log.action') }}</th>
                                         <th>{{ __('messages.log.object') }}</th>
-                                        <th>{{ __('messages.log.code_user') }}</th>
+                                        <th>{{ __('messages.log.code') }}</th>
                                         <th>{{ __('messages.log.location') }}</th>
                                         <th>{{ __('messages.log.browser') }}</th>
                                         <th>{{ __('messages.log.platform') }}</th>

@@ -18,10 +18,6 @@
                                 <div class="d-grid">
                                     <button class="btn btn-outline-primary btn-remove-image d-none" type="button">Remove</button>
                                 </div>
-                                <hr>
-                                <div class="d-grid">
-                                    <a class="btn btn-outline-primary btn-customer_orders">{{ __('messages.user.all_order') }}</a>
-                                </div>
                             </div>
                         </div>
                         <div class="col-12 col-md-8">

@@ -9,7 +9,7 @@ class Cart extends Model
 {
     use HasFactory;
     protected $fillable = ['user_id', 'note'];
-    protected $with = ['items.unit.variable.product:id,name,slug', 'items.unit.variable.product.catalogues:id,name,slug'];
+    protected $with = ['items.unit.variable.product', 'items.unit.variable.product.catalogues:id,name,slug', 'items.stock._import_detail._import._warehouse._branch'];
     protected $appends = ['total', 'count'];
 
     public function items()

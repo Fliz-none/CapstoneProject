@@ -42,20 +42,20 @@
                             <i class="bi bi-upc-scan"></i>
                             {{ __('messages.barcode') }}
                         </a>
-                        @if (!empty(Auth::user()->can(App\Models\User::UPDATE_PRODUCT)))
-                            <button class="btn mb-3 btn-add-catalogues-product ms-2 btn-outline-primary" type="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-blockquote-left" viewBox="0 0 16 16">
-                                    <path d="M2.5 3a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1zm5 3a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-5 3a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1zm3-5.5v1.5h2v1H5.5v2h-1v-2H2.5v-1.2h2.2v-1.5h1z" />
-                                </svg>
-                              {{ __('messages.add_category') }}
-                            </button>
-                            <button class="btn mb-3 btn-remove-catalogues-product ms-2 btn-outline-danger" type="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-blockquote-left" viewBox="0 0 16 16">
-                                    <path d="M2.5 3a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1zm5 3a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-5 3a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1zM2 7.6h3v0.8H2v-0.8z" />
-                                </svg>
-                                {{ __('messages.delete_category') }}
-                            </button>
-                        @endif
+                            {{-- @if (!empty(Auth::user()->can(App\Models\User::UPDATE_PRODUCT)))
+                                <button class="btn mb-3 btn-add-catalogues-product ms-2 btn-outline-primary" type="button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-blockquote-left" viewBox="0 0 16 16">
+                                        <path d="M2.5 3a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1zm5 3a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-5 3a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1zm3-5.5v1.5h2v1H5.5v2h-1v-2H2.5v-1.2h2.2v-1.5h1z" />
+                                    </svg>
+                                {{ __('messages.add_category') }}
+                                </button>
+                                <button class="btn mb-3 btn-remove-catalogues-product ms-2 btn-outline-danger" type="button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-blockquote-left" viewBox="0 0 16 16">
+                                        <path d="M2.5 3a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1zm5 3a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 3a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-5 3a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1zM2 7.6h3v0.8H2v-0.8z" />
+                                    </svg>
+                                    {{ __('messages.delete_category') }}
+                                </button>
+                            @endif --}}
                         @if (!empty(Auth::user()->can(App\Models\User::DELETE_PRODUCTS)))
                             <a class="btn btn-danger btn-removes mb-3 ms-2" type="button">
                                 <i class="bi bi-trash"></i>
@@ -67,10 +67,10 @@
                 <div class="col-12 col-md-6">
                     <div class="d-flex justify-content-end align-items-end h-100">
                         @if (!empty(Auth::user()->can(App\Models\User::READ_PRODUCTS)))
-                            <button class="btn btn-success mb-3 me-2" href="{{ route('admin.product.download_template') }}">
+                            <a class="btn btn-success mb-3 me-2" href="{{ route('admin.product.download_template') }}">
                                 <i class="bi bi-box-arrow-down"></i>
                                 {{ __('messages.product.download_template') }}
-                            </button>
+                            </a>
                         <form action="" method="post">
                             <button class="btn k-btn-info mb-3 btn-refill-product" type="button">
                                 <i class="bi bi-box-arrow-in-up"></i>

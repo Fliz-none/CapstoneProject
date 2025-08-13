@@ -774,120 +774,124 @@
             reactToPaste: false, // Compatibility to built-in scanners in paste-mode (as opposed to keyboard-mode)
             onScan: function(sCode, iQty) {
                 // console.log('Barcode scanned: ' + sCode); // Check if this runs
-                $('input:focus').val('')
-                if ($('#product-modal').hasClass('show')) {
-                    $.get(`{{ route('admin.variable') }}/scan?barcode=${sCode}`, function(variable) {
-                        if (variable) {
-                            pushToastify("Barcode already exists!", 'danger')
-                        } else {
-                            let available = true;
-                            $(`[name='barcode[]']`).each(function(i, input) {
-                                if (input.value == sCode) {
-                                    available = false;
-                                    return false;
-                                }
-                            })
-                            if (available) {
-                                $('.btn-append-variable').trigger('click')
-                                $(`[name='barcode[]']`).last().val(sCode)
-                            } else {
+                if(!$('#variable-modal').hasClass('show')) {
+                    $('input:focus').val('')
+                    if ($('#product-modal').hasClass('show')) {
+                        $.get(`{{ route('admin.variable') }}/scan?barcode=${sCode}`, function(variable) {
+                            if (variable) {
                                 pushToastify("Barcode already exists!", 'danger')
-                            }
-                        }
-                    })
-                } else if ($('#import-modal').hasClass('show')) {
-                    let btn = $('.btn-create-stock'),
-                        existVariable = false
-                    btn.prop("disabled", true).html('<span class="spinner-border spinner-border-sm" id="spinner-form" role="status"></span>');
-                    $.get(`{{ route('admin.unit') }}/scan?barcode=${sCode}`, function(unit) {
-                        if (unit) {
-                            $('.import_detail-unit_id').each(function(i, input) {
-                                if (input.value == unit.id) {
-                                    existVariable = true
-                                    let input = $(this).closest('tr').find(`[name='quantities[]']`)
-                                    input.val(parseInt(input.val()) + 1)
-                                    return false
-                                }
-                            })
-                            if (!existVariable) {
-                                htmlImportVariable(unit)
-                            }
-                        } else {
-                            pushToastify("Product not found!", 'danger')
-                        }
-                        btn.prop("disabled", false).html('<i class="bi bi-plus-circle"></i> Add stock');
-                    })
-                } else if ('{{ Request::path() }}' == 'quantri/order/new' || $('#order-modal').hasClass('show') || $('#export-modal').hasClass('show')) {
-                    if ($('#export-modal').hasClass('show')) {
-                        $('#export-search-input').val(sCode).change().focus()
-                    } else {
-                        $.get(`{{ route('admin.stock') }}/scan?barcode=${sCode}&action=export`, function(stocks) {
-                            let scanUnit,
-                                availableStock = false,
-                                tab = $('#order-modal').hasClass('show') ? $('#order-modal') : $('#export-modal').hasClass('show') ? $('#export-modal') : $('.tab-pane.active')
-                            if (stocks.length) {
-                                $.each(stocks, function(index, stock) {
-                                    $.each(stock.import_detail._variable.units, function(index, unit) {
-                                        if (unit.barcode === sCode) {
-                                            scanUnit = unit
-                                        }
-                                    });
-                                });
-                                $.each(stocks, function(i, stock) {
-                                    var nextLoops = true,
-                                        availableUnit = false,
-                                        newCard = {
-                                            stockId: stock.id,
-                                            stockExpired: stock.expired,
-                                            productName: stock.import_detail._variable._product.name + (stock.import_detail._variable.name != undefined ? ' - ' + stock.import_detail._variable.name : ''),
-                                            productSku: stock.import_detail._variable._product.sku,
-                                            stockQuantity: stock.quantity,
-                                            stockConvertQuantity: stock.convertQuantity,
-                                            variableId: stock.import_detail._variable.id,
-                                            productUnit: scanUnit,
-                                            productUnits: stock.import_detail._variable.units
-                                        };
-                                    if (tab.find(`[name='stock_ids[]'][value=${stock.id}]`).length) {
-                                        tab.find(`[name='stock_ids[]'][value=${stock.id}]`).each(function(i, detail) {
-                                            const card = $(this).closest('.detail'),
-                                                unitId = card.find(`[name='unit_ids[]']`).val(),
-                                                orderQuantity = parseInt(card.find(`[name='quantities[]']`).val())
-                                            if (unitId == scanUnit.id) {
-                                                availableUnit = true
-                                                card.find(`[name='quantities[]']`).val(orderQuantity + 1);
-                                                if (validateQuantity(card)) {
-                                                    totalOrder()
-                                                    nextLoops = false
-                                                    availableStock = true
-                                                    return false;
-                                                }
-                                            }
-                                        })
-                                        if (!availableUnit) {
-                                            $('#export-modal').hasClass('show') ? addCardToExport(newCard) : addCardToOrder(newCard)
-                                            let card = tab.find('div.detail').first();
-                                            if (validateQuantity(card)) {
-                                                availableStock = true
-                                                return false
-                                            } else {
-                                                card.remove();
-                                            }
-                                        }
-                                    } else {
-                                        $('#export-modal').hasClass('show') ? addCardToExport(newCard) : addCardToOrder(newCard)
-                                        availableStock = true
-                                        return false
+                            } else {
+                                let available = true;
+                                $(`[name='barcode[]']`).each(function(i, input) {
+                                    if (input.value == sCode) {
+                                        available = false;
+                                        return false;
                                     }
-                                    return nextLoops
                                 })
-                            }
-                            if (!availableStock) {
-                                pushToastify("This product is out of stock in the system.", 'danger')
+                                if (available) {
+                                    $('.btn-append-variable').trigger('click')
+                                    $(`[name='barcode[]']`).last().val(sCode)
+                                } else {
+                                    pushToastify("Barcode already exists!", 'danger')
+                                }
                             }
                         })
+                    } else if ($('#import-modal').hasClass('show')) {
+                        let btn = $('.btn-create-stock'),
+                            existVariable = false
+                        btn.prop("disabled", true).html('<span class="spinner-border spinner-border-sm" id="spinner-form" role="status"></span>');
+                        $.get(`{{ route('admin.unit') }}/scan?barcode=${sCode}`, function(unit) {
+                            if (unit) {
+                                $('.import_detail-unit_id').each(function(i, input) {
+                                    if (input.value == unit.id) {
+                                        existVariable = true
+                                        let input = $(this).closest('tr').find(`[name='quantities[]']`)
+                                        input.val(parseInt(input.val()) + 1)
+                                        return false
+                                    }
+                                })
+                                if (!existVariable) {
+                                    htmlImportVariable(unit)
+                                }
+                            } else {
+                                pushToastify("Product not found!", 'danger')
+                            }
+                            btn.prop("disabled", false).html('<i class="bi bi-plus-circle"></i> Add stock');
+                        })
+                    } else if ('{{ Request::path() }}' == 'quantri/order/new' || $('#order-modal').hasClass('show') || $('#export-modal').hasClass('show')) {
+                        if ($('#export-modal').hasClass('show')) {
+                            $('#export-search-input').val(sCode).change().focus()
+                        } else {
+                            $.get(`{{ route('admin.stock') }}/scan?barcode=${sCode}&action=export`, function(stocks) {
+                                let scanUnit,
+                                    availableStock = false,
+                                    tab = $('#order-modal').hasClass('show') ? $('#order-modal') : $('#export-modal').hasClass('show') ? $('#export-modal') : $('.tab-pane.active')
+                                if (stocks.length) {
+                                    $.each(stocks, function(index, stock) {
+                                        $.each(stock.import_detail._variable.units, function(index, unit) {
+                                            if (unit.barcode === sCode) {
+                                                scanUnit = unit
+                                            }
+                                        });
+                                    });
+                                    $.each(stocks, function(i, stock) {
+                                        var nextLoops = true,
+                                            availableUnit = false,
+                                            newCard = {
+                                                stockId: stock.id,
+                                                stockExpired: stock.expired,
+                                                productName: stock.import_detail._variable._product.name + (stock.import_detail._variable.name != undefined ? ' - ' + stock.import_detail._variable.name : ''),
+                                                productSku: stock.import_detail._variable._product.sku,
+                                                stockQuantity: stock.quantity,
+                                                stockConvertQuantity: stock.convertQuantity,
+                                                variableId: stock.import_detail._variable.id,
+                                                productUnit: scanUnit,
+                                                productUnits: stock.import_detail._variable.units
+                                            };
+                                        if (tab.find(`[name='stock_ids[]'][value=${stock.id}]`).length) {
+                                            tab.find(`[name='stock_ids[]'][value=${stock.id}]`).each(function(i, detail) {
+                                                const card = $(this).closest('.detail'),
+                                                    unitId = card.find(`[name='unit_ids[]']`).val(),
+                                                    orderQuantity = parseInt(card.find(`[name='quantities[]']`).val())
+                                                if (unitId == scanUnit.id) {
+                                                    availableUnit = true
+                                                    card.find(`[name='quantities[]']`).val(orderQuantity + 1);
+                                                    console.log(orderQuantity);
+                                                    checkDiscount($(card))
+                                                    if (validateQuantity(card)) {
+                                                        totalOrder()
+                                                        nextLoops = false
+                                                        availableStock = true
+                                                        return false;
+                                                    }
+                                                }
+                                            })
+                                            if (!availableUnit) {
+                                                $('#export-modal').hasClass('show') ? addCardToExport(newCard) : addCardToOrder(newCard)
+                                                let card = tab.find('div.detail').first();
+                                                if (validateQuantity(card)) {
+                                                    availableStock = true
+                                                    return false
+                                                } else {
+                                                    card.remove();
+                                                }
+                                            }
+                                        } else {
+                                            $('#export-modal').hasClass('show') ? addCardToExport(newCard) : addCardToOrder(newCard)
+                                            availableStock = true
+                                            return false
+                                        }
+                                        return nextLoops
+                                    })
+                                }
+                                if (!availableStock) {
+                                    pushToastify("This product is out of stock in the system.", 'danger')
+                                }
+                            })
+                        }
+                    } else {
+                        $('.dataTables_filter').find('input').val(sCode).change().focus()
                     }
-                } else {
-                    $('.dataTables_filter').find('input').val(sCode).change().focus()
                 }
             },
             onKeyDetect: function(iKeyCode) {
@@ -1953,7 +1957,10 @@
     }
 
     function checkDiscount(card) {
+        console.log(`card ${card}`);
+
         const discount = JSON.parse(card.find('select option:selected').attr('data-discount'))
+
         if (discount) {
             const price = Number(card.find('.order_detail-discounted_price').val()),
                 quantity = Number(card.find('.order_detail-quantity').val())
@@ -1965,6 +1972,7 @@
                 groupSize = buyQ + getQ
             discountPrice = 0
             note = ``;
+            console.log(discount, type);
             switch (type) {
                 case 2:
                     if (quantity >= groupSize) {
@@ -2029,7 +2037,7 @@
             form.find('.card-services').removeClass('d-none')
             $('#order-form').attr('action', `{{ route('admin.order.update') }}`)
             form.find(`[name='id']`).val(obj.id)
-            form.find(`[name='note']`).val(obj.note)
+            form.find(`[name='note']`).val(obj.note?.replace(/<br\s*\/?>/gi, "\n"))
             form.find(`[name='discount']`).val(obj.discount)
             form.find(`[name='branch_name']`).val(obj._branch.name)
             form.find(`[name='created_at']`).val(moment(obj.created_at).format('YYYY-MM-DD HH:MM'))
@@ -2339,8 +2347,7 @@
         tab.find('.order-detail').each(function() {
             const quantity = parseInt($(this).find(`.order_detail-quantity`).val().split(',').join('')),
                 price = parseInt($(this).find(`.order_detail-discounted_price`).val().split(',').join('')),
-                discount_program = parseInt($(this).find(`.order_detail-discount_program`).val())
-            console.log(discount_program);
+                discount_program = parseInt($(this).find(`.order_detail-discount_program`).val());
 
             let sum = quantity * price - discount_program
             $(this).find('.order_detail-total').val(sum)
@@ -2601,7 +2608,11 @@
             }
             $('.customer-suggestions').html(str)
             $('.customer-information').val(suggest.name + (suggest.phone ? ' - ' + suggest.phone : ''))
-            $('.order-user-scores').removeClass('d-none').find('#order-user_scores').prop('checked', false)
+
+            if(suggest.scores > 100) {
+                $('.order-user-scores').removeClass('d-none').find('#order-user_scores').prop('checked', false)
+            }
+
             fillScoresInOrder()
         })
     }
@@ -2632,6 +2643,7 @@
                     $('#order-user_scores').trigger('change')
                 }
             }
+
         } else {
             if (total > 0 && customer_id && !tab.find('#order-user_scores').is(':checked')) {
                 let scores_used = 0,

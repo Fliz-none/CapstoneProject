@@ -17,7 +17,8 @@
                                             <div class="dropdown ajax-search">
                                                 <div class="form-group mb-0 has-icon-left">
                                                     <div class="position-relative search-form">
-                                                        <input class="form-control form-control-lg search-input" data-url="{{ route('admin.stock') }}?key=search" type="text" autocomplete="off" placeholder="{{ __('messages.order.select_a_product') }}">
+                                                        <input class="form-control form-control-lg search-input" data-url="{{ route('admin.stock') }}?key=search" type="text" autocomplete="off"
+                                                            placeholder="{{ __('messages.order.select_a_product') }}">
                                                         <div class="form-control-icon">
                                                             <i class="bi bi-search"></i>
                                                         </div>
@@ -31,6 +32,9 @@
                                     </div>
                                 </div>
                                 <div class="card-body order-details">
+                                </div>
+                                <div class="form-group mx-4">
+                                    <textarea class="form-control" id="order-note" name="note" rows="2" placeholder="{{ __('messages.note') }}"></textarea>
                                 </div>
                             </div>
                             <div class="card card-transactions mb-3">
@@ -133,7 +137,7 @@
                                     </div>
                                     <hr />
                                     <div class="row mb-3 row-total">
-                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center"  for="order-total">{{ __('messages.dashboard_table_total') }} <span class="order-count px-1">0</span>
+                                        <label class="col-sm-4 mb-0 col-form-label d-flex align-items-center" for="order-total">{{ __('messages.dashboard_table_total') }} <span class="order-count px-1">0</span>
                                             {{ __('messages.item') }}</label>
                                         <div class="col-sm-8">
                                             <input class="form-control-lg bg-white text-end form-control bg-white money order-total" id="order-total" name="total" type="text" value="0" placeholder="Order total amount"
@@ -168,17 +172,14 @@
                                             <input class="form-control-lg text-end form-control bg-white money order-due" id="order-due" name="due" type="text" value="0" placeholder="Amount" autocomplete="off" readonly>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <textarea class="form-control" id="order-note" name="note" rows="2" placeholder="{{ __('messages.note') }}"></textarea>
-                                    </div>
                                     <div class="form-group mb-0">
                                         @if (!empty(Auth::user()->hasAnyPermission(App\Models\User::UPDATE_ORDER, App\Models\User::CREATE_ORDER)))
                                             <input name="id" type="hidden">
                                             <div class="d-grid">
                                                 <div class="btn-group dropup">
-                                                    <button class="btn btn-light btn-print print-order"  data-id="" data-url="{{ getPath(route('admin.order')) }}" data-template="c80">
+                                                    <a class="btn btn-light btn-print print-order" data-id="" data-url="{{ getPath(route('admin.order')) }}" data-template="c80">
                                                         <i class="bi bi-printer-fill"></i>
-                                                    </button>
+                                                    </a>
                                                     <button class="btn btn-lg btn-info w-75 btn-submit" type="submit">{{ __('messages.save') }}</button>
                                                 </div>
                                             </div>

@@ -10,7 +10,7 @@
                 <div class="col-12 col-md-4 col-lg mb-3">
                     <h6 class="text-secondary">{{ __('messages.setting.website_icon') }}</h6>
                     <label class="form-label select-image" for="favicon" style="height: 19rem !important">
-                        <img class="img-fluid rounded-4 object-fit-cover" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/favicon_key.png') }}';">
+                        <img class="img-fluid rounded-4 object-fit-contain h-100" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/favicon_key.png') }}';">
                     </label>
                     <input class="hidden-image" id="favicon" name="favicon" type="hidden" value="{{ $settings['favicon'] ?? old('favicon') }}">
                     <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{ __('messages.delete') }}</button>
@@ -19,7 +19,7 @@
                 <div class="col-12 col-md-4 col-lg mb-3">
                     <h6 class="text-secondary">{{ __('messages.setting.color') }}</h6>
                     <label class="form-label select-image" for="logo_horizon" style="height: 19rem !important">
-                        <img class="img-fluid rounded-4 object-fit-cover" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/logo_horizon_key.png') }}';">
+                        <img class="img-fluid rounded-4 object-fit-contain h-100" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/logo_horizon_key.png') }}';">
                     </label>
                     <input class="hidden-image" id="logo_horizon" name="logo_horizon" type="hidden" value="{{ $settings['logo_horizon'] ?? old('logo_horizon') }}">
                     <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{ __('messages.delete') }}</button>
@@ -28,7 +28,7 @@
                 <div class="col-12 col-md-4 col-lg mb-3">
                     <h6 class="text-secondary">{{ __('messages.setting.square') }}</h6>
                     <label class="form-label select-image" for="logo_square" style="height: 19rem !important">
-                        <img class="img-fluid rounded-4 object-fit-cover" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/logo_square.png') }}';">
+                        <img class="img-fluid rounded-4 object-fit-contain h-100" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/logo_square.png') }}';">
                     </label>
                     <input class="hidden-image" id="logo_square" name="logo_square" type="hidden" value="{{ $settings['logo_square'] ?? old('logo_square') }}">
                     <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{ __('messages.delete') }}</button>
@@ -37,7 +37,7 @@
                 <div class="col-12 col-md-4 col-lg mb-3">
                     <h6 class="text-secondary">{{ __('messages.setting.black_and_white') }}</h6>
                     <label class="form-label select-image" for="logo_horizon_bw" style="height: 19rem !important">
-                        <img class="img-fluid rounded-4 object-fit-cover" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/logo_horizon_bw_key.png') }}';">
+                        <img class="img-fluid rounded-4 object-fit-contain h-100" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/logo_horizon_bw_key.png') }}';">
                     </label>
                     <input class="hidden-image" id="logo_horizon_bw" name="logo_horizon_bw" type="hidden" value="{{ $settings['logo_horizon_bw'] ?? old('logo_square') }}">
                     <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{ __('messages.delete') }}</button>
@@ -46,7 +46,7 @@
                 <div class="col-12 col-md-4 col-lg mb-3">
                     <h6 class="text-secondary">{{ __('messages.setting.black_and_white_square') }}</h6>
                     <label class="form-label select-image" for="logo_square_bw" style="height: 19rem !important">
-                        <img class="img-fluid rounded-4 object-fit-cover" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/logo_square_bw_key.png') }}';">
+                        <img class="img-fluid rounded-4 object-fit-contain h-100" alt="Ảnh đại diện" onerror="this.src='{{ asset('/admin/images/logo/logo_square_bw_key.png') }}';">
                     </label>
                     <input class="hidden-image" id="logo_square_bw" name="logo_square_bw" type="hidden" value="{{ $settings['logo_square_bw'] ?? old('logo_square') }}">
                     <div class="d-grid mt-auto"> <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{ __('messages.delete') }}</button>

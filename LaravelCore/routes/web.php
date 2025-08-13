@@ -49,6 +49,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Session;
 
@@ -288,6 +289,7 @@ Route::group(['prefix' => 'quantri'], function () {
         Route::post('work', [SettingController::class, 'updateWork'])->name('admin.setting.work');
         Route::post('print', [SettingController::class, 'updatePrint'])->name('admin.setting.print');
         Route::post('score', [SettingController::class, 'updateScore'])->name('admin.setting.score');
+        Route::post('shipping-fee', [SettingController::class, 'updateShippingFee'])->name('admin.setting.shipping_fee');
 
         Route::post('website', [SettingController::class, 'updateWebsite'])->name('admin.setting.website');
     });
@@ -393,6 +395,7 @@ Route::get('/auth/google/callback', function () {
                 'email' => $googleUser->getEmail(),
                 'avatar' => $googleUser->getAvatar(),
                 'password' => null,
+                'email_verified_at' => Carbon::now(),
             ]);
         }
 
@@ -400,15 +403,22 @@ Route::get('/auth/google/callback', function () {
         Auth::login($user);
 
 
-        $intendedUrl = Session::pull('url.intended');
+        $redirectMap = [
+            User::READ_DASHBOARD => route('admin.home'),
+            User::CREATE_ORDER   => route('admin.order', ['key' => 'new']),
+            User::READ_IMPORTS   => route('admin.import'),
+        ];
 
-        // ✅ Kiểm tra xem URL đó có thuộc domain của hệ thống không
-        if ($intendedUrl && Str::startsWith($intendedUrl, config('app.url'))) {
-            return redirect($intendedUrl);
+        // Ưu tiên URL cũ nếu có
+        if (session()->has('url.intended')) {
+            return redirect()->intended();
         }
 
-        if ($user->can(User::CREATE_ORDER)) {
-            return redirect()->route('admin.order', ['key' => 'new']);
+        // Tìm route theo quyền
+        foreach ($redirectMap as $permission => $route) {
+            if ($user->hasAnyPermission($permission)) {
+                return redirect()->to($route);
+            }
         }
 
         return redirect()->route('home');

@@ -3,7 +3,19 @@
 @endphp
 {{-- <link href="{{ asset('admin/css/bootstrap.css') }}" rel="stylesheet"> --}}
 <div id="print-container" style="font-size: 75%; color: #000000">
-    <div class="container-fluid print-template"> 
+    <div class="container-fluid print-template">
+        <div class="row">
+            <div class="col-4">
+                <img class="img-fluid" src="{{ asset('storage/' . $settings['logo_square_bw']) }}" />
+            </div>
+            <div class="col-8 d-flex flex-column align-items-center">
+                <h6 class="text-uppercase mb-0">{{ $settings['company_name'] }}</h6>
+                <small class="mb-0">
+                    Address: {{ $settings['company_address'] }} <br />
+                    Phone: {{ $settings['company_hotline'] }}
+                </small>
+            </div>
+        </div>
         <div class="row">
             <div class="col-12">
                 <h6 class="text-center mb-0 py-3">IMPORT {{ $import->code }}</h6>
@@ -52,11 +64,4 @@
             </div>
         </div>
     @endif
-    <div class="row mt-3">
-        <div class="col-12 text-center">
-            THANK YOU AND SEE YOU AGAIN<br />
-            HOTLINE: {{ cache('settings')['company_hotline'] }}<br />
-            <small>Please return within 24 hours if there is any issue with the goods</small>
-        </div>
-    </div>
 </div>

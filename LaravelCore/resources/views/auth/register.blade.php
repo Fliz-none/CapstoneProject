@@ -34,28 +34,6 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
-                                <label class="col-md-4 col-form-label text-md-end" for="address">{{ __('Address') }}</label>
-                                <div class="col-md-6">
-                                    <input class="form-control @error('address') is-invalid @enderror" id="address" name="address" type="text" value="{{ old('address') }}" autocomplete="on" placeholder="Address">
-                                    @error('address')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label class="col-md-4 col-form-label text-md-end" for="birthday">{{ __('Birthday') }}</label>
-                                <div class="col-md-6">
-                                    <input class="form-control @error('birthday') is-invalid @enderror" id="birthday" name="birthday" type="date" value="{{ old('birthday') }} " max="{{ now()->format('Y-m-d') }}" />
-                                    @error('birthday')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="row mb-3">
                                 <label class="col-md-4 col-form-label text-md-end" for="men">{{ __('Gender') }}</label>
                                 <div class="col-md-6 d-flex align-items-center">
                                     <div class="form-check form-check-inline">
@@ -73,7 +51,7 @@
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" id="other" name="gender" type="radio" value="2">
                                         <label class="form-check-label cursor-pointer" for="other">
-                                            {{ __('Order') }}
+                                            {{ __('Other') }}
                                         </label>
                                     </div>
                                     @error('gender')

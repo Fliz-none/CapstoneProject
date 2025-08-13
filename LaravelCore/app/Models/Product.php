@@ -148,8 +148,10 @@ class Product extends Model
         $today = now()->toDateString();
 
         return $this->variables
-            ->flatMap(fn($v) => 
-                $v->units->flatMap(fn($u) => 
+            ->flatMap(
+                fn($v) =>
+                $v->units->flatMap(
+                    fn($u) =>
                     $u->discounts
                         ->where('status', 1)
                         ->where('start_date', '<=', $today)
@@ -181,10 +183,11 @@ class Product extends Model
 
     public function getStarAttribute()
     {
-        $details = Detail::with('_order._customer')->whereHas('unit.variable', function ($query) {
+        $details = Detail::with('_order._customer')->whereHas('_order', function ($query) {
+            $query->where('status', '<>', 0);
+        })->whereHas('unit.variable', function ($query) {
             $query->where('product_id', $this->id);
         })->get();
-
         $ratings = [];
 
         foreach ($details as $detail) {
@@ -198,7 +201,7 @@ class Product extends Model
         }
 
         if (count($ratings) === 0) {
-            return 5;
+            return 0;
         }
 
         return round(array_sum($ratings) / count($ratings), 1);

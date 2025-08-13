@@ -40,7 +40,12 @@ class CheckoutController extends Controller
             'address.required' => __('lang_web.checkout.address_required'),
         ];
         $request->validate($rules, $messages);
-        session(['checkout_address' => $request->address]);
+        session([
+            'checkout_address' => $request->address,
+            'order_paid' => $request->order_paid,
+            'shipping_fee' => $request->shipping_fee,
+        ]);
+
         return $this->processOrder(1,  'Thanh toán bằng Tiền mặt khi giao hàng');
     }
 
@@ -53,8 +58,13 @@ class CheckoutController extends Controller
             'address.required' => __('lang_web.checkout.address_required'),
         ];
         $request->validate($rules, $messages);
+
         try {
-            session(['checkout_address' => $request->address]);
+            session([
+                'checkout_address' => $request->address,
+                'order_paid' => $request->order_paid,
+                'shipping_fee' => $request->shipping_fee,
+            ]);
             $user = Auth::user();
             $cart = $user->cart;
             if (!$cart || $cart->items->count() == 0) {
@@ -71,7 +81,7 @@ class CheckoutController extends Controller
             $vnp_TxnRef = Carbon::now()->timestamp . $user->code;
             $vnp_OrderInfo = 'Thanh toán đơn hàng ' . $vnp_TxnRef;
             $vnp_OrderType = 'billpayment';
-            $vnp_Amount = $cart->total * 100;
+            $vnp_Amount = $request->order_paid * 100;
             $vnp_Locale = session()->get('locale') ?? 'vn';
             $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
             $inputData = array(
@@ -134,7 +144,7 @@ class CheckoutController extends Controller
             ]);
         }
 
-        return $this->processOrder( 2, 'Thanh toán qua VNPay');
+        return $this->processOrder(2, 'Thanh toán qua VNPay');
     }
 
     private function processOrder($method = 2, $note = 'Online order!')
@@ -149,23 +159,27 @@ class CheckoutController extends Controller
         }
 
         DB::beginTransaction();
-        
+
         try {
             // Chi nhánh quản lý đơn
             $branch_id = optional(
                 $cart->items->firstWhere('allocated_to_warehouse_id', '!=', null)
             )->allocated_to_warehouse->branch_id ?? Branch::where('status', 1)->latest()->first()->id;
 
+            $address = json_decode(session('checkout_address'), true);
+            $address['fee'] = session('shipping_fee');
+
             $order = Order::create([
                 'branch_id' => $branch_id,
                 'customer_id' => $user->id,
                 'method' => $method,
-                'address' => session('checkout_address'),
+                'address' => json_encode($address),
                 'total' => $cart->total,
-                'discount' => $cart->discount ?? 0,
+                'discount' => 0,
                 'status' => 2,
-                'note' => $cart->note,
+                'note' => 'Giao hàng tại: ' . $address['address'] . ' <br>Phí giao hàng: ' . $address['fee'],
             ]);
+
             // Trung chuyển kho nếu có
             $this->exportForOrder($order, $branch_id);
             // Export cho đơn
@@ -177,11 +191,15 @@ class CheckoutController extends Controller
                 'date' => date('Y-m-d'),
             ]);
 
-            session()->forget('checkout_address');
+            session()->forget([
+                'checkout_address',
+                'order_paid',
+                'shipping_fee'
+            ]);
 
             $checker = new StockChecker();
             foreach ($cart->items as $item) {
-                if(!$checker->checkUnitStock($item)){
+                if (!$checker->checkUnitStock($item)) {
                     DB::rollBack();
                     return redirect()->route('checkout')->with('response', [
                         'status' => 'error',
@@ -226,14 +244,13 @@ class CheckoutController extends Controller
 
             DB::commit();;
             return redirect()->route('profile')->withFragment('user-order');
-        } catch (OutOfStockException $e){
+        } catch (OutOfStockException $e) {
             DB::rollBack();
             $cart->items()->delete();
             return redirect()->route('checkout')->with('response', [
                 'status' => 'error',
                 'msg' => $e->getMessage(),
             ]);
-
         } catch (\Exception $e) {
             DB::rollBack();
             log_exception($e);

@@ -43,7 +43,7 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
-       
+
         if (isset($request->key)) {
             $objs = Role::query();
             switch ($request->key) {
@@ -271,7 +271,7 @@ class RoleController extends Controller
         try {
             foreach ($request->choices as $key => $id) {
                 $role = Role::find($id);
-                if ($id == 1 || $role->users) {
+                if ($id == 1 || $role->users->count()) {
                     DB::rollBack();
                     return response()->json([
                         'status' => 'danger',
@@ -285,7 +285,7 @@ class RoleController extends Controller
             cache()->forget('roles');
             return response()->json([
                 'status' => 'success',
-                'msg' => __('messages.deleted') . __('messages.roles.role') . ' ' . implode(', ', $names),
+                'msg' => __('messages.deleted') . ' ' . __('messages.roles.role') . ' ' . implode(', ', $names),
             ], 200);
         } catch (\Throwable $e) {
             DB::rollBack();

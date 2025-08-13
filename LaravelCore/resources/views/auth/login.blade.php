@@ -14,7 +14,7 @@
                             <div class="row mb-3">
                                 <label class="col-md-4 col-form-label text-md-end" for="email">{{ __('Email Address') }}</label>
                                 <div class="col-md-6">
-                                    <input class="form-control @error('email') is-invalid @enderror" id="email" name="email" type="email" value="{{ old('email') }}" required placeholder="Email" autocomplete="email" autofocus>
+                                    <input class="form-control @error('email') is-invalid @enderror" id="email" name="email" type="email" value="{{ old('email') }}" required placeholder="Email" autocomplete="off" autofocus>
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="col-12 d-flex justify-content-end pe-2 p-lg-4">
                                     <div class="ms-2">
-                                        <span>Don't have an account? <a href="{{ route('register') }}"> {{ __('Register') }}</a></span>
+                                        <span>{{ __('messages.no_account') }}? <a href="{{ route('register') }}"> {{ __('Register') }}</a></span>
                                     </div>
                                 </div>
                             </div>

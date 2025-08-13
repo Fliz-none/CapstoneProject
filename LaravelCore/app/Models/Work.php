@@ -92,9 +92,9 @@ class Work extends Model
 
         if ($differenceInSeconds > 0) {
             $seconds = $differenceInSeconds < 60 ? $differenceInSeconds . ' seconds' : '';
-            return '<br><span class="badge bg-danger">Checked out early by ' .
-                ($interval->hours ? $interval->hours . 'h ' : '') .
-                ($interval->minutes ? $interval->minutes . 'm ' : '') .
+            return '<br><span class="badge bg-danger">Early by ' .
+                ($interval->hours ? $interval->hours . ' hour(s) ' : '') .
+                ($interval->minutes ? $interval->minutes . ' minute(s) ' : '') .
                 $seconds . '</span>';
         } else {
             return '<br><span class="badge bg-primary">On time</span>';
