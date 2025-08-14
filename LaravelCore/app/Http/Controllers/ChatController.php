@@ -115,8 +115,6 @@ class ChatController extends Controller
 
             broadcast(new PusherBroadcast($message->load('attachments')));
             DB::commit();
-            Log::info((bool)$request->aiEnabled);
-            Log::info($request->aiEnabled);
             if ((bool)$request->aiEnabled) {
                 // 🔹 Check Rasa status trước khi queue
                 $rasaUrl = env('RASA_WEBHOOK_URL', 'http://localhost:8001/webhooks/smsolutions/webhook');
