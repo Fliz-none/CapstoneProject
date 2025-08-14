@@ -272,10 +272,36 @@ nlu:
       - Nó nhiu vậy
       - Nó giá bao nhiu vậy
 
+  - intent: ask_about_ai_emotions
+    examples: |
+      - Mày có vui không?
+      - M có buồn không?
+      - Bạn cảm thấy thế nào?
+      - Bạn buồn à
+      - Bạn có khỏe không?
+      - Shop thấy sao ạ?
+      - Mày có ổn không?
+      - Bạn đang vui hả?
+      - Bạn có mệt không?
+      - Tâm trạng bạn thế nào?
+      - Bạn cảm thấy thế nào hôm nay?
+      - Có chuyện gì làm bạn buồn không?
+
+  - intent: thank
+    examples: |
+      - Cảm ơn bạn
+      - Thanks SMSbot
+      - Cảm ơn nha
+      - Cảm ơn vì đã giúp
+      - Thanks bạn
+      - Cảm ơn
+      - Tks nha
+      - Tks SMSbot
+
   - intent: out_of_scope
     examples: |
       - Hahaa hihi
-      - hú hú hú
+      - hú hú hà
       - hehe hà hà
       - gì vậy trời
       - 🤣🤣🤣

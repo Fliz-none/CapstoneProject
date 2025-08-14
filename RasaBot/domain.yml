@@ -23,6 +23,8 @@ intents:
   - out_of_scope
   - ask_how_to_shop
   - ask_price
+  - ask_about_ai_emotions
+  - thank
 
 responses:
   utter_greet:
@@ -79,6 +81,17 @@ responses:
     - text: "Bạn vui lòng truy cập https://smsolutions.io.vn/ nhé. Hoặc có thể đến trực tiếp tại cửa hàng theo thông tin trên website nhé!"
     - text: "Bạn có thể mua hàng trực tiếp tại website https://smsolutions.io.vn hoặc ghé cửa hàng theo địa chỉ trên web nhé!"
     - text: "Truy cập website https://smsolutions.io.vn để đặt hàng online, hoặc đến cửa hàng theo thông tin liên hệ nhé!"
+  
+  utter_ask_about_ai_emotions:
+    - text: "Mình không có cảm xúc thật 😎 nhưng vẫn ổn!"
+    - text: "Cảm ơn bạn đã hỏi, SMSbot đang hoạt động bình thường 😁"
+    - text: "SMSbot không buồn, không vui, nhưng luôn sẵn sàng chat với bạn!"
+    - text: "SMSbot luôn ổn định và sẵn sàng trò chuyện với bạn nha!"
+  
+  utter_thank:
+    - text: "Không có gì, bạn cần gì SMSbot luôn sẵn sàng giúp."
+    - text: "SMSbot rất vui khi được hỗ trợ bạn 😄"
+    - text: "Rất vui khi được hỗ trợ bạn <3"
 
 entities:
   - order_id

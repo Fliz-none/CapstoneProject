@@ -117,15 +117,16 @@ rules:
       - intent: nlu_fallback
       - action: action_default_fallback
 
-  - rule: Fallback when intent is uncertain
+  - rule: Khi hỏi ngoài vùng phục vụ của AI
     steps:
       - intent: out_of_scope
       - action: utter_default
   
-  - rule: Fallback when intent is ask_how_to_shop
+  - rule: Khi hỏi cách mua hàng
     steps:
       - intent: ask_how_to_shop
       - action: utter_how_to_shop
+      - action: utter_did_that_help
       
   - rule: Khách hỏi giá sản phẩm vừa xem
     condition:
@@ -134,3 +135,13 @@ rules:
     steps:
       - intent: ask_price
       - action: action_check_price
+
+  - rule: Khi hỏi về cảm xúc của AI
+    steps:
+      - intent: ask_about_ai_emotions
+      - action: utter_ask_about_ai_emotions
+  
+  - rule: Khi người dùng cảm ơn
+    steps:
+      - intent: thank
+      - action: utter_thank
