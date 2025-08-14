@@ -24,6 +24,8 @@ class User extends Authenticatable implements MustVerifyEmail
     const READ_SETTINGS = 'Access settings page';
     const READ_LOGS = 'Read system logs';
 
+    const ACCESS_CUSTOMER_SUPPORT = 'Access customer support';
+    
     const READ_ROLES = 'Read roles list';
     const READ_ROLE = 'Read role details';
     const CREATE_ROLE = 'Create role';
@@ -169,11 +171,6 @@ class User extends Authenticatable implements MustVerifyEmail
     const UPDATE_WORK = 'Update work';
     const SUMMARY_WORK = 'Read work summary';
 
-    const READ_LOCALS = 'Read local list';
-    const CREATE_LOCAL = 'Create local';
-    const UPDATE_LOCAL = 'Update local';
-    const DELETE_LOCAL = 'Delete local';
-    const DELETE_LOCALS = 'Delete multiple locals';
 
     const READ_VERSIONS = 'Read version list';
     const CREATE_VERSION = 'Create version';

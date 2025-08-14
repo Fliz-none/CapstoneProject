@@ -4,8 +4,13 @@
 </button>
 <div class="chatbot">
     <header>
-        <h2>{{ __('lang_web.footer.chat_with_us') }}</h2>
-        <span class="close-btn material-symbols-outlined"><i class="bi bi-x"></i></span>
+        <div class="d-flex align-items-center justify-content-center gap-2">
+            <h2>{{ __('lang_web.footer.chat_with_us') }}</h2>
+            <button class="active" id="aiToggle" title="Đang chat với AI">
+                <i class="bi bi-robot"></i>
+            </button>
+            <span class="close-btn material-symbols-outlined"><i class="bi bi-x"></i></span>
+        </div>
     </header>
     <ul class="chatbox">
     </ul>
@@ -46,8 +51,10 @@
             <span class="emoji">🤩</span>
             <span class="emoji">😛</span>
         </div>
-        <p class="btn btn-select-attachments fw-bold my-auto" onclick="document.querySelector('#chatAttachments').click()" style="color: rgb(66, 91, 237)"><i class="bi bi-paperclip"></i></p>
-        <textarea name="message" id="message" placeholder="Enter a message..." spellcheck="false" required></textarea>
+        <p class="btn btn-select-attachments fw-bold my-auto" style="color: rgb(66, 91, 237)"><i class="bi bi-paperclip"></i></p>
+        <textarea id="message" name="message" placeholder="Enter a message..." spellcheck="false" required></textarea>
         <span class="material-symbols-rounded" id="send-btn"><i class="bi bi-send"></i></span>
     </div>
 </div>
+<audio id="chatSound" src="{{ asset('/sounds/sound_notification.mp3') }}" class="d-" preload="auto"></audio>
+

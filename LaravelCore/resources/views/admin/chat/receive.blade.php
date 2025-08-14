@@ -9,7 +9,7 @@
             }
         @endphp
         @if (!$message->content)
-            <img class="{{ $avatarClass }}" src="{{ $message->sender->avatarUrl }}" alt="avatar" width="50" height="50" @if ($canUpdate) data-id="{{ $message->sender_id }}" @endif>
+            <img class="{{ $avatarClass }}" src="{{ $message->sender_id ? $message->sender->avatarUrl : asset('images/sms_bot.png') }}" alt="avatar" width="50" height="50" @if ($canUpdate) data-id="{{ $message->sender_id }}" @endif>
         @else
             <div class="me-3" style="width: 50px"></div>
         @endif
@@ -43,16 +43,19 @@
             }
         @endphp
 
-        <img class="{{ $avatarClass }}" src="{{ $message->sender->avatarUrl }}" alt="avatar" width="50" height="50" @if ($canUpdate) data-id="{{ $message->sender_id }}" @endif>
+        <img class="{{ $avatarClass }}" src="{{ $message->sender_id ? $message->sender->avatarUrl : asset('images/sms_bot.png') }}" alt="avatar" width="50" height="50" @if ($canUpdate) data-id="{{ $message->sender_id }}" @endif>
         <div class="" style="max-width: 50%; width: fit-content;">
             <div class="card mb-0 cursor-pointer">
                 <div class="card-header d-flex justify-content-between px-3 py-1 bg-chat-secondary">
-                    <p class="mb-0">{{ $message->sender->name }}</p>
+                    <p class="mb-0">{{ $message->sender ? $message->sender->name : 'SMS bot' }}</p>
                 </div>
                 <div class="card-body">
                     <p class="mb-0 p-1">
                         {{ $message->content }}
                     </p>
+                    @if ($message->json_data)
+                        {!! $message->renderData !!}
+                    @endif
                 </div>
             </div>
             <small class="text-muted me-3 mb-0 mt-1 d-block float-start">

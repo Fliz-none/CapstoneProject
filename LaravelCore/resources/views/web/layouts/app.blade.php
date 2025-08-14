@@ -175,17 +175,16 @@
             let auth_id = @json(auth()->id());
             let offset = 0;
             let loading = false;
-
-
+            let noMoreMessages = false; // Để chặn load khi hết tin nhắn
 
             function createChatLi(message, auth_id = null) {
                 const type = message.sender_id == auth_id ? 'outgoing' : 'incoming';
-                const avatar = () => {
+                const avatar = (addition_class = '') => {
                     if (type == 'incoming') {
                         if (message.sender)
-                            return `<img src="${message.sender.avatarUrl}" alt="avatar" class="rounded-circle ratio-1-1 img-fluid w-100">`;
+                            return `<img src="${message.sender.avatarUrl}" alt="avatar" class="rounded-circle ratio-1-1 img-fluid w-100 ${addition_class}">`;
                         else
-                            return '<img src="{{ asset('images/sms_bot.png') }}" alt="Chat bot" class="rounded-circle ratio-1-1 img-fluid w-100"/>';
+                            return `<img src="{{ asset('images/sms_bot.png') }}" alt="Chat bot" class="rounded-circle ratio-1-1 img-fluid w-100 ${addition_class}"/>`;
                     } else {
                         return '';
                     }
@@ -205,7 +204,7 @@
                             } //video
                             else if (attachment.mime_type.startsWith('video/')) {
                                 html += `<li class="chat ${type}">
-                                        <span class="material-symbols-outlined bg-white" style="width: 40px;"></span>
+                                        <span class="material-symbols-outlined bg-white" style="width: 40px;">${avatar('opacity-0')}</span>
                                         <div class="w-50 d-inline-block">
                                             <video src="${attachment.file_url}" controls alt="attachment" class="rounded thumb img-fluid w-100">
                                         </div>
@@ -213,12 +212,12 @@
                             } else {
                                 //Open file with attachment file_url by browser
                                 html += `<li class="chat ${type}">
-                                        <span class="material-symbols-outlined bg-white" style="width: 40px;"></span>
-                                        <a href="${attachment.file_url}" target="_blank"
-                                        class="text-decoration-none text-truncate fs-6 border p-1 d-inline-block"
-                                        style="max-width: 150px;" title="${attachment.file_name}">
-                                        <i class="bi bi-file-earmark-fill"></i> ${attachment.file_name}</a>
-                                    </li>`;
+                                            <span class="material-symbols-outlined bg-white" style="width: 40px;">${avatar('opacity-0')}</span>
+                                            <a href="${attachment.file_url}" target="_blank"
+                                            class="text-decoration-none text-truncate fs-6 border p-1 d-inline-block"
+                                            style="max-width: 150px;" title="${attachment.file_name}">
+                                            <i class="bi bi-file-earmark-fill"></i> ${attachment.file_name}</a>
+                                        </li>`;
                             }
                         })
                         return html;
@@ -228,38 +227,63 @@
                 }
                 if (!message.content && !message.attachments) return '';
                 if (!message.content && message.attachments) return attachments();
+                const renderedData = () => {
+                    if(message.json_data)
+                        return `<li class="chat ${type}" style="display: block;">
+                                    ${message.renderData}
+                                </li>`
+                    return ''
+                }
                 return `${attachments()}
                     <li class="chat ${type}">
                         <span class="material-symbols-outlined bg-white" style="width: 40px;">${avatar()}</span>
-                        <p class="pb-1">${message.content} <br><small class="m-1 fst-italic ${type == 'outgoing' ? 'float-end text-white' : 'text-muted'}">${moment(message.created_at).fromNow()}</small></p>
-                    </li>`;
+                        <p class="pb-1">${message.content}
+                            <small class="m-1 fst-italic ${type == 'outgoing' ? 'float-end text-white' : 'float-start text-muted'}">${moment(message.created_at).fromNow()}</small>
+                        </p>
+                    </li>${renderedData()}`;
             }
 
             function loadMessages(reset = false) {
-                if (loading) return;
+                if (loading || noMoreMessages) return;
                 loading = true;
+
                 $.get(`{{ route('chat', ['key' => 'messages']) }}`, {
                     offset: offset
-                }, function(messages) {
+                })
+                .done(function(messages) {
                     const messagesArray = Object.values(messages);
+
+                    // Nếu không còn tin nhắn nào trả về => chặn load tiếp
+                    if (messagesArray.length === 0) {
+                        noMoreMessages = true;
+                        return;
+                    }
+
                     let html = '';
                     for (let i = messagesArray.length - 1; i >= 0; i--) {
                         let message = messagesArray[i];
                         html += createChatLi(message, auth_id);
                     }
+
                     const chatbox = $('.chatbox');
+
                     if (reset) {
                         chatbox.html(html);
-                        offset = 20;
+                        offset = messagesArray.length; // Reset lại offset theo số tin nhận được
                         chatbox.scrollTop(chatbox[0].scrollHeight);
                     } else {
-                        const scrollPos = chatbox[0].scrollHeight;
+                        const oldScrollHeight = chatbox[0].scrollHeight;
                         chatbox.prepend(html);
-                        offset += 20;
-                        chatbox.scrollTop(chatbox[0].scrollHeight - scrollPos);
+                        offset += messagesArray.length;
+                        chatbox.scrollTop(chatbox[0].scrollHeight - oldScrollHeight);
                     }
+                })
+                .fail(function(xhr, status, error) {
+                    console.error("Lỗi khi load tin nhắn:", error);
+                })
+                .always(function() {
+                    loading = false; // Chỉ set lại false khi request xong
                 });
-                loading = false;
             }
 
             $(document).ready(function() {
@@ -313,11 +337,12 @@
                         if($temp.length > 0) $temp.remove();
                         $('.chatbox').append(liHtml);
                         $('.chatbox').scrollTop($('.chatbox')[0].scrollHeight);
+                        document.getElementById('chatSound').play();
                     });
 
                 // Scroll để load thêm tin nhắn
-                $('.chatbox').on('scroll', function() {
-                    if ($(this).scrollTop() === 0) {
+                $('.chatbox').on('scroll', function() {                    
+                    if ($(this).scrollTop() == 0) {
                         loadMessages(false);
                     }
                 });
@@ -806,7 +831,6 @@
                             $('.address-action').removeClass('d-none')
                             $('.btn-update-address').attr('data-id', JSON.stringify(response.address))
                             $('#remove-address-form [name=address]').val(JSON.stringify(response.address))
-                            console.log(str, count);
 
                             let $newLabel = $(`#user-address-${count + 1}`).next('label');
                             $newLabel.get(0).scrollIntoView({
@@ -869,7 +893,6 @@
                             lng,
                             address
                         }) => {
-                            console.log(lat, lng, address);
                             $('#address-map-form input[name="address"]').val(JSON.stringify({
                                 lat,
                                 lng,
@@ -907,7 +930,6 @@
                                 lng,
                                 address
                             }) => {
-                                console.log(lat, lng, address);
                                 $('#address-map-form input[name="address"]').val(JSON.stringify({
                                     lat,
                                     lng,

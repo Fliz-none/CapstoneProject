@@ -2,22 +2,24 @@
 
 namespace App\Models;
 
+use Illuminate\Cache\NullStore;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Crypt;
+use Psr\Log\NullLogger;
 
 class Message extends Model
 {
     use SoftDeletes;
 
+    protected $appends = ['renderData'];
     protected $fillable = [
         'conversation_id',
         'sender_id',
         'content',
         'json_data',
         'is_seen',
-        'answer_id',
-     ];
+    ];
 
     //Encrypt content before save
     public function setContentAttribute($value)
@@ -35,25 +37,36 @@ class Message extends Model
         }
     }
 
-    public function setJsonDataAttribute($value)
+    public function getRenderDataAttribute()
     {
-        if (is_array($value) || is_object($value)) {
-            $value = json_encode($value);
+        $data = $this->json_data ? json_decode($this->json_data, true) : null;
+        if (!$data) return $data;
+        switch ($data['action']) {
+            case 'check_order':
+                $order = $data['order'];
+                return view('admin.chat.messages.check_order', compact('order'))->render();
+            case 'check_stock':
+                $stock = $data['stock'];
+                return view('admin.chat.messages.check_stock', compact('stock'))->render();
+            case 'ask_product':
+                $product = $data['product'];
+                return view('admin.chat.messages.ask_product', compact('product'))->render();
+            case 'ask_branch':
+                $branches = $data['branches'];
+                return view('admin.chat.messages.ask_branch', compact('branches'))->render();
+            case 'ask_post':
+                $posts = $data['posts'];
+                return view('admin.chat.messages.ask_post', compact('posts'))->render();
+            case 'ask_company':
+                $shop_info = $data['shop_info'];
+                return view('admin.chat.messages.ask_company', compact('shop_info'))->render();
+            case 'ask_promotions':
+                $promotions = $data['promotions'];
+                return view('admin.chat.messages.ask_promotions', compact('promotions'))->render();
+            default:
+                return null;
         }
-
-        $this->attributes['json_data'] = Crypt::encryptString($value);
     }
-
-    public function getJsonDataAttribute($value)
-    {
-        try {
-            $decrypted = Crypt::decryptString($value);
-            return json_decode($decrypted, true) ?? $decrypted;
-        } catch (\Exception $e) {
-            return $value;
-        }
-    }
-
 
     public function conversation()
     {

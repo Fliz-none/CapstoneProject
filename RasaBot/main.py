@@ -13,7 +13,7 @@ if not SECRET:
 
 app = FastAPI()
 
-# CORS
+# # CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Cho phép tất cả origin trong quá trình dev
@@ -60,10 +60,15 @@ async def rasa_webhook(request: Request):
         raise HTTPException(status_code=415, detail="Unsupported Content-Type")
 
     # ✅ Lấy sender và message
-    sender = payload.get("sub") or data.get("sender")
+    sender = payload.get("sub") or data.get("sender") or 1
     message = data.get("message")
     if not sender or not message:
         raise HTTPException(status_code=400, detail="Missing sender or message")
+
+    # ✅ Giới hạn độ dài tin nhắn
+    MAX_LENGTH = 200
+    if len(message) > MAX_LENGTH:
+        raise HTTPException(status_code=400, detail=f"Tin nhắn quá dài.")
 
     # ✅ Gửi sang Rasa REST webhook
     async with httpx.AsyncClient() as client:
@@ -80,3 +85,34 @@ async def rasa_webhook(request: Request):
             )
 
     return response.json()
+
+
+@app.get("/status")
+async def rasa_status(request: Request):
+    # ✅ Nếu muốn bắt buộc token cho ping
+    require_token = os.getenv("REQUIRE_STATUS_TOKEN", "false").lower() == "true"
+    if require_token:
+        auth = request.headers.get("authorization", "")
+        if not auth.startswith("Bearer "):
+            raise HTTPException(status_code=401, detail="Unauthorized")
+
+        token = auth[7:]
+        try:
+            jwt.decode(
+                token,
+                SECRET,
+                algorithms=["HS256"],
+                options={"verify_aud": False, "verify_sub": False},
+            )
+        except jwt.InvalidTokenError:
+            raise HTTPException(status_code=401, detail="Invalid token")
+
+    # ✅ Gọi Rasa status API
+    async with httpx.AsyncClient() as client:
+        try:
+            resp = await client.get("http://localhost:5005/status", timeout=5.0)
+            resp.raise_for_status()
+        except httpx.HTTPError as e:
+            raise HTTPException(status_code=502, detail=f"Failed to reach Rasa: {str(e)}")
+
+    return resp.json()

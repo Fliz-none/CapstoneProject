@@ -3,8 +3,8 @@ version: "3.1"
 intents:
   - greet
   - goodbye
-  - affirm
-  - deny
+  - affirm_cancel
+  - deny_cancel
   - mood_great
   - mood_unhappy
   - bot_challenge
@@ -21,6 +21,10 @@ intents:
   - ask_opening_hours
   - nlu_fallback
   - out_of_scope
+  - ask_how_to_shop
+  - ask_price
+  - ask_about_ai_emotions
+  - thank
 
 responses:
   utter_greet:
@@ -30,8 +34,7 @@ responses:
 
   utter_cheer_up:
     - text: "Đừng buồn nữa nhé, hãy ra ngoài và hít thở không khí mới nào!"
-    - text: "Dưới đây là một vài hình ảnh đẹp giúp bạn vui lên:"
-      image: "https://t3.ftcdn.net/jpg/07/69/68/76/360_F_769687673_7TgHc6Ng88ra2FQb8JJsQRQJGcFFwBtO.jpg"
+    - text: "Vui lên nhé, hãy ra ngoài và hít thở không khí nào!"
 
   utter_did_that_help:
     - text: "Thông tin đó có giúp ích cho bạn không?"
@@ -48,8 +51,8 @@ responses:
     - text: "Hẹn gặp lại sớm nhé!"
 
   utter_iamabot:
-    - text: "Tôi là một trợ lý ảo, được phát triển bởi nhóm SMS."
-    - text: "Mình là bot được nhóm SMS tạo ra để hỗ trợ bạn."
+    - text: "Tôi là một trợ lý ảo, được phát triển bởi SMS."
+    - text: "Mình là chatbot được SMS tạo ra để hỗ trợ bạn."
     - text: "Bạn đang trò chuyện với trợ lý ảo SMSBot nè!"
     - text: "Tôi là SMSBot trợ lý ảo đáng tin của bạn."
 
@@ -74,17 +77,47 @@ responses:
     - text: "Xin lỗi, tôi không hiểu bạn đang nói gì."
     - text: Xin lỗi, tôi không hiểu bạn đang nói gì. Bạn có thể hỏi lại không?
 
+  utter_how_to_shop:
+    - text: "Bạn vui lòng truy cập https://smsolutions.io.vn/ nhé. Hoặc có thể đến trực tiếp tại cửa hàng theo thông tin trên website nhé!"
+    - text: "Bạn có thể mua hàng trực tiếp tại website https://smsolutions.io.vn hoặc ghé cửa hàng theo địa chỉ trên web nhé!"
+    - text: "Truy cập website https://smsolutions.io.vn để đặt hàng online, hoặc đến cửa hàng theo thông tin liên hệ nhé!"
+  
+  utter_ask_about_ai_emotions:
+    - text: "Mình không có cảm xúc thật 😎 nhưng vẫn ổn!"
+    - text: "Cảm ơn bạn đã hỏi, SMSbot đang hoạt động bình thường 😁"
+    - text: "SMSbot không buồn, không vui, nhưng luôn sẵn sàng chat với bạn!"
+    - text: "SMSbot luôn ổn định và sẵn sàng trò chuyện với bạn nha!"
+  
+  utter_thank:
+    - text: "Không có gì, bạn cần gì SMSbot luôn sẵn sàng giúp."
+    - text: "SMSbot rất vui khi được hỗ trợ bạn 😄"
+    - text: "Rất vui khi được hỗ trợ bạn <3"
+
 entities:
   - order_id
   - product_name
 
 slots:
+  
+  last_product_id:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+  last_product_name:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+
   order_id:
     type: text
     influence_conversation: true
     mappings:
       - type: from_entity
         entity: order_id
+
   product_name:
     type: text
     influence_conversation: true
@@ -103,6 +136,7 @@ actions:
   - action_ask_post
   - action_ask_promotions
   - action_default_fallback
+  - action_check_price
   
 session_config:
   session_expiration_time: 60

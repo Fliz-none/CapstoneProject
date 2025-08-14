@@ -66,6 +66,7 @@ class ChatController extends Controller
         }
     }
 
+
     public function broadcast(Request $request)
     {
         DB::beginTransaction();
@@ -102,7 +103,6 @@ class ChatController extends Controller
                     $uuidName = Str::uuid() . '.' . $file->getClientOriginalExtension();
                     $file->storeAs('', $uuidName, 'chat_attachments'); // vẫn đúng path
 
-                    // Optionally lưu DB
                     Attachment::create([
                         'message_id' => $message->id,
                         'file_name' => $file->getClientOriginalName(),
@@ -115,7 +115,27 @@ class ChatController extends Controller
 
             broadcast(new PusherBroadcast($message->load('attachments')));
             DB::commit();
-            dispatch(new ProcessRasaMessage($message));
+            Log::info((bool)$request->aiEnabled);
+            Log::info($request->aiEnabled);
+            if ((bool)$request->aiEnabled) {
+                // 🔹 Check Rasa status trước khi queue
+                $rasaUrl = env('RASA_WEBHOOK_URL', 'http://localhost:8001/webhooks/smsolutions/webhook');
+                $statusUrl = preg_replace('#/webhooks/.+$#', '/status', $rasaUrl);
+
+                try {
+                    $jwt = JWT::encode(['sub' => Auth::id(), 'iat' => time()], env('JWT_SECRET'), 'HS256');
+                    $ping = Http::withToken($jwt)->timeout(3)->get($statusUrl);
+
+                    if ($ping->successful()) {
+                        Log::info("✅ ProcessRasaMessage queue");
+                        dispatch(new ProcessRasaMessage($message));
+                    } else {
+                        Log::warning("⚠️ Rasa trả về lỗi status: " . $ping->status());
+                    }
+                } catch (\Throwable $e) {
+                    Log::error("❌ Không kết nối được Rasa: " . $e->getMessage());
+                }
+            }
 
             return response()->json($message);
         } catch (\Exception $e) {

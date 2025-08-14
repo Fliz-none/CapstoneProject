@@ -207,6 +207,7 @@ class CheckoutController extends Controller
                     ]);
                 }
                 $stock = $item->stock;
+                Log::info(json_encode($stock));
                 $detail = Detail::create([
                     'order_id' => $order->id,
                     'stock_id' => $stock->id,

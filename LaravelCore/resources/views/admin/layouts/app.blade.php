@@ -127,7 +127,6 @@
             @include('admin.includes.partials.modal_transaction')
             @include('admin.includes.partials.modal_user')
             @include('admin.includes.partials.modal_warehouse')
-            @include('admin.includes.partials.modal_local')
             @include('admin.includes.partials.modal_expense')
             @if (Request::path() != 'quantri/image')
                 <div class="modal fade" id="quick_images-modal" aria-labelledby="quick_images-label" tabindex="-1">
@@ -3279,6 +3278,21 @@
 
         return `${hours}:${minutes}`;
     }
+    // Notification
+    $(document).ready(function() {
+        $(document).on('click', '.btn-mark-notification', function(e) {
+            e.preventDefault();
+            $.post(`{{ route('admin.notification.mark') }}`, {
+                id: $(this).attr('data-id'),
+                _token: '{{ csrf_token() }}'
+            },
+            function(response){
+                if (response.status == 'success') {
+                    $('.nav-notifications').html(response.template)
+                }
+            })
+        })
+    })
 </script>
 <link href="https://cdn.jsdelivr.net/npm/@goongmaps/goong-js@1.0.9/dist/goong-js.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/@goongmaps/goong-js@1.0.9/dist/goong-js.js"></script>

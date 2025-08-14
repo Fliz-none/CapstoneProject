@@ -323,14 +323,3 @@ class StockChecker
         return $earthRadius * 2 * asin(sqrt($a));
     }
 }
-class GenerateMessage
-{
-    public function gener_response($message)
-    {
-        switch ($message->action) {
-            case 'text':
-                return $message->text;
-        }
-        return $message;
-    }
-}

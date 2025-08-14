@@ -19,6 +19,7 @@ class PermissionSeeder extends Seeder
         // Create permissions
         $permissions = [
             ['Read dashboard', 'web', 'Dashboard'],
+            ['Access customer support', 'web', 'Customer support'],
             ['Read chats', 'web', 'Dashboard'],
             ['Access admin panel', 'web', 'Access admin'],
             ['Update admin information', 'web', 'Access admin'],
@@ -149,11 +150,6 @@ class PermissionSeeder extends Seeder
             ['Create work', 'web', 'Works'],
             ['Update work', 'web', 'Works'],
             ['Read work summary', 'web', 'Works'],
-            ['Read local list', 'web', 'Locals'],
-            ['Create local', 'web', 'Locals'],
-            ['Update local', 'web', 'Locals'],
-            ['Delete local', 'web', 'Locals'],
-            ['Delete multiple locals', 'web', 'Locals'],
             ['Read version list', 'web', 'Versions'],
             ['Create version', 'web', 'Versions'],
             ['Update version', 'web', 'Versions'],

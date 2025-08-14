@@ -51,6 +51,7 @@ class CheckExpired extends Command
             $before = optional(Setting::where('key', 'expired_notification_before')->first())->value ?? 30;
             $expiredStocks = Stock::with(['import_detail._import._warehouse', 'import_detail._variable'])
                 ->whereDate('expired', now()->addDays($before))
+                ->where('quantity', '>', 0)
                 ->get()
                 ->groupBy(function ($stock) {
                     return $stock->import_detail->_import->warehouse_id;
@@ -69,8 +70,8 @@ class CheckExpired extends Command
                 if (!$warehouse) continue;
 
                 $users = $warehouse->users->filter(function ($user) {
-                    return $user->can(User::ACCESS_ADMIN);
-                }); //Lay danh sach nguoi dung co quyen admin
+                    return $user->can(User::READ_STOCKS);
+                }); //Lay danh sach nguoi dung co quyen xem stocks
                 
                 $expired_day = Carbon::now()->addDays($before);
                 $str = '<div class="row">
@@ -91,15 +92,20 @@ class CheckExpired extends Command
                 $noti = NotificationController::create($str);
                 NotificationController::push($noti, $users);
                 //Gửi email thông báo
+                $this->info($warehouse->name . ': ' . count($users) . ' users');
                 if (!empty($users)) {
                     //Thông báo sản phẩm sắp hết hạn tại kho
+                    $this->info('Send email to ' . $users->pluck('email'));
                     Mail::to($users->pluck('email')->filter())->send(new SendMail('admin.templates.emails.expired_notification', $stocks, 'Expiration Alert at ' . $warehouse->name));
                 }
             }
 
             $this->info('Execution time: ' . round(microtime(true) - $start, 2) . 's');
+            // Log stock hết hạn
+            $this->info(json_encode($expiredStocks->keys()->all()) . ' ');
             $this->info(Carbon::now()->format('d/m/Y') . ': Done.');
         } catch (\Throwable $throwable) {
+            log_exception($throwable);
             $this->info(Carbon::now()->format('d/m/Y') . ': Error:' . $throwable->getMessage());
         }
         return 0;
