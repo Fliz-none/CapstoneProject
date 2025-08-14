@@ -60,69 +60,73 @@
                 border-radius: 4px;
             }
         </style>
-        <button class="btn btn-sm btn-outline-primary float-end" id="toggle-fullscreen">
-            <i class="bi bi-arrows-fullscreen"></i>
-        </button>
-        <section>
-            <div class="container py-5">
-                <div class="row">
-                    <div class="col-md-6 col-lg-5 col-xl-4 mb-lg-4 mb-md-0">
-                        <h5 class="font-weight-bold mb-3 text-center text-lg-start">{{ __('messages.chat.conversations') }}</h5>
-                        <div class="card">
-                            <div class="card-body d-flex flex-column" style="height: 100vh;">
-                                <!-- Input search: cố định -->
-                                <div class="form-outline position-relative p-0 mb-3 gap-2 d-flex">
-                                    <i class="bi bi-search position-absolute" style="top: 45%; left: 10px; transform: translateY(-50%); z-index: 2;"></i>
-                                    <input class="form-control ps-5" id="search" type="search" placeholder="{{ __('messages.chat.search') }}" />
-                                    <button class="btn btn-link btn-select-user-conversation text-muted px-3 ms-auto" type="button" title="Add conversation"><i class="bi bi-person-plus"></i></button>
-                                </div>
+        @if (Auth::user()->can(App\Models\User::ACCESS_CUSTOMER_SUPPORT))
+            <button class="btn btn-sm btn-outline-primary float-end" id="toggle-fullscreen">
+                <i class="bi bi-arrows-fullscreen"></i>
+            </button>
+            <section>
+                <div class="container py-5">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-5 col-xl-4 mb-lg-4 mb-md-0">
+                            <h5 class="font-weight-bold mb-3 text-center text-lg-start">{{ __('messages.chat.conversations') }}</h5>
+                            <div class="card">
+                                <div class="card-body d-flex flex-column" style="height: 100vh;">
+                                    <!-- Input search: cố định -->
+                                    <div class="form-outline position-relative p-0 mb-3 gap-2 d-flex">
+                                        <i class="bi bi-search position-absolute" style="top: 45%; left: 10px; transform: translateY(-50%); z-index: 2;"></i>
+                                        <input class="form-control ps-5" id="search" type="search" placeholder="{{ __('messages.chat.search') }}" />
+                                        <button class="btn btn-link btn-select-user-conversation text-muted px-3 ms-auto" type="button" title="Add conversation"><i class="bi bi-person-plus"></i></button>
+                                    </div>
 
-                                <!-- Danh sách conversations-->
-                                <div class="flex-grow-1 overflow-auto">
-                                    <ul class="list-unstyled mb-0 conversations"></ul>
+                                    <!-- Danh sách conversations-->
+                                    <div class="flex-grow-1 overflow-auto">
+                                        <ul class="list-unstyled mb-0 conversations"></ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6 col-lg-7 col-xl-8 pt-xl-5 rounded d-flex flex-column" style="height: 100vh;">
-                        <div class="flex-grow-1 overflow-auto messages-container" style="background: #f1f3f6;">
-                            <ul class="list-unstyled mb-0 messages px-3 pt-3">
-                                <!-- JS append messages here -->
-                            </ul>
-                        </div>
-                        {{-- Preview file --}}
-                        <div class="gap-2" id="preview-attachments"></div>
-                        <form class="border-top bg-white p-2" id="send-message" method="POST" action="{{ route('admin.chat.broadcast') }}" enctype="multipart/form-data">
-                            @csrf
-                            <!-- Dòng icon trên đầu -->
-                            <div class="d-flex align-items-center gap-2 mb-2 px-2 position-relative">
-                                <button class="btn btn-link text-muted p-1" id="toggleEmojiPicker" type="button" title="Emoji">
-                                    <i class="bi bi-emoji-smile fs-5"></i>
-                                </button>
+                        <div class="col-md-6 col-lg-7 col-xl-8 pt-xl-5 rounded d-flex flex-column" style="height: 100vh;">
+                            <div class="flex-grow-1 overflow-auto messages-container" style="background: #f1f3f6;">
+                                <ul class="list-unstyled mb-0 messages px-3 pt-3">
+                                    <!-- JS append messages here -->
+                                </ul>
+                            </div>
+                            {{-- Preview file --}}
+                            <div class="gap-2" id="preview-attachments"></div>
+                            <form class="border-top bg-white p-2" id="send-message" method="POST" action="{{ route('admin.chat.broadcast') }}" enctype="multipart/form-data">
+                                @csrf
+                                <!-- Dòng icon trên đầu -->
+                                <div class="d-flex align-items-center gap-2 mb-2 px-2 position-relative">
+                                    <button class="btn btn-link text-muted p-1" id="toggleEmojiPicker" type="button" title="Emoji">
+                                        <i class="bi bi-emoji-smile fs-5"></i>
+                                    </button>
 
-                                <!-- Danh sách Emoji (dropdown) -->
-                                <div class="border bg-white p-2 rounded shadow-sm position-absolute" id="emojiPicker" style="display: none; top: 100%; left: 0; z-index: 100; max-height: 200px; overflow-y: auto; width: 260px;">
-                                    <!-- emoji sẽ được render bằng JS -->
+                                    <!-- Danh sách Emoji (dropdown) -->
+                                    <div class="border bg-white p-2 rounded shadow-sm position-absolute" id="emojiPicker" style="display: none; top: 100%; left: 0; z-index: 100; max-height: 200px; overflow-y: auto; width: 260px;">
+                                        <!-- emoji sẽ được render bằng JS -->
+                                    </div>
+
+                                    <label class="btn btn-link text-muted p-1 m-0" for="attachments" title="Attachment">
+                                        <i class="bi bi-paperclip fs-5"></i>
+                                    </label>
+                                    <input class="d-none" id="attachments" name="attachments[]" type="file" multiple />
+                                    <!-- Thêm các icon khác nếu cần -->
                                 </div>
-
-                                <label class="btn btn-link text-muted p-1 m-0" for="attachments" title="Attachment">
-                                    <i class="bi bi-paperclip fs-5"></i>
-                                </label>
-                                <input class="d-none" id="attachments" name="attachments[]" type="file" multiple />
-                                <!-- Thêm các icon khác nếu cần -->
-                            </div>
-                            <!-- Textarea + nút gửi -->
-                            <div class="d-flex align-items-end gap-2 px-3 pb-3">
-                                <textarea class="form-control border-0 rounded-3 bg-light px-3 py-2" id="message" name="message" style="resize: none;" rows="2" placeholder="{{ __('messages.chat.@') }}"></textarea>
-                                <button class="btn btn-primary just-icon" type="submit">
-                                    <i class="bi bi-send"></i>
-                                </button>
-                            </div>
-                        </form>
+                                <!-- Textarea + nút gửi -->
+                                <div class="d-flex align-items-end gap-2 px-3 pb-3">
+                                    <textarea class="form-control border-0 rounded-3 bg-light px-3 py-2" id="message" name="message" style="resize: none;" rows="2" placeholder="{{ __('messages.chat.@') }}"></textarea>
+                                    <button class="btn btn-primary just-icon" type="submit">
+                                        <i class="bi bi-send"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        @else
+            @include('admin.includes.access_denied')
+        @endif
     </div>
 @endsection
 @push('scripts')
@@ -263,16 +267,17 @@
 
                 if (reset) {
                     messageList.html(html);
-                    offset = 20;
+                    offset = messageList.children().length; // Đếm lại số tin
                     requestAnimationFrame(() => {
                         container.scrollTop(container[0].scrollHeight);
                     });
                 } else {
                     const scrollPos = container[0].scrollHeight;
                     messageList.prepend(html);
-                    offset += 20;
+                    offset = messageList.children().length;
                     container.scrollTop(container[0].scrollHeight - scrollPos);
                 }
+
             }).always(() => {
                 loading = false;
             });

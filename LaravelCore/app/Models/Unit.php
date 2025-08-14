@@ -58,7 +58,7 @@ class Unit extends Model
         }
         $importDetails = $query->get();
         return $importDetails->sum(function ($import_detail) {
-            return (optional($import_detail->stock)->quantity ?? 0) / $this->rate;
+            return (optional($import_detail->stock)->quantity ?? 0);
         });
     }
 
@@ -76,6 +76,7 @@ class Unit extends Model
 
     public function getBestDiscountAttribute()
     {
+        if(!Auth::check()) return null;
         $discounts = $this->discounts()
             ->where('branch_id', Auth::user()->main_branch)
             ->where('status', 1)

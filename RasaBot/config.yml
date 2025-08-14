@@ -20,7 +20,7 @@ pipeline:
     case_sensitive: False
     use_lookup_tables: true
   - name: FallbackClassifier
-    threshold: 0.6
+    threshold: 0.3
     ambiguity_threshold: 0.1
 
 policies:

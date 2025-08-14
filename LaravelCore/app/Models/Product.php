@@ -148,8 +148,10 @@ class Product extends Model
         $today = now()->toDateString();
 
         return $this->variables
-            ->flatMap(fn($v) => 
-                $v->units->flatMap(fn($u) => 
+            ->flatMap(
+                fn($v) =>
+                $v->units->flatMap(
+                    fn($u) =>
                     $u->discounts
                         ->where('status', 1)
                         ->where('start_date', '<=', $today)

@@ -89,7 +89,7 @@ nlu:
       - tôi đang nói chuyện với AI à?
       - tôi đang nói với con người à?
 
-  - intent: affirm
+  - intent: affirm_cancel
     examples: |
       - vâng
       - đúng rồi
@@ -97,15 +97,17 @@ nlu:
       - tôi đồng ý
       - hủy đi
       - Có
+      - có ạ
+      - okee ạ
       - Ừ
       - OK
       - Oke
       - Chấp nhận
       - Dạ
+      - hủy
 
-  - intent: deny
+  - intent: deny_cancel
     examples: |
-      - không
       - chưa
       - đừng hủy
       - thôi
@@ -238,6 +240,37 @@ nlu:
       - Thanh toán qua ngân hàng có dễ không?
       - Nếu không dùng được Momo thì còn cách nào?
       - Dùng Internet Banking để thanh toán thì thao tác ra sao?
+  
+  - intent: ask_how_to_shop
+    examples: |
+      - Tôi muốn mua hàng
+      - Làm sao mua hàng
+      - Tôi muốn hỏi làm sao mua hàng online được
+      - Mua sắm ở đâu vậy
+      - Làm sao để mua hàng vậy?
+      - Mua sắm ở đâu
+      - Tôi muốn mua hàng thì phải làm sao
+      - e muốn mua hàng ạ
+      - Shop ơi em muốn shoping
+      - Shoping như nào ạ?
+      - Shoping như thế nào?
+      
+  - intent: ask_price
+    examples: |
+      - giá bao nhiêu
+      - bao nhiêu tiền
+      - giá của sản phẩm này
+      - nó nhiêu vậy
+      - cái đó nhiêu
+      - bao nhiêu
+      - Giá của nó
+      - Bao nhiêu
+      - Nó bao nhiêu
+      - Bao nhiêu tiền
+      - Nó bao nhiêu tiền
+      - Nhiu vậy
+      - Nó nhiu vậy
+      - Nó giá bao nhiu vậy
 
   - intent: out_of_scope
     examples: |

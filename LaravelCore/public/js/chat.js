@@ -1,12 +1,13 @@
 let userMessage = null;
 let selectedFiles = [];
+let aiEnabled = true;
 
 // Gửi tin nhắn và file đính kèm lên server
 function sendChatMessageToServer(message, attachments, onSuccess, onError) {
     const formData = new FormData();
     formData.append("message", message);
     formData.append("_token", $('meta[name="csrf-token"]').attr("content"));
-
+    formData.append("aiEnabled", aiEnabled ? 1 : 0);
     attachments.forEach((file) => {
         formData.append("attachments[]", file);
     });
@@ -181,6 +182,12 @@ $(document).on('click', '#emojiPicker .emoji', function (e) {
     $('#message').val($('#message').val() + emoji);
     console.log('emoji', emoji);
     
+});
+
+$('#aiToggle').on('click', function() {
+    aiEnabled = !aiEnabled;
+    $(this).toggleClass('active');
+    $(this).attr('title', aiEnabled ? 'Đang chat với AI' : 'Đang tắt chat với AI');
 });
 
 $("#send-btn").on("click", handleChat);

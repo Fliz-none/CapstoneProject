@@ -327,3 +327,66 @@ header h2 {
     background-color: #f0f0f0;
     border-radius: 4px;
 }
+.web-rendered-data{
+    display: block !important;
+    margin-left: 50px;
+}
+.web-rendered-data p{
+    padding: 5px 10px !important;
+    white-space: normal !important;
+}
+.web-rendered-data .d-block{
+    display: block !important;
+    width: 100% !important;
+    white-space: normal !important;
+}
+.web-rendered-data .link{
+    color: rgb(0, 4, 255) !important;
+    text-decoration: underline !important;
+}
+.web-rendered-data .w-100 p{
+    max-width: 100% !important;
+}
+.web-rendered-data strong{
+    white-space: nowrap !important;
+}
+.web-rendered-data span{
+    color: white !important;
+    font-size: 10px !important;
+    padding: 4px !important;
+    line-height: 5px !important;
+    width: max-content !important;
+    height: auto !important;
+    margin: 0 0 0 5px !important;
+}
+.web-rendered-data table,
+.web-rendered-data table td,
+.web-rendered-data table th {
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+    padding: 2px 4px !important;
+}
+#aiToggle {
+    border: none;                 /* Bỏ viền mặc định */
+    background-color: #f1f3f5;    /* Màu nền nhạt khi tắt */
+    color: #616c76;               /* Màu icon khi tắt */
+    border-radius: 50%;           /* Hình tròn */
+    width: 32px;                  /* Kích thước vuông */
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    font-size: 16px;
+}
+
+#aiToggle.active {
+    background-color: #e7ed42;   /* Màu nền khi bật AI */
+    color: #0080ff;                  /* Màu icon trắng khi bật */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2); /* Bóng nhẹ */
+}
+
+#aiToggle:hover {
+    transform: scale(1.1);        /* Phóng to nhẹ khi hover */
+}

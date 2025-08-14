@@ -144,7 +144,7 @@ class CheckoutController extends Controller
         if (!$cart || $cart->items->isEmpty()) {
             return redirect()->route('checkout')->with('response', [
                 'status' => 'error',
-                'msg' => 'Cart is empty!',
+                'msg' => 'Giỏ hàng trống!',
             ]);
         }
 
@@ -189,6 +189,7 @@ class CheckoutController extends Controller
                     ]);
                 }
                 $stock = $item->stock;
+                Log::info(json_encode($stock));
                 $detail = Detail::create([
                     'order_id' => $order->id,
                     'stock_id' => $stock->id,

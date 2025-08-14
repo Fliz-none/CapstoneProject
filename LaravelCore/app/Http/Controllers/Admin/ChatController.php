@@ -43,17 +43,19 @@ class ChatController extends Controller
             switch ($request->key) {
                 case 'messages':
                     $offset = $request->input('offset', 0);
-                    $limit = 10;
+                    $limit = 20;
+
                     $messages = Message::where('conversation_id', $request->conversation_id)
-                        ->orderBy('created_at', 'desc')
+                        ->orderBy('created_at', 'asc') // Quan trọng: luôn ASC để tin mới ở cuối
                         ->skip($offset)
                         ->take($limit)
-                        ->get()
-                        ->reverse(); // Reverse to show the latest messages at the bottom
+                        ->get();
+
                     Message::where('conversation_id', $request->conversation_id)
                         ->where('sender_id', '!=', $this->user->id)
                         ->where('is_seen', false)
                         ->update(['is_seen' => true]);
+
                     return view('admin.chat.messages', compact('messages'));
                 case 'conversations':
                     $search = $request->search;
@@ -165,7 +167,7 @@ class ChatController extends Controller
     {
         $request->validate([
             'customer_id' => 'exists:users,id',
-            'name' => 'string|max:255',
+            'name' => 'max:255',
             'selected_ids' => 'required|array',
         ]);
         DB::beginTransaction();

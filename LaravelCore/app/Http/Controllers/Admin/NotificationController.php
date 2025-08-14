@@ -38,7 +38,7 @@ class NotificationController extends Controller
         } else {
             if ($request->ajax()) {
             } else {
-                $pageName = self::NAME . ' management'; 
+                $pageName = self::NAME . ' management';
                 return view('admin.notifications', compact('pageName'));
             }
         }
@@ -72,16 +72,33 @@ class NotificationController extends Controller
 
     public function mark(Request $request)
     {
-        DB::table('notification_user')->where('user_id', Auth::id())->where('notification_id', $request->id)->update(['status' => 1]);
-        if (!DB::table('notification_user')->where('notification_id', $request->id)->where('status', 0)->count()) {
-            optional(Notification::find($request->id))->forceDelete();
+        $query = DB::table('notification_user')
+            ->where('user_id', Auth::id());
+        if ($request->id === 'all') {
+            $query->update(['status' => 1]);
+            $msg = 'All notifications turned off!';
+        } else {
+            $query->where('notification_id', $request->id)
+                ->update(['status' => 1]);
+            // Xoá notification nếu không còn ai chưa đọc
+            $stillUnread = DB::table('notification_user')
+                ->where('notification_id', $request->id)
+                ->where('status', 0)
+                ->exists();
+            if (!$stillUnread) {
+                optional(Notification::find($request->id))->forceDelete();
+            }
+            $msg = 'Notification turned off!';
         }
-        $notis = $this->user->notifications()->wherePivot('status', 0)->select('notifications.*')->orderBy('id', 'DESC')->get();
-        $response = [
-            'status' => 'success',
-            'msg' => 'Notification turned off!',
-            'template' => view('admin.includes.notifications', compact('notis'))->render()
-        ];
-        return response()->json($response, 200);
+        $notis = $this->user->notifications()
+            ->wherePivot('status', 0)
+            ->select('notifications.*')
+            ->orderByDesc('id')
+            ->get();
+        return response()->json([
+            'status'   => 'success',
+            'msg'      => $msg,
+            'template' => view('admin.includes.notifications', compact('notis'))->render(),
+        ]);
     }
 }
