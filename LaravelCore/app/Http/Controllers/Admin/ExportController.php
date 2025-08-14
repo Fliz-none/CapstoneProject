@@ -50,31 +50,31 @@ class ExportController extends Controller
             // Locale đã được set xong ở đây
             Controller::init();
             self::$MESSAGES = [
-                'note.required' => __('messages.export.content').': ' . Controller::$NOT_EMPTY,
-                'note.string' => __('messages.export.content').': ' . Controller::$DATA_INVALID,
-                'date.required' => __('messages.date').': ' . Controller::$NOT_EMPTY,
-                'date.date_format' => __('messages.date').': ' . Controller::$DATA_INVALID,
-                'receiver_id.required' => __('messages.receiver') .': ' . Controller::$NOT_EMPTY,
-                'receiver_id.numeric' => __('messages.receiver') .': ' . Controller::$DATA_INVALID,
-                'stock_ids.required' => __('messages.stock.stock').': ' . Controller::$ONE_LEAST,
-                'stock_ids.array' => __('messages.stock.stock').': ' . Controller::$ONE_LEAST,
-                'stock_ids.min' => __('messages.stock.stock').': ' . Controller::$ONE_LEAST,
-                'stock_ids.*.required' => __('messages.stock.stock').': ' . Controller::$NOT_EMPTY,
-                'stock_ids.*.numeric' => __('messages.stock.stock').': ' . Controller::$NOT_EMPTY,
-                'unit_ids.array' => __('messages.order_controller.unit') .': ' . Controller::$ONE_LEAST,
-                'unit_ids.min' => __('messages.order_controller.unit') .': ' . Controller::$ONE_LEAST,
-                'unit_ids.*.required' => __('messages.order_controller.unit') .': ' . Controller::$NOT_EMPTY,
-                'unit_ids.*.numeric' => __('messages.order_controller.unit') .': ' . Controller::$NOT_EMPTY,
-                'rates.array' => __('messages.order_controller.rate').': ' . Controller::$ONE_LEAST,
-                'rates.min' => __('messages.order_controller.rate').': ' . Controller::$ONE_LEAST,
-                'rates.*.required' => __('messages.order_controller.rate').': ' . Controller::$NOT_EMPTY,
-                'rates.*.numeric' => __('messages.order_controller.rate').': ' . Controller::$NOT_EMPTY,
-                'quantities' => __('messages.order_controller.quantity').': ' . Controller::$DATA_INVALID,
-                'quantities.*.required' => __('messages.order_controller.quantity').': ' . Controller::$NOT_EMPTY,
-                'quantities.*.numeric' => __('messages.order_controller.quantity').': ' . Controller::$DATA_INVALID,
-                'quantities.*.min' => __('messages.order_controller.quantity').': '.__('messages.order_controller.min'),
-                'notes' => __('messages.note').': ' . Controller::$DATA_INVALID,
-                'notes.*.numeric' => __('messages.note').': ' . Controller::$DATA_INVALID,
+                'note.required' => __('messages.export.content') . ': ' . Controller::$NOT_EMPTY,
+                'note.string' => __('messages.export.content') . ': ' . Controller::$DATA_INVALID,
+                'date.required' => __('messages.date') . ': ' . Controller::$NOT_EMPTY,
+                'date.date_format' => __('messages.date') . ': ' . Controller::$DATA_INVALID,
+                'receiver_id.required' => __('messages.receiver') . ': ' . Controller::$NOT_EMPTY,
+                'receiver_id.numeric' => __('messages.receiver') . ': ' . Controller::$DATA_INVALID,
+                'stock_ids.required' => __('messages.stock.stock') . ': ' . Controller::$ONE_LEAST,
+                'stock_ids.array' => __('messages.stock.stock') . ': ' . Controller::$ONE_LEAST,
+                'stock_ids.min' => __('messages.stock.stock') . ': ' . Controller::$ONE_LEAST,
+                'stock_ids.*.required' => __('messages.stock.stock') . ': ' . Controller::$NOT_EMPTY,
+                'stock_ids.*.numeric' => __('messages.stock.stock') . ': ' . Controller::$NOT_EMPTY,
+                'unit_ids.array' => __('messages.order_controller.unit') . ': ' . Controller::$ONE_LEAST,
+                'unit_ids.min' => __('messages.order_controller.unit') . ': ' . Controller::$ONE_LEAST,
+                'unit_ids.*.required' => __('messages.order_controller.unit') . ': ' . Controller::$NOT_EMPTY,
+                'unit_ids.*.numeric' => __('messages.order_controller.unit') . ': ' . Controller::$NOT_EMPTY,
+                'rates.array' => __('messages.order_controller.rate') . ': ' . Controller::$ONE_LEAST,
+                'rates.min' => __('messages.order_controller.rate') . ': ' . Controller::$ONE_LEAST,
+                'rates.*.required' => __('messages.order_controller.rate') . ': ' . Controller::$NOT_EMPTY,
+                'rates.*.numeric' => __('messages.order_controller.rate') . ': ' . Controller::$NOT_EMPTY,
+                'quantities' => __('messages.order_controller.quantity') . ': ' . Controller::$DATA_INVALID,
+                'quantities.*.required' => __('messages.order_controller.quantity') . ': ' . Controller::$NOT_EMPTY,
+                'quantities.*.numeric' => __('messages.order_controller.quantity') . ': ' . Controller::$DATA_INVALID,
+                'quantities.*.min' => __('messages.order_controller.quantity') . ': ' . __('messages.order_controller.min'),
+                'notes' => __('messages.note') . ': ' . Controller::$DATA_INVALID,
+                'notes.*.numeric' => __('messages.note') . ': ' . Controller::$DATA_INVALID,
             ];
             return $next($request);
         });
@@ -172,11 +172,14 @@ class ExportController extends Controller
                         $query->orderBy('note', $order);
                     })
                     ->editColumn('user', function ($obj) use ($can_read_user) {
-                        if ($can_read_user) {
-                            return '<a class="btn btn-link text-decoration-none text-start btn-update-user" data-id="' . $obj->user_id . '">' . $obj->_user->fullName . '</a>';
-                        } else {
-                            return $obj->_user->fullName;
+                        if ($obj->_user) {
+                            if ($can_read_user) {
+                                return '<a class="btn btn-link text-decoration-none text-start btn-update-user" data-id="' . $obj->user_id . '">' . $obj->_user->fullName . '</a>';
+                            } else {
+                                return $obj->_user->fullName;
+                            }
                         }
+                        return '';
                     })
                     ->filterColumn('user', function ($query, $keyword) {
                         $query->whereHas('_user', function ($query) use ($keyword) {
@@ -188,11 +191,14 @@ class ExportController extends Controller
                             ->orderBy('users.name', $order);
                     })
                     ->addColumn('receiver', function ($obj) use ($can_read_user) {
-                        if ($can_read_user) {
-                            return '<a class="btn btn-link text-decoration-none text-start btn-update-user" data-id="' . $obj->receiver_id . '">' . $obj->_receiver->fullName . '</a>';
-                        } else {
-                            return $obj->_receiver->fullName;
+                        if ($obj->_receiver) {
+                            if ($can_read_user) {
+                                return '<a class="btn btn-link text-decoration-none text-start btn-update-user" data-id="' . $obj->receiver_id . '">' . $obj->_receiver->fullName . '</a>';
+                            } else {
+                                return $obj->_receiver->fullName;
+                            }
                         }
+                        return '';
                     })
                     ->filterColumn('receiver', function ($query, $keyword) {
                         $query->whereHas('_user', function ($query) use ($keyword) {
