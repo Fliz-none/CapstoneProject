@@ -354,7 +354,7 @@ class ProfileController extends Controller
             'new_password.max' => 'Mật khẩu mới quá dài.',
             'old_password.required' => 'Vui lòng nhập mật khẩu hiện tại',
             'new_password.required' => 'Vui lòng nhập mật khẩu mới',
-            'password_confirmation.required' => 'Vui lòng nhập xâc nhận lại mật khẩu',
+            'password_confirmation.required' => 'Vui lòng nhập xác nhận lại mật khẩu',
             'new_password.different' => 'Mật mới không được trùng mật khẩu cũ.',
             'password_confirmation.same' => 'Mật khẩu xác nhận không trùng khớp.'
         ]);

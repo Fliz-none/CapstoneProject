@@ -367,30 +367,8 @@ class OrderController extends Controller
 
         $request->validate($rules, $messages);
 
-        // if (getPath(request()->headers->get('referer')) === '/quantri/order/new') {
-        //     $new_rules = [
-        //         'stock_ids' => ['required', 'array'],
-        //         'stock_ids.*' => ['required', 'numeric'],
-        //     ];
-        //     $new_messages = [
-        //         'stock_ids.required' => 'Hàng hóa: ' . Controller::ONE_LEAST,
-        //         'stock_ids.array' => 'Hàng hóa: ' . Controller::DATA_INVALID,
-
-        //         'stock_ids.*.required' => 'Hàng hóa: ' . Controller::DATA_INVALID,
-        //         'stock_ids.*.numeric' => 'Hàng hóa: ' . Controller::DATA_INVALID,
-        //     ];
-        //     $request->validate($new_rules, $new_messages);
-        // }
-
-        // if (!$request->filled('customer_id') && !$request->filled('id') && !$request->has('transaction_payments')) {
-        //     return response()->json(['errors' => ['role' => [__('messages.order.customer_required')]]], 422);
-        // }
-
         if (!empty($this->user->can(User::CREATE_ORDER))) {
             if ($this->user->branch) {
-                // if (!$request->has('id') && !$request->has('transaction_payments') && !$request->has('customer_id')) {
-                //     return response()->json(['errors' => ['customer_required' => [__('messages.order.customer_required')]]], 422);
-                // }
                 DB::beginTransaction();
                 try {
                     $order = Order::create([
@@ -476,7 +454,6 @@ class OrderController extends Controller
                                 'note' => 'Remaining money for order ' . $order->code,
                             ]);
                         }
-                        // $order->sync_scores($order->paid);
                         $setting_score = json_decode(cache()->get('settings')['setting_score']);
                         if ($setting_score->check_score == 1 && $order->customer) {
                             $convert = $setting_score->money_to_score;
