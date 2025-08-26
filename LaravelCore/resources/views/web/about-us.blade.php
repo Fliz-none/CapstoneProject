@@ -1,5 +1,7 @@
 @extends('web.layouts.app')
-
+@php
+$pageName = 'Về chúng tôi'
+@endphp
 @section('title')
 About Us
 @endsection

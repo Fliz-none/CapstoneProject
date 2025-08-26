@@ -320,7 +320,7 @@ class ProfileController extends Controller
                 'note' => 'Hủy đơn ' . $order->code
             ]);
 
-            // Xóa export details trước khi xóa export (nếu FK không cascade delete)
+            // Xóa export details trước khi xóa export
             $export->export_details()->delete();
 
             // Xóa export

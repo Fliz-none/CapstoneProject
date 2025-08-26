@@ -14,7 +14,7 @@ class HomeController extends Controller
 {
     public function home()
     {
-        $pageName = 'Home';
+        $pageName = 'Trang chủ';
         try {
             DB::select('select 1');
             $settings = cache()->get('settings');
@@ -39,7 +39,7 @@ class HomeController extends Controller
 
     public function contact()
     {
-        $pageName = 'Contact';
+        $pageName = 'Liên hệ';
 
         try {
             DB::select('select 1');

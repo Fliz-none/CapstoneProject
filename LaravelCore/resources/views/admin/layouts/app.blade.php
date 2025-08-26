@@ -2044,6 +2044,11 @@
                 'data-id', obj.id)
             form.find(`.btn-create-transaction`).attr('data-order', obj.id)
             form.find(`[name='status'][value=${obj.status}]`).prop('checked', true)
+            if(obj.status == 3) {
+                form.find('label[for=order-status-cancel]').addClass('d-none')
+            } else {
+                form.find('label[for=order-status-cancel]').removeClass('d-none')
+            }
             showTransactions(obj.id)
             if (obj.customer_id != null) {
                 var option = new Option(obj._customer.name, obj._customer.id, true, true);
@@ -2105,18 +2110,19 @@
                 discountedPrice = detail.price - detail.discount
             }
         }
+        const variable = detail._stock.import_detail._variable;
         return `
             <div class="card border shadow-none mb-2 p-3 detail order-detail">
                 <div class="row">
                     <div class="col 12 col-lg-5">
                         <p class="card-title mb-0">
-                            ${detail._stock.import_detail._variable._product.name}${(detail._stock.import_detail._variable.name) ? ' - ' + detail._stock.import_detail._variable.name : ''}
+                            ${variable._product.name}${(variable.name) ? ' - ' + variable.name : ''}
                             <input type="hidden" class="order_detail-stock_id" name="stock_ids[]" value="${detail._stock.id}"/>
                             <!-- <a class="btn btn-link btn-order_detail-product_info rounded-pill p-0" data-id="${detail._stock.id}" type="button">
                                 <i class="bi bi-info-circle"></i>
                             </a> -->
                         </p>
-                        <div class="badge bg-light-info">${detail._stock.import_detail._variable._product.sku ?? ''}</div>
+                        <div class="badge bg-light-info">${variable._product.sku ?? ''}</div>
                         ${detail._stock.expired != null ? '<div class="badge bg-light-info">EXP ' + moment(detail._stock.expired).format('DD/MM/YYYY') + '</div>' : ''}
                         <div class="badge bg-light-info">
                             {{ __('messages.available_stock') }} ${detail._stock.quantity}

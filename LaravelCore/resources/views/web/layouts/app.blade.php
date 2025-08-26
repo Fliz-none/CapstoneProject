@@ -85,6 +85,9 @@
                 $('.btn-change-language').on('click', function() {
                     const currentLocale = '{{ app()->getLocale() }}';
 
+                    $('.mb-backdrop').removeClass('show');
+                    $('.mb-header-content-wrapper').removeClass('menu-open');
+
                     Swal.fire({
                         title: '{{ __('messages.lang.select_language') }}',
                         html: `
@@ -341,7 +344,7 @@
                     });
 
                 // Scroll để load thêm tin nhắn
-                $('.chatbox').on('scroll', function() {                    
+                $('.chatbox').on('scroll', function() {
                     if ($(this).scrollTop() == 0) {
                         loadMessages(false);
                     }
