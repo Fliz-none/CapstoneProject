@@ -356,6 +356,7 @@
         function setupEcho() {
             window.Echo.channel('public')
                 .listen('.chat', (data) => {
+                    if(!data.message.isInConversation) return;
                     if (data.message.conversation_id !== conversationId) {
                         loadConversations('', conversationId);
                         return;

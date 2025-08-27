@@ -106,7 +106,7 @@ class ChatController extends Controller
             $attachments = $request->file('attachments', []);
 
             if (empty($messageText) && count($attachments) === 0) {
-                return response()->json(['message' => __('messsages.chat.message.error')], 422);
+                return response()->json(['message' => __('messages.chat.message.error')], 422);
             }
 
             DB::beginTransaction();
@@ -139,7 +139,7 @@ class ChatController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             log_exception($e);
-            return response()->json(['message' => __('messsages.chat.message.send_error')], 500);
+            return response()->json(['message' => __('messages.chat.message.send_error')], 500);
         }
     }
     protected function handleAttachments(array $files, Message $message): void

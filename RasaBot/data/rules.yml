@@ -126,7 +126,6 @@ rules:
     steps:
       - intent: ask_how_to_shop
       - action: utter_how_to_shop
-      - action: utter_did_that_help
       
   - rule: Khách hỏi giá sản phẩm vừa xem
     condition:

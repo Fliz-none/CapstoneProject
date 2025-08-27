@@ -12,7 +12,7 @@ class Message extends Model
 {
     use SoftDeletes;
 
-    protected $appends = ['renderData'];
+    protected $appends = ['renderData', 'isInConversation'];
     protected $fillable = [
         'conversation_id',
         'sender_id',
@@ -81,5 +81,18 @@ class Message extends Model
     public function attachments()
     {
         return $this->hasMany(Attachment::class);
+    }
+
+
+    public function getIsInConversationAttribute()
+    {
+        if (!$this->relationLoaded('conversation')) {
+            $this->load('conversation.users');
+        }
+
+        $userId = auth()->id();
+        return $this->conversation
+            ? $this->conversation->users->contains($userId)
+            : false;
     }
 }

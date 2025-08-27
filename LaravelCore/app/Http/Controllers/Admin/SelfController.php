@@ -52,12 +52,16 @@ class SelfController extends Controller
     public function change_avatar(Request $request)
     {
         try {
-            $user = User::find($request->id);
+            $user = User::findOrFail($request->id);
+
             $imageInfo = pathinfo($request->avatar->getClientOriginalName());
             $filename = $user->code . '.' . $imageInfo['extension'];
+
             $request->avatar->storeAs('public/user/', $filename);
-            $user->avatar = $filename;
-            $user->save();
+
+            $user->updateQuietly([
+                'avatar' => $filename
+            ]);
 
             return response()->json([
                 'status' => 'success',

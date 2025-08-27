@@ -332,12 +332,17 @@
                 // nhận tin nhắn
                 window.Echo.channel('public')
                     .listen('.chat', (data) => {
+                        console.log(data);
+                        // kiểm tra xem user hien tại có thuộc cuộc trò chuyện không
+                        if(!data.message || !data.message.isInConversation) return;
                         const liHtml = createChatLi(data.message, auth_id);
                         $temp = $('.chatbox').find('.temp-sending');
                         if($temp.length > 0) $temp.remove();
                         $('.chatbox').append(liHtml);
                         $('.chatbox').scrollTop($('.chatbox')[0].scrollHeight);
-                        document.getElementById('chatSound').play();
+                        if (data.message.sender_id !== auth_id) {
+                            document.getElementById('chatSound').play();
+                        }
                     });
 
                 // Scroll để load thêm tin nhắn

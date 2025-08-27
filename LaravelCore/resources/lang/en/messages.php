@@ -970,7 +970,7 @@ return [
         'rate' => 'Rate',
         'quantity' => 'Quantity',
 
-        'min' => 'Cannot be less than 0!',
+        'min' => 'Cannot be less than or equal to 0!',
 
         'order_discount' => 'Order Discount',
         'order_note' => 'Order Note',
