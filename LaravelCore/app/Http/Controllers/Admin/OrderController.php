@@ -665,7 +665,7 @@ class OrderController extends Controller
                                         'detail_id' => $detail->id,
                                         'unit_id' => $unit->id,
                                         'quantity' => $request->quantities[$i],
-                                        'note' => 'Export for ' . $order->id
+                                        'note' => 'Export for ' . $order->code
                                     ]);
                                     if ($export_detail) {
                                         $old_quantity = $old ? $old->quantity : 0;

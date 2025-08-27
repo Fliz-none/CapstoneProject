@@ -2,17 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Cache\NullStore;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
-use Psr\Log\NullLogger;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Message extends Model
 {
     use SoftDeletes;
 
-    protected $appends = ['renderData', 'isInConversation'];
+    protected $appends = ['renderData', 'ids_conversation'];
     protected $fillable = [
         'conversation_id',
         'sender_id',
@@ -84,15 +85,13 @@ class Message extends Model
     }
 
 
-    public function getIsInConversationAttribute()
-    {
-        if (!$this->relationLoaded('conversation')) {
-            $this->load('conversation.users');
-        }
 
-        $userId = auth()->id();
-        return $this->conversation
-            ? $this->conversation->users->contains($userId)
-            : false;
+    public function getIdsConversationAttribute()
+    {
+        $ids = DB::table('conversation_user')
+            ->where('conversation_id', $this->conversation_id)
+            ->pluck('user_id');
+
+        return $ids;
     }
 }

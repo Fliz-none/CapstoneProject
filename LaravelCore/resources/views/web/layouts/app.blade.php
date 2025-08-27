@@ -337,7 +337,7 @@
                     .listen('.chat', (data) => {
                         console.log(data);
                         // kiểm tra xem user hien tại có thuộc cuộc trò chuyện không
-                        if(!data.message || !data.message.isInConversation) return;
+                        if(!data.message || !data.message.ids_conversation || !data.message.ids_conversation.includes(auth_id)) return;
                         const liHtml = createChatLi(data.message, auth_id);
                         $temp = $('.chatbox').find('.temp-sending');
                         if($temp.length > 0) $temp.remove();

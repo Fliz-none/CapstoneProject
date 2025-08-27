@@ -356,7 +356,9 @@
         function setupEcho() {
             window.Echo.channel('public')
                 .listen('.chat', (data) => {
-                    if(!data.message.isInConversation) return;
+                    if (data.message.ids_conversation && !data.message.ids_conversation.includes(auth_id)) {
+                        return;
+                    }
                     if (data.message.conversation_id !== conversationId) {
                         loadConversations('', conversationId);
                         return;
@@ -540,7 +542,7 @@
             textarea.focus(); // giữ focus
         }
 
-        
+
         // -----------------------------
         // Init
         // -----------------------------

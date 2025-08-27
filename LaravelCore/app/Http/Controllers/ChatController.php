@@ -87,8 +87,8 @@ class ChatController extends Controller
                 'created_by' => Auth::id(),
             ]);
 
-            $admins = User::permission(User::ACCESS_ADMIN)->pluck('id');
-            $conversation->users()->syncWithoutDetaching($admins);
+            $admins = User::permission(User::ACCESS_ADMIN)->pluck('id')->toArray();
+            $conversation->users()->syncWithoutDetaching(array_merge($admins, [Auth::id()]));
 
             // Tạo message (có thể rỗng nếu chỉ gửi file)
             $message = Message::create([
