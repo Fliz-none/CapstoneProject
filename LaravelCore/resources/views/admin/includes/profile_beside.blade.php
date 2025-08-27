@@ -7,7 +7,7 @@
         <div class="d-flex flex-column align-items-center text-center">
             <form action="{{ route('admin.profile.change_avatar') }}" method="post" enctype="multipart/form-data">
                 @csrf
-                <label class="avt rounded-circle border border-1" for="profile-avatar " style=" width: 10rem; height: 10rem;">
+                <label class="avt rounded-circle border border-1" for="profile-avatar" style=" width: 10rem; height: 10rem;">
                     <img class="w-100 h-100 object-fit-contain " src="{{ Auth::user()->avatarUrl }}" alt="Avatar">
                 </label>
                 <input name="id" type="hidden" value="{{ Auth::user()->id }}">
@@ -190,6 +190,7 @@
         $(document).ready(function() {
 
             $('#profile-avatar').change(function(e) {
+                
                 e.preventDefault()
                 const form = $(this).parents('form')
                 src = URL.createObjectURL(document.getElementById('profile-avatar').files[0])
