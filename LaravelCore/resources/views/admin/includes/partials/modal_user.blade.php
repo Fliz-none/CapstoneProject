@@ -12,7 +12,7 @@
                         <div class="col-12 col-md-4">
                             <div class="sticky-top">
                                 <label class="form-label ratio ratio-1x1 select-avatar" for="user-avatar">
-                                    <img class="img-fluid rounded-4 object-fit-cover" id="user-avatar-preview" src="{{ asset('admin/images/placeholder.webp') }}" alt="Avatar">
+                                    <img class="img-fluid rounded-circle object-fit-cover" id="user-avatar-preview" src="{{ asset('admin/images/placeholder.webp') }}" alt="Avatar">
                                 </label>
                                 <input class="d-none" id="user-avatar" name="avatar" type="file" multiple accept="image/*">
                                 <div class="d-grid">

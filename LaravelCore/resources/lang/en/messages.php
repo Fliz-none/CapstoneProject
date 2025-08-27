@@ -133,7 +133,7 @@ return [
         'order' => 'Order',
         'payment' => 'Payment',
         'expense' => 'Expense',
-        'account' => 'Account',
+        'account' => 'User',
         'product' => 'Product',
         'category' => 'Category',
         'attribute' => 'Attribute',

@@ -376,16 +376,15 @@ class OrderController extends Controller
                         'customer_id' => $request->customer_id,
                         'dealer_id' => Auth::id(),
                         'discount' => $request->discount ?? 0,
-                        'status' => $request->has('status') ? $request->status : 0,
+                        'status' => 3,
                         'note' => $request->note,
                     ]);
-                    // if ($request->has('scores')) {
-                    //     optional($order->customer)->update(['scores' => $request->scores]);
-                    // }
-                    if ($request->has('user_scores')) {
-                        optional($order->customer)->update(['scores' => $order->customer->scores - $request->scores_used]);
-                    }
+
                     if ($order) {
+                        if ($request->has('user_scores')) {
+                            optional($order->customer)->update(['scores' => $order->customer->scores - $request->scores_used]);
+                        }
+
                         $export = Export::create([
                             'user_id' => Auth::id(),
                             'receiver_id' => Auth::id(),
@@ -409,6 +408,7 @@ class OrderController extends Controller
                                     'discount_program' => $request->discount_programs[$i],
                                     'note' => $request->notes[$i]
                                 ]);
+
                                 if ($detail) {
                                     $export_detail = ExportDetail::create([
                                         'stock_id' => $id,
@@ -434,7 +434,7 @@ class OrderController extends Controller
                         if ($request->has('transaction_payments') && count($request->transaction_payments)) {
                             foreach ($request->transaction_payments as $i => $payment) {
                                 $refund = $request->transaction_refund[$i] ? -1 : 1;
-                                $transaction = Transaction::create([
+                                Transaction::create([
                                     'order_id' => $order->id,
                                     'customer_id' => $request->customer_id,
                                     'cashier_id' => Auth::id(),
@@ -445,7 +445,7 @@ class OrderController extends Controller
                             }
                         }
                         if ($request->has('change') && $request->change > 0) {
-                            $transaction = Transaction::create([
+                            Transaction::create([
                                 'order_id' => $order->id,
                                 'customer_id' => $request->customer_id,
                                 'cashier_id' => Auth::id(),
@@ -488,6 +488,7 @@ class OrderController extends Controller
 
     public function update(Request $request)
     {
+        // dd(array_unique(array_filter($request->export_ids)));
         Controller::init();
         $rules = [
             //Đơn hàng
@@ -588,38 +589,37 @@ class OrderController extends Controller
                             'status' => $request->status ? $request->status : 0,
                             'note' => $request->note,
                         ]);
-                        if ($request->has('stock_ids')) {
-                            foreach (array_unique(array_filter($request->export_ids)) as $i => $id) {
-                                $export = Export::updateOrCreate([
-                                    'id' => $id
-                                ], [
-                                    'user_id' => Auth::id(),
-                                    'receiver_id' => Auth::id(),
-                                    'order_id' => $order->id,
-                                    'status' => 1,
-                                    'note' => 'Export for ' . $order->code,
-                                    'date' => date('Y-m-d'),
+                        if ($request->status == 0) {
+                            // Lấy exports kèm exportDetails và stock
+                            $exports = $order->exports()
+                                ->with('export_details.stock')
+                                ->get();
+
+                            // Trả hàng về kho
+                            foreach ($exports as $export) {
+                                foreach ($export->export_details as $exportDetail) {
+                                    if ($exportDetail->stock) {
+                                        $exportDetail->stock->increment('quantity', $exportDetail->quantity);
+                                    }
+                                }
+
+                                // Cập nhật note
+                                $export->update([
+                                    'note' => 'Hủy đơn ' . $order->code
                                 ]);
+
+                                // Xóa export details trước khi xóa export
+                                $export->export_details()->delete();
+
+                                // Xóa export
+                                $export->delete();
                             }
-                            $export_id = null;
-                            $units = Unit::withTrashed()->whereIn('id', $request->unit_ids)->get();
-                            foreach ($request->stock_ids as $i => $id) {
-                                $unit = $units->where('id', $request->unit_ids[$i])->first();
-                                $detail = Detail::updateOrCreate([
-                                    'id' => $request->ids[$i]
-                                ], [
-                                    'order_id' => $order->id,
-                                    'stock_id' => $request->stock_ids[$i],
-                                    'unit_id' => $unit->id,
-                                    'quantity' => $request->quantities[$i],
-                                    'price' => $request->prices[$i],
-                                    'discount' => $request->discounts[$i],
-                                    'discount_program' => $request->discount_programs[$i],
-                                    'note' => $request->notes[$i]
-                                ]);
-                                $export_id = $request->export_ids[$i] ? $request->export_ids[$i] : $export_id;
-                                if (!$export_id) {
-                                    $export = Export::create([
+                        } else {
+                            if ($request->has('stock_ids')) {
+                                foreach (array_unique(array_filter($request->export_ids)) as $i => $id) {
+                                    $export = Export::updateOrCreate([
+                                        'id' => $id
+                                    ], [
                                         'user_id' => Auth::id(),
                                         'receiver_id' => Auth::id(),
                                         'order_id' => $order->id,
@@ -627,46 +627,74 @@ class OrderController extends Controller
                                         'note' => 'Export for ' . $order->code,
                                         'date' => date('Y-m-d'),
                                     ]);
-                                    $export_id = $export->id;
                                 }
-                                $old = $detail->export_detail ? ExportDetail::find($detail->export_detail->id) : 0;
-                                $export_detail = ExportDetail::updateOrCreate([
-                                    'id' => $detail->export_detail ? $detail->export_detail->id : null
-                                ], [
-                                    'stock_id' => $request->stock_ids[$i],
-                                    'export_id' => $export_id,
-                                    'detail_id' => $detail->id,
-                                    'unit_id' => $unit->id,
-                                    'quantity' => $request->quantities[$i],
-                                    'note' => 'Export for ' . $order->id
-                                ]);
-                                if ($export_detail) {
-                                    $old_quantity = $old ? $old->quantity : 0;
-                                    $diff = $export_detail->quantity - $old_quantity;
-                                    $stock = $export_detail->_stock;
-                                    $stock->decrement('quantity', $diff * $unit->rate);
-                                    $variable = $stock->import_detail->_variable;
-                                    if ($diff && $variable->isExhausted()) {
-                                        StockController::pushExhaustedNoti($stock, $variable);
+                                $export_id = null;
+                                $units = Unit::withTrashed()->whereIn('id', $request->unit_ids)->get();
+                                foreach ($request->stock_ids as $i => $id) {
+                                    $unit = $units->where('id', $request->unit_ids[$i])->first();
+                                    $detail = Detail::updateOrCreate([
+                                        'id' => $request->ids[$i]
+                                    ], [
+                                        'order_id' => $order->id,
+                                        'stock_id' => $request->stock_ids[$i],
+                                        'unit_id' => $unit->id,
+                                        'quantity' => $request->quantities[$i],
+                                        'price' => $request->prices[$i],
+                                        'discount' => $request->discounts[$i],
+                                        'discount_program' => $request->discount_programs[$i],
+                                        'note' => $request->notes[$i]
+                                    ]);
+                                    $export_id = $request->export_ids[$i] ? $request->export_ids[$i] : $export_id;
+                                    if (!$export_id) {
+                                        $export = Export::create([
+                                            'user_id' => Auth::id(),
+                                            'receiver_id' => Auth::id(),
+                                            'order_id' => $order->id,
+                                            'status' => 1,
+                                            'note' => 'Export for ' . $order->code,
+                                            'date' => date('Y-m-d'),
+                                        ]);
+                                        $export_id = $export->id;
+                                    }
+                                    $old = $detail->export_detail ? ExportDetail::find($detail->export_detail->id) : 0;
+                                    $export_detail = ExportDetail::updateOrCreate([
+                                        'id' => $detail->export_detail ? $detail->export_detail->id : null
+                                    ], [
+                                        'stock_id' => $request->stock_ids[$i],
+                                        'export_id' => $export_id,
+                                        'detail_id' => $detail->id,
+                                        'unit_id' => $unit->id,
+                                        'quantity' => $request->quantities[$i],
+                                        'note' => 'Export for ' . $order->id
+                                    ]);
+                                    if ($export_detail) {
+                                        $old_quantity = $old ? $old->quantity : 0;
+                                        $diff = $export_detail->quantity - $old_quantity;
+                                        $stock = $export_detail->_stock;
+                                        $stock->decrement('quantity', $diff * $unit->rate);
+                                        $variable = $stock->import_detail->_variable;
+                                        if ($diff && $variable->isExhausted()) {
+                                            StockController::pushExhaustedNoti($stock, $variable);
+                                        }
                                     }
                                 }
                             }
-                        }
-                        if ($request->has('transaction_payments') && count($request->transaction_payments)) {
-                            foreach ($request->transaction_payments as $i => $payment) {
-                                $refund = $request->transaction_refund[$i] ? -1 : 1;
-                                $transaction = Transaction::create([
-                                    'order_id' => $order->id,
-                                    'customer_id' => $request->customer_id,
-                                    'cashier_id' => Auth::id(),
-                                    'payment' => $request->transaction_payments[$i],
-                                    'amount' => $request->transaction_amounts[$i] * $refund,
-                                    'note' => $request->transaction_notes[$i] . ' - ' . $order->code,
-                                ]);
-                                $order->sync_scores($transaction->amount);
+                            if ($request->has('transaction_payments') && count($request->transaction_payments)) {
+                                foreach ($request->transaction_payments as $i => $payment) {
+                                    $refund = $request->transaction_refund[$i] ? -1 : 1;
+                                    $transaction = Transaction::create([
+                                        'order_id' => $order->id,
+                                        'customer_id' => $request->customer_id,
+                                        'cashier_id' => Auth::id(),
+                                        'payment' => $request->transaction_payments[$i],
+                                        'amount' => $request->transaction_amounts[$i] * $refund,
+                                        'note' => $request->transaction_notes[$i] . ' - ' . $order->code,
+                                    ]);
+                                    $order->sync_scores($transaction->amount);
+                                }
                             }
+                            $order->update(['total' => $order->total() >= 0 ? $order->total() : 0]);
                         }
-                        $order->update(['total' => $order->total() >= 0 ? $order->total() : 0]);
                         $response = array(
                             'id' => $order->id,
                             'status' => 'success',

@@ -6,7 +6,10 @@ return [
         'contact' => 'Contact',
         'posts' => 'Posts',
         'about' => 'About',
+        'about_us' => 'About us',
         'store' => 'Store',
+        'login' => 'Login',
+        'profile' => 'Profile',
     ],
 
     'footer' => [

@@ -418,12 +418,10 @@
                     loadDataTables('product');
 
                     $('#product-select').on('change', function() {
-                        loadDataTables('user');
                         loadDataTables('product');
                     })
                     $('#user-select').on('change', function() {
                         loadDataTables('user');
-                        loadDataTables('product');
                     })
 
                     $('#main_branch').on('change', function() {
@@ -508,7 +506,7 @@
 
                         $('h3.imports').html(number_format(data.allStocks)).attr('data-bs-title',
                             `Sale Products: ${number_format(data.saleStocks)}<br/>Revenue/Cost: <br/>${number_format(data.revenueStocks)}/${number_format(data.costStocks)}`).prev().val(data.allStocks)
-                        //Chart  
+                        //Chart
                         buildChart(data.listOrders);
                         chartData = data.listOrders
                     }
@@ -793,6 +791,8 @@
                     });
 
                     function loadDataTables(model) {
+                        console.log(model);
+
                         const target = `#${model}-table`;
                         const range = [startDate.format('YYYY-MM-DD HH:mm:ss'), endDate.format('YYYY-MM-DD HH:mm:ss')];
                         if ($.fn.dataTable.isDataTable(target)) {
@@ -841,11 +841,11 @@
                             scrollX: false, // Không sử dụng thanh cuộn ngang
                         });
 
-                        $(`#${model}-select`).change(function() {
-                            const newDateRange = [startDate, endDate];
-                            const newUrl = `{{ route('admin.dashboard.statistics') }}?model=${model}&type=${$(`#${model}-select`).val()}&range=${JSON.stringify(range)}`;
-                            table.ajax.url(newUrl).load();
-                        });
+                        // $(`#${model}-select`).change(function() {
+                        //     const newDateRange = [startDate, endDate];
+                        //     const newUrl = `{{ route('admin.dashboard.statistics') }}?model=${model}&type=${$(`#${model}-select`).val()}&range=${JSON.stringify(range)}`;
+                        //     table.ajax.url(newUrl).load();
+                        // });
                         return table;
                     }
                 });

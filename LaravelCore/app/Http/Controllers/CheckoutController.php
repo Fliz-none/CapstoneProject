@@ -184,7 +184,7 @@ class CheckoutController extends Controller
             $this->exportForOrder($order, $branch_id);
             // Export cho đơn
             $export = Export::create([
-                'user_id' => Auth::id(),
+                'receiver_id' => Auth::id(),
                 'order_id' => $order->id,
                 'status' => 1,
                 'note' => 'Export for ' . $order->code,

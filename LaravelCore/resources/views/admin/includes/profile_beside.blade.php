@@ -1,13 +1,14 @@
 @php
     $logs = json_decode($logs);
+    // dd($logs);
 @endphp
 <div class="card mb-3">
     <div class="card-body">
         <div class="d-flex flex-column align-items-center text-center">
             <form action="{{ route('admin.profile.change_avatar') }}" method="post" enctype="multipart/form-data">
                 @csrf
-                <label class="avt" for="profile-avatar">
-                    <img class="rounded-circle" src="{{ Auth::user()->avatarUrl }}" alt="Admin" style="object-fit: cover; width: 150px; height: 150px;">
+                <label class="avt rounded-circle border border-1" for="profile-avatar" style=" width: 10rem; height: 10rem;">
+                    <img class="rounded-circle w-100 h-100 object-fit-contain " src="{{ Auth::user()->avatarUrl }}" alt="Avatar">
                 </label>
                 <input name="id" type="hidden" value="{{ Auth::user()->id }}">
                 <input class="d-none" id="profile-avatar" name="avatar" type="file" accept="image/*">
@@ -62,7 +63,7 @@
 </div>
 
 <!-- Modal Activity Log -->
-<div class="modal fade" id="activityLogModal" aria-labelledby="activityLogLabel" aria-hidden="true" tabindex="-1">
+<div class="modal fade" id="activityLogModal" style="max-height: 90vh;" aria-labelledby="activityLogLabel" aria-hidden="true" tabindex="-1">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header bg-info">
@@ -71,7 +72,7 @@
             </div>
             <div class="modal-body">
                 <div class="table-responsive">
-                    <table class="table table-hover table-borderless" id="log-table">
+                    <table class="table table-hover table-borderless" id="log-table-profile">
                         <thead>
                             <tr>
                                 <th>{{ __('messages.log.code') }}</th>
@@ -187,10 +188,28 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            const table = $('#log-table').DataTable({
-                language: config.datatable.lang,
+
+            $('#profile-avatar').change(function(e) {
+                
+                e.preventDefault()
+                const form = $(this).parents('form')
+                src = URL.createObjectURL(document.getElementById('profile-avatar').files[0])
+                $(this).parents('form').find('img').attr('src', src)
+                submitForm(form).done(function(response) {
+                    if (response.status == "success") {
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500)
+                    }
+                })
             })
+
+
             $('.btn-activity-log').on('click', function(e) {
+
+                $('#log-table-profile').DataTable({
+                    language: config.datatable.lang,
+                });
                 e.preventDefault();
                 $('#activityLogModal').modal('show');
             });

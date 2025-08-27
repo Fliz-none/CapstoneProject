@@ -6,8 +6,10 @@ return[
         'contact'=>'Liên hệ',
         'posts'=>'Bài viết',
         'about'=>'Về ',
+        'about_us'=>'Về chúng tôi',
         'store'=>'Cửa hàng',
-
+        'login' => 'Đăng nhập',
+        'profile' => 'Trang cá nhân',
     ],
     'footer'=>[
         'about_us'=>'Về chúng tôi',

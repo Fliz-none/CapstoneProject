@@ -70,7 +70,7 @@ class LogController extends Controller
                 $logs = Log::with(['_user', 'branch'])->orderByDesc('created_at');
                 return DataTables::of($logs)
                     ->addColumn('code', function ($log) {
-                    if (!empty($this->user->can(User::READ_LOGS))) {
+                    if (!empty($this->user->can(User::READ_LOGS)) && $log->action == '2') {
                         $code = '<a class="cursor-pointer btn-detail-log text-primary fw-bold" data-id="' . $log->id . '">' . $log->code . '</a>';
                     } else {
                         $code = $log->code;

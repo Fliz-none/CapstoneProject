@@ -125,13 +125,13 @@
                                         <div class="d-grid gap-2">
                                             <div class="btn-group" role="group">
                                                 <input class="btn-check" id="order-status-waiting" name="status" type="radio" value="1">
-                                                <label class="btn btn-outline-primary" for="order-status-waiting">{{ __('messages.queued') }}</label>
+                                                <label class="btn btn-outline-primary px-1" for="order-status-waiting">{{ __('messages.queued') }}</label>
                                                 <input class="btn-check" id="order-status-processing" name="status" type="radio" value="2">
-                                                <label class="btn btn-outline-info" for="order-status-processing">{{ __('messages.processing') }}</label>
+                                                <label class="btn btn-outline-info px-1" for="order-status-processing">{{ __('messages.processing') }}</label>
                                                 <input class="btn-check" id="order-status-done" name="status" type="radio" value="3">
-                                                <label class="btn btn-outline-success" for="order-status-done">{{ __('messages.complete') }}</label>
+                                                <label class="btn btn-outline-success px-1" for="order-status-done">{{ __('messages.complete') }}</label>
                                                 <input class="btn-check" id="order-status-cancel" name="status" type="radio" value="0">
-                                                <label class="btn btn-outline-danger" for="order-status-cancel">{{ __('messages.cancel') }}</label>
+                                                <label class="btn btn-outline-danger px-1" for="order-status-cancel">{{ __('messages.cancel') }}</label>
                                             </div>
                                         </div>
                                     </div>

@@ -126,13 +126,6 @@
 
 @push('scripts')
     <script>
-        $('#profile-avatar').change(function(e) {
-            e.preventDefault()
-            const form = $(this).parents('form')
-            src = URL.createObjectURL(document.getElementById('profile-avatar').files[0])
-            $(this).parents('form').find('img').attr('src', src)
-            submitForm(form)
-
-        })
+        
     </script>
 @endpush

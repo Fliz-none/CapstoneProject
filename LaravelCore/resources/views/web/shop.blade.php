@@ -100,7 +100,7 @@
                             @if ($products->isNotEmpty())
                                 @foreach ($products as $product)
                                     <!-- Product item -->
-                                    <div class="col-12 col-md-6 col-lg-4 mb-3">
+                                    <div class="col-6 col-lg-4 mb-3">
                                         <div class="product-item product-item-row h-100">
                                             <div class="product-image">
                                                 <a href="{{ route('product', ['catalogue' => $product->catalogues->first()->slug, 'slug' => $product->slug]) }}" title="{{ $product->name }}">
@@ -109,16 +109,18 @@
                                             </div>
                                             <div class="product-content text-start">
                                                 <a class="product-name" href="{{ route('product', ['catalogue' => $product->catalogues->first()->slug, 'slug' => $product->slug]) }}" title="{{ $product->name }}">
-                                                    {{ $product->name }}
+                                                    <small class="d-md-none"> {{ $product->name }}</small>
+                                                    <span class="d-none d-md-block"> {{ $product->name }}</span>
                                                 </a>
-                                                <p class="short">{{ __('lang_web.shop.variant') }}:
+                                                <p class="short d-none d-md-block">{{ __('lang_web.shop.variant') }}:
                                                     {{ $product->variables->pluck('name')->take(3)->implode(', ') }}{{ $product->variables->count() > 3 ? '...' : '' }}
                                                 </p>
-                                                <p class="price">{{ __('lang_web.shop.price') }}: <span>{!! $product->displayPrice() !!}</span></p>
+                                                <p class="price d-none d-md-block">{{ __('lang_web.shop.price') }}: <span>{!! $product->displayPrice() !!}</span></p>
+                                                <small class="price d-md-none">{{ __('lang_web.shop.price') }}: <span>{!! $product->displayPrice() !!}</span></small>
                                                 <p>
                                                     {{ __('lang_web.shop.quantity_sold') }}: {{ number_format($product->quantitySold) }}
                                                 </p>
-                                                <div class="d-flex justify-content-between align-items-center">
+                                                <div class="d-none d-md-flex justify-content-between align-items-center">
                                                     @php
                                                         $rating = $product->star ?? 0;
                                                         $fullStars = floor($rating);
