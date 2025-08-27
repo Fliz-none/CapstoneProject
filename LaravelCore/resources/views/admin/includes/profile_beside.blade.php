@@ -8,7 +8,7 @@
             <form action="{{ route('admin.profile.change_avatar') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <label class="avt rounded-circle border border-1" for="profile-avatar" style=" width: 10rem; height: 10rem;">
-                    <img class="w-100 h-100 object-fit-contain " src="{{ Auth::user()->avatarUrl }}" alt="Avatar">
+                    <img class="rounded-circle w-100 h-100 object-fit-contain " src="{{ Auth::user()->avatarUrl }}" alt="Avatar">
                 </label>
                 <input name="id" type="hidden" value="{{ Auth::user()->id }}">
                 <input class="d-none" id="profile-avatar" name="avatar" type="file" accept="image/*">
