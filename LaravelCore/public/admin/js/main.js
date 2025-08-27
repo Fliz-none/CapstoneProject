@@ -1162,6 +1162,11 @@ $(".save-form").on("submit", function (e) {
             case 'render_stock-form':
                 $('.btn-sync-stock').attr('disabled', false);
                 break;
+            case 'expense-form':
+                setTimeout(() => {
+                    location.reload();
+                }, 1500)
+                break;
             default:
                 break;
         }

@@ -29,33 +29,32 @@ class ExpenseController extends Controller
         }
         $this->middleware(['auth']);
 
-         $this->middleware(function ($request, $next) {
-        // Locale đã được set xong ở đây
-        Controller::init(); // Gán các biến tĩnh ở đây
+        $this->middleware(function ($request, $next) {
+            // Locale đã được set xong ở đây
+            Controller::init(); // Gán các biến tĩnh ở đây
 
-       self::$MESSAGES = [
-            'image.image' => Controller::$DATA_INVALID,
-            'image.max' => __('messages.expense.avatar_max_size'),
+            self::$MESSAGES = [
+                'avatar.image' => Controller::$DATA_INVALID,
+                'avatar.max' => __('messages.expense.avatar_max_size'),
 
-            'user_id.required' => __('messages.expense.receiver_required'),
-            'user_id.numeric' => Controller::$DATA_INVALID,
+                'user_id.required' => __('messages.expense.receiver_required'),
+                'user_id.numeric' => Controller::$DATA_INVALID,
 
-            'payment.required' => __('messages.expense.payment_required'),
-            'payment.numeric' => Controller::$DATA_INVALID,
-            'payment.between' => Controller::$DATA_INVALID,
+                'payment.required' => __('messages.expense.payment_required'),
+                'payment.numeric' => Controller::$DATA_INVALID,
+                'payment.between' => Controller::$DATA_INVALID,
 
-            'amount.required' => __('messages.expense.amount_required'),
-            'amount.numeric' => __('messages.expense.amount_not_number'),
-            'amount.min' => __('messages.expense.amount_too_small'),
-            'amount.max' => __('messages.expense.amount_too_large'),
+                'amount.required' => __('messages.expense.amount_required'),
+                'amount.numeric' => __('messages.expense.amount_not_number'),
+                'amount.min' => __('messages.expense.amount_too_small'),
+                'amount.max' => __('messages.expense.amount_too_large'),
 
-            'note.required' => __('messages.expense.note_required'),
-            'note.max' => __('messages.expense.note_too_long'),
-        ];
+                'note.required' => __('messages.expense.note_required'),
+                'note.max' => __('messages.expense.note_too_long'),
+            ];
 
-        return $next($request);
-    });
-
+            return $next($request);
+        });
     }
 
     /**
@@ -135,8 +134,8 @@ class ExpenseController extends Controller
                         } else {
                             $str = 'N/A';
                         }
-                        if($obj->branch_id) {
-                            if($can_update_branch) {
+                        if ($obj->branch_id) {
+                            if ($can_update_branch) {
                                 $str .= '</br><small class="badge bg-light-info"><a class="cursor-pointer text-decoration-none text-start btn-update-branch" data-id="' . $obj->branch_id . '">' . $obj->branch->fullName . '</a></small>';
                             } else {
                                 $str .= '</br><small class="badge bg-light-info">' . $obj->branch->fullName . '</small>';
@@ -190,7 +189,7 @@ class ExpenseController extends Controller
                             </form>';
                         }
                     })
-                    ->rawColumns(['checkboxes', 'code', 'note', 'amount', 'image','status', 'user_id', 'action'])
+                    ->rawColumns(['checkboxes', 'code', 'note', 'amount', 'image', 'status', 'user_id', 'action'])
                     ->make(true);
             } else {
                 $pageName = self::NAME . ' management';
@@ -202,7 +201,7 @@ class ExpenseController extends Controller
     public function create(Request $request)
     {
         $rules = [
-            'image' => ['image', 'max:3072'],
+            'avatar' => ['image', 'max:3072'],
             'user_id' => ['required', 'numeric'],
             'payment' => ['required', 'numeric', 'between:0,2'],
             'amount' => ['required', 'numeric', 'min:0', 'max:100000000'],
@@ -211,7 +210,7 @@ class ExpenseController extends Controller
         $request->validate($rules, self::$MESSAGES);
         $settings = cache()->get('settings');
         if (isset($settings['expense_image_required']) && $settings['expense_image_required'] == 1 && !$request->hasFile('image')) {
-            return response()->json(['errors' => ['image' => ['Hãy bổ sung thêm hình ảnh hóa đơn']]], 422);
+            return response()->json(['errors' => ['avatar' => ['Hãy bổ sung thêm hình ảnh hóa đơn']]], 422);
         }
         if (!empty($this->user->can(User::CREATE_EXPENSE))) {
             try {
@@ -225,10 +224,10 @@ class ExpenseController extends Controller
                     'branch_id' => $this->user->main_branch,
                 ]);
 
-                if ($request->image) {
-                    $imageInfo = pathinfo($request->image->getClientOriginalName());
+                if ($request->avatar) {
+                    $imageInfo = pathinfo($request->avatar->getClientOriginalName());
                     $filename = $expense->code . '.' . $imageInfo['extension'];
-                    $request->image->storeAs('public/expense/', $filename);
+                    $request->avatar->storeAs('public/expense/', $filename);
                     Expense::find($expense->id)->update(['image' => $filename]);
                 }
 
@@ -249,7 +248,7 @@ class ExpenseController extends Controller
     public function update(Request $request)
     {
         $rules = [
-            'image' => ['image', 'max:3072'],
+            'avatar' => ['image', 'max:3072'],
             'user_id' => ['required', 'numeric'],
             'payment' => ['required', 'numeric', 'between:0,2'],
             'amount' => ['required', 'numeric', 'min:0', 'max:100000000'],
@@ -274,10 +273,10 @@ class ExpenseController extends Controller
                             'group' => $request->group,
                         ]);
 
-                        if ($request->image) {
-                            $imageInfo = pathinfo($request->image->getClientOriginalName());
+                        if ($request->avatar) {
+                            $imageInfo = pathinfo($request->avatar->getClientOriginalName());
                             $filename = $expense->code . '.' . $imageInfo['extension'];
-                            $request->image->storeAs('public/expense/', $filename);
+                            $request->avatar->storeAs('public/expense/', $filename);
                             $expense->update(['image' => $filename]);
                         }
 

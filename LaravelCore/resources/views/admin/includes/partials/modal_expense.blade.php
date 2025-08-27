@@ -61,7 +61,7 @@
                                     <label class="form-label ratio ratio-1x1 select-avatar" for="expense-avatar">
                                         <img class="img-fluid rounded-4 object-fit-cover" id="expense-avatar-preview" src="{{ asset('admin/images/placeholder.webp') }}" alt="Avatar">
                                     </label>
-                                    <input class="form-control" id="expense-avatar" name="image" type="file" hidden accept="image/*">
+                                    <input class="form-control" id="expense-avatar" name="avatar" type="file" hidden accept="image/*">
                                     <div class="d-grid">
                                         <button class="btn btn-outline-primary btn-remove-image d-none" type="button">{{ __('messages.expense.remove') }}</button>
                                     </div>
