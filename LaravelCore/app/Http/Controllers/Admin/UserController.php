@@ -373,7 +373,7 @@ class UserController extends Controller
                     'email' => $request->email,
                     // 'birthday' => $request->birthday,
                     //'address' => $request->address,
-                    'scores' => $request->scores,
+                    'scores' =>0,
                     'gender' => $request->gender,
                     'note' => $request->note,
                     'status' => $request->has('status'),

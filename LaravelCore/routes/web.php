@@ -395,6 +395,7 @@ Route::get('/auth/google/callback', function () {
                 'email' => $googleUser->getEmail(),
                 'avatar' => $googleUser->getAvatar(),
                 'password' => null,
+                'scores' => 0,
                 'email_verified_at' => Carbon::now(),
             ]);
         }
